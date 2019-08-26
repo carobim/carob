@@ -28,8 +28,6 @@
 #ifndef SRC_AV_GOSU_GOSU_MUSIC_H_
 #define SRC_AV_GOSU_GOSU_MUSIC_H_
 
-#include <string>
-
 #include "cache/cache-template.h"
 #include "cache/readercache.h"
 #include "core/music-worker.h"

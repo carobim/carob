@@ -25,25 +25,27 @@
 // IN THE SOFTWARE.
 // **********
 
-#include <string.h>
-
 #include "av/gosu/cbuffer.h"
 
-GosuCBuffer::GosuCBuffer(const void* data, size_t size)
-    : _data(data), _size(size) {}
+#include "os/c.h"
+#include "util/assert.h"
 
-size_t GosuCBuffer::size() const {
-    return _size;
+size_t
+GosuCBuffer::size() noexcept {
+    return size_;
 }
 
-void GosuCBuffer::resize(size_t) {
-    // NOOP
+void
+GosuCBuffer::resize(size_t) noexcept {
+    assert_(false);
 }
 
-void GosuCBuffer::read(size_t offset, size_t length, void* destBuffer) const {
-    memcpy(destBuffer, (const char*)_data + offset, length);
+void
+GosuCBuffer::read(size_t offset, size_t length, void* destBuffer) noexcept {
+    memcpy(destBuffer, data_ + offset, length);
 }
 
-void GosuCBuffer::write(size_t, size_t, const void*) {
-    // NOOP
+void
+GosuCBuffer::write(size_t, size_t, const void*) noexcept {
+    assert_(false);
 }

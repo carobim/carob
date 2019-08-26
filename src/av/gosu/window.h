@@ -28,74 +28,8 @@
 #ifndef SRC_AV_GOSU_WINDOW_H_
 #define SRC_AV_GOSU_WINDOW_H_
 
-#include <functional>
-#include <map>
-#include <string>
+#include "av/gosu/gosu.h"
 
-#include <Gosu/Window.hpp>  // for Gosu::Window
-
-#include "core/display-list.h"
-#include "core/window.h"
-#include "util/vector.h"
-
-namespace Gosu {
-    class Button;
-}
-
-class GosuGameWindow : public GameWindow, public Gosu::Window
-{
-public:
-    GosuGameWindow();
-    ~GosuGameWindow() = default;
-
-    unsigned width() const;
-
-    unsigned height() const;
-
-    void setCaption(const std::string& caption);
-
-    //! Gosu Callback
-    void button_down(const Gosu::Button btn);
-
-    //! Gosu Callback
-    void button_up(const Gosu::Button btn);
-
-    //! Gosu Callback
-    void draw();
-
-    //! Gosu Callback
-    bool needs_redraw() const;
-
-    //! Gosu Callback
-    void update();
-
-    void mainLoop();
-
-    void drawRect(double x1, double x2, double y1, double y2,
-                  uint32_t argb);
-
-    void scale(double x, double y, std::function<void()> op);
-    void translate(double x, double y, std::function<void()> op);
-    void clip(double x, double y, double width, double height, std::function<void()> op);
-
-    void close();
-
-protected:
-    //! Process persistent keyboard input
-    void handleKeyboardInput(time_t now);
-
-    time_t now;
-    time_t lastGCtime;
-
-    struct keystate {
-        bool consecutive, initiallyResolved;
-        time_t since;
-    };
-
-    std::map<Gosu::Button, keystate> keystates;
-    vector<KeyboardKey> gosuToTsunagariKey;
-
-    DisplayList display;
-};
+extern Gosu::Graphics* graphics;
 
 #endif  // SRC_AV_GOSU_WINDOW_H_

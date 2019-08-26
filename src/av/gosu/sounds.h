@@ -28,17 +28,18 @@
 #ifndef SRC_AV_GOSU_GOSU_SOUNDS_H_
 #define SRC_AV_GOSU_GOSU_SOUNDS_H_
 
-#include <Gosu/Audio.hpp>
+#include "av/gosu/gosu.h"
 
-#include "cache/cache-template.h"
-#include "cache/readercache.h"
+#include "cache/rc-cache-impl.h"
+#include "cache/rc-reader-cache.h"
 #include "core/sounds.h"
+#include "util/rc.h"
 
-class GosuSoundInstance : public SoundInstance {
+class GosuPlayingSound : public PlayingSound {
  public:
-    GosuSoundInstance(Gosu::Channel instance);
+    GosuPlayingSound(Gosu::Channel instance);
 
-    ~GosuSoundInstance() = default;
+    ~GosuPlayingSound() = default;
 
     bool playing();
     void stop();
@@ -52,9 +53,9 @@ class GosuSoundInstance : public SoundInstance {
     void speed(double speed);
 
  private:
-    GosuSoundInstance() = delete;
-    GosuSoundInstance(const GosuSoundInstance&) = delete;
-    GosuSoundInstance& operator=(const GosuSoundInstance&) = delete;
+    GosuPlayingSound() = delete;
+    GosuPlayingSound(const GosuPlayingSound&) = delete;
+    GosuPlayingSound& operator=(const GosuPlayingSound&) = delete;
 
     Gosu::Channel instance;
 };

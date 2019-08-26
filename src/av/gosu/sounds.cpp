@@ -28,12 +28,12 @@
 #include "av/gosu/sounds.h"
 
 #include "core/client-conf.h"
-#include "core/formatter.h"
 #include "core/measure.h"
 #include "core/resources.h"
 #include "core/sounds.h"
 #include "util/assert.h"
 #include "util/math2.h"
+#include "util/string.h"
 #include "util/unique.h"
 
 #include "av/gosu/cbuffer.h"

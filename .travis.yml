@@ -21,3 +21,14 @@ matrix:
         - cd build
         - cmake .. -DAV_SDL2=On
         - cmake --build .
+    - addons:
+       homebrew:
+         packages:
+           - libgosu
+      env:
+        - LDFLAGS=-L/usr/local/lib
+      script:
+        - mkdir build
+        - cd build
+        - cmake .. -DAV_GOSU=On
+        - cmake --build .

@@ -25,131 +25,267 @@
 // IN THE SOFTWARE.
 // **********
 
-#include "av/gosu/images.h"
-
-#include <Gosu/Bitmap.hpp>
-#include <Gosu/Graphics.hpp>
-#include <Gosu/Image.hpp>
-
 #include "av/gosu/cbuffer.h"
+#include "av/gosu/gosu.h"
 #include "av/gosu/window.h"
-#include "core/formatter.h"
+#include "cache/rc-cache-impl.h"
+#include "cache/rc-reader-cache.h"
 #include "core/images.h"
 #include "core/measure.h"
 #include "core/resources.h"
 #include "core/window.h"
+#include "util/assert.h"
+#include "util/move.h"
+#include "util/noexcept.h"
+#include "util/pool.h"
+#include "util/rc.h"
+#include "util/string.h"
+#include "util/string-view.h"
 #include "util/unique.h"
+#include "util/vector.h"
 
-static GosuImages globalImages;
+struct GosuImage {
+    enum { STANDALONE, FROM_TILED_IMAGE } origin;
 
-Images& Images::instance() {
-    return globalImages;
-}
+    int numUsers;
+    time_t lastUse;
 
-static Gosu::Graphics& graphics() {
-    static GameWindow& window = GameWindow::instance();
-    static GosuGameWindow& gosu = (GosuGameWindow&)window;
-    return gosu.graphics();
-}
+    Gosu::Image image;
+};
 
+struct GosuTiledImage {
+    int numUsers;
+    time_t lastUse;
 
-GosuImage::GosuImage(Gosu::Image&& image)
-        : Image(image.width(), image.height()),
-          image(move_(image)) {}
+    Vector<Gosu::Image> images;
+};
 
-void GosuImage::draw(double dstX, double dstY, double z) {
-    image.draw(dstX, dstY, z);
-}
+static Hashmap<String, ImageID> imageIDs;
+static Hashmap<String, TiledImageID> tiledImageIDs;
+static Pool<GosuImage> imagePool;
+static Pool<GosuTiledImage> tiledImagePool;
 
-void GosuImage::drawSubrect(double dstX, double dstY, double z,
-                            double srcX, double srcY,
-                            double srcW, double srcH) {
-    static Gosu::Graphics& g = graphics();
-    g.clip_to(dstX + srcX, dstY + srcY, srcW, srcH, [=] {
-        draw(dstX, dstY, z);
-    });
-}
+class GosuImages {
+ public:
+    Rc<Image> load(const std::string& path) noexcept;
 
+    Rc<TiledImage> loadTiles(const std::string& path,
+                             unsigned tileW,
+                             unsigned tileH) noexcept;
 
-GosuTiledImage::GosuTiledImage(vector<Rc<Image>>&& images)
-        : images(move_(images)) {}
+    void garbageCollect() noexcept;
+};
 
-size_t GosuTiledImage::size() const {
-    return images.size();
-}
-
-Rc<Image> GosuTiledImage::operator[](size_t n) const {
-    return images[n];
-}
-
-
-Rc<Image> genImage(const std::string& path) {
-    Unique<Resource> r = Resources::instance().load(path);
+static Optional<GosuImage>
+makeImage(StringView path) {
+    Optional<StringView> r = Resources::load(path);
     if (!r) {
         // Error logged.
-        return Rc<Image>();
+        return none;
     }
-    GosuCBuffer buffer(r->data(), r->size());
+
+    GosuCBuffer buffer;
+    buffer.data_ = r->data;
+    buffer.size_ = r->size;
+
     Gosu::Bitmap bitmap;
 
     {
-        TimeMeasure m("Bitmapped " + path);
-        Gosu::load_image_file(bitmap, buffer.front_reader());
+        TimeMeasure m(String() << "Bitmapped " << path);
+        Gosu::load_image_file(bitmap, Gosu::Reader{&buffer, 0});
     }
 
-    Log::info("Images", Formatter("Bitmap " + path + " is %×%") % bitmap.width() % bitmap.height());
-
-    TimeMeasure m("Constructed " + path + " as image");
-    return Rc<Image>(new GosuImage(Gosu::Image(bitmap, Gosu::IF_TILEABLE)));
+    Log::info("Images",
+              String() << "Bitmap " << path << " is " << bitmap.w << "×"
+                       << bitmap.h);
+    TimeMeasure m(String() << "Constructed " << path << " as image");
+    return Optional<GosuImage>(
+            GosuImage{GosuImage::STANDALONE,
+                      0,
+                      0,
+                      Gosu::Image(bitmap, Gosu::IF_TILEABLE | Gosu::IF_RETRO)});
 }
 
-static Rc<TiledImage> genTiledImage(const std::string& path,
-                                    unsigned tileW, unsigned tileH) {
-    Unique<Resource> r = Resources::instance().load(path);
+static Optional<GosuTiledImage>
+makeTiledImage(StringView path, unsigned tileW, unsigned tileH) {
+    Optional<StringView> r = Resources::load(path);
     if (!r) {
         // Error logged.
-        return Rc<TiledImage>();
+        return none;
     }
-    GosuCBuffer buffer(r->data(), r->size());
+
+    GosuCBuffer buffer;
+    buffer.data_ = r->data;
+    buffer.size_ = r->size;
+
     Gosu::Bitmap bitmap;
 
     {
-        TimeMeasure m("Bitmapped " + path);
-        Gosu::load_image_file(bitmap, buffer.front_reader());
+        TimeMeasure m(String() << "Bitmapped " << path);
+        Gosu::load_image_file(bitmap, Gosu::Reader{&buffer, 0});
     }
 
-    Log::info("Images", Formatter("Bitmap " + path + " is %×%") % bitmap.width() % bitmap.height());
+    Log::info("Images",
+              String() << "Bitmap " << path << " is " << bitmap.w << "×"
+                       << bitmap.h);
 
-    TimeMeasure m("Constructed " + path + " as tiles");
-    vector<Rc<Image>> images;
-    for (unsigned y = 0; y < bitmap.height(); y += tileH) {
-        for (unsigned x = 0; x < bitmap.width(); x += tileW) {
-            images.emplace_back(Rc<Image>(new GosuImage(
-                Gosu::Image(bitmap, x, y, tileW, tileH, Gosu::IF_TILEABLE)
-            )));
+    GosuTiledImage tiledImage;
+    tiledImage.images.reserve(bitmap.w * bitmap.h / (tileW * tileH));
+
+    {
+        TimeMeasure m(String() << "Constructed " << path << " as tiles");
+
+        for (unsigned y = 0; y < bitmap.h; y += tileH) {
+            for (unsigned x = 0; x < bitmap.w; x += tileW) {
+                tiledImage.images.push_back(
+                        Gosu::Image(bitmap,
+                                    x,
+                                    y,
+                                    tileW,
+                                    tileH,
+                                    Gosu::IF_TILEABLE | Gosu::IF_RETRO));
+            }
         }
     }
 
-    Log::info("Images", Formatter("TiledImage " + path + " has % tiles") % images.size());
-    return Rc<TiledImage>(new GosuTiledImage(move_(images)));
+    Log::info("Images",
+              String() << "TiledImage " << path << " has " << tiledImage.images.size()
+                       << " tiles");
+    return Optional<GosuTiledImage>(move_(tiledImage));
 }
 
-
-Rc<Image> GosuImages::load(const std::string& path) {
-    return images.lifetimeRequest(path);
-}
-
-Rc<TiledImage> GosuImages::loadTiles(const std::string& path,
-                                      unsigned tileW, unsigned tileH) {
-    auto tiledImage = tiledImages.lifetimeRequest(path);
-    if (!tiledImage) {
-        tiledImage = genTiledImage(path, tileW, tileH);
-        tiledImages.lifetimePut(path, tiledImage);
+ImageID
+Images::load(StringView path) noexcept {
+    Optional<ImageID*> cachedId = imageIDs.tryAt(path);
+    if (cachedId) {
+        int iid = ***cachedId;
+        GosuImage& image = imagePool[iid];
+        image.numUsers += 1;
+        return ImageID(iid);
     }
-    return tiledImage;
+
+    Optional<GosuImage> image = makeImage(path);
+    if (!image) {
+        imageIDs[path] = mark;
+        return mark;
+    }
+
+    int iid = imagePool.allocate();
+    imagePool[iid] = move_(*image);
+
+    imageIDs[path] = iid;
+
+    return ImageID(iid);
 }
 
-void GosuImages::garbageCollect() {
-    images.garbageCollect();
-    tiledImages.garbageCollect();
+TiledImageID
+Images::loadTiles(StringView path, int tileWidth, int tileHeight) noexcept {
+    Optional<TiledImageID*> cachedId = tiledImageIDs.tryAt(path);
+    if (cachedId) {
+        int tiid = ***cachedId;
+        GosuTiledImage& tiledImage = tiledImagePool[tiid];
+        tiledImage.numUsers += 1;
+        return TiledImageID(tiid);
+    }
+
+    Optional<GosuTiledImage> tiledImage = makeTiledImage(path, tileWidth, tileHeight);
+    if (!tiledImage) {
+        tiledImageIDs[path] = mark;
+        return mark;
+    }
+
+    int tiid = tiledImagePool.allocate();
+    tiledImagePool[tiid] = move_(*tiledImage);
+
+    tiledImageIDs[path] = tiid;
+
+    return TiledImageID(tiid);
+}
+
+void
+Images::prune(time_t latestPermissibleUse) noexcept {
+    // TODO
+}
+
+int
+TiledImage::size(TiledImageID tiid) noexcept {
+    assert_(tiid);
+
+    GosuTiledImage& tiledImage = tiledImagePool[*tiid];
+    return tiledImage.images.size();
+}
+
+ImageID
+TiledImage::getTile(TiledImageID tiid, int i) noexcept {
+    assert_(tiid);
+
+    GosuTiledImage& ti = tiledImagePool[*tiid];
+
+    int iid = imagePool.allocate();
+    GosuImage& image = imagePool[iid];
+    new (&image) GosuImage{GosuImage::FROM_TILED_IMAGE, 0, 0, ti.images[i]};
+
+    return ImageID(iid);
+}
+
+void
+TiledImage::release(TiledImageID tiid) noexcept {
+    if (!tiid) {
+        return;
+    }
+
+    GosuTiledImage& tiledImage = tiledImagePool[*tiid];
+
+    tiledImage.numUsers -= 1;
+    assert_(tiledImage.numUsers >= 0);
+
+    if (tiledImage.numUsers == 0) {
+        tiledImage.lastUse = World::time();
+    }
+}
+
+void
+Image::draw(ImageID iid, float x, float y, float z) noexcept {
+    assert_(iid);
+
+    GosuImage& image = imagePool[*iid];
+    image.image.draw(
+            x, y, z, 1.0, 1.0, Gosu::Color{0x00000000}, Gosu::AM_DEFAULT);
+}
+
+int
+Image::width(ImageID iid) noexcept {
+    assert_(iid);
+
+    GosuImage& image = imagePool[*iid];
+    return static_cast<int>(image.image.width());
+}
+
+int
+Image::height(ImageID iid) noexcept {
+    assert_(iid);
+
+    GosuImage& image = imagePool[*iid];
+    return static_cast<int>(image.image.height());
+}
+
+void
+Image::release(ImageID iid) noexcept {
+    if (!iid) {
+        return;
+    }
+
+    GosuImage& image = imagePool[*iid];
+
+    if (image.origin == GosuImage::FROM_TILED_IMAGE) {
+        imagePool.release(iid);
+    }
+    else {
+        image.numUsers -= 1;
+        assert_(image.numUsers >= 0);
+
+        if (image.numUsers == 0) {
+            image.lastUse = World::time();
+        }
+    }
 }

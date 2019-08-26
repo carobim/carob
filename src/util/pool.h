@@ -93,5 +93,4 @@ class Pool {
     Link nextFree = END;
 };
 
-
 #endif  // SRC_UTIL_POOL_H_

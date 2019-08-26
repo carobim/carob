@@ -28,30 +28,24 @@
 #ifndef SRC_AV_GOSU_CBUFFER_H_
 #define SRC_AV_GOSU_CBUFFER_H_
 
-#include <Gosu/IO.hpp>
+#include "av/gosu/gosu.h"
 
-/**
- * Similar to Gosu::Buffer, but can be constructed around pre-existing C void*.
- * The memory is not copied. Also, this is a read-only implementation. If you
- * attempt to create a Gosu::Writer around this, it will fail.
- *
- * See Gosu/IO.hpp and GosuImpl/IO.cpp from Gosu
- * See http://www.libgosu.org/cpp/class_gosu_1_1_buffer.html
- * See http://www.libgosu.org/cpp/class_gosu_1_1_resource.html
- */
+// Similar to Gosu::Buffer, but can be constructed around pre-existing C void*.
+// The memory is not copied. Also, this is a read-only implementation. If you
+// attempt to create a Gosu::Writer around this, it will fail.
+//
+// See Gosu/IO.hpp and GosuImpl/IO.cpp from Gosu
+// See http://www.libgosu.org/cpp/class_gosu_1_1_buffer.html
+// See http://www.libgosu.org/cpp/class_gosu_1_1_resource.html
 class GosuCBuffer : public Gosu::Resource {
  public:
-    GosuCBuffer(const void* data, size_t size);
-    ~GosuCBuffer() = default;
+    const char* data_;
+    size_t size_;
 
-    size_t size() const;
-    void resize(size_t);  // NOOP
-    void read(size_t offset, size_t length, void* destBuffer) const;
-    void write(size_t, size_t, const void*);  // NOOP
-
- private:
-    const void* _data;
-    size_t _size;
+    size_t size() noexcept;
+    void resize(size_t) noexcept;  // NOOP
+    void read(size_t offset, size_t length, void* destBuffer) noexcept;
+    void write(size_t, size_t, const void*) noexcept;  // NOOP
 };
 
 #endif  // SRC_AV_GOSU_CBUFFER_H_

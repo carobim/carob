@@ -10,8 +10,6 @@ project(TsunagariEngine
 # Options
 #
 
-option(USE_PKGCONFIG "Use pkg-config to find dependencies" ON)
-
 option(AV_NULL "Disable audio and video output")
 option(AV_SDL2 "Use SDL2 for audio and video output")
 option(AV_GOSU "Use Gosu for audio and video output")
@@ -19,6 +17,9 @@ option(AV_GOSU "Use Gosu for audio and video output")
 if(NOT AV_SDL2 AND NOT AV_GOSU)
     set(AV_NULL ON)
 endif()
+
+option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
+option(USE_GOSU_CONFIG_MODULE "Use the GosuConfig.cmake module to find SDL2" ON)
 
 option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
 
@@ -123,12 +124,10 @@ if(AV_GOSU)
     target_sources(tsunagari
         PRIVATE src/av/gosu/cbuffer.cpp
                 src/av/gosu/cbuffer.h
+                src/av/gosu/gosu.h
                 src/av/gosu/images.cpp
-                src/av/gosu/images.h
-                src/av/gosu/music.cpp
-                src/av/gosu/music.h
-                src/av/gosu/sounds.cpp
-                src/av/gosu/sounds.h
+                src/av/null/music.cpp
+                src/av/null/sounds.cpp
                 src/av/gosu/window.cpp
                 src/av/gosu/window.h
     )
@@ -522,7 +521,7 @@ endif()
 
 if(LINUX)
     # Check if we are compiling against glibc, which needs libpthread, or
-	# against musl, which doesn't.
+    # against musl, which doesn't.
     find_package(Threads)
     if(Threads_FOUND)
         target_link_libraries(tsunagari PUBLIC  Threads::Threads)
@@ -535,7 +534,7 @@ if(FREEBSD OR NETBSD)
 endif()
 
 if(AV_SDL2)
-    if(USE_PKGCONFIG)
+    if(USE_SDL2_PKGCONFIG)
         find_package(PkgConfig REQUIRED)
         pkg_search_module(SDL2 REQUIRED SDL2 sdl2)
         pkg_search_module(SDL2_image REQUIRED SDL2_image)
@@ -585,27 +584,36 @@ if(AV_SDL2)
                ${SDL2_image_LIBRARIES}
                ${SDL2_mixer_LIBRARIES}
     )
-
-    # FIXME
-    #if(APPLE)
-    #    set(TSUNAGARIC_LIBRARIES ${TSUNAGARIC_LIBRARIES} /System/Library/Frameworks/Cocoa.framework)
-    #endif()
 endif()
 
 if(AV_GOSU)
-    find_package(Gosu REQUIRED)
+    if(USE_GOSU_CONFIG_MODULE)
+        find_package(Gosu REQUIRED)
+    else()
+        set(GOSU_INCLUDE_DIRS "" CACHE PATH
+            "Directory with Gosu headers")
 
-    target_include_directories(tsunagari PUBLIC ${GOSU_INCLUDE_DIRS})
+        set(GOSU_LIBRARY_DIRS "" CACHE PATH
+            "Directory with Gosu library")
+
+        set(GOSU_LIBRARIES "" CACHE STRING
+            "Name of Gosu library")
+
+        set(GOSU_DEPENDENCIES "" CACHE STRING
+            "Names of Gosu dependency libraries")
+    endif()
+
+    if("${GOSU_LIBRARIES}" STREQUAL "")
+        message(SEND_ERROR "When not using GosuConfig.cmake, please"
+            " manually set Gosu include dirs and libraries")
+    endif()
+
+    target_include_directories(tsunagari PRIVATE ${GOSU_INCLUDE_DIRS})
     target_link_directories(tsunagari PUBLIC ${GOSU_LIBRARY_DIRS})
     target_link_libraries(tsunagari
         PUBLIC ${GOSU_LIBRARIES}
                ${GOSU_DEPENDENCIES}
     )
-
-    # FIXME
-    #if(APPLE)
-    #    set(TSUNAGARIC_LIBRARIES ${TSUNAGARIC_LIBRARIES} /System/Library/Frameworks/Cocoa.framework)
-    #endif()
 endif()
 
 target_link_libraries(null-world tsunagari)

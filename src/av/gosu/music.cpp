@@ -27,7 +27,7 @@
 
 #include "av/gosu/music.h"
 
-#include <Gosu/Audio.hpp>
+#include "av/gosu/gosu.h"
 
 #include "core/measure.h"
 #include "core/resources.h"
