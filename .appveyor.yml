@@ -3,8 +3,7 @@ image:
   - Visual Studio 2017
 
 for:
--
-  matrix:
+- matrix:
     only:
       - image: Visual Studio 2015
   build_script:
@@ -13,8 +12,7 @@ for:
     - cd build
     - cmake .. -G "Visual Studio 14 2015"
     - cmake --build .
--
-  matrix:
+- matrix:
     only:
       - image: Visual Studio 2017
   build_script:
