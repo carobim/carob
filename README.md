@@ -7,8 +7,8 @@ Version 0.4.1
 | Windows | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/TsunagariEngine/Tsunagari?svg=true)](https://ci.appveyor.com/project/TsunagariEngine/Tsunagari) |
 | macOS   | [![TravisCI](https://api.travis-ci.com/TsunagariEngine/Tsunagari.svg)](https://travis-ci.com/TsunagariEngine/Tsunagari)                                         |
 | Linux   | [![CircleCI](https://circleci.com/gh/TsunagariEngine/Tsunagari.svg?style=shield)](https://circleci.com/gh/TsunagariEngine/Tsunagari)                            |
-| FreeBSD | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagaric/freebsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagaric/freebsd.yml)                   |
-| NetBSD  | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagaric/netbsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagaric/netbsd.yml)                     |
+| FreeBSD | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/freebsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/freebsd.yml)                   |
+| NetBSD  | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/netbsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/netbsd.yml)                     |
 
 [![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari)](https://github.com/XAMPPRocky/tokei)
 
