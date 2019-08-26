@@ -4,18 +4,18 @@ packages:
 - cmake
 - mozilla-rootcerts-openssl
 sources:
-- https://github.com/pmer/TsunagariC.git
+- https://github.com/TsunagariEngine/Tsunagari.git
 tasks:
 - clone_submodules: |
-    cd TsunagariC
+    cd Tsunagari
     git submodule init
     git submodule update
 - cmake: |
-    cd TsunagariC
+    cd Tsunagari
     mkdir build
     cd build
     cmake ..
 - make: |
-    cd TsunagariC
+    cd Tsunagari
     cd build
     make
