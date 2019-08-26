@@ -78,7 +78,7 @@ jobs:
 
   void:
     docker:
-      - image: pmerrill/voidlinux-bash:latest
+      - image: tsunagariengine/voidlinux-bash:latest
     steps:
       - run: |
           xbps-install -S &&
@@ -95,7 +95,7 @@ jobs:
 
   void_musl:
     docker:
-      - image: pmerrill/voidlinux-musl-bash:latest
+      - image: tsunagariengine/voidlinux-musl-bash:latest
     steps:
       - run: |
           xbps-install -S &&
