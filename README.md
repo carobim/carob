@@ -1,5 +1,7 @@
 # Tsunagari Tile Engine
 
+Version 0.4.1
+
 | BUILD   | STATUS                                                                                                                                      |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Windows | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/TsunagariEngine/Tsunagari?svg=true)](https://ci.appveyor.com/project/TsunagariEngine/Tsunagari) |

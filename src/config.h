@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** config.h                           **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2018 Paul Merrill   **
+** Copyright 2011-2019 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -26,7 +26,7 @@
 // **********
 
 /* Release version. */
-#define TSUNAGARI_RELEASE_VERSION "Tsunagari Tile Engine AlphaP4 Revision 4"
+#define TSUNAGARI_RELEASE_VERSION "Tsunagari Tile Engine 0.4.1"
 
 /* Tsunagari config file. */
 #define CLIENT_CONF_PATH "./client.json"
