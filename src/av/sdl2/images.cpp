@@ -186,7 +186,8 @@ makeTiledImage(StringView path, int tileWidth, int tileHeight) {
     return ti;
 }
 
-ImageID Images::load(StringView path) noexcept {
+ImageID
+Images::load(StringView path) noexcept {
     Optional<ImageID*> cachedId = imageIDs.tryAt(path);
     if (cachedId) {
         int iid = ***cachedId;
@@ -209,7 +210,8 @@ ImageID Images::load(StringView path) noexcept {
     return ImageID(iid);
 }
 
-TiledImageID Images::loadTiles(StringView path,
+TiledImageID
+Images::loadTiles(StringView path,
                                int tileWidth,
                                int tileHeight) noexcept {
     Optional<TiledImageID*> cachedId = tiledImageIDs.tryAt(path);
@@ -234,18 +236,21 @@ TiledImageID Images::loadTiles(StringView path,
     return TiledImageID(tiid);
 }
 
-void Images::prune(time_t latestPermissibleUse) noexcept {
+void
+Images::prune(time_t latestPermissibleUse) noexcept {
     // TODO
 }
 
-int TiledImage::size(TiledImageID tiid) noexcept {
+int
+TiledImage::size(TiledImageID tiid) noexcept {
     assert_(tiid);
 
     SDL2TiledImage& tiledImage = tiledImagePool[*tiid];
     return tiledImage.numTiles;
 }
 
-ImageID TiledImage::getTile(TiledImageID tiid, int i) noexcept {
+ImageID
+TiledImage::getTile(TiledImageID tiid, int i) noexcept {
     assert_(tiid);
 
     SDL2TiledImage& ti = tiledImagePool[*tiid];
@@ -267,7 +272,8 @@ ImageID TiledImage::getTile(TiledImageID tiid, int i) noexcept {
     return ImageID(iid);
 }
 
-void TiledImage::release(TiledImageID tiid) noexcept {
+void
+TiledImage::release(TiledImageID tiid) noexcept {
     if (!tiid) {
         return;
     }
@@ -282,7 +288,8 @@ void TiledImage::release(TiledImageID tiid) noexcept {
     }
 }
 
-void Image::draw(ImageID iid, float x, float y, float z) noexcept {
+void
+Image::draw(ImageID iid, float x, float y, float z) noexcept {
     assert_(iid);
 
     SDL2Image& i = imagePool[*iid];
@@ -299,21 +306,24 @@ void Image::draw(ImageID iid, float x, float y, float z) noexcept {
     SDL_RenderCopy(renderer, i.texture, &src, &dst);
 }
 
-int Image::width(ImageID iid) noexcept {
+int
+Image::width(ImageID iid) noexcept {
     assert_(iid);
 
     SDL2Image& image = imagePool[*iid];
     return image.width;
 }
 
-int Image::height(ImageID iid) noexcept {
+int
+Image::height(ImageID iid) noexcept {
     assert_(iid);
 
     SDL2Image& image = imagePool[*iid];
     return image.height;
 }
 
-void Image::release(ImageID iid) noexcept {
+void
+Image::release(ImageID iid) noexcept {
     if (!iid) {
         return;
     }
