@@ -342,3 +342,8 @@ wMessageBox(StringView title, StringView text) noexcept {
     MessageBox(nullptr, String(text).null(), String(title).null(), MB_OK);
     // World::instance().setPaused(false);
 }
+
+void
+Exit(int code) noexcept {
+    ExitProcess(code);
+}

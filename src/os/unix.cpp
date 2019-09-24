@@ -261,3 +261,8 @@ setTermColor(TermColor color, PrintDest dest) noexcept {
         break;
     }
 }
+
+void
+Exit(int code) noexcept {
+    _exit(code);
+}

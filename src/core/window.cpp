@@ -28,7 +28,7 @@
 #include "core/window.h"
 
 #include "core/world.h"
-#include "os/c.h"
+#include "os/os.h"
 
 BitRecord GameWindow::keysDown = BitRecord(KB_SIZE);
 
@@ -41,7 +41,7 @@ GameWindow::emitKeyDown(KeyboardKey key) noexcept {
     if (keysDown[KBEscape] &&
         (keysDown[KBLeftShift] || keysDown[KBRightShift])) {
         close();
-        exit(0);
+        Exit(0);
     }
 
     if (!wasDown) {

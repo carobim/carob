@@ -176,7 +176,7 @@ Log::fatal(StringView domain, StringView msg) noexcept {
 #ifdef _WIN32
     wMessageBox("Tsunagari - Fatal", s);
 
-	if (IsDebuggerPresent()) {
+    if (IsDebuggerPresent()) {
         __debugbreak();
     }
 #endif
@@ -184,7 +184,7 @@ Log::fatal(StringView domain, StringView msg) noexcept {
     macMessageBox(StringView("Tsunagari - Fatal"), s);
 #endif
 
-    exit(1);
+    Exit(1);
 }
 
 void

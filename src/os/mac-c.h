@@ -237,7 +237,6 @@ extern FILE* __stderrp;
 // stdlib.h
 extern "C" {
 int atoi(const char*) noexcept;
-void exit(int) noexcept;
 int rand() noexcept;
 void srand(unsigned) noexcept;
 double strtod(const char*, char**) noexcept;
@@ -266,6 +265,7 @@ time_t time(time_t*) noexcept;
 
 // unistd.h
 extern "C" {
+void _exit(int) noexcept __attribute__((noreturn));
 int close(int) noexcept;
 int isatty(int) noexcept;
 ssize_t write(int, const void*, size_t) noexcept;

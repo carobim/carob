@@ -35,6 +35,7 @@
 #include "core/window.h"
 #include "core/world.h"
 #include "os/chrono.h"
+#include "os/os.h"
 #include "util/function.h"
 #include "util/noexcept.h"
 #include "util/optional.h"
@@ -110,7 +111,7 @@ handleEvent(const SDL_Event& event) noexcept {
 
     case SDL_QUIT:
         SDL_DestroyWindow(window);
-        exit(0);
+        Exit(0);
         return;
 
     default:
