@@ -110,7 +110,7 @@ handleEvent(const SDL_Event& event) noexcept {
         break;
 
     case SDL_QUIT:
-        SDL_DestroyWindow(window);
+        SDL_HideWindow(window);
         Exit(0);
         return;
 
@@ -374,6 +374,6 @@ GameWindow::clip(float x,
 
 void
 GameWindow::close() noexcept {
-    SDL_DestroyWindow(window);
+    SDL_HideWindow(window);
     window = nullptr;
 }

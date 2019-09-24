@@ -119,10 +119,10 @@ SDL_Window* SDL_CreateWindow(const char*,
                              int,
                              int,
                              uint32_t) noexcept;
-void SDL_DestroyWindow(SDL_Window*) noexcept;
 int SDL_GetCurrentDisplayMode(int, SDL_DisplayMode*) noexcept;
 int SDL_GetWindowDisplayIndex(SDL_Window*) noexcept;
 void SDL_GetWindowSize(SDL_Window*, int*, int*) noexcept;
+void SDL_HideWindow(SDL_Window*) noexcept;
 void SDL_SetWindowTitle(SDL_Window*, const char*) noexcept;
 void SDL_ShowWindow(SDL_Window*) noexcept;
 #define SDL_WINDOW_FULLSCREEN 0x00000001
