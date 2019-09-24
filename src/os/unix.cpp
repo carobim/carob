@@ -225,7 +225,7 @@ isaTTY() noexcept {
 }
 
 void
-setTermColor(TermColor color) noexcept {
+setTermColor(TermColor color, PrintDest dest) noexcept {
     if (!isaTTY()) {
         return;
     }
@@ -235,18 +235,29 @@ setTermColor(TermColor color) noexcept {
 
     const char escape = 27;
 
+    FILE* f;
+
+    switch (dest) {
+    case Stdout:
+        f = stdout;
+        break;
+    case Stderr:
+        f = stderr;
+        break;
+    }
+
     switch (color) {
     case TC_RESET:
-        printf("%c[0m", escape);
+        fprintf(f, "%c[0m", escape);
         break;
     case TC_GREEN:
-        printf("%c[32m", escape);
+        fprintf(f, "%c[32m", escape);
         break;
     case TC_YELLOW:
-        printf("%c[33m", escape);
+        fprintf(f, "%c[33m", escape);
         break;
     case TC_RED:
-        printf("%c[31m", escape);
+        fprintf(f, "%c[31m", escape);
         break;
     }
 }

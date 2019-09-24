@@ -57,7 +57,12 @@ enum TermColor {
     TC_RED,
 };
 
-void setTermColor(TermColor color) noexcept;
+enum PrintDest {
+    Stdout,
+    Stderr,
+};
+
+void setTermColor(TermColor color, PrintDest dest) noexcept;
 
 #ifdef _WIN32
 #    include "windows.h"

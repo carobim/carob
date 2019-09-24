@@ -97,15 +97,15 @@ Log::info(StringView domain, StringView msg) noexcept {
     if (verb > Log::Verbosity::NORMAL) {
         LockGuard lock(stdoutMutex);
 
-        setTermColor(TC_GREEN);
+        setTermColor(TC_GREEN, Stdout);
         printf("%s ", makeTimestamp().null().get());
 
-        setTermColor(TC_YELLOW);
+        setTermColor(TC_YELLOW, Stdout);
         String s;
         s << "Info [" << domain << "]";
         printf("%s", s.null().get());
 
-        setTermColor(TC_RESET);
+        setTermColor(TC_RESET, Stdout);
         s.clear();
         s << " - " << chomp(msg) << "\n";
         printf("%s", s.null().get());
@@ -118,15 +118,15 @@ Log::err(StringView domain, StringView msg) noexcept {
         {
             LockGuard lock(stdoutMutex);
 
-            setTermColor(TC_GREEN);
+            setTermColor(TC_GREEN, Stderr);
             fprintf(stderr, "%s ", makeTimestamp().null().get());
 
-            setTermColor(TC_RED);
+            setTermColor(TC_RED, Stderr);
             String s;
             s << "Error [" << domain << "]";
             fprintf(stderr, "%s", s.null().get());
 
-            setTermColor(TC_RESET);
+            setTermColor(TC_RESET, Stderr);
             s.clear();
             s << " - " << chomp(msg) << "\n";
             fprintf(stderr, "%s", s.null().get());
@@ -156,15 +156,15 @@ Log::fatal(StringView domain, StringView msg) noexcept {
     {
         LockGuard lock(stdoutMutex);
 
-        setTermColor(TC_GREEN);
+        setTermColor(TC_GREEN, Stderr);
         fprintf(stderr, "%s ", makeTimestamp().null().get());
 
-        setTermColor(TC_RED);
+        setTermColor(TC_RED, Stderr);
         String s;
         s << "Fatal [" << domain << "]";
         fprintf(stderr, "%s", s.null().get());
 
-        setTermColor(TC_RESET);
+        setTermColor(TC_RESET, Stderr);
         s.clear();
         s << " - " << chomp(msg) << "\n";
         fprintf(stderr, "%s", s.null().get());
@@ -204,10 +204,10 @@ Log::reportVerbosityOnStartup() noexcept {
         break;
     }
 
-    setTermColor(TC_GREEN);
+    setTermColor(TC_GREEN, Stdout);
     printf("%s ", makeTimestamp().null().get());
 
-    setTermColor(TC_RESET);
+    setTermColor(TC_RESET, Stdout);
     String s;
     s << "Reporting engine messages in " << verbString << " mode.\n";
     printf("%s", s.null().get());

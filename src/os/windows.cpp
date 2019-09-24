@@ -284,7 +284,7 @@ readFile(StringView path) noexcept {
 }
 
 void
-setTermColor(TermColor color) noexcept {
+setTermColor(TermColor color, PrintDest /*dest*/) noexcept {
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
     if (out == INVALID_HANDLE_VALUE) {
         return;
