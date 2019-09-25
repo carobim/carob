@@ -34,6 +34,7 @@
 #include "core/world.h"
 #include "data/data-world.h"
 #include "os/c.h"
+#include "os/thread.h"
 #include "util/int.h"
 
 #ifdef _WIN32
@@ -65,6 +66,8 @@ main() noexcept {
 #ifdef __APPLE__
     macSetWorkingDirectory();
 #endif
+
+    Thread::disableTimerCoalescing();
 
     Conf::parse(CLIENT_CONF_PATH);
 

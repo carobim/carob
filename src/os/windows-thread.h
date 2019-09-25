@@ -114,6 +114,9 @@ class Thread {
         return info.dwNumberOfProcessors;
     }
 
+    static void disableTimerCoalescing() noexcept {
+    }
+
     HANDLE id = 0;
 };
 

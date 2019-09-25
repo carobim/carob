@@ -1,6 +1,6 @@
 /********************************
 ** Tsunagari Tile Engine       **
-** thread.h                    **
+** mac-thread.cpp              **
 ** Copyright 2019 Paul Merrill **
 ********************************/
 
@@ -24,19 +24,37 @@
 // IN THE SOFTWARE.
 // **********
 
-#ifndef SRC_OS_THREAD_H_
-#define SRC_OS_THREAD_H_
-
-#if defined(_WIN32)
-#include "os/windows-thread.h"
-#elif defined(__APPLE__)
 #include "os/mac-thread.h"
-#elif defined(__linux__)
-#include "os/unix-thread.h"
-#elif defined(__FreeBSD__)
-#include "os/unix-thread.h"
-#elif defined(__NetBSD__)
-#include "os/unix-thread.h"
-#endif
 
-#endif  // SRC_OS_THREAD_H_
+#include "util/int.h"
+
+// mach/thread_act.h
+extern "C" {
+int32_t
+thread_policy_set(uint32_t, uint32_t, uint32_t*, uint32_t) noexcept;
+}
+
+// mach/mach_init.h
+extern "C" {
+uint32_t
+mach_thread_self() noexcept;
+}
+
+// mach/thread_policy.h
+#define THREAD_EXTENDED_POLICY 1
+#define THREAD_EXTENDED_POLICY_COUNT 1
+struct thread_extended_policy {
+    int32_t timeshare;
+};
+
+void
+Thread::disableTimerCoalescing() noexcept {
+    thread_extended_policy policyInfo = {
+        .timeshare = false,
+    };
+
+    thread_policy_set(mach_thread_self(),
+                      THREAD_EXTENDED_POLICY,
+                      (uint32_t*)&policyInfo,
+                      THREAD_EXTENDED_POLICY_COUNT);
+}

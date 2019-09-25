@@ -244,6 +244,7 @@ elseif(APPLE)
         PRIVATE src/os/mac-chrono.cpp
         PRIVATE src/os/mac-gui.mm
         PUBLIC  src/os/mac-gui.h
+        PRIVATE src/os/mac-thread.cpp
         PUBLIC  src/os/mac-thread.h
         PRIVATE src/os/unix-mapped-file.cpp
         PUBLIC  src/os/unix-mapped-file.h

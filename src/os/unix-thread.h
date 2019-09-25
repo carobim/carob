@@ -75,6 +75,9 @@ class Thread {
         return static_cast<unsigned>(result);
     }
 
+    static void disableTimerCoalescing() noexcept {
+    }
+
     pthread_t t = 0;
 };
 

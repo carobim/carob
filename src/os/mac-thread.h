@@ -1,8 +1,8 @@
-/**********************************
-** Tsunagari Tile Engine         **
-** macos-thread.h                **
-** Copyright 2019 Paul Merrill   **
-**********************************/
+/********************************
+** Tsunagari Tile Engine       **
+** macos-thread.h              **
+** Copyright 2019 Paul Merrill **
+********************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -74,6 +74,8 @@ class Thread {
         sysctl(mib, 2, &n, &s, 0, 0);
         return n;
     }
+
+    static void disableTimerCoalescing() noexcept;
 
     pthread_t t = 0;
 };
