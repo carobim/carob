@@ -66,11 +66,15 @@ StringView::rfind(char needle) const noexcept {
     if (size == 0) {
         return mark;
     }
-    for (size_t i = size - 1; i >= 0; i--) {
+
+    size_t i = size;
+    do {
         if (data[i] == needle) {
             return StringPosition(i);
         }
-    }
+        i--;
+    } while (i > 0);
+
     return mark;
 }
 
