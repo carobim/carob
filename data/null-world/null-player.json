@@ -1,0 +1,13 @@
+{
+    "speed": 1.0,
+    "sprite": {
+        "sheet": {
+            "tile_width": 1,
+            "tile_height": 1,
+            "path": "pixel.png"
+        },
+        "phases": {
+            "down": {"frame": 0}
+        }
+    }
+}

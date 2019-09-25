@@ -49,6 +49,10 @@ NullDataWorld::NullDataWorld() noexcept {
 
     parameters.gameStart.area = "null-area.json";
     parameters.gameStart.coords = {0, 0, 0};
+
+    datafile = "./null.world";
+
+    areas["null-area.json"] = new DataArea;
 }
 
 bool

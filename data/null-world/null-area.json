@@ -1,0 +1,22 @@
+{
+    "height": 1,
+    "layers": [{
+        "height": 1,
+        "objects": [],
+        "properties": {
+            "depth": "0"
+        },
+        "type": "objectgroup",
+        "width": 1
+    }],
+    "properties": {
+        "name": "Null World"
+    },
+    "tileheight": 1,
+    "tilesets": [{
+        "firstgid": 1,
+        "source": "null-tileset.json"
+    }],
+    "tilewidth": 1,
+    "width": 1
+}
