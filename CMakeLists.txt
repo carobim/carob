@@ -71,6 +71,8 @@ add_library(tsunagari)
 add_executable(null-world)
 add_executable(pack-tool)
 
+target_link_libraries(null-world tsunagari)
+
 
 #
 # Sources in deps
@@ -253,6 +255,7 @@ elseif(APPLE)
     )
     target_sources(pack-tool
         PRIVATE src/os/mac-c.h
+        PRIVATE src/os/mac-thread.cpp
         PRIVATE src/os/mac-thread.h
         PRIVATE src/os/unix-condition-variable.h
         PRIVATE src/os/unix-mapped-file.cpp
@@ -616,5 +619,3 @@ if(AV_GOSU)
                ${GOSU_DEPENDENCIES}
     )
 endif()
-
-target_link_libraries(null-world tsunagari)

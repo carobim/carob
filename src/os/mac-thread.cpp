@@ -26,7 +26,10 @@
 
 #include "os/mac-thread.h"
 
+#include "os/c.h"
+#include "util/assert.h"
 #include "util/int.h"
+#include "util/move.h"
 
 // mach/thread_act.h
 extern "C" {
@@ -47,6 +50,44 @@ struct thread_extended_policy {
     int32_t timeshare;
 };
 
+static void*
+run(void* f) noexcept {
+    Function<void()>* fun = reinterpret_cast<Function<void()>*>(f);
+    (*fun)();
+    return nullptr;
+}
+
+Thread::Thread(Function<void()> f) noexcept {
+    Function<void()>* fun = new Function<void()>(move_(f));
+
+    int err = pthread_create(reinterpret_cast<pthread_t*>(&t),
+                             nullptr,
+                             run,
+                             static_cast<void*>(fun));
+    (void)err;
+    assert_(err == 0);
+}
+
+Thread::Thread(Thread&& other) noexcept
+        : t(other.t) {
+    other.t = nullptr;
+}
+
+Thread::~Thread() noexcept {
+    assert_(t == nullptr);
+}
+
+void
+Thread::join() noexcept {
+    assert_(t != nullptr);
+
+    int err = pthread_join(static_cast<pthread_t>(t), 0);
+    (void)err;
+    assert_(err == 0);
+
+    t = nullptr;
+}
+
 void
 Thread::disableTimerCoalescing() noexcept {
     thread_extended_policy policyInfo = {
@@ -57,4 +98,13 @@ Thread::disableTimerCoalescing() noexcept {
                       THREAD_EXTENDED_POLICY,
                       (uint32_t*)&policyInfo,
                       THREAD_EXTENDED_POLICY_COUNT);
+}
+
+unsigned
+Thread::hardware_concurrency() noexcept {
+    unsigned n;
+    int mib[2] = {CTL_HW, HW_NCPU};
+    size_t s = sizeof(n);
+    sysctl(mib, 2, &n, &s, 0, 0);
+    return n;
 }
