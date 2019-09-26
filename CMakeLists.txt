@@ -36,6 +36,11 @@ else()
     set(SUBPROJECT 1)
 endif()
 
+# Project generator
+if(CMAKE_GENERATOR MATCHES Ninja)
+    set(NINJA 1)
+endif()
+
 # Compiler
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
     set(CLANG 1)
@@ -457,6 +462,14 @@ target_compile_definitions(tsunagari
 target_compile_definitions(pack-tool
     PRIVATE $<$<BOOL:${IS_RELEASE}>:NDEBUG>
 )
+
+# Enable color within compiler's output
+if(NINJA AND CLANG)
+    string(APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
+endif()
+if(NINJA AND GCC)
+    string(APPEND CMAKE_CXX_FLAGS " -fdiagnostics-color=always")
+endif()
 
 # Share variables with parent.
 if(IS_SUBPROJECT)
