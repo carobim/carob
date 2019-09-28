@@ -184,7 +184,7 @@ Log::fatal(StringView domain, StringView msg) noexcept {
     macMessageBox(StringView("Tsunagari - Fatal"), s);
 #endif
 
-    Exit(1);
+    exitProcess(1);
 }
 
 void

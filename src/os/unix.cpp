@@ -263,6 +263,6 @@ setTermColor(TermColor color, PrintDest dest) noexcept {
 }
 
 void
-Exit(int code) noexcept {
+exitProcess(int code) noexcept {
     _exit(code);
 }

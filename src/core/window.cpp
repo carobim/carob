@@ -41,7 +41,7 @@ GameWindow::emitKeyDown(KeyboardKey key) noexcept {
     if (keysDown[KBEscape] &&
         (keysDown[KBLeftShift] || keysDown[KBRightShift])) {
         close();
-        Exit(0);
+        exitProcess(0);
     }
 
     if (!wasDown) {

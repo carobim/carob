@@ -111,7 +111,7 @@ handleEvent(const SDL_Event& event) noexcept {
 
     case SDL_QUIT:
         SDL_HideWindow(window);
-        Exit(0);
+        exitProcess(0);
         return;
 
     default:
@@ -293,6 +293,20 @@ GameWindow::mainLoop() noexcept {
         if (!drew && sleepDuration) {
             SleepFor(sleepDuration);
         }
+
+        Log::info("GameWindow",
+                  String() << "dt "
+                           << (frameStart - previousFrameStart)
+                           << " frameStart "
+                           << frameStart
+                           << " drew "
+                           << drew
+                           << " timeTaken "
+                           << timeTaken
+                           << " nextFrameStart "
+                           << nextFrameStart
+                           << " sleepDuration "
+                           << sleepDuration);
 
         previousFrameStart = frameStart;
         frameStart = SteadyClock::now();

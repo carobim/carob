@@ -64,7 +64,7 @@ enum PrintDest {
 
 void setTermColor(TermColor color, PrintDest dest) noexcept;
 
-void Exit(int code) noexcept;
+void exitProcess(int code) noexcept;
 
 #ifdef _WIN32
 #    include "windows.h"

@@ -70,6 +70,7 @@ WINBASEAPI BOOL WINAPI CloseHandle(HANDLE) noexcept;
 WINBASEAPI BOOL WINAPI CreateDirectoryA(LPCSTR, void*) noexcept;
 WINBASEAPI HANDLE WINAPI
 CreateFileA(LPCSTR, DWORD, DWORD, void*, DWORD, DWORD, HANDLE) noexcept;
+WINBASEAPI VOID WINAPI ExitProcess(UINT) noexcept;
 WINBASEAPI HANDLE WINAPI FindFirstFileA(LPCSTR, LPWIN32_FIND_DATAA) noexcept;
 WINBASEAPI BOOL WINAPI FindNextFileA(HANDLE, LPWIN32_FIND_DATAA) noexcept;
 WINBASEAPI BOOL WINAPI FindClose(HANDLE) noexcept;
@@ -344,6 +345,6 @@ wMessageBox(StringView title, StringView text) noexcept {
 }
 
 void
-Exit(int code) noexcept {
+exitProcess(int code) noexcept {
     ExitProcess(code);
 }
