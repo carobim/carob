@@ -60,7 +60,7 @@ class Player;
 static Rc<Image> pauseInfo;
 
 static Hashmap<String, Area*> areas;
-static Area* area = nullptr;
+static Area* worldArea = nullptr;
 static Unique<Player> player = new Player;
 
 /**
@@ -120,7 +120,7 @@ World::buttonDown(KeyboardKey key) noexcept {
         break;
     default:
         if (!paused && keyStates.empty()) {
-            area->buttonDown(key);
+            worldArea->buttonDown(key);
             // if (keydownScript)
             //     keydownScript->invoke();
         }
@@ -135,7 +135,7 @@ World::buttonUp(KeyboardKey key) noexcept {
         break;
     default:
         if (!paused && keyStates.empty()) {
-            area->buttonUp(key);
+            worldArea->buttonUp(key);
             // if (keyupScript)
             //     keyupScript->invoke();
         }
@@ -149,23 +149,23 @@ World::draw(DisplayList* display) noexcept {
 
     redraw = false;
 
-    display->loopX = area->grid.loopX;
-    display->loopY = area->grid.loopY;
+    display->loopX = worldArea->grid.loopX;
+    display->loopY = worldArea->grid.loopY;
 
     display->padding = Viewport::getLetterboxOffset();
     display->scale = Viewport::getScale();
     display->scroll = Viewport::getMapOffset();
     display->size = Viewport::getPhysRes();
 
-    display->colorOverlayARGB = area->getColorOverlay();
+    display->colorOverlayARGB = worldArea->getColorOverlay();
     display->paused = paused > 0;
 
-    area->draw(display);
+    worldArea->draw(display);
 }
 
 bool
 World::needsRedraw() noexcept {
-    return redraw || (!paused && area->needsRedraw());
+    return redraw || (!paused && worldArea->needsRedraw());
 }
 
 void
@@ -176,13 +176,13 @@ World::tick(time_t dt) noexcept {
 
     total += dt;
 
-    area->tick(dt);
+    worldArea->tick(dt);
 }
 
 void
 World::turn() noexcept {
     if (Conf::moveMode == Conf::TURN) {
-        area->turn();
+        worldArea->turn();
     }
 }
 
@@ -221,10 +221,10 @@ World::focusArea(StringView filename, vicoord playerPos) noexcept {
 
 void
 World::focusArea(Area* area_, vicoord playerPos) noexcept {
-    area = area_;
-    player->setArea(area, playerPos);
-    Viewport::setArea(area);
-    area->focus();
+    worldArea = area_;
+    player->setArea(worldArea, playerPos);
+    Viewport::setArea(worldArea);
+    worldArea->focus();
 }
 
 void

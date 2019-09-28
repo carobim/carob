@@ -40,7 +40,7 @@ static rvec2 off = {0, 0};
 static rvec2 virtRes;
 
 static TrackingMode mode = TM_MANUAL;
-static const Area* area = nullptr;
+static const Area* viewportArea = nullptr;
 static const Entity* targete;
 
 static rvec2
@@ -63,12 +63,12 @@ boundDimension(float screen, float area, float pt, bool loop) noexcept {
 
 static rvec2
 boundToArea(rvec2 pt) noexcept {
-    icoord ad = area->grid.dim;
-    ivec2 td = area->grid.tileDim;
+    icoord ad = viewportArea->grid.dim;
+    ivec2 td = viewportArea->grid.tileDim;
     float areaWidth = static_cast<float>(ad.x * td.x);
     float areaHeight = static_cast<float>(ad.y * td.y);
-    bool loopX = area->grid.loopX;
-    bool loopY = area->grid.loopY;
+    bool loopX = viewportArea->grid.loopX;
+    bool loopY = viewportArea->grid.loopY;
 
     return rvec2{boundDimension(virtRes.x, areaWidth, pt.x, loopX),
                  boundDimension(virtRes.y, areaHeight, pt.y, loopY)};
@@ -82,7 +82,7 @@ offsetForPt(rvec2 pt) noexcept {
 static void
 _jumpToEntity(const Entity* e) noexcept {
     rcoord pos = e->getPixelCoord();
-    ivec2 td = area->grid.tileDim;
+    ivec2 td = viewportArea->grid.tileDim;
     rvec2 center = rvec2{pos.x + td.x / 2, pos.y + td.y / 2};
     off = offsetForPt(center);
 }
@@ -207,5 +207,5 @@ Viewport::trackEntity(const Entity* e) noexcept {
 
 void
 Viewport::setArea(const Area* a) noexcept {
-    area = a;
+    viewportArea = a;
 }
