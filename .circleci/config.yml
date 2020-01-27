@@ -17,9 +17,9 @@ jobs:
           cmake .. &&
           cmake --build .
 
-  debian_10_0:
+  debian_10:
     docker:
-      - image: debian:10.0-slim
+      - image: debian:10-slim
     steps:
       - run: |
           apt-get update &&
@@ -129,7 +129,7 @@ workflows:
   build_all:
     jobs:
       - debian_9
-      - debian_10_0
+      - debian_10
       - ubuntu_19_04
       - fedora_30
       - arch_latest
