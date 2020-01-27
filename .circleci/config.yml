@@ -8,7 +8,7 @@ jobs:
       - run: |
           echo 'deb http://deb.debian.org/debian stretch-backports main' >> /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends git ca-certificates cmake/stretch-backports libuv1/stretch-backports make g++
+          apt-get install -y --no-install-recommends git ca-certificates openssh-client cmake/stretch-backports libuv1/stretch-backports make g++
       - checkout
       - run: |
           git submodule update --init --recursive &&
@@ -32,9 +32,9 @@ jobs:
           cmake .. &&
           cmake --build .
 
-  ubuntu_19_04:
+  ubuntu_19_10:
     docker:
-      - image: ubuntu:19.04
+      - image: ubuntu:19.10
     steps:
       - run: |
           apt-get update &&
@@ -47,9 +47,9 @@ jobs:
           cmake .. &&
           cmake --build .
 
-  fedora_30:
+  fedora_31:
     docker:
-      - image: fedora:30
+      - image: fedora:31
     steps:
       - run: |
           dnf install -y git cmake make gcc-c++
@@ -130,8 +130,8 @@ workflows:
     jobs:
       - debian_9
       - debian_10
-      - ubuntu_19_04
-      - fedora_30
+      - ubuntu_19_10
+      - fedora_31
       - arch_latest
       - void
       - void_musl
