@@ -216,6 +216,7 @@ time_t time(time_t*) noexcept;
 // unistd.h
 extern "C" {
 int close(int) noexcept;
+void _exit(int) noexcept __attribute__ ((noreturn));
 int isatty(int) noexcept;
 long sysconf(int) noexcept;
 ssize_t write(int, const void*, size_t) noexcept;
