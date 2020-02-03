@@ -40,7 +40,6 @@
 #define RAPIDJSON_HAS_CXX11_NOEXCEPT 1
 
 #include "rapidjson/document.h"
-#include "rapidjson/reader.h"
 
 // Skip later headers that conflict with ones that rapidjson includes.
 // clang-format off
