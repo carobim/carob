@@ -85,6 +85,7 @@ target_link_libraries(null-world tsunagari)
 
 target_include_directories(tsunagari
     PUBLIC deps/rapidjson/include
+    PUBLIC deps/pjson
 )
 
 #
@@ -222,6 +223,7 @@ target_sources(tsunagari
     PRIVATE deps/rapidjson/include/rapidjson/internal/strfunc.h
     PRIVATE deps/rapidjson/include/rapidjson/memorystream.h
     PRIVATE deps/rapidjson/include/rapidjson/encodedstream.h
+    PRIVATE deps/pjson/pjson.h
 )
 
 target_sources(tsunagari
