@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Copyright (c) Electronic Arts Inc. All rights reserved.
-// Copyright 2017-2019 Paul Merrill
+// Copyright 2017-2020 Paul Merrill
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef SRC_UTIL_VECTOR_H_
@@ -15,16 +15,20 @@
 #include "util/new.h"
 #include "util/noexcept.h"
 
-template<typename T> class Vector {
+template<typename T>
+class Vector {
  protected:
     T* mpBegin;
     T* mpEnd;
     T* mCapacity;
 
  protected:
-    T* DoAllocate(size_t n) noexcept;
-    void DoFree(T* p) noexcept;
-    size_t GetNewCapacity(size_t currentCapacity) noexcept;
+    T*
+    DoAllocate(size_t n) noexcept;
+    void
+    DoFree(T* p) noexcept;
+    size_t
+    GetNewCapacity(size_t currentCapacity) noexcept;
 
  public:
     typedef T* iterator;
@@ -39,83 +43,128 @@ template<typename T> class Vector {
 
     ~Vector() noexcept;
 
-    Vector<T>& operator=(const Vector<T>& x) noexcept;
-    Vector<T>& operator=(Vector<T>&& x) noexcept;
+    Vector<T>&
+    operator=(const Vector<T>& x) noexcept;
+    Vector<T>&
+    operator=(Vector<T>&& x) noexcept;
 
-    void swap(Vector<T>& x) noexcept;
+    void
+    swap(Vector<T>& x) noexcept;
 
-    iterator begin() noexcept;
-    const_iterator begin() const noexcept;
+    iterator
+    begin() noexcept;
+    const_iterator
+    begin() const noexcept;
 
-    iterator end() noexcept;
-    const_iterator end() const noexcept;
+    iterator
+    end() noexcept;
+    const_iterator
+    end() const noexcept;
 
-    bool empty() const noexcept;
-    size_t size() const noexcept;
-    size_t capacity() const noexcept;
+    bool
+    empty() const noexcept;
+    size_t
+    size() const noexcept;
+    size_t
+    capacity() const noexcept;
 
-    void resize(size_t n) noexcept;
-    void reserve(size_t n) noexcept;
+    void
+    resize(size_t n) noexcept;
+    void
+    reserve(size_t n) noexcept;
 
-    T* data() noexcept;
-    const T* data() const noexcept;
+    T*
+    data() noexcept;
+    const T*
+    data() const noexcept;
 
     T& operator[](size_t n) noexcept;
     const T& operator[](size_t n) const noexcept;
 
-    T& at(size_t n) noexcept;
-    const T& at(size_t n) const noexcept;
+    T&
+    at(size_t n) noexcept;
+    const T&
+    at(size_t n) const noexcept;
 
-    T& front() noexcept;
-    const T& front() const noexcept;
+    T&
+    front() noexcept;
+    const T&
+    front() const noexcept;
 
-    T& back() noexcept;
-    const T& back() const noexcept;
+    T&
+    back() noexcept;
+    const T&
+    back() const noexcept;
 
-    void push_back(const T& value) noexcept;
-    void push_back(T&& value) noexcept;
-    void push_back_nogrow(const T& value) noexcept;
-    void push_back_nogrow(T&& value) noexcept;
-    void pop_back() noexcept;
+    void
+    push_back(const T& value) noexcept;
+    void
+    push_back(T&& value) noexcept;
+    void
+    push_back_nogrow(const T& value) noexcept;
+    void
+    push_back_nogrow(T&& value) noexcept;
+    void
+    pop_back() noexcept;
 
     template<class... Args>
-    iterator emplace(iterator position, Args&&... args) noexcept;
+    iterator
+    emplace(iterator position, Args&&... args) noexcept;
 
-    template<class... Args> void emplace_back(Args&&... args) noexcept;
+    template<class... Args>
+    void
+    emplace_back(Args&&... args) noexcept;
 
-    iterator insert(iterator position, const T& value) noexcept;
-    iterator insert(iterator position, T&& value) noexcept;
+    iterator
+    insert(iterator position, const T& value) noexcept;
+    iterator
+    insert(iterator position, T&& value) noexcept;
 
-    void append(const T* range, size_t n) noexcept;
+    void
+    append(const T* range, size_t n) noexcept;
 
-    iterator erase(iterator position) noexcept;
-    iterator erase(iterator first, iterator last) noexcept;
+    iterator
+    erase(iterator position) noexcept;
+    iterator
+    erase(iterator first, iterator last) noexcept;
     // Same as erase, except it doesn't preserve order, but is faster because it
     // simply copies the last item in the vector over the erased position.
-    iterator erase_unsorted(iterator position) noexcept;
+    iterator
+    erase_unsorted(iterator position) noexcept;
 
-    void clear() noexcept;
+    void
+    clear() noexcept;
     // This is a unilateral reset to an initially empty state. No destructors
     // are called, no deallocation occurs.
-    void reset_lose_memory() noexcept;
+    void
+    reset_lose_memory() noexcept;
 
  protected:
-    void DoAssign(const_iterator first, const_iterator last) noexcept;
+    void
+    DoAssign(const_iterator first, const_iterator last) noexcept;
 
     template<typename... Args>
-    void DoInsertValue(iterator position, Args&&... args) noexcept;
+    void
+    DoInsertValue(iterator position, Args&&... args) noexcept;
 
-    void DoInsertValuesEnd(size_t n) noexcept;  // Default constructs n values
+    void
+    DoInsertValuesEnd(size_t n) noexcept;  // Default constructs n values
 
-    void DoInsertValuesEnd(const T* range, size_t n) noexcept;
+    void
+    DoInsertValuesEnd(const T* range, size_t n) noexcept;
 
-    template<typename... Args> void DoInsertValueEnd(Args&&... args) noexcept;
+    template<typename... Args>
+    void
+    DoInsertValueEnd(Args&&... args) noexcept;
 
-    void DoClearCapacity() noexcept;
+    void
+    DoClearCapacity() noexcept;
 
-    void DoGrow(size_t n) noexcept;
+    void
+    DoGrow(size_t n) noexcept;
 
-    void DoSwap(Vector<T>& x) noexcept;
+    void
+    DoSwap(Vector<T>& x) noexcept;
 };
 
 
@@ -221,7 +270,8 @@ inline Vector<T>::Vector() noexcept
         : mpBegin(nullptr), mpEnd(nullptr), mCapacity(nullptr) {}
 
 
-template<typename T> inline Vector<T>::Vector(size_t n) noexcept {
+template<typename T>
+inline Vector<T>::Vector(size_t n) noexcept {
     mpBegin = DoAllocate(n);
     mpEnd = mpBegin;
     mCapacity = mpBegin + n;
@@ -231,7 +281,8 @@ template<typename T> inline Vector<T>::Vector(size_t n) noexcept {
 }
 
 
-template<typename T> inline Vector<T>::Vector(const Vector<T>& x) noexcept {
+template<typename T>
+inline Vector<T>::Vector(const Vector<T>& x) noexcept {
     mpBegin = DoAllocate(x.size());
     mpEnd = mpBegin;
     mCapacity = mpBegin + x.size();
@@ -247,7 +298,8 @@ inline Vector<T>::Vector(Vector<T>&& x) noexcept
 }
 
 
-template<typename T> inline Vector<T>::~Vector() noexcept {
+template<typename T>
+inline Vector<T>::~Vector() noexcept {
     destruct(mpBegin, mpEnd);
     free(mpBegin);
 }
@@ -364,7 +416,8 @@ Vector<T>::data() const noexcept {
 }
 
 
-template<typename T> inline T& Vector<T>::operator[](size_t n) noexcept {
+template<typename T>
+inline T& Vector<T>::operator[](size_t n) noexcept {
     assert_(n < static_cast<size_t>(mpEnd - mpBegin));
 
     return *(mpBegin + n);
