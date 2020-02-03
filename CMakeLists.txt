@@ -87,7 +87,6 @@ target_include_directories(tsunagari
     PUBLIC deps/rapidjson/include
 )
 
-
 #
 # Sources in src
 #
@@ -206,12 +205,32 @@ target_sources(tsunagari
 )
 
 target_sources(tsunagari
-    PUBLIC  src/os/c.h
-    PUBLIC  src/os/chrono.h
-    PUBLIC  src/os/mapped-file.h
-    PUBLIC  src/os/mutex.h
-    PUBLIC  src/os/thread.h
-    PUBLIC  src/os/os.h
+    PRIVATE deps/rapidjson/include/rapidjson/document.h
+    PRIVATE deps/rapidjson/include/rapidjson/reader.h
+    PRIVATE deps/rapidjson/include/rapidjson/allocators.h
+    PRIVATE deps/rapidjson/include/rapidjson/rapidjson.h
+    PRIVATE deps/rapidjson/include/rapidjson/stream.h
+    PRIVATE deps/rapidjson/include/rapidjson/encodings.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/stack.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/swap.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/strtod.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/ieee754.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/biginteger.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/diyfp.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/pow10.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/meta.h
+    PRIVATE deps/rapidjson/include/rapidjson/internal/strfunc.h
+    PRIVATE deps/rapidjson/include/rapidjson/memorystream.h
+    PRIVATE deps/rapidjson/include/rapidjson/encodedstream.h
+)
+
+target_sources(tsunagari
+    PUBLIC src/os/c.h
+    PUBLIC src/os/chrono.h
+    PUBLIC src/os/mapped-file.h
+    PUBLIC src/os/mutex.h
+    PUBLIC src/os/thread.h
+    PUBLIC src/os/os.h
 )
 target_sources(pack-tool
     PRIVATE src/os/c.h
@@ -391,7 +410,7 @@ target_sources(pack-tool
 get_target_property(TSUNAGARI_SOURCES tsunagari SOURCES)
 get_target_property(NULL_WORLD_SOURCES null-world SOURCES)
 get_target_property(PACK_TOOL_SOURCES pack-tool SOURCES)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
     FILES ${TSUNAGARI_SOURCES}
           ${NULL_WORLD_SOURCES}
           ${PACK_TOOL_SOURCES}
