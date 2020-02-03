@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** pool.h                      **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** pool.h                           **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,12 +40,11 @@ class Pool {
 
  public:
     Pool() = default;
-    ~Pool() {
-        free(reinterpret_cast<char*>(storage));
-    }
+    ~Pool() { free(reinterpret_cast<char*>(storage)); }
 
     // Returns an unconstructed piece of memory.
-    int allocate() noexcept {
+    int
+    allocate() noexcept {
         if (nextFree == END) {
             grow();
         }
@@ -55,7 +54,8 @@ class Pool {
     }
 
     // Releases memory without destructing the object within.
-    void release(int i) noexcept {
+    void
+    release(int i) noexcept {
         asLink(i) = nextFree;
         nextFree = i;
     }
@@ -66,11 +66,13 @@ class Pool {
     }
 
  private:
-    Link& asLink(int i) noexcept {
+    Link&
+    asLink(int i) noexcept {
         return *reinterpret_cast<Link*>(reinterpret_cast<char*>(&storage[i]));
     }
 
-    void grow() {
+    void
+    grow() {
         int newAllocated = allocated == 0 ? 4 : allocated * 2;
 
         T* newStorage = reinterpret_cast<T*>(malloc(sizeof(T) * newAllocated));

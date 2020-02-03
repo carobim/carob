@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** music.h                            **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -37,24 +37,32 @@ namespace Gosu {
     class Song;
 }
 
-Rc<Gosu::Song> genSong(const std::string& name);
+Rc<Gosu::Song>
+genSong(const std::string& name);
 
 class GosuMusic : public MusicWorker {
  public:
     GosuMusic() = default;
     ~GosuMusic();
 
-    void play(std::string filename);
+    void
+    play(std::string filename);
 
-    void stop();
+    void
+    stop();
 
-    bool playing();
-    void pause();
-    void resume();
+    bool
+    playing();
+    void
+    pause();
+    void
+    resume();
 
-    void setVolume(double volume);
+    void
+    setVolume(double volume);
 
-    void garbageCollect();
+    void
+    garbageCollect();
 
  private:
     Rc<Gosu::Song> musicInst;

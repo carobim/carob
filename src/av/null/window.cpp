@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** window.cpp                       **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -65,7 +65,7 @@ GameWindow::mainLoop() noexcept {
 
     TimePoint frameStart = SteadyClock::now();
     TimePoint previousFrameStart =
-        frameStart - idealFrameTime;  // Bogus initial value.
+            frameStart - idealFrameTime;  // Bogus initial value.
 
     // FIXME: Should be set to right after a frame is uploaded and we can begin
     //        drawing the next frame.

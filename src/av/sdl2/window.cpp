@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** window.cpp                       **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -204,8 +204,7 @@ GameWindow::create() noexcept {
 
     Log::info("SDL2GameWindow",
               String("Rendering will be done with ")
-                      << name
-                      << (vsync ? " with vsync" : " without vsync"));
+                      << name << (vsync ? " with vsync" : " without vsync"));
 
     SDL_SetRenderDrawColor(SDL2GameWindow::renderer, 0x00, 0x00, 0x00, 0xFF);
 }
@@ -261,8 +260,9 @@ GameWindow::mainLoop() noexcept {
 
         if (dt > 0) {
             World::tick(dt);
-        } else {
-            //Log::info("SDL2GameWindow", "dt == 0");
+        }
+        else {
+            // Log::info("SDL2GameWindow", "dt == 0");
         }
 
         bool drew = false;
@@ -295,17 +295,10 @@ GameWindow::mainLoop() noexcept {
         }
 
         Log::info("GameWindow",
-                  String() << "dt "
-                           << (frameStart - previousFrameStart)
-                           << " frameStart "
-                           << frameStart
-                           << " drew "
-                           << drew
-                           << " timeTaken "
-                           << timeTaken
-                           << " nextFrameStart "
-                           << nextFrameStart
-                           << " sleepDuration "
+                  String() << "dt " << (frameStart - previousFrameStart)
+                           << " frameStart " << frameStart << " drew " << drew
+                           << " timeTaken " << timeTaken << " nextFrameStart "
+                           << nextFrameStart << " sleepDuration "
                            << sleepDuration);
 
         previousFrameStart = frameStart;

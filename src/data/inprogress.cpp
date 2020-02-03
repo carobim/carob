@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress.cpp                     **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -26,11 +26,11 @@
 // **********
 
 #include "data/inprogress.h"
-#include "data/inprogress-sound.h"
-#include "data/inprogress-timer.h"
 
 #include "core/log.h"
 #include "core/sounds.h"
+#include "data/inprogress-sound.h"
+#include "data/inprogress-timer.h"
 
 bool
 InProgress::isOver() noexcept {

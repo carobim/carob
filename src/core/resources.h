@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** resources.h                        **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -37,7 +37,8 @@
 class Resources {
  public:
     // Load a resource from the file at the given path.
-    static Optional<StringView> load(StringView path) noexcept;
+    static Optional<StringView>
+    load(StringView path) noexcept;
 };
 
 #endif  // SRC_CORE_RESOURCES_H_

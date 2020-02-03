@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** world.h                            **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -48,28 +48,34 @@ class World {
     /**
      * Initialize the world for use.
      */
-    static bool init() noexcept;
+    static bool
+    init() noexcept;
 
     /**
      * Syncronized time value used throughout the engine.
      */
-    static time_t time() noexcept;
+    static time_t
+    time() noexcept;
 
     /**
      * Process key presses.
      */
-    static void buttonDown(KeyboardKey btn) noexcept;
-    static void buttonUp(KeyboardKey btn) noexcept;
+    static void
+    buttonDown(KeyboardKey btn) noexcept;
+    static void
+    buttonUp(KeyboardKey btn) noexcept;
 
     /**
      * Draw game state to the screen.
      */
-    static void draw(DisplayList* display) noexcept;
+    static void
+    draw(DisplayList* display) noexcept;
 
     /**
      * Do we need to redraw the screen?
      */
-    static bool needsRedraw() noexcept;
+    static bool
+    needsRedraw() noexcept;
 
     /**
      * Updates the game state within this World as if dt milliseconds had
@@ -81,7 +87,8 @@ class World {
      * Character       no       yes      yes
      * Overlay         yes      yes      yes
      */
-    static void tick(time_t dt) noexcept;
+    static void
+    tick(time_t dt) noexcept;
 
     /**
      * Update the game world when the turn is over (Player moves).
@@ -92,25 +99,33 @@ class World {
      * Character       yes      no       no
      * Overlay         yes      no       no
      */
-    static void turn() noexcept;
+    static void
+    turn() noexcept;
 
     /**
      * Switch the game to a new Area, moving the player to the specified
      * position in the Area.
      */
-    static bool focusArea(StringView filename, vicoord playerPos) noexcept;
-    static void focusArea(Area* area, vicoord playerPos) noexcept;
+    static bool
+    focusArea(StringView filename, vicoord playerPos) noexcept;
+    static void
+    focusArea(Area* area, vicoord playerPos) noexcept;
 
-    static void setPaused(bool b) noexcept;
+    static void
+    setPaused(bool b) noexcept;
 
-    static void storeKeys() noexcept;
-    static void restoreKeys() noexcept;
+    static void
+    storeKeys() noexcept;
+    static void
+    restoreKeys() noexcept;
 
-    static void runAreaLoadScript(Area* area) noexcept;
+    static void
+    runAreaLoadScript(Area* area) noexcept;
 
     //! Expunge old resources cached in memory. Decisions on which are
     //! removed and which are kept are based on the global Conf struct.
-    static void garbageCollect() noexcept;
+    static void
+    garbageCollect() noexcept;
 };
 
 #endif  // SRC_CORE_WORLD_H_

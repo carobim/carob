@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** sounds.h                           **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -29,7 +29,6 @@
 #define SRC_AV_GOSU_GOSU_SOUNDS_H_
 
 #include "av/gosu/gosu.h"
-
 #include "cache/rc-cache-impl.h"
 #include "cache/rc-reader-cache.h"
 #include "core/sounds.h"
@@ -41,40 +40,53 @@ class GosuPlayingSound : public PlayingSound {
 
     ~GosuPlayingSound() = default;
 
-    bool playing();
-    void stop();
+    bool
+    playing();
+    void
+    stop();
 
-    bool paused();
-    void pause();
-    void resume();
+    bool
+    paused();
+    void
+    pause();
+    void
+    resume();
 
-    void volume(double volume);
-    void pan(double pan);
-    void speed(double speed);
+    void
+    volume(double volume);
+    void
+    pan(double pan);
+    void
+    speed(double speed);
 
  private:
     GosuPlayingSound() = delete;
     GosuPlayingSound(const GosuPlayingSound&) = delete;
-    GosuPlayingSound& operator=(const GosuPlayingSound&) = delete;
+    GosuPlayingSound&
+    operator=(const GosuPlayingSound&) = delete;
 
     Gosu::Channel instance;
 };
 
 
-Rc<Gosu::Sample> genSample(const std::string& name);
+Rc<Gosu::Sample>
+genSample(const std::string& name);
 
 class GosuSounds : public Sounds {
  public:
     GosuSounds() = default;
     ~GosuSounds() = default;
 
-    Rc<SoundInstance> play(const std::string& path);
+    Rc<SoundInstance>
+    play(const std::string& path);
 
-    void garbageCollect();
+    void
+    garbageCollect();
 
  private:
     GosuSounds(const GosuSounds&) = delete;
-    GosuSounds& operator=(const GosuSounds&) = delete;
+    GosuSounds&
+    operator=(const GosuSounds&) = delete;
 
     ReaderCache<Rc<Gosu::Sample>, genSample> samples;
 };

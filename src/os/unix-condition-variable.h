@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** unix-condition-variable.h   **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** unix-condition-variable.h        **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,21 +42,25 @@ class ConditionVariable {
     }
 
     ConditionVariable(const ConditionVariable&) = delete;
-    ConditionVariable& operator=(const ConditionVariable&) = delete;
+    ConditionVariable&
+    operator=(const ConditionVariable&) = delete;
 
-    inline void notifyOne() noexcept {
+    inline void
+    notifyOne() noexcept {
         int err = pthread_cond_signal(&cv);
         (void)err;
         assert_(err == 0);
     }
 
-    inline void notifyAll() noexcept {
+    inline void
+    notifyAll() noexcept {
         int err = pthread_cond_broadcast(&cv);
         (void)err;
         assert_(err == 0);
     }
 
-    inline void wait(LockGuard& lock) noexcept {
+    inline void
+    wait(LockGuard& lock) noexcept {
         int err = pthread_cond_wait(&cv, &lock.m.m);
         (void)err;
         assert_(err == 0);

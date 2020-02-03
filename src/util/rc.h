@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** rc.h                             **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -56,13 +56,15 @@ class Rc {
     Rc(T* x) noexcept : x(x) { count = x ? new size_t(1) : nullptr; }
     ~Rc() noexcept { decref(); }
 
-    Rc& operator=(T* x) noexcept {
+    Rc&
+    operator=(T* x) noexcept {
         decref();
         *this = Rc(x);
         return *this;
     }
 
-    Rc& operator=(Rc&& other) noexcept {
+    Rc&
+    operator=(Rc&& other) noexcept {
         decref();
         x = other.x;
         count = other.count;
@@ -71,7 +73,8 @@ class Rc {
         return *this;
     }
 
-    Rc& operator=(const Rc& other) noexcept {
+    Rc&
+    operator=(const Rc& other) noexcept {
         decref();
         x = other.x;
         count = other.count;
@@ -81,7 +84,10 @@ class Rc {
 
     operator bool() const noexcept { return x != nullptr; }
 
-    T* get() const noexcept { return x; }
+    T*
+    get() const noexcept {
+        return x;
+    }
     T* operator->() const noexcept {
         assert_(x);
         return x;
@@ -91,22 +97,31 @@ class Rc {
         return *x;
     }
 
-    bool operator==(const Rc& other) const noexcept {
+    bool
+    operator==(const Rc& other) const noexcept {
         return x == other.x;
     }
 
-    bool unique() const noexcept { return count && *count == 1; }
+    bool
+    unique() const noexcept {
+        return count && *count == 1;
+    }
 
-    size_t refCount() const noexcept { return count ? *count : 0; }
+    size_t
+    refCount() const noexcept {
+        return count ? *count : 0;
+    }
 
  private:
-    inline void incref() noexcept {
+    inline void
+    incref() noexcept {
         if (count) {
             ++*count;
         }
     }
 
-    inline void decref() noexcept {
+    inline void
+    decref() noexcept {
         if (count && --*count == 0) {
             delete x;
             delete count;
@@ -140,7 +155,7 @@ class CompactRc {
     CompactRc(const CompactRc& other) noexcept : data(other.data) { incref(); }
     ~CompactRc() noexcept { decref(); }
 
-	/*
+    /*
     CompactRc& operator=(T* x) noexcept {
         decref();
         *this = CompactRc(x);
@@ -148,14 +163,16 @@ class CompactRc {
     }
     */
 
-    CompactRc& operator=(CompactRc&& other) noexcept {
+    CompactRc&
+    operator=(CompactRc&& other) noexcept {
         decref();
         data = other.data;
         other.data = nullptr;
         return *this;
     }
 
-    CompactRc& operator=(const CompactRc& other) noexcept {
+    CompactRc&
+    operator=(const CompactRc& other) noexcept {
         decref();
         data = other.data;
         incref();
@@ -164,7 +181,10 @@ class CompactRc {
 
     operator bool() const noexcept { return data != nullptr; }
 
-    T* get() const noexcept { return data->x; }
+    T*
+    get() const noexcept {
+        return data->x;
+    }
     T* operator->() const noexcept {
         assert_(data);
         return data->x;
@@ -174,22 +194,31 @@ class CompactRc {
         return *data->x;
     }
 
-    bool operator==(const CompactRc& other) const noexcept {
+    bool
+    operator==(const CompactRc& other) const noexcept {
         return data == other.data;
     }
 
-    bool unique() const noexcept { return data && data->count == 1; }
+    bool
+    unique() const noexcept {
+        return data && data->count == 1;
+    }
 
-    size_t refCount() const noexcept { return data ? data->count : 0; }
+    size_t
+    refCount() const noexcept {
+        return data ? data->count : 0;
+    }
 
  private:
-    inline void incref() noexcept {
+    inline void
+    incref() noexcept {
         if (data) {
             ++data->count;
         }
     }
 
-    inline void decref() noexcept {
+    inline void
+    decref() noexcept {
         if (data && --data->count == 0) {
             delete data;
         }

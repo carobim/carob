@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** optional.h                       **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -43,16 +43,25 @@ class Optional {
     Align<T> storage;
 
  public:
-    explicit CONSTEXPR11 Optional() noexcept : storage(), exists(false) {}
-    explicit CONSTEXPR14 Optional(T&& x_) noexcept : exists(true) {
+    explicit CONSTEXPR11
+    Optional() noexcept
+            : storage(), exists(false) {}
+    explicit CONSTEXPR14
+    Optional(T&& x_) noexcept
+            : exists(true) {
         new (&storage) T(move_(x_));
     }
-    explicit CONSTEXPR14 Optional(const T& x_) noexcept : exists(true) {
+    explicit CONSTEXPR14
+    Optional(const T& x_) noexcept
+            : exists(true) {
         new (&storage) T(x_);
     }
-    CONSTEXPR11 Optional(None) noexcept : storage(), exists(false) {}
+    CONSTEXPR11
+    Optional(None) noexcept
+            : storage(), exists(false) {}
 
-    CONSTEXPR14 Optional(Optional<T>&& other) noexcept
+    CONSTEXPR14
+    Optional(Optional<T>&& other) noexcept
             : storage(), exists(other.exists) {
         if (other.exists) {
             new (&storage) T(move_(other.x()));
@@ -60,7 +69,8 @@ class Optional {
             other.exists = false;
         }
     }
-    CONSTEXPR14 Optional(const Optional<T>& other) noexcept
+    CONSTEXPR14
+    Optional(const Optional<T>& other) noexcept
             : exists(other.exists) {
         if (other.exists) {
             new (&storage) T(other.x());
@@ -73,7 +83,8 @@ class Optional {
         }
     }
 
-    inline Optional& operator=(T&& x_) noexcept {
+    inline Optional&
+    operator=(T&& x_) noexcept {
         if (exists) {
             x() = move_(x_);
         }
@@ -83,7 +94,8 @@ class Optional {
         }
         return *this;
     }
-    inline Optional& operator=(const T& x_) noexcept {
+    inline Optional&
+    operator=(const T& x_) noexcept {
         if (exists) {
             x() = x_;
         }
@@ -94,7 +106,8 @@ class Optional {
         return *this;
     }
 
-    inline Optional& operator=(Optional<T>&& other) noexcept {
+    inline Optional&
+    operator=(Optional<T>&& other) noexcept {
         if (exists) {
             if (other.exists) {
                 x() = move_(other.x());
@@ -112,7 +125,8 @@ class Optional {
         other.exists = false;
         return *this;
     }
-    inline Optional& operator=(const Optional<T>& other) noexcept {
+    inline Optional&
+    operator=(const Optional<T>& other) noexcept {
         if (exists) {
             if (other.exists) {
                 x() = other.x();
@@ -150,14 +164,18 @@ class Optional {
         return x();
     }
 
-    inline CONSTEXPR11 bool operator==(const Optional<T>& other) const
-			noexcept {
+    inline CONSTEXPR11 bool
+    operator==(const Optional<T>& other) const noexcept {
         return exists == other.exists && (!exists || x() == other.x());
     }
 
  private:
-    T& x() noexcept { return *reinterpret_cast<T*>(&storage); }
-    const T& x() const noexcept {
+    T&
+    x() noexcept {
+        return *reinterpret_cast<T*>(&storage);
+    }
+    const T&
+    x() const noexcept {
         return *reinterpret_cast<const T*>(&storage);
     }
 };

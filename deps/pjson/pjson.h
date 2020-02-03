@@ -27,8 +27,8 @@
 // File: pjson.h - written by Rich Geldreich 2012 - License: Unlicense
 // http://unlicense.org/
 
-#ifndef DEPS_PJSON_PJSON_H
-#define DEPS_PJSON_PJSON_H
+#ifndef DEPS_PJSON_PJSON_H_
+#define DEPS_PJSON_PJSON_H_
 
 #include "util/assert.h"
 #include "util/int.h"
@@ -293,7 +293,7 @@ namespace pjson {
                 return p;
 
             uint8_t* pTop = (uint8_t*)m_pActive_chunks + sizeof(chunk) +
-                          m_pActive_chunks->m_ofs;
+                            m_pActive_chunks->m_ofs;
             if ((static_cast<uint8_t*>(p) + cur_size) == pTop) {
                 if (new_size > cur_size) {
                     size_t bytes_needed = new_size - cur_size;
@@ -1618,8 +1618,10 @@ namespace pjson {
         set_key_name_at_index(uint32_t index,
                               const char* pKey,
                               pool_allocator& alloc) {
-            set_key_name_at_index(
-                    index, pKey, static_cast<uint32_t>(strlen(pKey)) + 1, alloc);
+            set_key_name_at_index(index,
+                                  pKey,
+                                  static_cast<uint32_t>(strlen(pKey)) + 1,
+                                  alloc);
         }
 
         inline value_variant&
@@ -1914,7 +1916,9 @@ namespace pjson {
 
         template<typename serializer>
         void
-        serialize_node(serializer& out, bool formatted, uint32_t cur_indent) const {
+        serialize_node(serializer& out,
+                       bool formatted,
+                       uint32_t cur_indent) const {
             char buf[64];
             const uint32_t size = get_array().size();
 
@@ -2153,9 +2157,10 @@ namespace pjson {
         operator=(const document&);
 
      public:
-        inline document(uint32_t initial_pool_size = 0,
-                        uint32_t min_pool_chunk_size = PJSON_DEFAULT_MIN_CHUNK_SIZE,
-                        uint32_t initial_stack_size = 0)
+        inline document(
+                uint32_t initial_pool_size = 0,
+                uint32_t min_pool_chunk_size = PJSON_DEFAULT_MIN_CHUNK_SIZE,
+                uint32_t initial_stack_size = 0)
                 : m_allocator(initial_pool_size, min_pool_chunk_size),
                   m_initial_stack_size(initial_stack_size),
                   m_stack(initial_stack_size) {
@@ -2360,10 +2365,10 @@ namespace pjson {
 
                     for (;;) {
                         uint32_t n = cur_num_elements,
-                             num_bytes =
-                                     cur_num_elements *
-                                     (cur_is_object ? sizeof(key_value_t)
-                                                    : sizeof(value_variant));
+                                 num_bytes = cur_num_elements *
+                                             (cur_is_object
+                                                      ? sizeof(key_value_t)
+                                                      : sizeof(value_variant));
                         void* pSrc = m_stack.pop<uint8_t>(num_bytes);
                         PJSON_INCREMENT_STAT(m_num_value_pop);
                         PJSON_UPDATE_STAT(m_value_pop_bytes, num_bytes);
@@ -2885,7 +2890,8 @@ namespace pjson {
                     if (!(globals::s_parse_flags[c] & 0x10)) {
                         pChild_variant->m_type = cJSONValueTypeInt;
                         pChild_variant->m_data.m_nVal =
-                                is_neg + (static_cast<int32_t>(n32) ^ (-is_neg));
+                                is_neg +
+                                (static_cast<int32_t>(n32) ^ (-is_neg));
                     }
                     else {
                         uint64_t n64 = n32;

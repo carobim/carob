@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** sounds.h                           **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -32,39 +32,48 @@
 #include "util/markable.h"
 #include "util/string-view.h"
 
-typedef Markable<int,-1> SoundID;
-typedef Markable<int,-1> PlayingSoundID;
+typedef Markable<int, -1> SoundID;
+typedef Markable<int, -1> PlayingSoundID;
 
 class Sounds {
  public:
-    static SoundID load(StringView path) noexcept;
+    static SoundID
+    load(StringView path) noexcept;
 
     // Free destroyed Sounds that were not recently played.
-    static void prune(time_t latestPermissibleUse) noexcept;
+    static void
+    prune(time_t latestPermissibleUse) noexcept;
 };
 
 class Sound {
  public:
-     static PlayingSoundID play(SoundID sid) noexcept;
+    static PlayingSoundID
+    play(SoundID sid) noexcept;
 
-     static void release(SoundID sid) noexcept;
+    static void
+    release(SoundID sid) noexcept;
 };
 
 class PlayingSound {
  public:
     // Whether the sound is currently playing.
-    static bool isPlaying(PlayingSoundID psid) noexcept;
+    static bool
+    isPlaying(PlayingSoundID psid) noexcept;
     // Stop playing the sound. SoundInstances cannot resume from stop().
     // Create a new one to play again. Calls destroy().
-    static void stop(PlayingSoundID psid) noexcept;
+    static void
+    stop(PlayingSoundID psid) noexcept;
 
     // Between 0.0 (silence) and 1.0 (full).
-    static void volume(PlayingSoundID psid, float volume) noexcept;
+    static void
+    volume(PlayingSoundID psid, float volume) noexcept;
     // 1.0 is normal speed.
-    static void speed(PlayingSoundID psid, float speed) noexcept;
+    static void
+    speed(PlayingSoundID psid, float speed) noexcept;
 
     // Release the resources used by this PlayingSound.
-    static void release(PlayingSoundID psid) noexcept;
+    static void
+    release(PlayingSoundID psid) noexcept;
 };
 
 #endif  // SRC_CORE_SOUNDS_H_

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress.h                       **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -54,8 +54,10 @@ class InProgress {
  public:
     virtual ~InProgress() = default;
 
-    virtual void tick(time_t dt) noexcept = 0;
-    bool isOver() noexcept;
+    virtual void
+    tick(time_t dt) noexcept = 0;
+    bool
+    isOver() noexcept;
 
  protected:
     InProgress() noexcept = default;
@@ -64,7 +66,8 @@ class InProgress {
 
  private:
     InProgress(const InProgress&) = delete;
-    InProgress& operator=(const InProgress&) = delete;
+    InProgress&
+    operator=(const InProgress&) = delete;
 };
 
 #endif  // SRC_DATA_INPROGRESS_H_

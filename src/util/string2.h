@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** string2.h                          **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -35,37 +35,51 @@
 #include "util/vector.h"
 
 //! Returns true if the string contains only digits, whitespace, and minus.
-bool isInteger(StringView s) noexcept;
+bool
+isInteger(StringView s) noexcept;
 
 //! Returns true if the string contains only digits, whitespace, minus, and
 //! period.
-bool isDecimal(StringView s) noexcept;
+bool
+isDecimal(StringView s) noexcept;
 
-bool isRanges(StringView s) noexcept;
+bool
+isRanges(StringView s) noexcept;
 
 
 //! Whether two strings are case-insensative equals.
-bool iequals(StringView a, StringView b) noexcept;
+bool
+iequals(StringView a, StringView b) noexcept;
 
 //! Return a bool from a "true"/"false" string.
-Optional<bool> parseBool(StringView s) noexcept;
+Optional<bool>
+parseBool(StringView s) noexcept;
 
-Optional<int> parseInt(String& s) noexcept;
-Optional<int> parseInt(StringView s) noexcept;
-Optional<unsigned> parseUInt(String& s) noexcept;
-Optional<unsigned> parseUInt(StringView s) noexcept;
-Optional<float> parseFloat(String& s) noexcept;
-Optional<float> parseFloat(StringView s) noexcept;
+Optional<int>
+parseInt(String& s) noexcept;
+Optional<int>
+parseInt(StringView s) noexcept;
+Optional<unsigned>
+parseUInt(String& s) noexcept;
+Optional<unsigned>
+parseUInt(StringView s) noexcept;
+Optional<float>
+parseFloat(String& s) noexcept;
+Optional<float>
+parseFloat(StringView s) noexcept;
 
-int parseInt100(const char* s) noexcept;
+int
+parseInt100(const char* s) noexcept;
 
 //! Split a string by a delimiter.
-Vector<StringView> splitStr(StringView str, StringView delimiter) noexcept;
+Vector<StringView>
+splitStr(StringView str, StringView delimiter) noexcept;
 
 /**
  * Parse ranges of integers separated by commas.
  * Can take things such as "5-7,2,12-18".
  */
-Optional<Vector<int>> parseRanges(StringView format) noexcept;
+Optional<Vector<int>>
+parseRanges(StringView format) noexcept;
 
 #endif  // SRC_UTIL_STRING2_H_

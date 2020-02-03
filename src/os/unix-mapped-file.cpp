@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** os/unix-mapped-file.cpp          **
-** Copyright 2016-2019 Paul Merrill **
+** unix-mapped-file.cpp             **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -66,7 +66,8 @@ MappedFile::fromPath(StringView path) noexcept {
     return MappedFile::fromPath(path_);
 }
 
-MappedFile::MappedFile() noexcept : map(reinterpret_cast<char*>(MAP_FAILED)), len(0) {}
+MappedFile::MappedFile() noexcept
+        : map(reinterpret_cast<char*>(MAP_FAILED)), len(0) {}
 
 MappedFile::MappedFile(MappedFile&& other) noexcept {
     *this = move_(other);

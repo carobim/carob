@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** transform.h                      **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -31,9 +31,12 @@
 
 // An affine transformation.
 struct Transform {
-    static Transform identity() noexcept;
-    static Transform scale(float factor) noexcept;
-    static Transform translate(float x, float y) noexcept;
+    static Transform
+    identity() noexcept;
+    static Transform
+    scale(float factor) noexcept;
+    static Transform
+    translate(float x, float y) noexcept;
 
     Transform operator*(const Transform& other) noexcept;
 

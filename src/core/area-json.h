@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** area-json.h                        **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -33,6 +33,7 @@
 class Area;
 class Player;
 
-Area* makeAreaFromJSON(Player* player, StringView filename) noexcept;
+Area*
+makeAreaFromJSON(Player* player, StringView filename) noexcept;
 
 #endif  // SRC_CORE_AREA_JSON_H_

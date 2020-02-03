@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** mac-thread.cpp              **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** mac-thread.cpp                   **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy

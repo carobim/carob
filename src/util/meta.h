@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** meta.h                           **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -56,7 +56,9 @@ struct True {};
 template<bool Cond>
 struct EnableIf_;
 template<>
-struct EnableIf_<true> { typedef True value; };
+struct EnableIf_<true> {
+    typedef True value;
+};
 
 template<bool Cond>
 using EnableIf = typename EnableIf_<Cond>::value;
@@ -67,8 +69,12 @@ using EnableIf = typename EnableIf_<Cond>::value;
 struct Unit {};
 
 template<typename T>
-struct IsUnit { static CONSTEXPR11 bool value = false; };
+struct IsUnit {
+    static CONSTEXPR11 bool value = false;
+};
 template<>
-struct IsUnit<Unit> { static CONSTEXPR11 bool value = true; };
+struct IsUnit<Unit> {
+    static CONSTEXPR11 bool value = true;
+};
 
 #endif  // SRC_UTIL_META_H_

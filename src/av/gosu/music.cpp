@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** music.cpp                          **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -27,22 +27,22 @@
 
 #include "av/gosu/music.h"
 
+#include "av/gosu/cbuffer.h"
 #include "av/gosu/gosu.h"
-
 #include "core/measure.h"
 #include "core/resources.h"
 #include "util/move.h"
 #include "util/unique.h"
 
-#include "av/gosu/cbuffer.h"
-
 static GosuMusic globalMusicWorker;
 
-MusicWorker& MusicWorker::instance() {
+MusicWorker&
+MusicWorker::instance() {
     return globalMusicWorker;
 }
 
-Rc<Gosu::Song> genSong(const std::string& name) {
+Rc<Gosu::Song>
+genSong(const std::string& name) {
     Unique<Resource> r = Resources::instance().load(name);
     if (!r) {
         // Error logged.
@@ -59,7 +59,8 @@ GosuMusic::~GosuMusic() {
     stop();
 }
 
-void GosuMusic::play(std::string filepath) {
+void
+GosuMusic::play(std::string filepath) {
     if (path == filepath) {
         if (musicInst->paused()) {
             paused = 0;
@@ -73,17 +74,18 @@ void GosuMusic::play(std::string filepath) {
     if (musicInst && musicInst->playing()) {
         musicInst->stop();
     }
-    musicInst = path.size() ? songs.lifetimeRequest(path)
-                            : Rc<Gosu::Song>();
+    musicInst = path.size() ? songs.lifetimeRequest(path) : Rc<Gosu::Song>();
     musicInst->play(true);
     musicInst->set_volume(volume);
 }
 
-bool GosuMusic::playing() {
+bool
+GosuMusic::playing() {
     return musicInst && musicInst->playing();
 }
 
-void GosuMusic::stop() {
+void
+GosuMusic::stop() {
     MusicWorker::stop();
     if (musicInst) {
         musicInst->stop();
@@ -91,27 +93,31 @@ void GosuMusic::stop() {
     musicInst = Rc<Gosu::Song>();
 }
 
-void GosuMusic::pause() {
+void
+GosuMusic::pause() {
     if (paused == 0 && musicInst) {
         musicInst->pause();
     }
     MusicWorker::pause();
 }
 
-void GosuMusic::resume() {
+void
+GosuMusic::resume() {
     MusicWorker::resume();
     if (paused == 0 && musicInst) {
         musicInst->play();
     }
 }
 
-void GosuMusic::setVolume(double level) {
+void
+GosuMusic::setVolume(double level) {
     MusicWorker::setVolume(level);
     if (musicInst) {
         musicInst->set_volume(volume);
     }
 }
 
-void GosuMusic::garbageCollect() {
+void
+GosuMusic::garbageCollect() {
     songs.garbageCollect();
 }

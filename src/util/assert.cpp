@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** assert.cpp                       **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,9 +27,9 @@
 #ifndef NDEBUG
 
 #include "util/assert.h"
-#include "util/noexcept.h"
 
 #include "os/c.h"
+#include "util/noexcept.h"
 
 #ifdef _WIN32
 extern "C" {

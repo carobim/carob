@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** sdl2.h                      **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** sdl2.h                           **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,7 +34,8 @@ extern "C" {
 
 // SDL.h
 int SDL_Init(uint32_t) noexcept;
-uint32_t SDL_WasInit(uint32_t flags) noexcept;
+uint32_t
+SDL_WasInit(uint32_t flags) noexcept;
 #define SDL_INIT_AUDIO 0x00000010
 #define SDL_INIT_VIDEO 0x00000020
 
@@ -47,7 +48,8 @@ typedef enum {
 } SDL_BlendMode;
 
 // SDL_error.h
-const char* SDL_GetError() noexcept;
+const char*
+SDL_GetError() noexcept;
 
 // SDL_scancode.h
 typedef enum {} SDL_Scancode;
@@ -91,7 +93,8 @@ typedef union {
     SDL_KeyboardEvent key;
     uint8_t padding[56];
 } SDL_Event;
-int SDL_PollEvent(SDL_Event*) noexcept;
+int
+SDL_PollEvent(SDL_Event*) noexcept;
 
 // SDL_rect.h
 typedef struct {
@@ -100,11 +103,13 @@ typedef struct {
 
 // SDL_rwops.h
 typedef struct SDL_RWops SDL_RWops;
-SDL_RWops* SDL_RWFromMem(void*, int) noexcept;
+SDL_RWops*
+SDL_RWFromMem(void*, int) noexcept;
 
 // SDL_surface.h
 typedef struct SDL_Surface SDL_Surface;
-void SDL_FreeSurface(SDL_Surface*) noexcept;
+void
+SDL_FreeSurface(SDL_Surface*) noexcept;
 
 // SDL_video.h
 typedef struct SDL_Window SDL_Window;
@@ -113,18 +118,20 @@ typedef struct {
     int w, h, refresh_rate;
     void* driverdata;
 } SDL_DisplayMode;
-SDL_Window* SDL_CreateWindow(const char*,
-                             int,
-                             int,
-                             int,
-                             int,
-                             uint32_t) noexcept;
-int SDL_GetCurrentDisplayMode(int, SDL_DisplayMode*) noexcept;
-int SDL_GetWindowDisplayIndex(SDL_Window*) noexcept;
-void SDL_GetWindowSize(SDL_Window*, int*, int*) noexcept;
-void SDL_HideWindow(SDL_Window*) noexcept;
-void SDL_SetWindowTitle(SDL_Window*, const char*) noexcept;
-void SDL_ShowWindow(SDL_Window*) noexcept;
+SDL_Window*
+SDL_CreateWindow(const char*, int, int, int, int, uint32_t) noexcept;
+int
+SDL_GetCurrentDisplayMode(int, SDL_DisplayMode*) noexcept;
+int
+SDL_GetWindowDisplayIndex(SDL_Window*) noexcept;
+void
+SDL_GetWindowSize(SDL_Window*, int*, int*) noexcept;
+void
+SDL_HideWindow(SDL_Window*) noexcept;
+void
+SDL_SetWindowTitle(SDL_Window*, const char*) noexcept;
+void
+SDL_ShowWindow(SDL_Window*) noexcept;
 #define SDL_WINDOW_FULLSCREEN 0x00000001
 #define SDL_WINDOW_HIDDEN 0x00000008
 #define SDL_WINDOWPOS_UNDEFINED_MASK 0x1FFF0000u
@@ -142,55 +149,87 @@ typedef struct SDL_RendererInfo {
     int max_texture_width;
     int max_texture_height;
 } SDL_RendererInfo;
-SDL_Renderer* SDL_CreateRenderer(SDL_Window*, int, uint32_t) noexcept;
-SDL_Texture* SDL_CreateTextureFromSurface(SDL_Renderer*, SDL_Surface*) noexcept;
-void SDL_DestroyTexture(SDL_Texture*) noexcept;
-int SDL_GetRendererInfo(SDL_Renderer*, SDL_RendererInfo*) noexcept;
-int SDL_QueryTexture(SDL_Texture*, uint32_t*, int*, int*, int*) noexcept;
-int SDL_RenderClear(SDL_Renderer*) noexcept;
-int SDL_RenderCopy(SDL_Renderer*,
-                   SDL_Texture*,
-                   const SDL_Rect*,
-                   const SDL_Rect*) noexcept;
-int SDL_RenderFillRect(SDL_Renderer*, const SDL_Rect*) noexcept;
-void SDL_RenderPresent(SDL_Renderer*) noexcept;
-int SDL_SetRenderDrawBlendMode(SDL_Renderer*, SDL_BlendMode) noexcept;
-int SDL_SetRenderDrawColor(SDL_Renderer*,
-                           uint8_t,
-                           uint8_t,
-                           uint8_t,
-                           uint8_t) noexcept;
+SDL_Renderer*
+SDL_CreateRenderer(SDL_Window*, int, uint32_t) noexcept;
+SDL_Texture*
+SDL_CreateTextureFromSurface(SDL_Renderer*, SDL_Surface*) noexcept;
+void
+SDL_DestroyTexture(SDL_Texture*) noexcept;
+int
+SDL_GetRendererInfo(SDL_Renderer*, SDL_RendererInfo*) noexcept;
+int
+SDL_QueryTexture(SDL_Texture*, uint32_t*, int*, int*, int*) noexcept;
+int
+SDL_RenderClear(SDL_Renderer*) noexcept;
+int
+SDL_RenderCopy(SDL_Renderer*,
+               SDL_Texture*,
+               const SDL_Rect*,
+               const SDL_Rect*) noexcept;
+int
+SDL_RenderFillRect(SDL_Renderer*, const SDL_Rect*) noexcept;
+void
+SDL_RenderPresent(SDL_Renderer*) noexcept;
+int
+SDL_SetRenderDrawBlendMode(SDL_Renderer*, SDL_BlendMode) noexcept;
+int
+SDL_SetRenderDrawColor(SDL_Renderer*,
+                       uint8_t,
+                       uint8_t,
+                       uint8_t,
+                       uint8_t) noexcept;
 #define SDL_RENDERER_ACCELERATED 0x00000002
 #define SDL_RENDERER_PRESENTVSYNC 0x00000004
 
 // SDL_image library
 // SDL_image.h
-SDL_Surface* IMG_Load_RW(SDL_RWops*, int) noexcept;
+SDL_Surface*
+IMG_Load_RW(SDL_RWops*, int) noexcept;
 
 // SDL_mixer library
 // SDL_mixer.h
 typedef struct Mix_Chunk Mix_Chunk;
 typedef struct Mix_Music Mix_Music;
-int Mix_AllocateChannels(int) noexcept;
-void Mix_ChannelFinished(void (*)(int));
-void Mix_FreeChunk(Mix_Chunk*) noexcept;
-void Mix_FreeMusic(Mix_Music*) noexcept;
-int Mix_HaltChannel(int) noexcept;
-int Mix_HaltMusic() noexcept;
-Mix_Music* Mix_LoadMUS_RW(SDL_RWops*, int) noexcept;
-Mix_Chunk* Mix_LoadWAV_RW(SDL_RWops*, int) noexcept;
-int Mix_OpenAudio(int, uint16_t, int, int) noexcept;
-int Mix_PausedMusic() noexcept;
-void Mix_Pause(int) noexcept;
-void Mix_PauseMusic() noexcept;
-int Mix_PlayingMusic() noexcept;
-int Mix_PlayChannelTimed(int, Mix_Chunk*, int, int) noexcept;
-int Mix_PlayMusic(Mix_Music*, int) noexcept;
-void Mix_Resume(int) noexcept;
-void Mix_ResumeMusic() noexcept;
-int Mix_SetPosition(int, int16_t, uint8_t) noexcept;
-int Mix_Volume(int, int) noexcept;
-int Mix_VolumeMusic(int) noexcept;
+int
+Mix_AllocateChannels(int) noexcept;
+void
+Mix_ChannelFinished(void (*)(int));
+void
+Mix_FreeChunk(Mix_Chunk*) noexcept;
+void
+Mix_FreeMusic(Mix_Music*) noexcept;
+int
+Mix_HaltChannel(int) noexcept;
+int
+Mix_HaltMusic() noexcept;
+Mix_Music*
+Mix_LoadMUS_RW(SDL_RWops*, int) noexcept;
+Mix_Chunk*
+Mix_LoadWAV_RW(SDL_RWops*, int) noexcept;
+int
+Mix_OpenAudio(int, uint16_t, int, int) noexcept;
+int
+Mix_PausedMusic() noexcept;
+void
+Mix_Pause(int) noexcept;
+void
+Mix_PauseMusic() noexcept;
+int
+Mix_PlayingMusic() noexcept;
+int
+Mix_PlayChannelTimed(int, Mix_Chunk*, int, int) noexcept;
+int
+Mix_PlayMusic(Mix_Music*, int) noexcept;
+void
+Mix_Resume(int) noexcept;
+void
+Mix_ResumeMusic() noexcept;
+int
+Mix_SetPosition(int, int16_t, uint8_t) noexcept;
+int
+Mix_Volume(int, int) noexcept;
+int
+Mix_VolumeMusic(int) noexcept;
 #define MIX_DEFAULT_FORMAT AUDIO_S16LSB
 #define Mix_PlayChannel(channel, chunk, loops) \
     Mix_PlayChannelTimed(channel, chunk, loops, -1)

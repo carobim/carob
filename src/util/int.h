@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** int.h                       **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** int.h                            **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,6 +58,8 @@ typedef int64_t time_t;
 #endif
 
 static const CONSTEXPR11 int32_t INT32_MAX = 0x7fffffff;
+static const CONSTEXPR11 int64_t INT64_MAX = 0x7fffffffffffffff;
+static const CONSTEXPR11 int64_t INT64_MIN = 0x8000000000000000;
 static const CONSTEXPR11 uint32_t UINT32_MAX = 0xffffffff;
 static const CONSTEXPR11 uint64_t UINT64_MAX = 0xffffffffffffffff;
 

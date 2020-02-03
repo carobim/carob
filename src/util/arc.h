@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** arc.h                            **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -48,22 +48,31 @@
 struct Atomic {
     std::atomic<size_t> x;
     Atomic(size_t x) noexcept : x(x) {}
-    Atomic& operator++() noexcept {
+    Atomic&
+    operator++() noexcept {
         ++x;
         return *this;
     }
-    Atomic& operator--() noexcept {
+    Atomic&
+    operator--() noexcept {
         --x;
         return *this;
     }
-    bool operator==(size_t x) noexcept { return this->x == x; }
-    size_t get() noexcept { return x; }
+    bool
+    operator==(size_t x) noexcept {
+        return this->x == x;
+    }
+    size_t
+    get() noexcept {
+        return x;
+    }
 };
 
 // FIXME: The symbol Arc already exists in Windows. Rename?
 // template<typename T>
 // using Arc = SharedPtr<T, Atomic>;
 
-template<typename T> using CompactArc = CompactSharedPtr<T, Atomic>;
+template<typename T>
+using CompactArc = CompactSharedPtr<T, Atomic>;
 
 #endif  // SRC_UTIL_ARC_H_

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** animation.h                        **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -74,26 +74,30 @@ class Animation {
      *
      * @now current time in milliseconds
      */
-    void startOver(time_t now) noexcept;
+    void
+    startOver(time_t now) noexcept;
 
     /**
      * Has this Animation switched frames since frame() was last called?
      *
      * @now current time in milliseconds
      */
-    bool needsRedraw(time_t now) const noexcept;
+    bool
+    needsRedraw(time_t now) const noexcept;
 
     /**
      * Returns the image that should be displayed at this time.
      *
      * @now current time in milliseconds
      */
-    ImageID frame(time_t now) noexcept;
+    ImageID
+    frame(time_t now) noexcept;
 
     /**
      * Returns the last image that should have been displayed.
      */
-    ImageID frame() const noexcept;
+    ImageID
+    frame() const noexcept;
 
  private:
     /** List of images in animation. */

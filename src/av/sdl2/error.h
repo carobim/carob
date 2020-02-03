@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** error.h                          **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -30,7 +30,9 @@
 #include "util/noexcept.h"
 #include "util/string-view.h"
 
-void sdlError(StringView system, StringView function) noexcept;
-void sdlDie(StringView system, StringView function) noexcept;
+void
+sdlError(StringView system, StringView function) noexcept;
+void
+sdlDie(StringView system, StringView function) noexcept;
 
 #endif  // SRC_AV_SDL2_ERROR_H_

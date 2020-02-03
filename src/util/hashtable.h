@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** hashtable.h                 **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** hashtable.h                      **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -94,24 +94,32 @@ namespace hopscotch {
          * Return the bucket [0, bucketCount()) to which the hash belongs.
          * If bucketCount() is 0, it must always return 0.
          */
-        size_t bucketForHash(size_t hash) const noexcept {
+        size_t
+        bucketForHash(size_t hash) const noexcept {
             return hash & mMask;
         }
 
         /**
          * Return the bucket count to use when the bucket array grows on rehash.
          */
-        size_t nextBucketCount() const noexcept { return (mMask + 1) * 2; }
+        size_t
+        nextBucketCount() const noexcept {
+            return (mMask + 1) * 2;
+        }
 
         /**
          * Reset the growth policy as if it was created with a bucket count of
          * 0. After a clear, the policy must always return 0 when bucketForHash
          * is called.
          */
-        void clear() noexcept { mMask = 0; }
+        void
+        clear() noexcept {
+            mMask = 0;
+        }
 
      private:
-        static size_t roundUpToPowerOfTwo(size_t value) noexcept {
+        static size_t
+        roundUpToPowerOfTwo(size_t value) noexcept {
             if (isPowerOfTwo(value)) {
                 return value;
             }
@@ -128,7 +136,8 @@ namespace hopscotch {
             return value + 1;
         }
 
-        static CONSTEXPR11 bool isPowerOfTwo(size_t value) noexcept {
+        static CONSTEXPR11 bool
+        isPowerOfTwo(size_t value) noexcept {
             return value != 0 && (value & (value - 1)) == 0;
         }
 
@@ -197,7 +206,8 @@ namespace hopscotch {
             mNeighborhoodInfos = b.mNeighborhoodInfos;
         }
 
-        Bucket& operator=(const Bucket& b) noexcept {
+        Bucket&
+        operator=(const Bucket& b) noexcept {
             if (this != &b) {
                 removeValue();
 
@@ -211,7 +221,8 @@ namespace hopscotch {
             return *this;
         }
 
-        Bucket& operator=(Bucket&&) = delete;
+        Bucket&
+        operator=(Bucket&&) = delete;
 
         ~Bucket() noexcept {
             if (!empty()) {
@@ -219,12 +230,14 @@ namespace hopscotch {
             }
         }
 
-        NeighborhoodBitmap neighborhoodInfos() const noexcept {
+        NeighborhoodBitmap
+        neighborhoodInfos() const noexcept {
             return NeighborhoodBitmap(mNeighborhoodInfos >>
                                       NB_RESERVED_BITS_IN_NEIGHBORHOOD);
         }
 
-        void setOverflow(bool hasOverflow) noexcept {
+        void
+        setOverflow(bool hasOverflow) noexcept {
             if (hasOverflow) {
                 mNeighborhoodInfos = NeighborhoodBitmap(mNeighborhoodInfos | 2);
             }
@@ -234,20 +247,26 @@ namespace hopscotch {
             }
         }
 
-        bool hasOverflow() const noexcept {
+        bool
+        hasOverflow() const noexcept {
             return (mNeighborhoodInfos & 2) != 0;
         }
 
-        bool empty() const noexcept { return (mNeighborhoodInfos & 1) == 0; }
+        bool
+        empty() const noexcept {
+            return (mNeighborhoodInfos & 1) == 0;
+        }
 
-        void toggleNeighborPresence(size_t ineighbor) noexcept {
+        void
+        toggleNeighborPresence(size_t ineighbor) noexcept {
             assert_(ineighbor <= NeighborhoodSize);
             mNeighborhoodInfos = NeighborhoodBitmap(
                     mNeighborhoodInfos ^
                     (1ull << (ineighbor + NB_RESERVED_BITS_IN_NEIGHBORHOOD)));
         }
 
-        bool checkNeighborPresence(size_t ineighbor) const noexcept {
+        bool
+        checkNeighborPresence(size_t ineighbor) const noexcept {
             assert_(ineighbor <= NeighborhoodSize);
             if (((mNeighborhoodInfos >>
                   (ineighbor + NB_RESERVED_BITS_IN_NEIGHBORHOOD)) &
@@ -258,18 +277,21 @@ namespace hopscotch {
             return false;
         }
 
-        V& value() noexcept {
+        V&
+        value() noexcept {
             assert_(!empty());
             return *reinterpret_cast<V*>(mValue);
         }
 
-        const V& value() const noexcept {
+        const V&
+        value() const noexcept {
             assert_(!empty());
             return *reinterpret_cast<const V*>(mValue);
         }
 
         template<typename... Args>
-        void setValueOfEmptyBucket(Args&&... valueArgs) noexcept {
+        void
+        setValueOfEmptyBucket(Args&&... valueArgs) noexcept {
             assert_(empty());
 
 #ifdef _MSC_VER
@@ -284,7 +306,8 @@ namespace hopscotch {
             setEmpty(false);
         }
 
-        void swapValueIntoEmptyBucket(Bucket& emptyBucket) noexcept {
+        void
+        swapValueIntoEmptyBucket(Bucket& emptyBucket) noexcept {
             assert_(emptyBucket.empty());
             if (!empty()) {
                 ::new (static_cast<void*>(&emptyBucket.mValue))
@@ -295,14 +318,16 @@ namespace hopscotch {
             }
         }
 
-        void removeValue() noexcept {
+        void
+        removeValue() noexcept {
             if (!empty()) {
                 destroyValue();
                 setEmpty(true);
             }
         }
 
-        void clear() noexcept {
+        void
+        clear() noexcept {
             if (!empty()) {
                 destroyValue();
             }
@@ -312,7 +337,8 @@ namespace hopscotch {
         }
 
      private:
-        void setEmpty(bool isEmpty) noexcept {
+        void
+        setEmpty(bool isEmpty) noexcept {
             if (isEmpty) {
                 mNeighborhoodInfos =
                         NeighborhoodBitmap(mNeighborhoodInfos & ~1);
@@ -322,7 +348,8 @@ namespace hopscotch {
             }
         }
 
-        void destroyValue() noexcept {
+        void
+        destroyValue() noexcept {
             assert_(!empty());
             value().~V();
         }
@@ -404,10 +431,13 @@ class Hashmap : private hopscotch::GrowthPolicy {
         HashmapIterator() noexcept = default;
         HashmapIterator(const HashmapIterator& other) = default;
         HashmapIterator(HashmapIterator&& other) = default;
-        HashmapIterator& operator=(const HashmapIterator& other) = default;
-        HashmapIterator& operator=(HashmapIterator&& other) = default;
+        HashmapIterator&
+        operator=(const HashmapIterator& other) = default;
+        HashmapIterator&
+        operator=(HashmapIterator&& other) = default;
 
-        const K& key() const noexcept {
+        const K&
+        key() const noexcept {
             if (mBucketsIterator != mBucketsEndIterator) {
                 return mBucketsIterator->value().k;
             }
@@ -415,7 +445,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
             return mOverflowIterator->k;
         }
 
-        If<IsConst, const V&, V&> value() const noexcept {
+        If<IsConst, const V&, V&>
+        value() const noexcept {
             static_assert(HasValue, "");
 
             if (mBucketsIterator != mBucketsEndIterator) {
@@ -425,7 +456,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
             return mOverflowIterator->v;
         }
 
-        HashmapIterator& operator++() noexcept {
+        HashmapIterator&
+        operator++() noexcept {
             if (mBucketsIterator == mBucketsEndIterator) {
                 ++mOverflowIterator;
                 return *this;
@@ -439,21 +471,24 @@ class Hashmap : private hopscotch::GrowthPolicy {
             return *this;
         }
 
-        HashmapIterator operator++(int) noexcept {
+        HashmapIterator
+        operator++(int) noexcept {
             HashmapIterator tmp(*this);
             ++*this;
 
             return tmp;
         }
 
-        friend bool operator==(const HashmapIterator& lhs,
-                               const HashmapIterator& rhs) noexcept {
+        friend bool
+        operator==(const HashmapIterator& lhs,
+                   const HashmapIterator& rhs) noexcept {
             return lhs.mBucketsIterator == rhs.mBucketsIterator &&
                    lhs.mOverflowIterator == rhs.mOverflowIterator;
         }
 
-        friend bool operator!=(const HashmapIterator& lhs,
-                               const HashmapIterator& rhs) noexcept {
+        friend bool
+        operator!=(const HashmapIterator& lhs,
+                   const HashmapIterator& rhs) noexcept {
             return !(lhs == rhs);
         }
 
@@ -512,7 +547,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         other.mMinLoadThresholdRehash = 0;
     }
 
-    Hashmap& operator=(const Hashmap& other) noexcept {
+    Hashmap&
+    operator=(const Hashmap& other) noexcept {
         if (&other != this) {
             GrowthPolicy::operator=(other);
             mBucketsData = other.mBucketsData;
@@ -526,7 +562,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         return *this;
     }
 
-    Hashmap& operator=(Hashmap&& other) noexcept {
+    Hashmap&
+    operator=(Hashmap&& other) noexcept {
         other.swap(*this);
         other.clear();
 
@@ -537,7 +574,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
     /*
      * Iterators
      */
-    Iterator begin() noexcept {
+    Iterator
+    begin() noexcept {
         auto begin = mBucketsData.begin();
         while (begin != mBucketsData.end() && begin->empty()) {
             ++begin;
@@ -546,7 +584,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         return Iterator(begin, mBucketsData.end(), mOverflowElements.begin());
     }
 
-    ConstIterator begin() const noexcept {
+    ConstIterator
+    begin() const noexcept {
         auto begin = mBucketsData.begin();
         while (begin != mBucketsData.end() && begin->empty()) {
             ++begin;
@@ -556,13 +595,15 @@ class Hashmap : private hopscotch::GrowthPolicy {
                 begin, mBucketsData.end(), mOverflowElements.begin());
     }
 
-    Iterator end() noexcept {
+    Iterator
+    end() noexcept {
         return Iterator(mBucketsData.end(),
                         mBucketsData.end(),
                         mOverflowElements.end());
     }
 
-    ConstIterator end() const noexcept {
+    ConstIterator
+    end() const noexcept {
         return ConstIterator(mBucketsData.end(),
                              mBucketsData.end(),
                              mOverflowElements.end());
@@ -572,14 +613,21 @@ class Hashmap : private hopscotch::GrowthPolicy {
     /*
      * Capacity
      */
-    bool empty() const noexcept { return mNumElements == 0; }
+    bool
+    empty() const noexcept {
+        return mNumElements == 0;
+    }
 
-    size_t size() const noexcept { return mNumElements; }
+    size_t
+    size() const noexcept {
+        return mNumElements;
+    }
 
     /*
      * Modifiers
      */
-    void clear() noexcept {
+    void
+    clear() noexcept {
         for (auto& b : mBucketsData) {
             b.clear();
         }
@@ -600,7 +648,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
      * Here to avoid `template<class K> size_t erase(const K& key)` being used
      * when we use an Iterator instead of a ConstIterator.
      */
-    Iterator erase(Iterator pos) noexcept {
+    Iterator
+    erase(Iterator pos) noexcept {
         size_t ibucketForHash = bucketForHash(hash_(pos.key()));
 
         if (pos.mBucketsIterator != pos.mBucketsEndIterator) {
@@ -619,9 +668,13 @@ class Hashmap : private hopscotch::GrowthPolicy {
         }
     }
 
-    bool erase(const K& key) noexcept { return erase(key, hash_(key)); }
+    bool
+    erase(const K& key) noexcept {
+        return erase(key, hash_(key));
+    }
 
-    bool erase(const K& key, size_t hash) noexcept {
+    bool
+    erase(const K& key, size_t hash) noexcept {
         size_t ibucketForHash = bucketForHash(hash);
 
         Bucket* bucketFound = findInBuckets(key, mBuckets + ibucketForHash);
@@ -643,7 +696,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         return false;
     }
 
-    void swap(Hashmap& other) noexcept {
+    void
+    swap(Hashmap& other) noexcept {
         swap_(static_cast<GrowthPolicy&>(*this),
               static_cast<GrowthPolicy&>(other));
         swap_(mBucketsData, other.mBucketsData);
@@ -657,13 +711,15 @@ class Hashmap : private hopscotch::GrowthPolicy {
     /*
      * Lookup
      */
-    V& at(const K& key) noexcept {
+    V&
+    at(const K& key) noexcept {
         static_assert(HasValue, "");
 
         return at(key, hash_(key));
     }
 
-    V& at(const K& key, size_t hash) noexcept {
+    V&
+    at(const K& key, size_t hash) noexcept {
         static_assert(HasValue, "");
 
         size_t ibucketForHash = bucketForHash(hash);
@@ -673,19 +729,20 @@ class Hashmap : private hopscotch::GrowthPolicy {
             return *value;
         }
         else {
-            return insertValue(ibucketForHash, hash, key, V())
-                    .value();
+            return insertValue(ibucketForHash, hash, key, V()).value();
         }
     }
 
 
-    Optional<V*> tryAt(const K& key) noexcept {
+    Optional<V*>
+    tryAt(const K& key) noexcept {
         static_assert(HasValue, "");
 
         return tryAt(key, hash_(key));
     }
 
-    Optional<V*> tryAt(const K& key, size_t hash) noexcept {
+    Optional<V*>
+    tryAt(const K& key, size_t hash) noexcept {
         static_assert(HasValue, "");
 
         V* value = findValueImpl(key, mBuckets + bucketForHash(hash));
@@ -716,27 +773,35 @@ class Hashmap : private hopscotch::GrowthPolicy {
     }
 
 
-    size_t contains(const K& key) const noexcept {
+    size_t
+    contains(const K& key) const noexcept {
         return contains(key, hash_(key));
     }
 
-    size_t contains(const K& key, size_t hash) const noexcept {
+    size_t
+    contains(const K& key, size_t hash) const noexcept {
         return containsImpl(key, mBuckets + bucketForHash(hash));
     }
 
 
-    Iterator find(const K& key) noexcept { return find(key, hash_(key)); }
+    Iterator
+    find(const K& key) noexcept {
+        return find(key, hash_(key));
+    }
 
-    Iterator find(const K& key, size_t hash) {
+    Iterator
+    find(const K& key, size_t hash) {
         return findImpl(key, mBuckets + bucketForHash(hash));
     }
 
 
-    ConstIterator find(const K& key) const noexcept {
+    ConstIterator
+    find(const K& key) const noexcept {
         return find(key, hash_(key));
     }
 
-    ConstIterator find(const K& key, size_t hash) const noexcept {
+    ConstIterator
+    find(const K& key, size_t hash) const noexcept {
         return findImpl(key, mBuckets + bucketForHash(hash));
     }
 
@@ -744,17 +809,20 @@ class Hashmap : private hopscotch::GrowthPolicy {
     /*
      *  Hash policy
      */
-    void rehash(size_t count_) noexcept {
+    void
+    rehash(size_t count_) noexcept {
         count_ = max_(count_, size_t(ceilf(float(size()) / MAX_LOAD_FACTOR)));
         rehashImpl(count_);
     }
 
-    void reserve(size_t count_) noexcept {
+    void
+    reserve(size_t count_) noexcept {
         rehash(size_t(ceilf(float(count_) / MAX_LOAD_FACTOR)));
     }
 
 
-    friend bool operator==(const Hashmap& lhs, const Hashmap& rhs) noexcept {
+    friend bool
+    operator==(const Hashmap& lhs, const Hashmap& rhs) noexcept {
         if (lhs.size() != rhs.size()) {
             return false;
         }
@@ -769,20 +837,23 @@ class Hashmap : private hopscotch::GrowthPolicy {
         return true;
     }
 
-    friend bool operator!=(const Hashmap& lhs, const Hashmap& rhs) noexcept {
+    friend bool
+    operator!=(const Hashmap& lhs, const Hashmap& rhs) noexcept {
         return !operator==(lhs, rhs);
     }
 
 
  private:
-    size_t bucketForHash(size_t hash) const noexcept {
+    size_t
+    bucketForHash(size_t hash) const noexcept {
         size_t b = GrowthPolicy::bucketForHash(hash);
         assert_(b < mBucketsData.size() || (b == 0 && mBucketsData.empty()));
 
         return b;
     }
 
-    void rehashImpl(size_t count_) noexcept {
+    void
+    rehashImpl(size_t count_) noexcept {
         Hashmap newMap(count_);
 
         if (!mOverflowElements.empty()) {
@@ -813,8 +884,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         newMap.swap(*this);
     }
 
-    OverflowIterator eraseFromOverflow(OverflowIterator pos,
-                                       size_t ibucketForHash) noexcept {
+    OverflowIterator
+    eraseFromOverflow(OverflowIterator pos, size_t ibucketForHash) noexcept {
         auto itNext = mOverflowElements.erase(pos);
         mNumElements--;
 
@@ -835,8 +906,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
      * bucketForValue is the bucket in which the value is.
      * ibucketForHash is the bucket where the value belongs.
      */
-    void eraseFromBucket(Bucket& bucketForValue,
-                         size_t ibucketForHash) noexcept {
+    void
+    eraseFromBucket(Bucket& bucketForValue, size_t ibucketForHash) noexcept {
         size_t ibucketForValue = &bucketForValue - mBucketsData.data();
         assert_(ibucketForValue >= ibucketForHash);
 
@@ -848,7 +919,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
 
 
     template<typename P>
-    bool insertImpl(P&& value) noexcept {
+    bool
+    insertImpl(P&& value) noexcept {
         size_t hash = hash_(value.k);
         size_t ibucketForHash = bucketForHash(hash);
 
@@ -863,9 +935,10 @@ class Hashmap : private hopscotch::GrowthPolicy {
     }
 
     template<typename... Args>
-    Iterator insertValue(size_t ibucketForHash,
-                         size_t hash,
-                         Args&&... valueArgs) noexcept {
+    Iterator
+    insertValue(size_t ibucketForHash,
+                size_t hash,
+                Args&&... valueArgs) noexcept {
         if ((mNumElements - mOverflowElements.size()) >=
             mMaxLoadThresholdRehash) {
             rehash(GrowthPolicy::nextBucketCount());
@@ -911,7 +984,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
      * neighborhood of ibucketNeighborhoodCheck. In this case a rehash is
      * needed instead of puting the value in overflow list.
      */
-    bool willNeighborhoodChangeOnRehash(size_t ibucketNeighborhoodCheck) const
+    bool
+    willNeighborhoodChangeOnRehash(size_t ibucketNeighborhoodCheck) const
             noexcept {
         size_t expandBucketCount = GrowthPolicy::nextBucketCount();
         GrowthPolicy expandGrowthPolicy(expandBucketCount);
@@ -935,7 +1009,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
      * Return the index of an empty bucket in mBucketsData.
      * If none, the returned index equals mBucketsData.size().
      */
-    size_t findEmptyBucket(size_t ibucketStart) const noexcept {
+    size_t
+    findEmptyBucket(size_t ibucketStart) const noexcept {
         size_t limit = min_(ibucketStart + MAX_PROBES_FOR_EMPTY_BUCKET,
                             mBucketsData.size());
         for (; ibucketStart < limit; ibucketStart++) {
@@ -954,10 +1029,11 @@ class Hashmap : private hopscotch::GrowthPolicy {
      * Return bucket iterator to ibucketEmpty.
      */
     template<typename... Args>
-    BucketsIterator insertInBucket(size_t ibucketEmpty,
-                                   size_t ibucketForHash,
-                                   size_t hash,
-                                   Args&&... valueArgs) noexcept {
+    BucketsIterator
+    insertInBucket(size_t ibucketEmpty,
+                   size_t ibucketForHash,
+                   size_t hash,
+                   Args&&... valueArgs) noexcept {
         assert_(ibucketEmpty >= ibucketForHash);
         assert_(mBuckets[ibucketEmpty].empty());
 
@@ -974,8 +1050,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
     }
 
     template<class... Args>
-    OverflowIterator insertInOverflow(size_t ibucketForHash,
-                                      Args&&... valueArgs) noexcept {
+    OverflowIterator
+    insertInOverflow(size_t ibucketForHash, Args&&... valueArgs) noexcept {
         auto it = mOverflowElements.emplace_back(forward_<Args>(valueArgs)...);
 
         mBuckets[ibucketForHash].setOverflow(true);
@@ -991,7 +1067,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
      * If a swap was possible, the position of ibucketEmptyInOut will be
      * closer to 0 and true will re returned.
      */
-    bool swapEmptyBucketCloser(size_t& ibucketEmptyInOut) noexcept {
+    bool
+    swapEmptyBucketCloser(size_t& ibucketEmptyInOut) noexcept {
         assert_(ibucketEmptyInOut >= NeighborhoodSize);
         size_t neighborhoodStart = ibucketEmptyInOut - NeighborhoodSize + 1;
 
@@ -1032,7 +1109,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
     }
 
 
-    V* findValueImpl(const K& key, Bucket* bucketForHash) noexcept {
+    V*
+    findValueImpl(const K& key, Bucket* bucketForHash) noexcept {
         static_assert(HasValue, "");
 
         return const_cast<V*>(static_cast<const Hashmap*>(this)->findValueImpl(
@@ -1045,8 +1123,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
      *
      * Return null if no value for the key (TODO use Optional when available).
      */
-    const V* findValueImpl(const K& key, const Bucket* bucketForHash) const
-            noexcept {
+    const V*
+    findValueImpl(const K& key, const Bucket* bucketForHash) const noexcept {
         static_assert(HasValue, "");
 
         const Bucket* bucketFound = findInBuckets(key, bucketForHash);
@@ -1064,8 +1142,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         return nullptr;
     }
 
-    size_t containsImpl(const K& key, const Bucket* bucketForHash) const
-            noexcept {
+    size_t
+    containsImpl(const K& key, const Bucket* bucketForHash) const noexcept {
         if (findInBuckets(key, bucketForHash) != nullptr) {
             return true;
         }
@@ -1073,7 +1151,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
                findInOverflow(key) != mOverflowElements.end();
     }
 
-    Iterator findImpl(const K& key, Bucket* bucketForHash) noexcept {
+    Iterator
+    findImpl(const K& key, Bucket* bucketForHash) noexcept {
         Bucket* bucketFound = findInBuckets(key, bucketForHash);
         if (bucketFound != nullptr) {
             return Iterator(
@@ -1090,8 +1169,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
                 mBucketsData.end(), mBucketsData.end(), findInOverflow(key));
     }
 
-    ConstIterator findImpl(const K& key, const Bucket* bucketForHash) const
-            noexcept {
+    ConstIterator
+    findImpl(const K& key, const Bucket* bucketForHash) const noexcept {
         const Bucket* bucketFound = findInBuckets(key, bucketForHash);
         if (bucketFound != nullptr) {
             return ConstIterator(
@@ -1108,7 +1187,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
                 mBucketsData.end(), mBucketsData.end(), findInOverflow(key));
     }
 
-    Bucket* findInBuckets(const K& key, Bucket* bucketForHash) noexcept {
+    Bucket*
+    findInBuckets(const K& key, Bucket* bucketForHash) noexcept {
         const Bucket* bucketFound =
                 static_cast<const Hashmap*>(this)->findInBuckets(key,
                                                                  bucketForHash);
@@ -1118,8 +1198,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
     /**
      * Return a pointer to the bucket which has the value, nullptr otherwise.
      */
-    const Bucket* findInBuckets(const K& key, const Bucket* bucketForHash) const
-            noexcept {
+    const Bucket*
+    findInBuckets(const K& key, const Bucket* bucketForHash) const noexcept {
         NeighborhoodBitmap neighborhoodInfos =
                 bucketForHash->neighborhoodInfos();
         while (neighborhoodInfos != 0) {
@@ -1136,7 +1216,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         return nullptr;
     }
 
-    OverflowIterator findInOverflow(const K& key) noexcept {
+    OverflowIterator
+    findInOverflow(const K& key) noexcept {
         for (auto it = mOverflowElements.begin(); it != mOverflowElements.end();
              ++it) {
             if (key == it->k) {
@@ -1146,7 +1227,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
         return mOverflowElements.end();
     }
 
-    ConstOverflowIterator findInOverflow(const K& key) const noexcept {
+    ConstOverflowIterator
+    findInOverflow(const K& key) const noexcept {
         for (auto it = mOverflowElements.begin(); it != mOverflowElements.end();
              ++it) {
             if (key == it->k) {
@@ -1166,7 +1248,8 @@ class Hashmap : private hopscotch::GrowthPolicy {
     /**
      * Return an always valid pointer to an static empty bucket.
      */
-    Bucket* staticEmptyBucketPtr() noexcept {
+    Bucket*
+    staticEmptyBucketPtr() noexcept {
         static Bucket emptyBucket;
         return &emptyBucket;
     }

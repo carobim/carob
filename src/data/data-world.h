@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** data-world.h                       **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -36,14 +36,17 @@
 
 class DataWorld {
  public:
-    static DataWorld& instance() noexcept;
+    static DataWorld&
+    instance() noexcept;
 
     virtual ~DataWorld() = default;
 
     //! After the engine has booted, initialize the world.
-    virtual bool init() noexcept = 0;
+    virtual bool
+    init() noexcept = 0;
 
-    DataArea* area(StringView areaName) noexcept;
+    DataArea*
+    area(StringView areaName) noexcept;
 
     // Miscellaneous engine parameters set by world's author.
     struct {
@@ -55,7 +58,7 @@ class DataWorld {
         struct {
             struct {
                 int initial = 0;
-				int consecutive = 0;
+                int consecutive = 0;
             } persistDelay;
         } input;
         struct {
@@ -76,8 +79,10 @@ class DataWorld {
  private:
     DataWorld(const DataWorld&) = delete;
     DataWorld(DataWorld&&) = delete;
-    DataWorld& operator=(const DataWorld&) = delete;
-    DataWorld& operator=(DataWorld&&) = delete;
+    DataWorld&
+    operator=(const DataWorld&) = delete;
+    DataWorld&
+    operator=(DataWorld&&) = delete;
 };
 
 #endif  // SRC_DATA_DATA_WORLD_H_

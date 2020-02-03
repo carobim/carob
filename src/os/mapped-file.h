@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** os/mapped-file.h            **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** mapped-file.h                    **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,9 +28,9 @@
 #define SRC_OS_MAPPED_FILE_H_
 
 #ifdef _WIN32
-#    include "os/windows-mapped-file.h"
+#include "os/windows-mapped-file.h"
 #else
-#    include "os/unix-mapped-file.h"
+#include "os/unix-mapped-file.h"
 #endif
 
 #endif  // SRC_OS_MAPPED_FILE_H_

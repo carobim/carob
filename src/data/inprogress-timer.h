@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress-timer.h                 **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -52,7 +52,8 @@ class InProgressTimer : public InProgress {
     InProgressTimer(time_t duration, ThenFn then) noexcept;
     InProgressTimer(time_t duration, ProgressFn progress, ThenFn then) noexcept;
 
-    void tick(time_t dt) noexcept;
+    void
+    tick(time_t dt) noexcept;
 
  private:
     time_t duration, passed;

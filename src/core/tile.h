@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** tile.h                             **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -35,7 +35,8 @@ struct TileSet {
     size_t width;
     size_t height;
 
-    int at(size_t x, size_t y) noexcept;
+    int
+    at(size_t x, size_t y) noexcept;
 };
 
 #endif  // SRC_CORE_TILE_H_

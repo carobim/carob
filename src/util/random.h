@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** random.h                           **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -36,7 +36,8 @@
     @param max Maximum value.
     @return random integer between min and max.
 */
-int randInt(int min, int max) noexcept;
+int
+randInt(int min, int max) noexcept;
 
 //! Produce a random float floating point number.
 /*!
@@ -44,6 +45,7 @@ int randInt(int min, int max) noexcept;
     @param max Maximum value.
     @return random floating point number between min and max.
 */
-float randFloat(float min, float max) noexcept;
+float
+randFloat(float min, float max) noexcept;
 
 #endif  // SRC_UTIL_RANDOM_H_

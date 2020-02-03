@@ -1,8 +1,8 @@
-/**********************************
-** Tsunagari Tile Engine         **
-** unix-mutex.h                  **
-** Copyright 2019 Paul Merrill   **
-**********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** unix-mutex.h                     **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,20 +40,23 @@ class Mutex {
         assert_(err == 0);
     }
 
-    inline void lock() noexcept {
+    inline void
+    lock() noexcept {
         int err = pthread_mutex_lock(&m);
         (void)err;
         assert_(err == 0);
     };
 
-    inline void unlock() noexcept {
+    inline void
+    unlock() noexcept {
         int err = pthread_mutex_unlock(&m);
         (void)err;
         assert_(err == 0);
     }
 
     Mutex(const Mutex&) = delete;
-    Mutex& operator=(const Mutex&) = delete;
+    Mutex&
+    operator=(const Mutex&) = delete;
 
     pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 };

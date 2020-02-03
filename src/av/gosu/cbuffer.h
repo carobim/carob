@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** cbuffer.h                          **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -42,10 +42,13 @@ class GosuCBuffer : public Gosu::Resource {
     const char* data_;
     size_t size_;
 
-    size_t size() noexcept;
+    size_t
+    size() noexcept;
     void resize(size_t) noexcept;  // NOOP
-    void read(size_t offset, size_t length, void* destBuffer) noexcept;
-    void write(size_t, size_t, const void*) noexcept;  // NOOP
+    void
+    read(size_t offset, size_t length, void* destBuffer) noexcept;
+    void
+    write(size_t, size_t, const void*) noexcept;  // NOOP
 };
 
 #endif  // SRC_AV_GOSU_CBUFFER_H_

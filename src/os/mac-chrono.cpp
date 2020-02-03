@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** mac-chrono.cpp              **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** mac-chrono.cpp                   **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -73,7 +73,8 @@ mach_wait_until(uint64_t deadline) noexcept;
 
 static mach_timebase_info timebase = {0, 0};
 
-TimePoint SteadyClock::now() noexcept {
+TimePoint
+SteadyClock::now() noexcept {
     if (timebase.numer == 0 && timebase.denom == 0) {
         kern_return_t err = mach_timebase_info_trap(&timebase);
         assert_(err == KERN_SUCCESS);
@@ -85,7 +86,8 @@ TimePoint SteadyClock::now() noexcept {
     return TimePoint(ns);
 }
 
-TimePoint SteadyClock::nowMS() noexcept {
+TimePoint
+SteadyClock::nowMS() noexcept {
     if (timebase.numer == 0 && timebase.denom == 0) {
         kern_return_t err = mach_timebase_info_trap(&timebase);
         assert_(err == KERN_SUCCESS);
@@ -110,7 +112,8 @@ void SleepFor(Duration d) noexcept {
 }
 */
 
-void SleepFor(Duration d) noexcept {
+void
+SleepFor(Duration d) noexcept {
     if (d <= 0) {
         return;
     }

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** windows.h                          **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -36,9 +36,11 @@
  * is run from the command line, this function forces Windows to reattach a
  * console to its process. Otherwise it does nothing.
  */
-void wFixConsole() noexcept;
+void
+wFixConsole() noexcept;
 
 // Simple wrapper to create a halting (modal) message box.
-void wMessageBox(StringView title, StringView text) noexcept;
+void
+wMessageBox(StringView title, StringView text) noexcept;
 
 #endif  // SRC_OS_WINDOWS_H_

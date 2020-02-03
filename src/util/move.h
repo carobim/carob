@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** move.h                           **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -30,10 +30,20 @@
 #include "util/constexpr.h"
 #include "util/noexcept.h"
 
-template<typename T> struct Refless_ { typedef T value; };
-template<typename T> struct Refless_<T&&> { typedef T value; };
-template<typename T> struct Refless_<T&> { typedef T value; };
-template<typename T> using Refless = typename Refless_<T>::value;
+template<typename T>
+struct Refless_ {
+    typedef T value;
+};
+template<typename T>
+struct Refless_<T&&> {
+    typedef T value;
+};
+template<typename T>
+struct Refless_<T&> {
+    typedef T value;
+};
+template<typename T>
+using Refless = typename Refless_<T>::value;
 
 //
 // Move

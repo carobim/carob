@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** windows-c.cpp                      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -34,7 +34,7 @@ extern "C" {
 typedef struct {
     struct __crt_locale_data* locinfo;
     struct __crt_multibyte_data* mbcinfo;
-} *_locale_t;
+} * _locale_t;
 typedef char* va_list;
 
 _ACRTIMP int __cdecl __stdio_common_vfprintf(unsigned __int64,

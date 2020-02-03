@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** unix-chrono.cpp             **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** unix-chrono.cpp                  **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +29,8 @@
 #include "util/assert.h"
 #include "util/int.h"
 
-TimePoint SteadyClock::now() noexcept {
+TimePoint
+SteadyClock::now() noexcept {
     struct timespec tp;
 
     int err = clock_gettime(CLOCK_MONOTONIC, &tp);
@@ -39,7 +40,8 @@ TimePoint SteadyClock::now() noexcept {
     return TimePoint(s_to_ns(tp.tv_sec) + tp.tv_nsec);
 }
 
-void SleepFor(Duration d) noexcept {
+void
+SleepFor(Duration d) noexcept {
     if (d <= 0) {
         return;
     }
@@ -47,5 +49,6 @@ void SleepFor(Duration d) noexcept {
     timespec ts;
     ts.tv_sec = static_cast<time_t>(s);
     ts.tv_nsec = static_cast<long>(d - s_to_ns(s));
-    while (nanosleep(&ts, &ts) == -1 && errno == EINTR);
+    while (nanosleep(&ts, &ts) == -1 && errno == EINTR)
+        ;
 }

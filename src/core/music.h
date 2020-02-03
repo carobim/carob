@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** music.h                            **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -44,18 +44,23 @@
 class Music {
  public:
     //! If the music path has changed, start playing it.
-    static void play(StringView path) noexcept;
+    static void
+    play(StringView path) noexcept;
 
     //! Stop playing music. To begin again, set a new intro or loop.
-    static void stop() noexcept;
+    static void
+    stop() noexcept;
 
     //! Pause playback of music.
-    static void pause() noexcept;
+    static void
+    pause() noexcept;
     //! Resume playback of music.
-    static void resume() noexcept;
+    static void
+    resume() noexcept;
 
     //! Free music not recently played.
-    static void garbageCollect() noexcept;
+    static void
+    garbageCollect() noexcept;
 };
 
 #endif  // SRC_CORE_MUSIC_H_

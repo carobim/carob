@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** area.h                             **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -64,60 +64,73 @@ class Player;
 class Area {
  public:
     //! Prepare game state for this Area to be in focus.
-    void focus();
+    void
+    focus();
 
     //! Processes keyboard input, calling the Player object when necessary.
-    void buttonDown(KeyboardKey key);
-    void buttonUp(KeyboardKey key);
+    void
+    buttonDown(KeyboardKey key);
+    void
+    buttonUp(KeyboardKey key);
 
     //! Renders all visible Tiles and Entities within this Area.
-    void draw(DisplayList* display);
+    void
+    draw(DisplayList* display);
 
     //! If false, drawing might be skipped. Saves CPU cycles when idle.
-    bool needsRedraw();
+    bool
+    needsRedraw();
 
     //! Inform the Area that a redraw is needed.
-    void requestRedraw();
+    void
+    requestRedraw();
 
     /**
      * Update the game state within this Area as if dt milliseconds had
      * passed since the last call. Updates Entities, runs scripts, and
      * checks for Tile animation updates.
      */
-    void tick(time_t dt);
+    void
+    tick(time_t dt);
 
     /**
      * Updates Entities, runs scripts, and checks for Tile animation
      * updates.
      */
-    void turn();
+    void
+    turn();
 
-    uint32_t getColorOverlay();
-    void setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b);
+    uint32_t
+    getColorOverlay();
+    void
+    setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b);
 
-    TileSet* getTileSet(StringView imagePath);
+    TileSet*
+    getTileSet(StringView imagePath);
 
     //! Returns a physical cubic range of Tiles that are visible on-screen.
     //! Takes actual map size into account.
-    icube visibleTiles() const;
+    icube
+    visibleTiles() const;
 
     //! Returns true if a Tile exists at the specified coordinate.
-    bool inBounds(Entity* ent) const;
+    bool
+    inBounds(Entity* ent) const;
 
     // Create an NPC and insert it into the Area.
-    Rc<Character> spawnNPC(StringView descriptor,
-                           vicoord coord,
-                           StringView phase);
+    Rc<Character>
+    spawnNPC(StringView descriptor, vicoord coord, StringView phase);
     // Create an Overlay and insert it into the Area.
-    Rc<Overlay> spawnOverlay(StringView descriptor,
-                             vicoord coord,
-                             StringView phase);
+    Rc<Overlay>
+    spawnOverlay(StringView descriptor, vicoord coord, StringView phase);
 
-    DataArea* getDataArea();
+    DataArea*
+    getDataArea();
 
-    void runScript(TileGrid::ScriptType type,
-                   icoord tile,
-                   Entity* triggeredBy) noexcept;
+    void
+    runScript(TileGrid::ScriptType type,
+              icoord tile,
+              Entity* triggeredBy) noexcept;
 
  public:
     TileGrid grid;
@@ -126,8 +139,10 @@ class Area {
 
  protected:
     //! Calculate frame to show for each type of tile
-    void drawTiles(DisplayList* display, const icube& tiles, int z);
-    void drawEntities(DisplayList* display, const icube& tiles, int z);
+    void
+    drawTiles(DisplayList* display, const icube& tiles, int z);
+    void
+    drawEntities(DisplayList* display, const icube& tiles, int z);
 
  protected:
     Hashmap<String, TileSet> tileSets;

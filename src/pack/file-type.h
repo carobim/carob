@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** file-type.h                      **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -32,6 +32,7 @@
 
 enum FileType { FT_TEXT, FT_UNKNOWN, FT_MEDIA };
 
-FileType determineFileType(StringView path) noexcept;
+FileType
+determineFileType(StringView path) noexcept;
 
 #endif  // SRC_PACK_FILE_TYPE_H_

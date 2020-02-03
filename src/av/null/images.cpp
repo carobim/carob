@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** images.cpp                       **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -26,21 +26,37 @@
 
 #include "core/images.h"
 
-ImageID Images::load(StringView path) noexcept { return ImageID(0); }
-TiledImageID Images::loadTiles(StringView path,
-                               int tileWidth,
-                               int tileHeight) noexcept {
-    return TiledImageID(0);
-}
-void Images::prune(time_t latestPermissibleUse) noexcept {}
-
-int TiledImage::size(TiledImageID tiid) noexcept { return 1000; }
-ImageID TiledImage::getTile(TiledImageID tiid, int i) noexcept {
+ImageID
+Images::load(StringView path) noexcept {
     return ImageID(0);
 }
-void TiledImage::release(TiledImageID tiid) noexcept {}
+TiledImageID
+Images::loadTiles(StringView path, int tileWidth, int tileHeight) noexcept {
+    return TiledImageID(0);
+}
+void
+Images::prune(time_t latestPermissibleUse) noexcept {}
 
-void Image::draw(ImageID iid, float x, float y, float z) noexcept {}
-int Image::width(ImageID iid) noexcept { return 1; }
-int Image::height(ImageID iid) noexcept { return 1; }
-void Image::release(ImageID iid) noexcept {}
+int
+TiledImage::size(TiledImageID tiid) noexcept {
+    return 1000;
+}
+ImageID
+TiledImage::getTile(TiledImageID tiid, int i) noexcept {
+    return ImageID(0);
+}
+void
+TiledImage::release(TiledImageID tiid) noexcept {}
+
+void
+Image::draw(ImageID iid, float x, float y, float z) noexcept {}
+int
+Image::width(ImageID iid) noexcept {
+    return 1;
+}
+int
+Image::height(ImageID iid) noexcept {
+    return 1;
+}
+void
+Image::release(ImageID iid) noexcept {}

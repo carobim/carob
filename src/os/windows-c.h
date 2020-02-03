@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** os/windows-c.h              **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** windows-c.h                      **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -117,14 +117,9 @@ _ACRTIMP double __cdecl floor(double) noexcept;
 double __cdecl sin(double) noexcept;
 double __cdecl sqrt(double) noexcept;
 
-_ACRTIMP double __cdecl strtod(char const*,
-                               char**) noexcept;
-_ACRTIMP long __cdecl strtol(char const*,
-                             char**,
-                             int) noexcept;
-_ACRTIMP unsigned long __cdecl strtoul(char const*,
-                                       char**,
-                                       int) noexcept;
+_ACRTIMP double __cdecl strtod(char const*, char**) noexcept;
+_ACRTIMP long __cdecl strtol(char const*, char**, int) noexcept;
+_ACRTIMP unsigned long __cdecl strtoul(char const*, char**, int) noexcept;
 _ACRTIMP int __cdecl atoi(char const*) noexcept;
 
 _ACRTIMP int* __cdecl _errno();
@@ -133,10 +128,8 @@ _ACRTIMP int* __cdecl _errno();
 __pragma(pack(pop));
 
 extern "C" {
-void* memmem(const void*,
-             size_t,
-             const void*,
-             size_t) noexcept;
+void*
+memmem(const void*, size_t, const void*, size_t) noexcept;
 }
 
 static inline time_t __CRTDECL
@@ -144,12 +137,11 @@ time(time_t* _Time) noexcept {
     return _time64(reinterpret_cast<__time64_t*>(_Time));
 }
 
-int __CRTDECL fprintf(FILE* const,
-                      char const* const,
-                      ...) noexcept;
-int __CRTDECL printf(char const* const, ...) noexcept;
-int __CRTDECL sprintf(char* const,
-                      char const* const,
-                      ...) noexcept;
+int __CRTDECL
+fprintf(FILE* const, char const* const, ...) noexcept;
+int __CRTDECL
+printf(char const* const, ...) noexcept;
+int __CRTDECL
+sprintf(char* const, char const* const, ...) noexcept;
 
 #endif  // SRC_OS_WINDOWS_C_H_

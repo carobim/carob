@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** sounds.cpp                       **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -32,8 +32,8 @@
 #include "core/resources.h"
 #include "core/world.h"
 #include "os/mutex.h"
-#include "util/int.h"
 #include "util/hashtable.h"
+#include "util/int.h"
 #include "util/markable.h"
 #include "util/noexcept.h"
 #include "util/pool.h"
@@ -46,11 +46,10 @@ struct SDL2Sound {
     Mix_Chunk* chunk;   // Decoding configuration.
 };
 
-static bool operator==(SDL2Sound a, SDL2Sound b) noexcept {
-    return a.numUsers == b.numUsers &&
-           a.lastUse == b.lastUse &&
-           a.frames == b.frames &&
-           a.chunk == b.chunk;
+static bool
+operator==(SDL2Sound a, SDL2Sound b) noexcept {
+    return a.numUsers == b.numUsers && a.lastUse == b.lastUse &&
+           a.frames == b.frames && a.chunk == b.chunk;
 }
 
 struct SDL2PlayingSound {

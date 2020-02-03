@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** client-conf.h                      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -38,7 +38,7 @@ struct Conf {
     //! Game Movement Mode
     enum MovementMode { TURN, TILE, NOTILE };
 
-	static Log::Verbosity verbosity;
+    static Log::Verbosity verbosity;
     static MovementMode moveMode;
     static ivec2 windowSize;
     static bool fullscreen;
@@ -48,7 +48,8 @@ struct Conf {
     static int persistInit;
     static int persistCons;
 
-	static bool parse(StringView filename) noexcept;
+    static bool
+    parse(StringView filename) noexcept;
 };
 
 #endif  // SRC_CORE_CLIENT_CONF_H_

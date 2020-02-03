@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** images.cpp                         **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -25,12 +25,13 @@
 // IN THE SOFTWARE.
 // **********
 
+#include "core/images.h"
+
 #include "av/gosu/cbuffer.h"
 #include "av/gosu/gosu.h"
 #include "av/gosu/window.h"
 #include "cache/rc-cache-impl.h"
 #include "cache/rc-reader-cache.h"
-#include "core/images.h"
 #include "core/measure.h"
 #include "core/resources.h"
 #include "core/window.h"
@@ -39,8 +40,8 @@
 #include "util/noexcept.h"
 #include "util/pool.h"
 #include "util/rc.h"
-#include "util/string.h"
 #include "util/string-view.h"
+#include "util/string.h"
 #include "util/unique.h"
 #include "util/vector.h"
 
@@ -67,13 +68,14 @@ static Pool<GosuTiledImage> tiledImagePool;
 
 class GosuImages {
  public:
-    Rc<Image> load(const std::string& path) noexcept;
+    Rc<Image>
+    load(const std::string& path) noexcept;
 
-    Rc<TiledImage> loadTiles(const std::string& path,
-                             unsigned tileW,
-                             unsigned tileH) noexcept;
+    Rc<TiledImage>
+    loadTiles(const std::string& path, unsigned tileW, unsigned tileH) noexcept;
 
-    void garbageCollect() noexcept;
+    void
+    garbageCollect() noexcept;
 };
 
 static Optional<GosuImage>
@@ -149,8 +151,8 @@ makeTiledImage(StringView path, unsigned tileW, unsigned tileH) {
     }
 
     Log::info("Images",
-              String() << "TiledImage " << path << " has " << tiledImage.images.size()
-                       << " tiles");
+              String() << "TiledImage " << path << " has "
+                       << tiledImage.images.size() << " tiles");
     return Optional<GosuTiledImage>(move_(tiledImage));
 }
 
@@ -188,7 +190,8 @@ Images::loadTiles(StringView path, int tileWidth, int tileHeight) noexcept {
         return TiledImageID(tiid);
     }
 
-    Optional<GosuTiledImage> tiledImage = makeTiledImage(path, tileWidth, tileHeight);
+    Optional<GosuTiledImage> tiledImage =
+            makeTiledImage(path, tileWidth, tileHeight);
     if (!tiledImage) {
         tiledImageIDs[path] = mark;
         return mark;

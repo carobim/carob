@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** scheduler.cpp                    **
-** Copyright 2016-2019 Paul Merrill **
+** jobs.cpp                         **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -109,7 +109,7 @@ JobsEnqueue(Job job) noexcept {
 
 void
 JobsFlush() noexcept {
-	// TODO: Don't quit the threads.
+    // TODO: Don't quit the threads.
 
     // Wait for all jobs to finish.
     {
@@ -140,7 +140,7 @@ JobsFlush() noexcept {
         worker.join();
     }
 
-	// Reset.
+    // Reset.
     workers.clear();
-	tearingDown = false;
+    tearingDown = false;
 }

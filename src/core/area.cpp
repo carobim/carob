@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** area.cpp                           **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -339,8 +339,7 @@ void
 Area::runScript(TileGrid::ScriptType type,
                 icoord tile,
                 Entity* triggeredBy) noexcept {
-    Optional<DataArea::TileScript*> script =
-        grid.scripts[type].tryAt(tile);
+    Optional<DataArea::TileScript*> script = grid.scripts[type].tryAt(tile);
     if (script) {
         (dataArea->*(**script))(*triggeredBy, tile);
     }

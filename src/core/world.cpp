@@ -31,7 +31,6 @@
 #include "core/area.h"
 #include "core/character.h"
 #include "core/client-conf.h"
-#include "core/client-conf.h"
 #include "core/display-list.h"
 #include "core/images.h"
 #include "core/jsons-rapidjson.h"
@@ -193,7 +192,7 @@ World::focusArea(StringView filename, vicoord playerPos) noexcept {
         Area* area = **cachedArea;
         focusArea(area, playerPos);
         return true;
-	}
+    }
 
     Area* newArea = makeAreaFromJSON(player.get(), filename);
     if (!newArea) {

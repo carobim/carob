@@ -1,8 +1,8 @@
-/**********************************
-** Tsunagari Tile Engine         **
-** mutex.h                       **
-** Copyright 2019 Paul Merrill   **
-**********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** mutex.h                          **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,9 +28,9 @@
 #define SRC_OS_MUTEX_H_
 
 #ifdef _WIN32
-#    include "os/windows-mutex.h"
+#include "os/windows-mutex.h"
 #else
-#    include "os/unix-mutex.h"
+#include "os/unix-mutex.h"
 #endif
 
 #include "util/assert.h"
@@ -42,7 +42,8 @@ class LockGuard {
     inline ~LockGuard() noexcept { m.unlock(); }
 
     LockGuard(const LockGuard&) = delete;
-    LockGuard& operator=(const LockGuard&) = delete;
+    LockGuard&
+    operator=(const LockGuard&) = delete;
 
     Mutex& m;
 };

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** os/unix.cpp                      **
-** Copyright 2016-2019 Paul Merrill **
+** unix.cpp                         **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -24,9 +24,8 @@
 // IN THE SOFTWARE.
 // **********
 
-#include "os/os.h"
-
 #include "os/c.h"
+#include "os/os.h"
 #include "os/unix-mutex.h"
 #include "util/vector.h"
 
@@ -36,7 +35,7 @@ Filesize
 getFileSize(StringView path_) noexcept {
     String path(path_);
 
-	struct stat status;
+    struct stat status;
     if (stat(path.null(), &status)) {
         return mark;
     }
@@ -129,7 +128,10 @@ writeFile(StringView path, uint32_t length, void* data) noexcept {
 }
 
 bool
-writeFileVec(String& path, uint32_t count, uint32_t* lengths, void** datas) noexcept {
+writeFileVec(String& path,
+             uint32_t count,
+             uint32_t* lengths,
+             void** datas) noexcept {
     int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
     if (fd == -1) {
         return false;
@@ -155,16 +157,18 @@ writeFileVec(String& path, uint32_t count, uint32_t* lengths, void** datas) noex
 }
 
 bool
-writeFileVec(StringView path, uint32_t count, uint32_t* lengths, void** datas) noexcept {
+writeFileVec(StringView path,
+             uint32_t count,
+             uint32_t* lengths,
+             void** datas) noexcept {
     String path_(path);
     return writeFileVec(path_, count, lengths, datas);
 }
 
 /*
-bool writeFileVec(String& path, uint32_t count, uint32_t* lengths, void** datas) noexcept {
-    int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
-    if (fd == -1) {
-        return false;
+bool writeFileVec(String& path, uint32_t count, uint32_t* lengths, void** datas)
+noexcept { int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666); if
+(fd == -1) { return false;
     }
     for (size_t i = 0; i < count; i++) {
         size_t length = lengths[i];

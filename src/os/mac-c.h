@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** os/mac-c.h                  **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** mac-c.h                          **
+** Copyright 2019 Paul Merrill      **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -88,14 +88,16 @@ struct dirent {
 
 // sys/errno.h
 extern "C" {
-extern int* __error() noexcept;
+extern int*
+__error() noexcept;
 #define errno (*__error())
 #define EINTR 4
 }
 
 // sys/fcntl.h
 extern "C" {
-int open(const char*, int, ...) noexcept;
+int
+open(const char*, int, ...) noexcept;
 #define O_RDONLY 0x0000
 #define O_WRONLY 0x0001
 #define O_CREAT 0x0200
@@ -104,8 +106,10 @@ int open(const char*, int, ...) noexcept;
 
 // sys/mman.h
 extern "C" {
-void* mmap(void*, size_t, int, int, int, off_t) noexcept;
-int munmap(void*, size_t) noexcept;
+void*
+mmap(void*, size_t, int, int, int, off_t) noexcept;
+int
+munmap(void*, size_t) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x0001
 #define PROT_READ 0x01
@@ -133,9 +137,12 @@ struct stat {
     int32_t st_lspare;
     int64_t st_qspare[2];
 };
-int fstat(int, struct stat*) noexcept __asm("_fstat$INODE64");
-int mkdir(const char*, mode_t) noexcept;
-int stat(const char*, struct stat*) noexcept __asm("_stat$INODE64");
+int
+fstat(int, struct stat*) noexcept __asm("_fstat$INODE64");
+int
+mkdir(const char*, mode_t) noexcept;
+int
+stat(const char*, struct stat*) noexcept __asm("_stat$INODE64");
 #define S_IFMT 0170000
 #define S_IFDIR 0040000
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
@@ -143,14 +150,16 @@ int stat(const char*, struct stat*) noexcept __asm("_stat$INODE64");
 
 // sys/sysctl.h
 extern "C" {
-int sysctl(int*, unsigned int, void*, size_t*, void*, size_t) noexcept;
+int
+sysctl(int*, unsigned int, void*, size_t*, void*, size_t) noexcept;
 #define CTL_HW 6
 #define HW_NCPU 3
 }
 
 // sys/uio.h
 extern "C" {
-ssize_t writev(int, const struct iovec*, int) noexcept;
+ssize_t
+writev(int, const struct iovec*, int) noexcept;
 }
 
 // _stdio.h
@@ -172,26 +181,37 @@ struct DIR {
     pthread_mutex_t __dd_lock;
     struct _telldir* __dd_td;
 };
-int closedir(DIR*) noexcept;
-DIR* opendir(const char*) noexcept __asm("_opendir$INODE64");
-struct dirent* readdir(DIR*) noexcept __asm("_readdir$INODE64");
+int
+closedir(DIR*) noexcept;
+DIR*
+opendir(const char*) noexcept __asm("_opendir$INODE64");
+struct dirent*
+readdir(DIR*) noexcept __asm("_readdir$INODE64");
 }
 
 // malloc/_malloc.h
 extern "C" {
-void free(void*) noexcept;
+void
+free(void*) noexcept;
 void* malloc(size_t) noexcept;
 }
 
 // math.h
 extern "C" {
-double atan2(double, double) noexcept;
-double ceil(double) noexcept;
-float ceilf(float) noexcept;
-double cos(double) noexcept;
-double floor(double) noexcept;
-double sin(double) noexcept;
-double sqrt(double) noexcept;
+double
+atan2(double, double) noexcept;
+double
+ceil(double) noexcept;
+float
+ceilf(float) noexcept;
+double
+cos(double) noexcept;
+double
+floor(double) noexcept;
+double
+sin(double) noexcept;
+double
+sqrt(double) noexcept;
 }
 
 // pthread/pthread.h
@@ -207,25 +227,40 @@ extern "C" {
     {                                 \
         _PTHREAD_COND_SIG_init, { 0 } \
     }
-int pthread_mutex_destroy(pthread_mutex_t*) noexcept;
-int pthread_mutex_lock(pthread_mutex_t*) noexcept;
-int pthread_mutex_unlock(pthread_mutex_t*) noexcept;
-int pthread_cond_destroy(pthread_cond_t*) noexcept;
-int pthread_cond_signal(pthread_cond_t*) noexcept;
-int pthread_cond_broadcast(pthread_cond_t*) noexcept;
-int pthread_cond_wait(pthread_cond_t*, pthread_mutex_t*) noexcept;
-int pthread_create(pthread_t*, const void*, void* (*)(void*), void*) noexcept;
-int pthread_join(pthread_t, void**) noexcept;
+int
+pthread_mutex_destroy(pthread_mutex_t*) noexcept;
+int
+pthread_mutex_lock(pthread_mutex_t*) noexcept;
+int
+pthread_mutex_unlock(pthread_mutex_t*) noexcept;
+int
+pthread_cond_destroy(pthread_cond_t*) noexcept;
+int
+pthread_cond_signal(pthread_cond_t*) noexcept;
+int
+pthread_cond_broadcast(pthread_cond_t*) noexcept;
+int
+pthread_cond_wait(pthread_cond_t*, pthread_mutex_t*) noexcept;
+int
+pthread_create(pthread_t*, const void*, void* (*)(void*), void*) noexcept;
+int
+pthread_join(pthread_t, void**) noexcept;
 }
 
 // stdio.h
 extern "C" {
-int fclose(FILE*) noexcept;
-FILE* fopen(const char*, const char*) noexcept;
-int fprintf(FILE*, const char*, ...) noexcept;
-size_t fread(void*, size_t, size_t, FILE*) noexcept;
-int printf(const char*, ...) noexcept;
-int sprintf(char*, const char*, ...) noexcept;
+int
+fclose(FILE*) noexcept;
+FILE*
+fopen(const char*, const char*) noexcept;
+int
+fprintf(FILE*, const char*, ...) noexcept;
+size_t
+fread(void*, size_t, size_t, FILE*) noexcept;
+int
+printf(const char*, ...) noexcept;
+int
+sprintf(char*, const char*, ...) noexcept;
 extern FILE* __stdinp;
 extern FILE* __stdoutp;
 extern FILE* __stderrp;
@@ -236,21 +271,32 @@ extern FILE* __stderrp;
 
 // stdlib.h
 extern "C" {
-int atoi(const char*) noexcept;
-int rand() noexcept;
-void srand(unsigned) noexcept;
-double strtod(const char*, char**) noexcept;
-long strtol(const char*, char**, int) noexcept;
-unsigned long strtoul(const char*, char**, int) noexcept;
+int
+atoi(const char*) noexcept;
+int
+rand() noexcept;
+void
+srand(unsigned) noexcept;
+double
+strtod(const char*, char**) noexcept;
+long
+strtol(const char*, char**, int) noexcept;
+unsigned long
+strtoul(const char*, char**, int) noexcept;
 }
 
 // string.h
 extern "C" {
-void* memchr(const void*, int, size_t) noexcept;
-int memcmp(const void*, const void*, size_t) noexcept;
-void *memcpy(void*, const void*, size_t) noexcept;
-void* memmem(const void*, size_t, const void*, size_t) noexcept;
-size_t strlen(char const*) noexcept;
+void*
+memchr(const void*, int, size_t) noexcept;
+int
+memcmp(const void*, const void*, size_t) noexcept;
+void*
+memcpy(void*, const void*, size_t) noexcept;
+void*
+memmem(const void*, size_t, const void*, size_t) noexcept;
+size_t
+strlen(char const*) noexcept;
 }
 
 // time.h
@@ -258,17 +304,24 @@ extern "C" {
 enum clockid_t {
     CLOCK_UPTIME_RAW = 8,
 };
-int clock_gettime(clockid_t, struct timespec*) noexcept;
-int nanosleep(const struct timespec*, struct timespec*) noexcept;
-time_t time(time_t*) noexcept;
+int
+clock_gettime(clockid_t, struct timespec*) noexcept;
+int
+nanosleep(const struct timespec*, struct timespec*) noexcept;
+time_t
+time(time_t*) noexcept;
 }
 
 // unistd.h
 extern "C" {
-void _exit(int) noexcept __attribute__((noreturn));
-int close(int) noexcept;
-int isatty(int) noexcept;
-ssize_t write(int, const void*, size_t) noexcept;
+void
+_exit(int) noexcept __attribute__((noreturn));
+int
+close(int) noexcept;
+int
+isatty(int) noexcept;
+ssize_t
+write(int, const void*, size_t) noexcept;
 }
 
 #endif  // SRC_OS_MAC_C_H_

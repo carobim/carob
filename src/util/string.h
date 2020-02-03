@@ -1,8 +1,8 @@
-/*********************************
- ** Tsunagari Tile Engine       **
- ** string.h                    **
- ** Copyright 2019 Paul Merrill **
- *********************************/
+/**************************************
+ ** Tsunagari Tile Engine            **
+ ** string.h                         **
+ ** Copyright 2019-2020 Paul Merrill **
+ **************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +38,8 @@ class NullTerminatedString {
     explicit NullTerminatedString(String& s) noexcept;
     ~NullTerminatedString() noexcept;
 
-    const char* get() noexcept;
+    const char*
+    get() noexcept;
     operator const char*() noexcept;
 
  public:
@@ -54,33 +55,53 @@ class String : public Vector<char> {
     String(String&& other) noexcept;
     ~String() = default;
 
-    String& operator=(const char* other) noexcept;
-    String& operator=(StringView other) noexcept;
+    String&
+    operator=(const char* other) noexcept;
+    String&
+    operator=(StringView other) noexcept;
 
-    String& operator=(const String& other) noexcept;
-    String& operator=(String&& other) noexcept;
-    bool operator<(const String& other) const noexcept;
-    bool operator>(const String& other) const noexcept;
+    String&
+    operator=(const String& other) noexcept;
+    String&
+    operator=(String&& other) noexcept;
+    bool
+    operator<(const String& other) const noexcept;
+    bool
+    operator>(const String& other) const noexcept;
 
-    String& operator<<(char value) noexcept;
-    String& operator<<(const char* value) noexcept;
-    String& operator<<(StringView value) noexcept;
+    String&
+    operator<<(char value) noexcept;
+    String&
+    operator<<(const char* value) noexcept;
+    String&
+    operator<<(StringView value) noexcept;
 
-    String& operator<<(bool value) noexcept;
-    String& operator<<(int value) noexcept;
-    String& operator<<(unsigned int value) noexcept;
-    String& operator<<(long value) noexcept;
-    String& operator<<(unsigned long value) noexcept;
-    String& operator<<(long long value) noexcept;
-    String& operator<<(unsigned long long value) noexcept;
-    String& operator<<(float value) noexcept;
+    String&
+    operator<<(bool value) noexcept;
+    String&
+    operator<<(int value) noexcept;
+    String&
+    operator<<(unsigned int value) noexcept;
+    String&
+    operator<<(long value) noexcept;
+    String&
+    operator<<(unsigned long value) noexcept;
+    String&
+    operator<<(long long value) noexcept;
+    String&
+    operator<<(unsigned long long value) noexcept;
+    String&
+    operator<<(float value) noexcept;
 
     operator StringView() const noexcept;
-    StringView view() const noexcept;
+    StringView
+    view() const noexcept;
 
-    NullTerminatedString null() noexcept;
+    NullTerminatedString
+    null() noexcept;
 };
 
-size_t hash_(const String& s) noexcept;
+size_t
+hash_(const String& s) noexcept;
 
 #endif  // SRC_UTIL_STRING_H_

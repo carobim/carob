@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** character.cpp                      **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -236,7 +236,7 @@ Character::arrived() noexcept {
 
     if (inBounds) {
         Optional<float*> layermod =
-            area->grid.layermods[EXIT_NORMAL].tryAt(dest);
+                area->grid.layermods[EXIT_NORMAL].tryAt(dest);
         if (layermod) {
             r.z = **layermod;
         }

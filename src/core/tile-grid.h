@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** tile-grid.h                        **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -73,7 +73,7 @@ class Entity;
 
 // Types of exits.
 enum ExitDirection {
-     // An Exit that is taken upon arriving at the Tile.
+    // An Exit that is taken upon arriving at the Tile.
     EXIT_NORMAL,
     // An Exit that is taken when leaving in the upwards direction from a Tile.
     EXIT_UP,
@@ -98,31 +98,45 @@ typedef void (*TileScript)(Entity& triggeredBy, icoord tile);
 
 class TileGrid {
  public:
-    int getTileType(icoord phys) noexcept;
-    int getTileType(vicoord virt) noexcept;
+    int
+    getTileType(icoord phys) noexcept;
+    int
+    getTileType(vicoord virt) noexcept;
 
-    void setTileType(vicoord virt, int type) noexcept;
+    void
+    setTileType(vicoord virt, int type) noexcept;
 
     //! Returns true if a Tile exists at the specified coordinate.
-    bool inBounds(icoord phys) const noexcept;
-    bool inBounds(vicoord virt) const noexcept;
-    bool inBounds(rcoord virt) const noexcept;
+    bool
+    inBounds(icoord phys) const noexcept;
+    bool
+    inBounds(vicoord virt) const noexcept;
+    bool
+    inBounds(rcoord virt) const noexcept;
 
  public:
     // Convert between virtual and physical map coordinates. Physical
     // coordinates are the physical indexes into the Tile vector. Layer depth
     // is represented by an arbirarily chosen integer in the physical system.
     // Virtual coordinates include the correct floating-point depth.
-    vicoord phys2virt_vi(icoord phys) const noexcept;
-    rcoord phys2virt_r(icoord phys) const noexcept;
-    icoord virt2phys(vicoord virt) const noexcept;
-    icoord virt2phys(rcoord virt) const noexcept;
-    rcoord virt2virt(vicoord virt) const noexcept;
-    vicoord virt2virt(rcoord virt) const noexcept;
+    vicoord
+    phys2virt_vi(icoord phys) const noexcept;
+    rcoord
+    phys2virt_r(icoord phys) const noexcept;
+    icoord
+    virt2phys(vicoord virt) const noexcept;
+    icoord
+    virt2phys(rcoord virt) const noexcept;
+    rcoord
+    virt2virt(vicoord virt) const noexcept;
+    vicoord
+    virt2virt(rcoord virt) const noexcept;
 
     // Convert between virtual and physical map depths.
-    int depthIndex(float depth) const noexcept;
-    float indexDepth(int idx) const noexcept;
+    int
+    depthIndex(float depth) const noexcept;
+    float
+    indexDepth(int idx) const noexcept;
 
     // Gets the correct destination for an Entity wanting to move off of this
     // tile in <code>facing</code> direction.
@@ -132,10 +146,13 @@ class TileGrid {
     // @param area    the area containing this Tile
     // @param here    area-space coordinate for this Tile
     // @param facing  facing vector
-    icoord moveDest(icoord from, ivec2 facing) noexcept;
+    icoord
+    moveDest(icoord from, ivec2 facing) noexcept;
 
-    Optional<Exit*> exitAt(icoord from, ivec2 facing) noexcept;
-    Optional<float*> layermodAt(icoord from, ivec2 facing) noexcept;
+    Optional<Exit*>
+    exitAt(icoord from, ivec2 facing) noexcept;
+    Optional<float*>
+    layermodAt(icoord from, ivec2 facing) noexcept;
 
  public:
     // 3-dimensional array of the tiles that make up the grid.

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** overlay.h                          **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -35,15 +35,20 @@ class Overlay : public Entity {
     Overlay() = default;
     virtual ~Overlay() = default;
 
-    void tick(time_t dt) noexcept;
+    void
+    tick(time_t dt) noexcept;
 
-    void teleport(vicoord coord) noexcept;
+    void
+    teleport(vicoord coord) noexcept;
 
-    void drift(ivec2 xy) noexcept;
-    void driftTo(ivec2 xy) noexcept;
+    void
+    drift(ivec2 xy) noexcept;
+    void
+    driftTo(ivec2 xy) noexcept;
 
  protected:
-    void pickFacingForAngle() noexcept;
+    void
+    pickFacingForAngle() noexcept;
 };
 
 #endif  // SRC_CORE_OVERLAY_H_

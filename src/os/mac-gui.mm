@@ -1,8 +1,8 @@
 /****************************************
 ** Tsunagari Tile Engine               **
-** os/mac-gui.mm                       **
+** mac-gui.mm                          **
 ** Copyright 2013      Michael Reiley  **
-** Copyright 2013-2019 Paul Merrill    **
+** Copyright 2013-2020 Paul Merrill    **
 ****************************************/
 
 // **********

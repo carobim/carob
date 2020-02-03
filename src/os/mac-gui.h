@@ -1,8 +1,8 @@
 /***************************************
 ** Tsunagari Tile Engine              **
-** os/mac-gui.h                       **
+** mac-gui.h                          **
 ** Copyright 2013      Michael Reiley **
-** Copyright 2013-2019 Paul Merrill   **
+** Copyright 2013-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -34,11 +34,13 @@
  * Sets the current working directory to the "Resources" folder in the .app
  * package.
  */
-void macSetWorkingDirectory() noexcept;
+void
+macSetWorkingDirectory() noexcept;
 
 /**
  * Displays a message box window.
  */
-void macMessageBox(StringView title, StringView msg) noexcept;
+void
+macMessageBox(StringView title, StringView msg) noexcept;
 
 #endif  // SRC_OS_MAC_GUI_H_

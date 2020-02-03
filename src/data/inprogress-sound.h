@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress-sound.h                 **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -28,7 +28,7 @@
 #ifndef SRC_DATA_INPROGRESS_SOUND_H_
 #define SRC_DATA_INPROGRESS_SOUND_H_
 
-#include "data/inprogress.h"
+#include "core/sounds.h"
 
 #include "core/sounds.h"
 #include "util/function.h"
@@ -49,7 +49,8 @@ class InProgressSound : public InProgress {
 
     InProgressSound(StringView sound, ThenFn then) noexcept;
 
-    void tick(time_t dt) noexcept;
+    void
+    tick(time_t dt) noexcept;
 
  private:
     PlayingSoundID sound;

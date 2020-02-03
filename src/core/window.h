@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** window.h                           **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -37,46 +37,53 @@
 // It handles input and drawing.
 class GameWindow {
  public:
-    static void create() noexcept;
+    static void
+    create() noexcept;
 
     //! Time since epoch.
-    static time_t time() noexcept;
+    static time_t
+    time() noexcept;
 
     //! Width of the window in pixels.
-    static int width() noexcept;
+    static int
+    width() noexcept;
 
     //! Height of the window in pixels.
-    static int height() noexcept;
+    static int
+    height() noexcept;
 
     //! Set window manager caption.
-    static void setCaption(StringView caption) noexcept;
+    static void
+    setCaption(StringView caption) noexcept;
 
     //! Show the window and start the main loop.
-    static void mainLoop() noexcept;
+    static void
+    mainLoop() noexcept;
 
     /**
      * Draws a rectangle on the screen of the specified color. Coordinates
      * are in virtual pixels.
      */
-    static void drawRect(float x1,
-                         float x2,
-                         float y1,
-                         float y2,
-                         uint32_t argb) noexcept;
+    static void
+    drawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept;
 
-    static void scale(float x, float y, Function<void()> op) noexcept;
-    static void translate(float x,
-                          float y,
-                          Function<void()> op) noexcept;
-    static void clip(float x,
-                     float y,
-                     float width,
-                     float height,
-                     Function<void()> op) noexcept;
+    static void
+    scale(float x, float y, Function<void()> op) noexcept;
+    static void
+    translate(float x, float y, Function<void()> op) noexcept;
+    static void
+    clip(float x,
+         float y,
+         float width,
+         float height,
+         Function<void()> op) noexcept;
 
-    static void emitKeyDown(KeyboardKey key) noexcept;
-    static void emitKeyUp(KeyboardKey key) noexcept;
-    static void close() noexcept;
+    static void
+    emitKeyDown(KeyboardKey key) noexcept;
+    static void
+    emitKeyUp(KeyboardKey key) noexcept;
+    static void
+    close() noexcept;
 
     static BitRecord keysDown;
 };

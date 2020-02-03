@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** rc-reader-cache.h                  **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -37,7 +37,8 @@ using GenFn = T (*)(StringView name);
 template<typename T, GenFn<T> fn>
 class RcReaderCache {
  public:
-    T momentaryRequest(StringView name) noexcept {
+    T
+    momentaryRequest(StringView name) noexcept {
         T t = cache.momentaryRequest(name);
         if (t) {
             return t;
@@ -48,7 +49,8 @@ class RcReaderCache {
         return t;
     }
 
-    T lifetimeRequest(StringView name) noexcept {
+    T
+    lifetimeRequest(StringView name) noexcept {
         T t = cache.lifetimeRequest(name);
         if (t) {
             return t;
@@ -59,7 +61,10 @@ class RcReaderCache {
         return t;
     }
 
-    void garbageCollect() noexcept { cache.garbageCollect(); }
+    void
+    garbageCollect() noexcept {
+        cache.garbageCollect();
+    }
 
  private:
     RcCache<T> cache;

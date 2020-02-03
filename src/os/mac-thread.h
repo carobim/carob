@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** macos-thread.h              **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** mac-thread.h                     **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,16 +36,20 @@ class Thread {
     ~Thread() noexcept;
 
     Thread(const Thread&) = delete;
-    Thread& operator=(const Thread&) = delete;
+    Thread&
+    operator=(const Thread&) = delete;
 
-    void join() noexcept;
+    void
+    join() noexcept;
 
  public:
     void* t = nullptr;
 
  public:
-    static void disableTimerCoalescing() noexcept;
-    static unsigned hardware_concurrency() noexcept;
+    static void
+    disableTimerCoalescing() noexcept;
+    static unsigned
+    hardware_concurrency() noexcept;
 };
 
 #endif  // SRC_OS_MAC_THREAD_H_

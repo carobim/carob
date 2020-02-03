@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** chrono.h                    **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** chrono.h                         **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -59,10 +59,13 @@ ns_to_s_d(Duration d) {
 
 class SteadyClock {
  public:
-    static TimePoint now() noexcept;
-    static TimePoint nowMS() noexcept;  // In milliseconds, not nanoseconds.
+    static TimePoint
+    now() noexcept;
+    static TimePoint
+    nowMS() noexcept;  // In milliseconds, not nanoseconds.
 };
 
-void SleepFor(Duration d) noexcept;
+void
+SleepFor(Duration d) noexcept;
 
 #endif  // SRC_OS_CHRONO_H_

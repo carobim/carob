@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** images.cpp                       **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -24,9 +24,10 @@
 // IN THE SOFTWARE.
 // **********
 
+#include "core/images.h"
+
 #include "av/sdl2/sdl2.h"
 #include "av/sdl2/window.h"
-#include "core/images.h"
 #include "core/measure.h"
 #include "core/resources.h"
 #include "core/world.h"
@@ -49,8 +50,8 @@ struct SDL2TiledImage {
     int numTiles = 0;
 };
 
-static bool operator==(const SDL2TiledImage& a,
-                       const SDL2TiledImage& b) noexcept {
+static bool
+operator==(const SDL2TiledImage& a, const SDL2TiledImage& b) noexcept {
     return a.texture == b.texture;
 }
 
@@ -67,10 +68,9 @@ struct SDL2Image {
     int yoff = 0;  // Offset into texture if this is a part of a TiledImage.
 };
 
-static bool operator==(const SDL2Image& a, const SDL2Image& b) noexcept {
-    return a.texture == b.texture &&
-           a.xoff == b.xoff &&
-           a.yoff == b.yoff;
+static bool
+operator==(const SDL2Image& a, const SDL2Image& b) noexcept {
+    return a.texture == b.texture && a.xoff == b.xoff && a.yoff == b.yoff;
 }
 
 static Hashmap<String, ImageID> imageIDs;
@@ -211,9 +211,7 @@ Images::load(StringView path) noexcept {
 }
 
 TiledImageID
-Images::loadTiles(StringView path,
-                               int tileWidth,
-                               int tileHeight) noexcept {
+Images::loadTiles(StringView path, int tileWidth, int tileHeight) noexcept {
     Optional<TiledImageID*> cachedId = tiledImageIDs.tryAt(path);
     if (cachedId) {
         int tiid = ***cachedId;

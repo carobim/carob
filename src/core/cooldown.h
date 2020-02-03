@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine            **
 ** cooldown.h                       **
 ** Copyright 2014 Michael Reiley    **
-** Copyright 2014-2018 Paul Merrill **
+** Copyright 2014-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -44,19 +44,22 @@ class Cooldown {
      * Sets a new duration for the Cooldown and resets any current
      * expirations.
      */
-    void setDuration(time_t duration) noexcept;
+    void
+    setDuration(time_t duration) noexcept;
 
     /**
      * Let the Cooldown know that the specified number of milliseconds have
      * passed.
      */
-    void advance(time_t dt) noexcept;
+    void
+    advance(time_t dt) noexcept;
 
     /**
      * Whether enough time has passed that the Cooldown has expired at
      * least once over.
      */
-    bool hasExpired() noexcept;
+    bool
+    hasExpired() noexcept;
 
     /**
      * Begin the next session, rolling over any time passed since the
@@ -66,9 +69,11 @@ class Cooldown {
      * the cooldown has expired multiple times.  In that case, hasExpired()
      * will still return true and you may wrap again.
      */
-    void wrapOnce() noexcept;
+    void
+    wrapOnce() noexcept;
 
-	void wrapAll() noexcept;
+    void
+    wrapAll() noexcept;
 
  private:
     time_t duration, passed;

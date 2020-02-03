@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** viewport.h                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -40,37 +40,50 @@ class Entity;
  */
 class Viewport {
  public:
-    static void setSize(rvec2 virtRes) noexcept;
+    static void
+    setSize(rvec2 virtRes) noexcept;
 
-    static void tick(time_t dt) noexcept;
-    static void turn() noexcept;
+    static void
+    tick(time_t dt) noexcept;
+    static void
+    turn() noexcept;
 
     //! How far the map is scrolled in pixels, counting from the upper-left.
-    static rvec2 getMapOffset() noexcept;
+    static rvec2
+    getMapOffset() noexcept;
 
     //! Size of the letterbox matte bars in pixels.
-    static rvec2 getLetterboxOffset() noexcept;
+    static rvec2
+    getLetterboxOffset() noexcept;
 
     //! Multiplier in X and Y dimensions to get from virtRes to physRes.
-    static rvec2 getScale() noexcept;
+    static rvec2
+    getScale() noexcept;
 
     //! The resolution our game is actually being drawn at.
-    static rvec2 getPhysRes() noexcept;
+    static rvec2
+    getPhysRes() noexcept;
 
     //! The resolution our game thinks it is being drawn at. Chosen by a
     //! world's creator. This allows graphics to look the same on any
     //! setups of any resolution.
-    static rvec2 getVirtRes() noexcept;
+    static rvec2
+    getVirtRes() noexcept;
 
     // Immediatly center render offset. Stop any tracking.
-    static void jumpToPt(ivec2 pt) noexcept;
-    static void jumpToPt(rvec2 pt) noexcept;
-    static void jumpToEntity(const Entity* e) noexcept;
+    static void
+    jumpToPt(ivec2 pt) noexcept;
+    static void
+    jumpToPt(rvec2 pt) noexcept;
+    static void
+    jumpToEntity(const Entity* e) noexcept;
 
     // Continuously follow.
-    static void trackEntity(const Entity* e) noexcept;
+    static void
+    trackEntity(const Entity* e) noexcept;
 
-    static void setArea(const Area* a) noexcept;
+    static void
+    setArea(const Area* a) noexcept;
 };
 
 #endif  // SRC_CORE_VIEWPORT_H_

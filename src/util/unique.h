@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** unique.h                         **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -50,12 +50,14 @@ class Unique {
     Unique(T* x) noexcept : x(x) {}
     ~Unique() noexcept { delete x; }
 
-    void operator=(T* x) noexcept {
+    void
+    operator=(T* x) noexcept {
         delete this->x;
         this->x = x;
     }
 
-    void operator=(Unique&& other) noexcept {
+    void
+    operator=(Unique&& other) noexcept {
         delete x;
         x = other.x;
         other.x = nullptr;
@@ -63,7 +65,10 @@ class Unique {
 
     operator bool() const noexcept { return x != nullptr; }
 
-    T* get() const noexcept { return x; }
+    T*
+    get() const noexcept {
+        return x;
+    }
     T* operator->() const noexcept {
         assert_(x);
         return x;
@@ -73,7 +78,8 @@ class Unique {
  private:
     // Unique pointers cannot be copied.
     Unique(const Unique&) noexcept {}
-    void operator=(const Unique&) noexcept {}
+    void
+    operator=(const Unique&) noexcept {}
 };
 
 #endif  // SRC_UTIL_UNIQUE_H_

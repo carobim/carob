@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** music-worker.h                     **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -32,14 +32,19 @@
 
 class MusicWorker {
  public:
-    static void play(StringView path) noexcept;
+    static void
+    play(StringView path) noexcept;
 
-    static void stop() noexcept;
+    static void
+    stop() noexcept;
 
-    static void pause() noexcept;
-    static void resume() noexcept;
+    static void
+    pause() noexcept;
+    static void
+    resume() noexcept;
 
-    static void garbageCollect() noexcept;
+    static void
+    garbageCollect() noexcept;
 };
 
 #endif  // SRC_CORE_MUSIC_WORKER_H_

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** rc-cache.h                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -35,15 +35,20 @@
 template<typename T>
 class RcCache {
  public:
-    T momentaryRequest(StringView name) noexcept;
+    T
+    momentaryRequest(StringView name) noexcept;
 
-    T lifetimeRequest(StringView name) noexcept;
+    T
+    lifetimeRequest(StringView name) noexcept;
 
-    void momentaryPut(StringView name, T data) noexcept;
+    void
+    momentaryPut(StringView name, T data) noexcept;
 
-    void lifetimePut(StringView name, T data) noexcept;
+    void
+    lifetimePut(StringView name, T data) noexcept;
 
-    void garbageCollect() noexcept;
+    void
+    garbageCollect() noexcept;
 
  private:
     struct CacheEntry {

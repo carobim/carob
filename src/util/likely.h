@@ -1,8 +1,8 @@
-/**********************************
-** Tsunagari Tile Engine         **
-** likely.h                      **
-** Copyright 2017 Paul Merrill   **
-**********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** likely.h                         **
+** Copyright 2017-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy

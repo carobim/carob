@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** display-list.cpp                 **
-** Copyright 2018-2019 Paul Merrill **
+** Copyright 2018-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -73,13 +73,13 @@ displayListPresent(DisplayList* display) noexcept {
             GameWindow::scale(display->scale.x, display->scale.y, [&] {
                 GameWindow::translate(
                         -display->scroll.x, -display->scroll.y, [&] {
-                    for (auto& item : display->items) {
-                        Image::draw(item.image,
-                                    item.destination.x,
-                                    item.destination.y,
-                                    0);
-                    }
-                });
+                            for (auto& item : display->items) {
+                                Image::draw(item.image,
+                                            item.destination.x,
+                                            item.destination.y,
+                                            0);
+                            }
+                        });
             });
         });
 

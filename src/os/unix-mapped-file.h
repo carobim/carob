@@ -1,8 +1,8 @@
-/**********************************
-** Tsunagari Tile Engine         **
-** os/unix-mapped-file.h         **
-** Copyright 2019 Paul Merrill   **
-**********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** unix-mapped-file.h               **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,21 +34,26 @@
 
 class MappedFile {
  public:
-    static Optional<MappedFile> fromPath(String& path) noexcept;
-    static Optional<MappedFile> fromPath(StringView path) noexcept;
-    
+    static Optional<MappedFile>
+    fromPath(String& path) noexcept;
+    static Optional<MappedFile>
+    fromPath(StringView path) noexcept;
+
     MappedFile() noexcept;
     MappedFile(MappedFile&& other) noexcept;
     MappedFile(const MappedFile& other) = delete;
     MappedFile(char* map, size_t len) noexcept;
     ~MappedFile() noexcept;
-    
-    MappedFile& operator=(MappedFile&& other) noexcept;
-    
-    template<typename T> const T at(size_t offset) const noexcept {
+
+    MappedFile&
+    operator=(MappedFile&& other) noexcept;
+
+    template<typename T>
+    const T
+    at(size_t offset) const noexcept {
         return reinterpret_cast<T>(map + offset);
     }
-    
+
  private:
     char* map;
     size_t len;

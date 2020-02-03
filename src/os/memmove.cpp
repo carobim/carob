@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** windows-cstring.cpp         **
-** Copyright 2019 Paul Merrill **
-*********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** memmove.cpp                      **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -50,14 +50,15 @@
 // **********
 
 #include "os/c.h"
-
 #include "util/int.h"
 #include "util/noexcept.h"
 
 extern "C" {
 
 static char*
-twobyte_memmem(const unsigned char* h, size_t k, const unsigned char* n) noexcept {
+twobyte_memmem(const unsigned char* h,
+               size_t k,
+               const unsigned char* n) noexcept {
     uint16_t nw = n[0] << 8 | n[1], hw = h[0] << 8 | h[1];
     for (h += 2, k -= 2; k; k--, hw = hw << 8 | *h++)
         if (hw == nw)
@@ -66,7 +67,9 @@ twobyte_memmem(const unsigned char* h, size_t k, const unsigned char* n) noexcep
 }
 
 static char*
-threebyte_memmem(const unsigned char* h, size_t k, const unsigned char* n) noexcept {
+threebyte_memmem(const unsigned char* h,
+                 size_t k,
+                 const unsigned char* n) noexcept {
     uint32_t nw = n[0] << 24 | n[1] << 16 | n[2] << 8;
     uint32_t hw = h[0] << 24 | h[1] << 16 | h[2] << 8;
     for (h += 3, k -= 3; k; k--, hw = (hw | *h++) << 8)
@@ -240,5 +243,4 @@ memmem(const void* h0, size_t k, const void* n0, size_t l) noexcept {
 
     return twoway_memmem(h, h + k, n, l);
 }
-
 }

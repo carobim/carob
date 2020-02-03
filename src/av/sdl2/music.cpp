@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** music.cpp                        **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -47,31 +47,32 @@ struct SDL2Song {
 };
 
 namespace {
-Rc<SDL2Song>
-genSong(StringView name) noexcept {
-    Optional<StringView> r = Resources::load(name);
-    if (!r) {
-        // Error logged.
-        return Rc<SDL2Song>();
+    Rc<SDL2Song>
+    genSong(StringView name) noexcept {
+        Optional<StringView> r = Resources::load(name);
+        if (!r) {
+            // Error logged.
+            return Rc<SDL2Song>();
+        }
+
+        assert_(r->size < UINT32_MAX);
+
+        SDL_RWops* ops =
+                SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r->data)),
+                              static_cast<int>(r->size));
+
+        TimeMeasure m(String() << "Constructed " << name << " as music");
+        Mix_Music* music = Mix_LoadMUS_RW(ops, 1);
+
+        // We need to keep the memory (the resource) around, so put it in a
+        // struct.
+        SDL2Song* song = new SDL2Song;
+        song->resource = *r;
+        song->mix = music;
+
+        return Rc<SDL2Song>(song);
     }
-
-    assert_(r->size < UINT32_MAX);
-
-    SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r->data)),
-                          static_cast<int>(r->size));
-
-    TimeMeasure m(String() << "Constructed " << name << " as music");
-    Mix_Music* music = Mix_LoadMUS_RW(ops, 1);
-
-    // We need to keep the memory (the resource) around, so put it in a struct.
-    SDL2Song* song = new SDL2Song;
-    song->resource = *r;
-    song->mix = music;
-
-    return Rc<SDL2Song>(song);
-}
-}
+}  // namespace
 
 static bool initalized = false;
 static String path;

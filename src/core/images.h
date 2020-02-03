@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** images.h                           **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -32,41 +32,49 @@
 #include "util/markable.h"
 #include "util/string-view.h"
 
-typedef Markable<int,-1> TiledImageID;
-typedef Markable<int,-1> ImageID;
+typedef Markable<int, -1> TiledImageID;
+typedef Markable<int, -1> ImageID;
 
 class Images {
  public:
     // Load an image from the file at the given path.
-    static ImageID load(StringView path) noexcept;
+    static ImageID
+    load(StringView path) noexcept;
 
     // Load an image of tiles from the file at the given path. Each tile
     // with width and heigh as specified.
-    static TiledImageID loadTiles(StringView path,
-                                  int tileWidth,
-                                  int tileHeight) noexcept;
+    static TiledImageID
+    loadTiles(StringView path, int tileWidth, int tileHeight) noexcept;
 
     // Free images not recently used.
-    static void prune(time_t latestPermissibleUse) noexcept;
+    static void
+    prune(time_t latestPermissibleUse) noexcept;
 };
 
 class TiledImage {
  public:
-    static int size(TiledImageID tiid) noexcept;
+    static int
+    size(TiledImageID tiid) noexcept;
 
-    static ImageID getTile(TiledImageID tiid, int i) noexcept;
+    static ImageID
+    getTile(TiledImageID tiid, int i) noexcept;
 
-    static void release(TiledImageID tiid) noexcept;
+    static void
+    release(TiledImageID tiid) noexcept;
 };
 
 class Image {
  public:
-    static void draw(ImageID iid, float x, float y, float z) noexcept;
+    static void
+    draw(ImageID iid, float x, float y, float z) noexcept;
 
-    static int width(ImageID iid) noexcept;
-    static int height(ImageID iid) noexcept;
+    static int
+    width(ImageID iid) noexcept;
+    static int
+    height(ImageID iid) noexcept;
 
-    static void release(ImageID iid) noexcept;
+    static void
+    release(ImageID iid) noexcept;
 };
 
 #endif  // SRC_CORE_IMAGES_H_

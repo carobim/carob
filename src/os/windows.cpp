@@ -3,7 +3,7 @@
 ** windows.cpp                        **
 ** Copyright 2007 Julian Raschke      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -39,10 +39,11 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-#pragma comment(linker, \
-                "\"/manifestdependency:type='win32' " \
-                "name='Microsoft.Windows.Common-Controls' version='6.0.0.0' " \
-                "processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(                                                      \
+        linker,                                                       \
+        "\"/manifestdependency:type='win32' "                         \
+        "name='Microsoft.Windows.Common-Controls' version='6.0.0.0' " \
+        "processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 extern "C" {
 #define MAX_PATH 260
@@ -67,7 +68,8 @@ typedef struct {
 
 WINBASEAPI BOOL WINAPI AttachConsole(DWORD);
 WINBASEAPI BOOL WINAPI CloseHandle(HANDLE) noexcept;
-WINBASEAPI BOOL WINAPI CreateDirectoryA(LPCSTR, void*) noexcept;
+WINBASEAPI BOOL WINAPI
+CreateDirectoryA(LPCSTR, void*) noexcept;
 WINBASEAPI HANDLE WINAPI
 CreateFileA(LPCSTR, DWORD, DWORD, void*, DWORD, DWORD, HANDLE) noexcept;
 WINBASEAPI VOID WINAPI ExitProcess(UINT) noexcept;
@@ -76,10 +78,12 @@ WINBASEAPI BOOL WINAPI FindNextFileA(HANDLE, LPWIN32_FIND_DATAA) noexcept;
 WINBASEAPI BOOL WINAPI FindClose(HANDLE) noexcept;
 _ACRTIMP FILE* __cdecl freopen(const char*, const char*, FILE*) noexcept;
 WINBASEAPI DWORD WINAPI GetFileAttributesA(LPCSTR) noexcept;
-WINBASEAPI BOOL WINAPI GetFileSizeEx(HANDLE, LARGE_INTEGER*) noexcept;
+WINBASEAPI BOOL WINAPI
+GetFileSizeEx(HANDLE, LARGE_INTEGER*) noexcept;
 WINBASEAPI HANDLE WINAPI GetStdHandle(DWORD) noexcept;
 WINUSERAPI int WINAPI MessageBoxA(HWND, LPCSTR, LPCSTR, UINT) noexcept;
-WINBASEAPI BOOL WINAPI ReadFile(HANDLE, VOID*, DWORD, DWORD*, void*) noexcept;
+WINBASEAPI BOOL WINAPI
+ReadFile(HANDLE, VOID*, DWORD, DWORD*, void*) noexcept;
 WINBASEAPI BOOL WINAPI SetConsoleTextAttribute(HANDLE, WORD) noexcept;
 WINBASEAPI BOOL WINAPI
 WriteFile(HANDLE, LPCVOID, DWORD, LPDWORD, void*) noexcept;
@@ -250,13 +254,13 @@ readFile(StringView path) noexcept {
         return none;
     }
 
-	uint64_t size_ = *size__;
+    uint64_t size_ = *size__;
 
-	if (size_ > UINT32_MAX) {
+    if (size_ > UINT32_MAX) {
         return none;
     }
 
-	DWORD size = static_cast<DWORD>(size_);
+    DWORD size = static_cast<DWORD>(size_);
 
     HANDLE file = CreateFile(String(path).null(),
                              FILE_READ_DATA,
@@ -269,10 +273,10 @@ readFile(StringView path) noexcept {
         return none;
     }
 
-	String data;
+    String data;
     data.resize(size);
 
-	DWORD read;
+    DWORD read;
     BOOL ok = ReadFile(file, data.data(), size, &read, nullptr);
     if (!ok) {
         return none;
@@ -293,7 +297,7 @@ setTermColor(TermColor color, PrintDest /*dest*/) noexcept {
 
     WORD attribute;
 
-	switch (color) {
+    switch (color) {
     default:
     case TC_RESET:
         attribute = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
@@ -315,7 +319,7 @@ setTermColor(TermColor color, PrintDest /*dest*/) noexcept {
 
 void
 wFixConsole() noexcept {
-    //if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+    // if (AttachConsole(ATTACH_PARENT_PROCESS)) {
     //    freopen("CONOUT$", "wb", stdout);  // Attach STDOUT.
     //    freopen("CONOUT$", "wb", stderr);  // Attach STDERR.
     //}

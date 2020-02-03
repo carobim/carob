@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** character.h                        **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -29,8 +29,8 @@
 #define SRC_CORE_CHARACTER_H_
 
 #include "core/entity.h"
-#include "core/tile.h"
 #include "core/tile-grid.h"
+#include "core/tile.h"
 #include "core/vec.h"
 #include "util/int.h"
 #include "util/optional.h"
@@ -40,45 +40,66 @@ class Character : public Entity {
     Character() noexcept;
     virtual ~Character() = default;
 
-    virtual void tick(time_t dt) noexcept;
-    virtual void turn() noexcept;
+    virtual void
+    tick(time_t dt) noexcept;
+    virtual void
+    turn() noexcept;
 
-    virtual void destroy() noexcept;
+    virtual void
+    destroy() noexcept;
 
     //! Retrieve position within Area.
-    icoord getTileCoords_i() const noexcept;
-    vicoord getTileCoords_vi() const noexcept;
+    icoord
+    getTileCoords_i() const noexcept;
+    vicoord
+    getTileCoords_vi() const noexcept;
 
     //! Set location within Area.
-    void setTileCoords(int x, int y) noexcept;
-    void setTileCoords(icoord phys) noexcept;
-    void setTileCoords(vicoord virt) noexcept;
-    void setTileCoords(rcoord virt) noexcept;
+    void
+    setTileCoords(int x, int y) noexcept;
+    void
+    setTileCoords(icoord phys) noexcept;
+    void
+    setTileCoords(vicoord virt) noexcept;
+    void
+    setTileCoords(rcoord virt) noexcept;
 
-    void setArea(Area* area, vicoord position) noexcept;
+    void
+    setArea(Area* area, vicoord position) noexcept;
 
     //! Initiate a movement within the Area.
-    void moveByTile(ivec2 delta) noexcept;
+    void
+    moveByTile(ivec2 delta) noexcept;
 
  protected:
     //! Indicates which coordinate we will move into if we proceed in
     //! direction specified.
-    icoord moveDest(ivec2 facing) noexcept;
+    icoord
+    moveDest(ivec2 facing) noexcept;
 
     //! Returns true if we can move in the desired direction.
-    bool canMove(icoord dest) noexcept;
+    bool
+    canMove(icoord dest) noexcept;
 
-    bool nowalked(icoord phys) noexcept;
+    bool
+    nowalked(icoord phys) noexcept;
 
-    void arrived() noexcept;
+    void
+    arrived() noexcept;
 
-    void leaveTile() noexcept;
-    void leaveTile(icoord phys) noexcept;
-    void enterTile() noexcept;
-    void enterTile(icoord phys) noexcept;
+    void
+    leaveTile() noexcept;
+    void
+    leaveTile(icoord phys) noexcept;
+    void
+    enterTile() noexcept;
+    void
+    enterTile(icoord phys) noexcept;
 
-    void runTileExitScript() noexcept;
-    void runTileEntryScript() noexcept;
+    void
+    runTileExitScript() noexcept;
+    void
+    runTileEntryScript() noexcept;
 
  protected:
     unsigned nowalkFlags;

@@ -66,35 +66,50 @@ class AreaJSON : public Area {
 
  private:
     //! Allocate Tile objects for one layer of map.
-    void allocateMapLayer(TileGrid::LayerType type) noexcept;
+    void
+    allocateMapLayer(TileGrid::LayerType type) noexcept;
 
     //! Parse an Area file.
-    bool processDescriptor() noexcept;
-    bool processMapProperties(Unique<JSONObject> obj) noexcept;
-    bool processTileSet(Unique<JSONObject> obj) noexcept;
-    bool processTileSetFile(Rc<JSONObject> obj,
-                            StringView source,
-                            int firstGid) noexcept;
-    bool processTileType(Unique<JSONObject> obj,
-                         Animation& graphic,
-                         TiledImageID img,
-                         int id) noexcept;
-    bool processLayer(Unique<JSONObject> obj) noexcept;
-    bool processLayerProperties(Unique<JSONObject> obj) noexcept;
-    bool processLayerData(Unique<JSONArray> arr) noexcept;
-    bool processObjectGroup(Unique<JSONObject> obj) noexcept;
-    bool processObjectGroupProperties(Unique<JSONObject> obj) noexcept;
-    bool processObject(Unique<JSONObject> obj) noexcept;
-    bool splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept;
-    bool parseExit(StringView dest,
-                   Optional<Exit>& exit,
-                   bool* wwide,
-                   bool* hwide) noexcept;
-    bool parseARGB(StringView str,
-                   unsigned char& a,
-                   unsigned char& r,
-                   unsigned char& g,
-                   unsigned char& b) noexcept;
+    bool
+    processDescriptor() noexcept;
+    bool
+    processMapProperties(Unique<JSONObject> obj) noexcept;
+    bool
+    processTileSet(Unique<JSONObject> obj) noexcept;
+    bool
+    processTileSetFile(Rc<JSONObject> obj,
+                       StringView source,
+                       int firstGid) noexcept;
+    bool
+    processTileType(Unique<JSONObject> obj,
+                    Animation& graphic,
+                    TiledImageID img,
+                    int id) noexcept;
+    bool
+    processLayer(Unique<JSONObject> obj) noexcept;
+    bool
+    processLayerProperties(Unique<JSONObject> obj) noexcept;
+    bool
+    processLayerData(Unique<JSONArray> arr) noexcept;
+    bool
+    processObjectGroup(Unique<JSONObject> obj) noexcept;
+    bool
+    processObjectGroupProperties(Unique<JSONObject> obj) noexcept;
+    bool
+    processObject(Unique<JSONObject> obj) noexcept;
+    bool
+    splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept;
+    bool
+    parseExit(StringView dest,
+              Optional<Exit>& exit,
+              bool* wwide,
+              bool* hwide) noexcept;
+    bool
+    parseARGB(StringView str,
+              unsigned char& a,
+              unsigned char& r,
+              unsigned char& g,
+              unsigned char& b) noexcept;
 };
 
 
@@ -648,8 +663,7 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
     // Gather object properties now. Assign them to tiles later.
     bool wwide[5] = {}, hwide[5] = {};  // Wide exit in width or height.
 
-    DataArea::TileScript enterScript = nullptr,
-                         leaveScript = nullptr,
+    DataArea::TileScript enterScript = nullptr, leaveScript = nullptr,
                          useScript = nullptr;
     Optional<Exit> exit[5];
     Optional<float> layermods[5];
@@ -770,16 +784,16 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
             }
 
             if (enterScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_ENTER].at(tile, hash)
-                    = enterScript;
+                grid.scripts[TileGrid::SCRIPT_TYPE_ENTER].at(tile, hash) =
+                        enterScript;
             }
             if (leaveScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_LEAVE].at(tile, hash)
-                    = leaveScript;
+                grid.scripts[TileGrid::SCRIPT_TYPE_LEAVE].at(tile, hash) =
+                        leaveScript;
             }
             if (useScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_USE].at(tile, hash)
-                    = useScript;
+                grid.scripts[TileGrid::SCRIPT_TYPE_USE].at(tile, hash) =
+                        useScript;
             }
         }
     }

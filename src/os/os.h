@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** os/os.h                          **
-** Copyright 2016-2019 Paul Merrill **
+** os.h                             **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -39,16 +39,23 @@ extern const char dirSeparator;
 
 typedef Markable<uint64_t, UINT64_MAX> Filesize;
 
-Filesize getFileSize(StringView path) noexcept;
-bool writeFile(StringView path, uint32_t length, void* data) noexcept;
-bool writeFileVec(StringView path,
-                  uint32_t count,
-                  uint32_t* lengths,
-                  void** datas) noexcept;
-bool isDir(StringView path) noexcept;
-void makeDirectory(StringView path) noexcept;
-Vector<String> listDir(StringView path) noexcept;
-Optional<String> readFile(StringView path) noexcept;
+Filesize
+getFileSize(StringView path) noexcept;
+bool
+writeFile(StringView path, uint32_t length, void* data) noexcept;
+bool
+writeFileVec(StringView path,
+             uint32_t count,
+             uint32_t* lengths,
+             void** datas) noexcept;
+bool
+isDir(StringView path) noexcept;
+void
+makeDirectory(StringView path) noexcept;
+Vector<String>
+listDir(StringView path) noexcept;
+Optional<String>
+readFile(StringView path) noexcept;
 
 enum TermColor {
     TC_RESET,
@@ -62,12 +69,14 @@ enum PrintDest {
     Stderr,
 };
 
-void setTermColor(TermColor color, PrintDest dest) noexcept;
+void
+setTermColor(TermColor color, PrintDest dest) noexcept;
 
-void exitProcess(int code) noexcept;
+void
+exitProcess(int code) noexcept;
 
 #ifdef _WIN32
-#    include "windows.h"
+#include "windows.h"
 #endif
 
 #endif  // SRC_OS_OS_H_

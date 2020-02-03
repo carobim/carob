@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** npc.h                              **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2018 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -32,7 +32,8 @@
 
 class NPC : public Character {
  protected:
-    void arrived() noexcept final;
+    void
+    arrived() noexcept final;
 };
 
 #endif  // SRC_CORE_NPC_H_

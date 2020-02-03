@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** function.h                  **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** function.h                       **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,7 +34,7 @@
 #include "util/noexcept.h"
 
 #pragma warning(push)
-#pragma warning(disable: 26495)  // Always initialize a member variable.
+#pragma warning(disable : 26495)  // Always initialize a member variable.
 
 #ifdef _MSC_VER
 #define NO_VTABLE __declspec(novtable)
@@ -43,14 +43,16 @@
 #endif
 
 template<class Class, class Ret, class This, class... Args>
-auto invoke(Ret Class::*f, This&& t, Args&&... args) noexcept
-		-> decltype((forward_<This>(t).*f)(forward_<Args>(args)...)) {
+auto
+invoke(Ret Class::*f, This&& t, Args&&... args) noexcept
+        -> decltype((forward_<This>(t).*f)(forward_<Args>(args)...)) {
     return (forward_<This>(t).*f)(forward_<Args>(args)...);
 }
 
 template<class F, class... Args>
-auto invoke(F&& f, Args&&... args) noexcept
-		-> decltype(forward_<F>(f)(forward_<Args>(args)...)) {
+auto
+invoke(F&& f, Args&&... args) noexcept
+        -> decltype(forward_<F>(f)(forward_<Args>(args)...)) {
     return forward_<F>(f)(forward_<Args>(args)...);
 }
 
@@ -59,25 +61,31 @@ class Function;  // Undefined.
 
 namespace function {
     template<class R>
-	class base;
+    class base;
 
     template<class R, class... ArgTypes>
-	class NO_VTABLE base<R(ArgTypes...)> {
+    class NO_VTABLE base<R(ArgTypes...)> {
         base(const base&) noexcept;
-        base& operator=(const base&) noexcept;
+        base&
+        operator=(const base&) noexcept;
 
      public:
         base() noexcept = default;
         virtual ~base() noexcept = default;
-        virtual base* clone() const noexcept = 0;
-        virtual void clone(base*) const noexcept = 0;
-        virtual void destroy() noexcept = 0;
-        virtual void destroyDeallocate() noexcept = 0;
-        virtual R operator()(ArgTypes&&...) noexcept = 0;
+        virtual base*
+        clone() const noexcept = 0;
+        virtual void
+        clone(base*) const noexcept = 0;
+        virtual void
+        destroy() noexcept = 0;
+        virtual void
+        destroyDeallocate() noexcept = 0;
+        virtual R
+        operator()(ArgTypes&&...) noexcept = 0;
     };
 
     template<class F, class R>
-	class func;
+    class func;
 
     template<class F, class R, class... ArgTypes>
     class func<F, R(ArgTypes...)> final : public base<R(ArgTypes...)> {
@@ -87,35 +95,45 @@ namespace function {
         explicit func(F&& f) noexcept : f(move_(f)) {}
         explicit func(const F& f) noexcept : f(f) {}
 
-        base<R(ArgTypes...)>* clone() const noexcept;
-        void clone(base<R(ArgTypes...)>*) const noexcept;
-        void destroy() noexcept;
-        void destroyDeallocate() noexcept;
-        R operator()(ArgTypes&&... args) noexcept;
+        base<R(ArgTypes...)>*
+        clone() const noexcept;
+        void
+        clone(base<R(ArgTypes...)>*) const noexcept;
+        void
+        destroy() noexcept;
+        void
+        destroyDeallocate() noexcept;
+        R
+        operator()(ArgTypes&&... args) noexcept;
     };
 
     template<class F, class R, class... ArgTypes>
-    base<R(ArgTypes...)>* func<F, R(ArgTypes...)>::clone() const noexcept {
+    base<R(ArgTypes...)>*
+    func<F, R(ArgTypes...)>::clone() const noexcept {
         return new func(f);
     }
 
     template<class F, class R, class... ArgTypes>
-    void func<F, R(ArgTypes...)>::clone(base<R(ArgTypes...)>* p) const noexcept {
+    void
+    func<F, R(ArgTypes...)>::clone(base<R(ArgTypes...)>* p) const noexcept {
         new (p) func(f);
     }
 
     template<class F, class R, class... ArgTypes>
-    void func<F, R(ArgTypes...)>::destroy() noexcept {
+    void
+    func<F, R(ArgTypes...)>::destroy() noexcept {
         f.~F();
     }
 
     template<class F, class R, class... ArgTypes>
-    void func<F, R(ArgTypes...)>::destroyDeallocate() noexcept {
+    void
+    func<F, R(ArgTypes...)>::destroyDeallocate() noexcept {
         delete this;
     }
 
     template<class F, class R, class... ArgTypes>
-    R func<F, R(ArgTypes...)>::operator()(ArgTypes&&... args) noexcept {
+    R
+    func<F, R(ArgTypes...)>::operator()(ArgTypes&&... args) noexcept {
         return invoke(f, forward_<ArgTypes>(args)...);
     }
 }  // namespace function
@@ -125,9 +143,12 @@ class Function<R(ArgTypes...)> {
  private:
     typedef function::base<R(ArgTypes...)> base;
 
-    static base* asBase(void* p) noexcept { return reinterpret_cast<base*>(p); }
+    static base*
+    asBase(void* p) noexcept {
+        return reinterpret_cast<base*>(p);
+    }
 
-    Align<void * [3]> buf;
+    Align<void* [3]> buf;
     base* f;
 
  public:
@@ -139,22 +160,31 @@ class Function<R(ArgTypes...)> {
     ~Function() noexcept;
 
     template<class F>
-    void set(F& something,
-             EnableIf<sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf)> = True());
+    void
+    set(F& something,
+        EnableIf<sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf)> =
+                True());
     template<class F>
-    void set(F& something,
-             EnableIf<!(sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf))> = True());
+    void
+    set(F& something,
+        EnableIf<!(sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf))> =
+                True());
 
-    Function& operator=(const Function&) noexcept;
-    Function& operator=(Function&&) noexcept;
+    Function&
+    operator=(const Function&) noexcept;
+    Function&
+    operator=(Function&&) noexcept;
     template<class F>
-    Function& operator=(F&&) noexcept;
+    Function&
+    operator=(F&&) noexcept;
 
-    void swap(Function&) noexcept;
+    void
+    swap(Function&) noexcept;
 
     inline explicit operator bool() const noexcept { return f != nullptr; }
 
-    R operator()(ArgTypes...) const noexcept;
+    R
+    operator()(ArgTypes...) const noexcept;
 };
 
 template<class R, class... ArgTypes>
@@ -194,13 +224,19 @@ Function<R(ArgTypes...)>::Function(F something) noexcept : f(nullptr) {
 
 template<class R, class... ArgTypes>
 template<class F>
-void Function<R(ArgTypes...)>::set(F& something, EnableIf<sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf)>) {
+void
+Function<R(ArgTypes...)>::set(
+        F& something,
+        EnableIf<sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf)>) {
     f = new ((void*)&buf) function::func<F, R(ArgTypes...)>(move_(something));
 }
 
 template<class R, class... ArgTypes>
 template<class F>
-void Function<R(ArgTypes...)>::set(F& something, EnableIf<!(sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf))>) {
+void
+Function<R(ArgTypes...)>::set(
+        F& something,
+        EnableIf<!(sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf))>) {
     f = new function::func<F, R(ArgTypes...)>(move_(something));
 }
 
@@ -255,7 +291,7 @@ Function<R(ArgTypes...)>::swap(Function& other) noexcept {
     }
 
     if ((void*)f == &buf && (void*)other.f == &other.buf) {
-        alignas(alignof(void * [3])) char tempbuf[3 * sizeof(void*)];
+        alignas(alignof(void* [3])) char tempbuf[3 * sizeof(void*)];
         base* t = asBase(&tempbuf);
         f->clone(t);
         f->destroy();

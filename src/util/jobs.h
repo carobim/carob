@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** scheduler.h                      **
-** Copyright 2016-2019 Paul Merrill **
+** jobs.h                           **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -32,7 +32,9 @@
 
 typedef Function<void()> Job;
 
-void JobsEnqueue(Job job) noexcept;
-void JobsFlush() noexcept;
+void
+JobsEnqueue(Job job) noexcept;
+void
+JobsFlush() noexcept;
 
 #endif  // SRC_UTIL_SCHEDULER_H_

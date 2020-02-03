@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** file-type.cpp                    **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -28,16 +28,12 @@
 
 #include "util/noexcept.h"
 
-static const StringView textExtensions[] = {
-    ".json"
-};
+static const StringView textExtensions[] = {".json"};
 
-static const StringView mediaExtensions[] = {
-    ".oga",
-    ".png"
-};
+static const StringView mediaExtensions[] = {".oga", ".png"};
 
-FileType determineFileType(StringView path) noexcept {
+FileType
+determineFileType(StringView path) noexcept {
     auto dot = path.rfind('.');
     if (!dot) {
         return FT_UNKNOWN;

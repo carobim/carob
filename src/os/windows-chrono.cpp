@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** windows-chrono.cpp          **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** windows-chrono.cpp               **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,9 +32,11 @@
 
 extern "C" {
 WINBASEAPI
-BOOL WINAPI QueryPerformanceFrequency(LARGE_INTEGER*);
+BOOL WINAPI
+QueryPerformanceFrequency(LARGE_INTEGER*);
 WINBASEAPI
-BOOL WINAPI QueryPerformanceCounter(LARGE_INTEGER*);
+BOOL WINAPI
+QueryPerformanceCounter(LARGE_INTEGER*);
 WINBASEAPI
 VOID WINAPI Sleep(DWORD);
 }

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** bitrecord.h                        **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -38,7 +38,8 @@ class BitRecord {
 
     bool& operator[](size_t idx) noexcept;
     bool operator[](size_t idx) const noexcept;
-    Vector<size_t> diff(const BitRecord& other) const noexcept;
+    Vector<size_t>
+    diff(const BitRecord& other) const noexcept;
 
  private:
     Vector<bool> states;

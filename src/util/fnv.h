@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** fnv.h                       **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** fnv.h                            **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,6 +30,7 @@
 #include "util/int.h"
 #include "util/noexcept.h"
 
-size_t fnvHash(const char* data, size_t size) noexcept;
+size_t
+fnvHash(const char* data, size_t size) noexcept;
 
 #endif  // SRC_UTIL_FNV_H_

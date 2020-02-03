@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack-reader.cpp                  **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -63,18 +63,25 @@ struct BlobMetadata {
 
 class PackReaderImpl : public PackReader {
  public:
-    BlobIndex size() const noexcept;
+    BlobIndex
+    size() const noexcept;
 
-    BlobIndex findIndex(StringView path) noexcept;
+    BlobIndex
+    findIndex(StringView path) noexcept;
 
-    StringView getBlobPath(BlobIndex index) const noexcept;
-    BlobSize getBlobSize(BlobIndex index) const noexcept;
-    void* getBlobData(BlobIndex index) noexcept;
+    StringView
+    getBlobPath(BlobIndex index) const noexcept;
+    BlobSize
+    getBlobSize(BlobIndex index) const noexcept;
+    void*
+    getBlobData(BlobIndex index) noexcept;
 
-    Vector<void*> getBlobDatas(Vector<BlobIndex> indicies) noexcept;
+    Vector<void*>
+    getBlobDatas(Vector<BlobIndex> indicies) noexcept;
 
  public:
-    void constructLookups() noexcept;
+    void
+    constructLookups() noexcept;
 
  public:
     MappedFile file;

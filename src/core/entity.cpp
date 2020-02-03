@@ -87,8 +87,7 @@ Entity::draw(DisplayList* display) noexcept {
     float maxY = area->grid.tileDim.y + r.y;
     float minY = maxY - imgsz.y;
 
-    display->items.push_back(DisplayItem{phase->frame(now),
-                                         rvec2{minX, minY}});
+    display->items.push_back(DisplayItem{phase->frame(now), rvec2{minX, minY}});
 }
 
 bool
@@ -278,7 +277,8 @@ Entity::setDestinationCoordinate(rcoord destCoord) noexcept {
     r.z = destCoord.z;
 
     this->destCoord = destCoord;
-    angleToDest = static_cast<float>(atan2(destCoord.y - r.y, destCoord.x - r.x));
+    angleToDest =
+            static_cast<float>(atan2(destCoord.y - r.y, destCoord.x - r.x));
 }
 
 void

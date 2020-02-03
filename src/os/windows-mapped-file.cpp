@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** os/windows-mapped-file.cpp  **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** windows-mapped-file.cpp          **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,14 +37,16 @@ typedef struct {
     BOOL bInheritHandle;
 } SECURITY_ATTRIBUTES, *PSECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
 
-WINBASEAPI BOOL WINAPI CloseHandle(HANDLE hObject) noexcept;
-WINBASEAPI HANDLE WINAPI CreateFileA(LPCSTR lpFileName,
-                                     DWORD dwDesiredAccess,
-                                     DWORD dwShareMode,
-                                     LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-                                     DWORD dwCreationDisposition,
-                                     DWORD dwFlagsAndAttributes,
-                                     HANDLE hTemplateFile) noexcept;
+WINBASEAPI BOOL WINAPI
+CloseHandle(HANDLE hObject) noexcept;
+WINBASEAPI HANDLE WINAPI
+CreateFileA(LPCSTR lpFileName,
+            DWORD dwDesiredAccess,
+            DWORD dwShareMode,
+            LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+            DWORD dwCreationDisposition,
+            DWORD dwFlagsAndAttributes,
+            HANDLE hTemplateFile) noexcept;
 WINBASEAPI HANDLE WINAPI
 CreateFileMappingA(HANDLE hFile,
                    LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
@@ -52,12 +54,14 @@ CreateFileMappingA(HANDLE hFile,
                    DWORD dwMaximumSizeHigh,
                    DWORD dwMaximumSizeLow,
                    LPCSTR lpName) noexcept;
-WINBASEAPI LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject,
-                                       DWORD dwDesiredAccess,
-                                       DWORD dwFileOffsetHigh,
-                                       DWORD dwFileOffsetLow,
-                                       SIZE_T dwNumberOfBytesToMap) noexcept;
-WINBASEAPI BOOL WINAPI UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;
+WINBASEAPI LPVOID WINAPI
+MapViewOfFile(HANDLE hFileMappingObject,
+              DWORD dwDesiredAccess,
+              DWORD dwFileOffsetHigh,
+              DWORD dwFileOffsetLow,
+              SIZE_T dwNumberOfBytesToMap) noexcept;
+WINBASEAPI BOOL WINAPI
+UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;
 
 #define CreateFile CreateFileA
 #define CreateFileMapping CreateFileMappingA

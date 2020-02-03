@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** display-list.h                   **
-** Copyright 2018-2019 Paul Merrill **
+** Copyright 2018-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -38,7 +38,7 @@ struct DisplayItem {
 
 struct DisplayList {
     bool loopX = false;
-	bool loopY = false;
+    bool loopY = false;
 
     rvec2 padding = {0.0f, 0.0f};
     rvec2 scale = {0.0f, 0.0f};
@@ -51,6 +51,7 @@ struct DisplayList {
     bool paused = false;  // TODO: Move to colorOverlay & overlay.
 };
 
-void displayListPresent(DisplayList* display) noexcept;
+void
+displayListPresent(DisplayList* display) noexcept;
 
 #endif  // SRC_CORE_DISPLAY_LIST_H_

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** jsons.cpp                        **
-** Copyright 2016-2019 Paul Merrill **
+** jsons-rapidjson.cpp              **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -73,32 +73,52 @@ class JSONObjectImpl : public JSONObject {
  public:
     virtual ~JSONObjectImpl() override = default;
 
-    Vector<StringView> names() noexcept final;
+    Vector<StringView>
+    names() noexcept final;
 
-    bool hasBool(StringView name) noexcept final;
-    bool hasInt(StringView name) noexcept final;
-    bool hasUnsigned(StringView name) noexcept final;
-    bool hasFloat(StringView name) noexcept final;
-    bool hasString(StringView name) noexcept final;
-    bool hasObject(StringView name) noexcept final;
-    bool hasArray(StringView name) noexcept final;
+    bool
+    hasBool(StringView name) noexcept final;
+    bool
+    hasInt(StringView name) noexcept final;
+    bool
+    hasUnsigned(StringView name) noexcept final;
+    bool
+    hasFloat(StringView name) noexcept final;
+    bool
+    hasString(StringView name) noexcept final;
+    bool
+    hasObject(StringView name) noexcept final;
+    bool
+    hasArray(StringView name) noexcept final;
 
-    bool hasStringFloat(StringView name) noexcept final;
+    bool
+    hasStringFloat(StringView name) noexcept final;
 
-    bool boolAt(StringView name) noexcept final;
-    int intAt(StringView name) noexcept final;
-    int intAt(StringView name, int lowerBound, int upperBound) noexcept final;
-    unsigned unsignedAt(StringView name) noexcept final;
-    float floatAt(StringView name) noexcept final;
-    StringView stringAt(StringView name) noexcept final;
-    Unique<JSONObject> objectAt(StringView name) noexcept final;
-    Unique<JSONArray> arrayAt(StringView name) noexcept final;
+    bool
+    boolAt(StringView name) noexcept final;
+    int
+    intAt(StringView name) noexcept final;
+    int
+    intAt(StringView name, int lowerBound, int upperBound) noexcept final;
+    unsigned
+    unsignedAt(StringView name) noexcept final;
+    float
+    floatAt(StringView name) noexcept final;
+    StringView
+    stringAt(StringView name) noexcept final;
+    Unique<JSONObject>
+    objectAt(StringView name) noexcept final;
+    Unique<JSONArray>
+    arrayAt(StringView name) noexcept final;
 
-    float stringFloatAt(StringView name) noexcept final;
+    float
+    stringFloatAt(StringView name) noexcept final;
 
  protected:
-    RJValue str(StringView name) noexcept;
-    virtual RJObject get() noexcept = 0;
+    RJValue
+    str(StringView name) noexcept;
+    virtual RJObject
+    get() noexcept = 0;
 };
 
 class JSONObjectReal : public JSONObjectImpl {
@@ -106,7 +126,8 @@ class JSONObjectReal : public JSONObjectImpl {
     explicit JSONObjectReal(RJObject object) noexcept;
 
  protected:
-    RJObject get() noexcept final;
+    RJObject
+    get() noexcept final;
 
  private:
     RJObject object;
@@ -116,26 +137,42 @@ class JSONArrayImpl : public JSONArray {
  public:
     explicit JSONArrayImpl(RJArray array) noexcept;
 
-    size_t size() noexcept final;
+    size_t
+    size() noexcept final;
 
-    bool isBool(size_t index) noexcept final;
-    bool isInt(size_t index) noexcept final;
-    bool isUnsigned(size_t index) noexcept final;
-    bool isFloat(size_t index) noexcept final;
-    bool isString(size_t index) noexcept final;
-    bool isObject(size_t index) noexcept final;
-    bool isArray(size_t index) noexcept final;
+    bool
+    isBool(size_t index) noexcept final;
+    bool
+    isInt(size_t index) noexcept final;
+    bool
+    isUnsigned(size_t index) noexcept final;
+    bool
+    isFloat(size_t index) noexcept final;
+    bool
+    isString(size_t index) noexcept final;
+    bool
+    isObject(size_t index) noexcept final;
+    bool
+    isArray(size_t index) noexcept final;
 
-    bool boolAt(size_t index) noexcept final;
-    int intAt(size_t index) noexcept final;
-    unsigned unsignedAt(size_t index) noexcept final;
-    float floatAt(size_t index) noexcept final;
-    StringView stringAt(size_t index) noexcept final;
-    Unique<JSONObject> objectAt(size_t index) noexcept final;
-    Unique<JSONArray> arrayAt(size_t index) noexcept final;
+    bool
+    boolAt(size_t index) noexcept final;
+    int
+    intAt(size_t index) noexcept final;
+    unsigned
+    unsignedAt(size_t index) noexcept final;
+    float
+    floatAt(size_t index) noexcept final;
+    StringView
+    stringAt(size_t index) noexcept final;
+    Unique<JSONObject>
+    objectAt(size_t index) noexcept final;
+    Unique<JSONArray>
+    arrayAt(size_t index) noexcept final;
 
  private:
-    RJArray::PlainType& at(size_t index) noexcept;
+    RJArray::PlainType&
+    at(size_t index) noexcept;
 
  private:
     RJArray array;
@@ -146,17 +183,20 @@ class JSONDocImpl : public JSONObjectImpl {
  public:
     explicit JSONDocImpl(String json) noexcept;
 
-    bool isValid() noexcept;
+    bool
+    isValid() noexcept;
 
  protected:
-    RJObject get() noexcept final;
+    RJObject
+    get() noexcept final;
 
  private:
     String json;
     RJDocument document;
 };
 
-Rc<JSONObject> genJSON(StringView path) noexcept;
+Rc<JSONObject>
+genJSON(StringView path) noexcept;
 
 Vector<StringView>
 JSONObjectImpl::names() noexcept {

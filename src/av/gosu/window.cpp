@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** window.cpp                         **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -59,8 +59,7 @@ struct Keystate {
 
 static bool
 operator==(const Keystate& a, const Keystate& b) noexcept {
-    return a.since == b.since &&
-           a.consecutive == b.consecutive &&
+    return a.since == b.since && a.consecutive == b.consecutive &&
            a.initiallyResolved == b.initiallyResolved;
 }
 
@@ -110,11 +109,16 @@ class GosuWindow : public Gosu::Window {
  public:
     GosuWindow() noexcept;
 
-    void button_down(const Gosu::Button btn) noexcept final;
-    void button_up(const Gosu::Button btn) noexcept final;
-    void draw() noexcept final;
-    bool needs_redraw() const noexcept final;
-    void update() noexcept final;
+    void
+    button_down(const Gosu::Button btn) noexcept final;
+    void
+    button_up(const Gosu::Button btn) noexcept final;
+    void
+    draw() noexcept final;
+    bool
+    needs_redraw() const noexcept final;
+    void
+    update() noexcept final;
 };
 
 static GosuWindow* window = nullptr;

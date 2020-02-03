@@ -1,8 +1,8 @@
-/**********************************
-** Tsunagari Tile Engine         **
-** linux-thread.h                **
-** Copyright 2019 Paul Merrill   **
-**********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** unix-thread.h                    **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -55,11 +55,13 @@ class Thread {
     inline ~Thread() noexcept { assert_(t == 0); }
 
     Thread(const Thread&) = delete;
-    Thread& operator=(const Thread&) = delete;
+    Thread&
+    operator=(const Thread&) = delete;
 
-    inline void join() noexcept {
+    inline void
+    join() noexcept {
         assert_(t != 0);
-        
+
         int err = pthread_join(t, 0);
         (void)err;
         assert_(err == 0);
@@ -67,7 +69,8 @@ class Thread {
         t = 0;
     }
 
-    static inline unsigned hardware_concurrency() noexcept {
+    static inline unsigned
+    hardware_concurrency() noexcept {
         long result = sysconf(_SC_NPROCESSORS_ONLN);
         if (result < 0) {
             return 0;
@@ -75,8 +78,8 @@ class Thread {
         return static_cast<unsigned>(result);
     }
 
-    static void disableTimerCoalescing() noexcept {
-    }
+    static void
+    disableTimerCoalescing() noexcept {}
 
     pthread_t t = 0;
 };
