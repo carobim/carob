@@ -25,10 +25,13 @@
 // IN THE SOFTWARE.
 // **********
 
+// clang-format off
+#include "av/gosu/gosu.h"
+// clang-format on
+
 #include "core/images.h"
 
 #include "av/gosu/cbuffer.h"
-#include "av/gosu/gosu.h"
 #include "av/gosu/window.h"
 #include "cache/rc-cache-impl.h"
 #include "cache/rc-reader-cache.h"
