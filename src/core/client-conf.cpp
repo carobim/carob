@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** client-conf.cpp                    **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -28,7 +28,7 @@
 #include "core/client-conf.h"
 
 #include "config.h"
-#include "core/jsons.h"
+#include "core/jsons-rapidjson.h"
 #include "os/os.h"
 #include "util/move.h"
 #include "util/string.h"

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** entity.h                           **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -30,7 +30,7 @@
 
 #include "core/animation.h"
 #include "core/images.h"
-#include "core/jsons.h"
+#include "core/jsons-rapidjson.h"
 #include "core/vec.h"
 #include "util/function.h"
 #include "util/hashtable.h"

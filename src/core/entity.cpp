@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** entity.cpp                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -31,7 +31,7 @@
 #include "core/client-conf.h"
 #include "core/display-list.h"
 #include "core/images.h"
-#include "core/jsons.h"
+#include "core/jsons-rapidjson.h"
 #include "core/log.h"
 #include "core/resources.h"
 #include "core/world.h"

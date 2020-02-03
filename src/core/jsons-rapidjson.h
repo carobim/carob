@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** jsons.h                          **
-** Copyright 2016-2019 Paul Merrill **
+** jsons-rapidjson.h                **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********

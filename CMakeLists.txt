@@ -164,8 +164,8 @@ target_sources(tsunagari
     PRIVATE src/core/entity.cpp
     PUBLIC  src/core/entity.h
     PUBLIC  src/core/images.h
-    PRIVATE src/core/jsons.cpp
-    PUBLIC  src/core/jsons.h
+    PRIVATE src/core/jsons-rapidjson.cpp
+    PUBLIC  src/core/jsons-rapidjson.h
     PRIVATE src/core/log.cpp
     PUBLIC  src/core/log.h
     PRIVATE src/core/measure.cpp

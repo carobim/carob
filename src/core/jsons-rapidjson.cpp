@@ -49,7 +49,7 @@
 #include <time.h>
 // clang-format on
 
-#include "core/jsons.h"
+#include "core/jsons-rapidjson.h"
 
 #include "cache/rc-cache-impl.h"
 #include "cache/rc-reader-cache.h"

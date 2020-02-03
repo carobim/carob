@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** area-json.cpp                      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -31,7 +31,7 @@
 #include "core/character.h"
 #include "core/entity.h"
 #include "core/images.h"
-#include "core/jsons.h"
+#include "core/jsons-rapidjson.h"
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/overlay.h"
