@@ -11,20 +11,22 @@ matrix:
         - cmake ..
         - cmake --build .
     - addons:
-       homebrew:
-         packages:
-           - sdl2
-           - sdl2_image
-           - sdl2_mixer
+        homebrew:
+          packages:
+            - sdl2
+            - sdl2_image
+            - sdl2_mixer
+          update: true
       script:
         - mkdir build
         - cd build
         - cmake .. -DAV_SDL2=On
         - cmake --build .
     - addons:
-       homebrew:
-         packages:
-           - libgosu
+        homebrew:
+          packages:
+            - libgosu
+          update: true
       env:
         - LDFLAGS=-L/usr/local/lib
       script:
