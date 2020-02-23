@@ -83,7 +83,7 @@ bool
 World::init() noexcept {
     alive = true;
 
-    auto& parameters = DataWorld::instance().parameters;
+    auto& parameters = DataWorld::parameters;
     auto& gameStart = parameters.gameStart;
 
     Conf::moveMode = parameters.moveMode;
@@ -203,7 +203,7 @@ World::focusArea(StringView filename, vicoord playerPos) noexcept {
         return false;
     }
 
-    DataArea* dataArea = DataWorld::instance().area(filename);
+    DataArea* dataArea = DataWorld::area(filename);
     if (!dataArea) {
         return false;
     }

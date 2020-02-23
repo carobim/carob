@@ -28,31 +28,27 @@
 #ifndef SRC_DATA_DATA_WORLD_H_
 #define SRC_DATA_DATA_WORLD_H_
 
+class DataArea;
+
 #include "core/client-conf.h"
-#include "data/data-area.h"
-#include "util/hashtable.h"
 #include "util/string-view.h"
-#include "util/unique.h"
 
 class DataWorld {
  public:
-    static DataWorld&
-    instance() noexcept;
-
-    virtual ~DataWorld() = default;
-
     //! After the engine has booted, initialize the world.
-    virtual bool
-    init() noexcept = 0;
+    static bool
+    init() noexcept;
 
-    DataArea*
+    static DataArea*
     area(StringView areaName) noexcept;
 
     // Miscellaneous engine parameters set by world's author.
-    struct {
+    struct About {
         StringView name, author, version;
-    } about;
-    struct {
+    };
+    static About about;
+
+    struct Parameters {
         enum Conf::MovementMode moveMode = Conf::TURN;
         rvec2 viewportResolution = {0.0, 0.0};
         struct {
@@ -68,21 +64,14 @@ class DataWorld {
             StringView area;
             vicoord coords = {0, 0, 0.0};
         } gameStart;
-    } parameters;
-    StringView datafile;
+    };
+    static Parameters parameters;
 
- protected:
-    DataWorld() = default;
-
-    Hashmap<StringView, Unique<DataArea>> areas;
+    static StringView datafile;
 
  private:
+    DataWorld() = delete;
     DataWorld(const DataWorld&) = delete;
-    DataWorld(DataWorld&&) = delete;
-    DataWorld&
-    operator=(const DataWorld&) = delete;
-    DataWorld&
-    operator=(DataWorld&&) = delete;
 };
 
 #endif  // SRC_DATA_DATA_WORLD_H_

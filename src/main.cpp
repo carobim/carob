@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** main.cpp                           **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -80,8 +80,6 @@ main() noexcept {
         GameWindow::create();
     }
 
-    DataWorld& dataWorld = DataWorld::instance();
-
     {
         TimeMeasure m("Constructed world");
         if (!World::init()) {
@@ -90,12 +88,12 @@ main() noexcept {
         }
     }
 
-    if (!dataWorld.init()) {
+    if (!DataWorld::init()) {
         Log::fatal("Main", "DataWorld::init");
         return 1;
     }
 
-    GameWindow::setCaption(dataWorld.about.name);
+    GameWindow::setCaption(DataWorld::about.name);
 
     GameWindow::mainLoop();
 

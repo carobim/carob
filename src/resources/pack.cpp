@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack.cpp                         **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -43,7 +43,7 @@ openPackFile() noexcept {
         return true;
     }
 
-    StringView path = DataWorld::instance().datafile;
+    StringView path = DataWorld::datafile;
 
     // TimeMeasure m("Opened " + path);
 
@@ -59,7 +59,7 @@ openPackFile() noexcept {
 
 static String
 getFullPath(StringView path) noexcept {
-    return String() << DataWorld::instance().datafile << "/" << path;
+    return String() << DataWorld::datafile << "/" << path;
 }
 
 Optional<StringView>

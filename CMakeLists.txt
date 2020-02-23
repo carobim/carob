@@ -103,7 +103,6 @@ target_sources(tsunagari
 
 target_sources(null-world
     PRIVATE src/null-world.cpp
-    PRIVATE src/null-world.h
 )
 
 if(AV_NULL)
@@ -197,7 +196,6 @@ target_sources(tsunagari
 target_sources(tsunagari
     PRIVATE src/data/data-area.cpp
     PUBLIC  src/data/data-area.h
-    PRIVATE src/data/data-world.cpp
     PUBLIC  src/data/data-world.h
     PRIVATE src/data/inprogress.cpp
     PUBLIC  src/data/inprogress.h

@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** null-world.cpp              **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** null-world.cpp                   **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,38 +24,45 @@
 // IN THE SOFTWARE.
 // **********
 
-#include "null-world.h"
+#include "data/data-area.h"
+#include "data/data-world.h"
+#include "util/unique.h"
 
-DataWorld&
-DataWorld::instance() noexcept {
-    static auto globalNullDataWorld = new NullDataWorld;
-    return *globalNullDataWorld;
+static DataArea nullArea;
+
+DataArea*
+DataWorld::area(StringView areaName) noexcept {
+    return &nullArea;
 }
 
-NullDataWorld::NullDataWorld() noexcept {
-    about.name = "Null World";
-    about.author = "Paul Merrill";
-    about.version = "1";
+DataWorld::About DataWorld::about = {
+    .name = "Null World",
+    .author = "Paul Merrill",
+    .version = "1",
+};
 
-    parameters.moveMode = Conf::TILE;
+DataWorld::Parameters DataWorld::parameters = {
+    .moveMode = Conf::TILE,
+    .viewportResolution = {240, 160},
+    .input = {
+        .persistDelay = {
+            .initial = 300,
+            .consecutive = 100,
+        },
+    },
+    .gameStart = {
+        .player = {
+            .file = "null-player.json",
+            .phase = "down",
+        },
+        .area = "null-area.json",
+        .coords = {0, 0, 0},
+    },
+};
 
-    parameters.viewportResolution = {240, 160};
-
-    parameters.input.persistDelay.initial = 300;
-    parameters.input.persistDelay.consecutive = 100;
-
-    parameters.gameStart.player.file = "null-player.json";
-    parameters.gameStart.player.phase = "down";
-
-    parameters.gameStart.area = "null-area.json";
-    parameters.gameStart.coords = {0, 0, 0};
-
-    datafile = "./null.world";
-
-    areas["null-area.json"] = new DataArea;
-}
+StringView DataWorld::datafile = "./null.world";
 
 bool
-NullDataWorld::init() noexcept {
+DataWorld::init() noexcept {
     return true;
 }
