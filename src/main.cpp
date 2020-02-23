@@ -93,7 +93,7 @@ main() noexcept {
         return 1;
     }
 
-    GameWindow::setCaption(DataWorld::about.name);
+    GameWindow::setCaption(DataWorld::name);
 
     GameWindow::mainLoop();
 

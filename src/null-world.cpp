@@ -35,30 +35,18 @@ DataWorld::area(StringView areaName) noexcept {
     return &nullArea;
 }
 
-DataWorld::About DataWorld::about = {
-    .name = "Null World",
-    .author = "Paul Merrill",
-    .version = "1",
-};
+StringView DataWorld::name = "Null World";
+StringView DataWorld::author = "Paul Merrill";
+StringView DataWorld::version = "1";
 
-DataWorld::Parameters DataWorld::parameters = {
-    .moveMode = Conf::TILE,
-    .viewportResolution = {240, 160},
-    .input = {
-        .persistDelay = {
-            .initial = 300,
-            .consecutive = 100,
-        },
-    },
-    .gameStart = {
-        .player = {
-            .file = "null-player.json",
-            .phase = "down",
-        },
-        .area = "null-area.json",
-        .coords = {0, 0, 0},
-    },
-};
+enum Conf::MovementMode DataWorld::moveMode = Conf::TILE;
+rvec2 DataWorld::viewportResolution = {240, 160};
+int DataWorld::inputPersistDelayInitial = 300;
+int DataWorld::inputPersistDelayConsecutive = 100;
+StringView DataWorld::startArea = "null-area.json";
+StringView DataWorld::playerFile = "null-player.json";
+StringView DataWorld::playerStartPhase = "down";
+vicoord DataWorld::startCoords = {0, 0, 0};
 
 StringView DataWorld::datafile = "./null.world";
 

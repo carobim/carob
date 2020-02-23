@@ -42,30 +42,16 @@ class DataWorld {
     static DataArea*
     area(StringView areaName) noexcept;
 
-    // Miscellaneous engine parameters set by world's author.
-    struct About {
-        StringView name, author, version;
-    };
-    static About about;
+    // Engine parameters set by world's author.
+    static StringView name, author, version;
 
-    struct Parameters {
-        enum Conf::MovementMode moveMode = Conf::TURN;
-        rvec2 viewportResolution = {0.0, 0.0};
-        struct {
-            struct {
-                int initial = 0;
-                int consecutive = 0;
-            } persistDelay;
-        } input;
-        struct {
-            struct {
-                StringView file, phase;
-            } player;
-            StringView area;
-            vicoord coords = {0, 0, 0.0};
-        } gameStart;
-    };
-    static Parameters parameters;
+    static enum Conf::MovementMode moveMode;
+    static rvec2 viewportResolution;
+    static int inputPersistDelayInitial;
+    static int inputPersistDelayConsecutive;
+    static StringView startArea;
+    static StringView playerFile, playerStartPhase;
+    static vicoord startCoords;
 
     static StringView datafile;
 

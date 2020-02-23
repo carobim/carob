@@ -83,22 +83,19 @@ bool
 World::init() noexcept {
     alive = true;
 
-    auto& parameters = DataWorld::parameters;
-    auto& gameStart = parameters.gameStart;
+    Conf::moveMode = DataWorld::moveMode;
 
-    Conf::moveMode = parameters.moveMode;
-
-    if (!player->init(gameStart.player.file, gameStart.player.phase)) {
+    if (!player->init(DataWorld::playerFile, DataWorld::playerStartPhase)) {
         Log::fatal("World", "failed to load player");
         return false;
     }
 
-    if (!focusArea(gameStart.area, gameStart.coords)) {
+    if (!focusArea(DataWorld::startArea, DataWorld::startCoords)) {
         Log::fatal("World", "failed to load initial Area");
         return false;
     }
 
-    Viewport::setSize(parameters.viewportResolution);
+    Viewport::setSize(DataWorld::viewportResolution);
     Viewport::trackEntity(player.get());
 
     return true;
