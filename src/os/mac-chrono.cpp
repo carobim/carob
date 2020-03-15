@@ -63,7 +63,7 @@ uint64_t
 mach_absolute_time() noexcept;
 
 kern_return_t
-mach_timebase_info_trap(mach_timebase_info*) noexcept;
+mach_timebase_info(mach_timebase_info*) noexcept;
 
 kern_return_t
 mach_wait_until(uint64_t deadline) noexcept;
@@ -71,12 +71,12 @@ mach_wait_until(uint64_t deadline) noexcept;
 
 #define KERN_SUCCESS 0
 
-static mach_timebase_info timebase = {0, 0};
+static struct mach_timebase_info timebase = {0, 0};
 
 TimePoint
 SteadyClock::now() noexcept {
     if (timebase.numer == 0 && timebase.denom == 0) {
-        kern_return_t err = mach_timebase_info_trap(&timebase);
+        kern_return_t err = mach_timebase_info(&timebase);
         assert_(err == KERN_SUCCESS);
     }
 
@@ -89,7 +89,7 @@ SteadyClock::now() noexcept {
 TimePoint
 SteadyClock::nowMS() noexcept {
     if (timebase.numer == 0 && timebase.denom == 0) {
-        kern_return_t err = mach_timebase_info_trap(&timebase);
+        kern_return_t err = mach_timebase_info(&timebase);
         assert_(err == KERN_SUCCESS);
     }
 
