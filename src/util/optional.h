@@ -57,12 +57,10 @@ class Optional {
         new (&storage) T(x_);
     }
     CONSTEXPR11
-    Optional(None) noexcept
-            : storage(), exists(false) {}
+    Optional(None) noexcept : storage(), exists(false) {}
 
     CONSTEXPR14
-    Optional(Optional<T>&& other) noexcept
-            : storage(), exists(other.exists) {
+    Optional(Optional<T>&& other) noexcept : storage(), exists(other.exists) {
         if (other.exists) {
             new (&storage) T(move_(other.x()));
             other.x().~T();
@@ -70,8 +68,7 @@ class Optional {
         }
     }
     CONSTEXPR14
-    Optional(const Optional<T>& other) noexcept
-            : exists(other.exists) {
+    Optional(const Optional<T>& other) noexcept : exists(other.exists) {
         if (other.exists) {
             new (&storage) T(other.x());
         }
@@ -162,6 +159,13 @@ class Optional {
     inline CONSTEXPR14 T& operator*() noexcept {
         assert_(exists);
         return x();
+    }
+
+    inline CONSTEXPR14 T&&
+    move() noexcept {
+        assert_(exists);
+        exists = false;
+        return x;
     }
 
     inline CONSTEXPR11 bool
