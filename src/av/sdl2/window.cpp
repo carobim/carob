@@ -294,12 +294,12 @@ GameWindow::mainLoop() noexcept {
             SleepFor(sleepDuration);
         }
 
-        Log::info("GameWindow",
-                  String() << "dt " << (frameStart - previousFrameStart)
-                           << " frameStart " << frameStart << " drew " << drew
-                           << " timeTaken " << timeTaken << " nextFrameStart "
-                           << nextFrameStart << " sleepDuration "
-                           << sleepDuration);
+        // Log::info("GameWindow",
+        //          String() << "dt " << (frameStart - previousFrameStart)
+        //                   << " frameStart " << frameStart << " drew " << drew
+        //                   << " timeTaken " << timeTaken << " nextFrameStart "
+        //                   << nextFrameStart << " sleepDuration "
+        //                   << sleepDuration);
 
         previousFrameStart = frameStart;
         frameStart = SteadyClock::now();
