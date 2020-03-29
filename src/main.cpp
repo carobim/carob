@@ -80,17 +80,17 @@ main() noexcept {
         GameWindow::create();
     }
 
+    if (!DataWorld::init()) {
+        Log::fatal("Main", "DataWorld::init");
+        return 1;
+    }
+
     {
         TimeMeasure m("Constructed world");
         if (!World::init()) {
             Log::fatal("Main", "World::init");
             return 1;
         }
-    }
-
-    if (!DataWorld::init()) {
-        Log::fatal("Main", "DataWorld::init");
-        return 1;
     }
 
     GameWindow::setCaption(DataWorld::name);
