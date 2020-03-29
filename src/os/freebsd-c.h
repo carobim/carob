@@ -270,6 +270,7 @@ memchr(const void*, int, size_t) noexcept;
 int
 memcmp(const void*, const void*, size_t) noexcept;
 void*
+#define memcpy __builtin_memcpy
 memmem(const void*, size_t, const void*, size_t) noexcept;
 size_t
 strlen(char const*) noexcept;
