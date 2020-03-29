@@ -133,7 +133,8 @@ GosuWindow::GosuWindow() noexcept
                   Conf::fullscreen ? Gosu::screen_height(nullptr)
                                    : static_cast<unsigned>(Conf::windowSize.y),
                   Conf::fullscreen,
-                  1000.0f / 60.0f) {
+                  1000.0f / 60.0f,
+                  false) {
     ::graphics = &this->graphics();
 
     auto& keys = gosuToTsunagariKey;

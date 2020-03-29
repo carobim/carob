@@ -144,7 +144,7 @@ namespace Gosu {
     // Gosu/Window.h
     class Window {
      public:
-        Window(unsigned, unsigned, bool, double) noexcept;
+        Window(unsigned, unsigned, bool, double, bool) noexcept;
         virtual ~Window() noexcept;
         unsigned
         width() const noexcept;
