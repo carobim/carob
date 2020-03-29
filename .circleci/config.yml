@@ -8,7 +8,11 @@ jobs:
       - run: |
           echo 'deb http://deb.debian.org/debian stretch-backports main' >> /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends git ca-certificates openssh-client cmake/stretch-backports libuv1/stretch-backports make g++
+          apt-get install -y --no-install-recommends git ca-certificates openssh-client libuv1/stretch-backports make g++ &&
+          apt-get install -y --no-install-recommends libarchive13 cmake-data/stretch-backports libcurl3 libjsoncpp1 librhash0 &&
+          (apt-get download cmake/stretch-backports || true) &&
+          dpkg --force-all -i cmake*.deb &&
+          rm cmake*.deb
       - checkout
       - run: |
           git submodule update --init --recursive &&
