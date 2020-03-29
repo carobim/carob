@@ -37,6 +37,63 @@
 #include "util/pool.h"
 #include "util/string-view.h"
 #include "util/string.h"
+#include "util/vector.h"
+
+struct ImageData {
+    int width;
+    int height;
+    SDL_Texture* surface;
+};
+
+typedef int ImageID;
+
+struct TiledImageData {
+    int id;
+
+    int imageWidth;
+    int imageHeight;
+    SDL_Surface* surface;
+
+    int tileWidth;
+    int tileHeight;
+    int numTiles;
+};
+
+typedef int TiledImageID;
+typedef pair<uint16_t, uint16_t> TiledImageImageID;
+
+struct TiledImageMeta {
+    Vector<String> incoming;
+    Vector<bool> ids;
+    Vector<int> offsets;
+
+    int textureWidth;
+    int textureHeight;
+    SDL_Texture* texture;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 struct TiledImageData {
     int numUsers = 0;
