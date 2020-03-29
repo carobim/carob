@@ -306,13 +306,13 @@ strtoul(const char*, char**, int) noexcept;
 // string.h
 extern "C" {
 void*
-memchr(const void*, int, size_t) noexcept;
-int
-memcmp(const void*, const void*, size_t) noexcept;
-void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
 size_t
 strlen(char const*) noexcept;
+#define memchr __builtin_memchr
+#define memcmp __builtin_memcmp
+#define memcpy __builtin_memcpy
+#define memset __builtin_memset
 }
 
 // sys/time.h
