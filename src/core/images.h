@@ -32,8 +32,8 @@
 #include "util/markable.h"
 #include "util/string-view.h"
 
-typedef Markable<int, -1> TiledImageID;
-typedef Markable<int, -1> ImageID;
+typedef Markable<int, INT32_MIN> TiledImageID;
+typedef Markable<int, INT32_MIN> ImageID;
 
 class Images {
  public:

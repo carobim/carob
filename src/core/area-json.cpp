@@ -82,7 +82,7 @@ class AreaJSON : public Area {
                        int firstGid) noexcept;
     bool
     processTileType(Unique<JSONObject> obj,
-                    Animation& graphic,
+                    Optional<Animation>& graphic,
                     TiledImageID img,
                     int id) noexcept;
     bool
@@ -348,7 +348,7 @@ AreaJSON::processTileSetFile(Rc<JSONObject> obj,
     // Initialize "vanilla" tile type array.
     for (int i = 0; i < nTiles; i++) {
         ImageID image = TiledImage::getTile(images, i);
-        tileGraphics.push_back(Animation(image));
+        tileGraphics.push_back(Optional<Animation>(Animation(image)));
     }
 
     if (obj->hasObject("tileproperties")) {
@@ -383,7 +383,7 @@ AreaJSON::processTileSetFile(Rc<JSONObject> obj,
             // "gid" is the global area-wide id of the tile.
             int gid = id__ + firstGid;
 
-            Animation& graphic = tileGraphics[gid];
+            Optional<Animation>& graphic = tileGraphics[gid];
             if (!processTileType(move_(tileProperties),
                                  graphic,
                                  images,
@@ -398,7 +398,7 @@ AreaJSON::processTileSetFile(Rc<JSONObject> obj,
 
 bool
 AreaJSON::processTileType(Unique<JSONObject> obj,
-                          Animation& graphic,
+                          Optional<Animation>& graphic,
                           TiledImageID images,
                           int id) noexcept {
     /*
@@ -475,7 +475,7 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
         // Add 'now' to Animation constructor??
         time_t now = World::time();
         graphic = Animation(move_(framesvec), *frameLen);
-        graphic.startOver(now);
+        graphic->restart(now);
     }
 
     return true;

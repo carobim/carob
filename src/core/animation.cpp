@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** animation.cpp                      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -29,66 +29,182 @@
 
 #include "util/assert.h"
 #include "util/move.h"
+#include "util/pool.h"
 
-Animation::Animation() noexcept
-        : frameTime(1), cycleTime(1), frameShowing(0), offset(0) {}
+struct AnimationData {
+    /** List of images in animation. */
+    Vector<ImageID> frames;
 
-Animation::Animation(ImageID frame) noexcept
-        : frameTime(1), cycleTime(1), frameShowing(0), offset(0) {
-    frames.push_back(frame);
+    /** Length of each frame in animation in milliseconds. */
+    time_t frameTime;
+
+    /** Length of one complete cycle through animation in milliseconds. */
+    time_t cycleTime;
+
+    /** Time offset to find current animation frame. */
+    time_t offset;
+
+    /** Index of frame currently displaying on screen. */
+    uint32_t currentIndex;
+
+    ImageID currentImage;
+};
+
+static Pool<AnimationData> pool;
+
+static AnimationID
+makeSingleFrame(ImageID iid) {
+    return -*iid - 1;
 }
 
-Animation::Animation(Vector<ImageID> frames, time_t frameTime) noexcept
-        : frames(move_(frames)),
-          frameTime(frameTime),
-          frameShowing(0),
-          offset(0) {
-    assert_(frameTime > 0);
+static bool
+isSingleFrame(AnimationID aid) {
+    return aid < 0;
+}
 
-    cycleTime = frameTime * (time_t)this->frames.size();
+static ImageID
+getSingleFrame(AnimationID aid) {
+    return ImageID(-aid - 1);
+}
+
+static void
+copy(AnimationID& self, AnimationID other) {
+    if (isSingleFrame(other)) {
+        self = other;
+    }
+    else {
+        self = pool.allocate();
+
+        AnimationData& data = pool[self];
+        AnimationData& otherData = pool[other];
+
+        data = otherData;
+    }
+}
+
+static void
+move(AnimationID& self, AnimationID& other) {
+    // Take over the AnimationID of the other.
+    self = other;
+    other = -1;
+}
+
+static void
+destroy(AnimationID aid) {
+    if (!isSingleFrame(aid)) {
+        pool.release(aid);
+    }
+}
+
+Animation::Animation() noexcept {
+    aid = -1;
+}
+
+Animation::Animation(ImageID frame) noexcept {
+    assert_(frame.exists());
+
+    aid = makeSingleFrame(frame);
+}
+
+Animation::Animation(Vector<ImageID> frames, time_t frameTime) noexcept {
+    assert_(frames.size() > 0);
+    assert_(frameTime > 0);
+    for (ImageID frame : frames) {
+        assert_(frame.exists());
+    }
+
+    aid = pool.allocate();
+    AnimationData& data = pool[aid];
+
+    new (&data.frames) Vector<ImageID>();
+
+    data.frames = move_(frames);
+    data.frameTime = frameTime;
+    data.cycleTime = frameTime * static_cast<time_t>(data.frames.size());
+    data.offset = 0;
+    data.currentIndex = 0;
+    data.currentImage = data.frames[0];
+}
+
+Animation::Animation(const Animation& other) noexcept {
+    copy(aid, other.aid);
+}
+
+Animation::Animation(Animation&& other) noexcept {
+    move(aid, other.aid);
+}
+
+Animation::~Animation() noexcept {
+    destroy(aid);
+}
+
+Animation&
+Animation::operator=(const Animation& other) noexcept {
+    destroy(aid);
+    copy(aid, other.aid);
+    return *this;
+}
+
+Animation&
+Animation::operator=(Animation&& other) noexcept {
+    destroy(aid);
+    move(aid, other.aid);
+    return *this;
 }
 
 void
-Animation::startOver(time_t now) noexcept {
-    offset = now;
-    frameShowing = 0;
+Animation::restart(time_t now) noexcept {
+    if (isSingleFrame(aid)) {
+        return;
+    }
+
+    AnimationData& data = pool[aid];
+
+    data.offset = now;
+    data.currentIndex = 0;
+    data.currentImage = data.frames[0];
 }
 
 bool
 Animation::needsRedraw(time_t now) const noexcept {
-    if (frames.size() == 1) {
+    if (isSingleFrame(aid)) {
         return false;
     }
-    time_t pos = now - offset;
-    size_t frame = (size_t)((pos % cycleTime) / frameTime);
-    return frame != frameShowing;
+
+    AnimationData& data = pool[aid];
+
+    time_t pos = now - data.offset;
+    size_t index = static_cast<size_t>((pos % data.cycleTime) / data.frameTime);
+
+    return index != data.currentIndex;
 }
 
 ImageID
-Animation::frame(time_t now) noexcept {
-    assert_(now >= 0);
-
-    if (frames.empty()) {
-        return mark;
-    }
-    if (frames.size() == 1) {
-        return frames[0];
+Animation::setFrame(time_t now) noexcept {
+    if (isSingleFrame(aid)) {
+        return getSingleFrame(aid);
     }
 
-    time_t pos = now - offset;
-    frameShowing = (size_t)((pos % cycleTime) / frameTime);
+    AnimationData& data = pool[aid];
 
-    return frames[frameShowing];
+    time_t pos = now - data.offset;
+    uint32_t index =
+            static_cast<uint32_t>((pos % data.cycleTime) / data.frameTime);
+    ImageID image = data.frames[index];
+
+    data.currentIndex = index;
+    data.currentImage = image;
+
+    return image;
 }
 
 ImageID
-Animation::frame() const noexcept {
-    if (frames.empty()) {
-        return mark;
-    }
-    if (frames.size() == 1) {
-        return frames[0];
+Animation::getFrame() const noexcept {
+    if (isSingleFrame(aid)) {
+        return getSingleFrame(aid);
     }
 
-    return frames[frameShowing];
+    AnimationData& data = pool[aid];
+
+    return data.currentImage;
 }

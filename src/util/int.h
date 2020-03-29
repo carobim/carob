@@ -57,6 +57,7 @@ typedef long time_t;
 typedef int64_t time_t;
 #endif
 
+static const CONSTEXPR11 int32_t INT32_MIN = 0x80000000;
 static const CONSTEXPR11 int32_t INT32_MAX = 0x7fffffff;
 static const CONSTEXPR11 int64_t INT64_MAX = 0x7fffffffffffffff;
 static const CONSTEXPR11 int64_t INT64_MIN = 0x8000000000000000;

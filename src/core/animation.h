@@ -32,6 +32,8 @@
 #include "util/int.h"
 #include "util/vector.h"
 
+typedef int AnimationID;
+
 /**
  * An Animation is a sequence of bitmap images (called frames) used to creates
  * the illusion of motion. Frames are cycled over with an even amount of time
@@ -44,8 +46,8 @@
 class Animation {
  public:
     /**
-     * Constructs an empty, but safe, Animation. All methods on this
-     * object will be null.
+     * Constructs a null Animation. Not safe to use, but it allows Animation to
+     * be put into containers.
      */
     Animation() noexcept;
 
@@ -69,13 +71,22 @@ class Animation {
      */
     Animation(Vector<ImageID> frames, time_t frameTime) noexcept;
 
+    Animation(const Animation& other) noexcept;
+    Animation(Animation&& other) noexcept;
+    ~Animation() noexcept;
+
+    Animation&
+    operator=(const Animation& other) noexcept;
+    Animation&
+    operator=(Animation&& other) noexcept;
+
     /**
      * Starts the animation over.
      *
      * @now current time in milliseconds
      */
     void
-    startOver(time_t now) noexcept;
+    restart(time_t now) noexcept;
 
     /**
      * Has this Animation switched frames since frame() was last called?
@@ -91,29 +102,16 @@ class Animation {
      * @now current time in milliseconds
      */
     ImageID
-    frame(time_t now) noexcept;
+    setFrame(time_t now) noexcept;
 
     /**
      * Returns the last image that should have been displayed.
      */
     ImageID
-    frame() const noexcept;
+    getFrame() const noexcept;
 
  private:
-    /** List of images in animation. */
-    Vector<ImageID> frames;
-
-    /** Length of each frame in animation in milliseconds. */
-    time_t frameTime;
-
-    /** Length of one complete cycle through animation in milliseconds. */
-    time_t cycleTime;
-
-    /** Index of frame currently displaying on screen. */
-    size_t frameShowing;
-
-    /** Time offset to find current animation frame. */
-    time_t offset;
+    AnimationID aid;
 };
 
 #endif  // SRC_CORE_ANIMATION_H_

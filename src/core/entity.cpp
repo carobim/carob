@@ -87,7 +87,8 @@ Entity::draw(DisplayList* display) noexcept {
     float maxY = area->grid.tileDim.y + r.y;
     float minY = maxY - imgsz.y;
 
-    display->items.push_back(DisplayItem{phase->frame(now), rvec2{minX, minY}});
+    display->items.push_back(
+            DisplayItem{phase->setFrame(now), rvec2{minX, minY}});
 }
 
 bool
@@ -262,7 +263,7 @@ Entity::_setPhase(StringView name) noexcept {
     if (phase != newPhase) {
         time_t now = World::time();
         phase = newPhase;
-        phase->startOver(now);
+        phase->restart(now);
         phaseName = name;
         redraw = true;
         return PHASE_CHANGED;
@@ -424,8 +425,11 @@ Entity::processPhase(StringView name,
             return false;
         }
         float fps = phase->floatAt("speed");
+        assert_(fps != 0.0f);
 
         Vector<int> frames = intArrayToVector(phase->arrayAt("frames"));
+        assert_(frames.size() > 0);
+
         Vector<ImageID> images;
         for (int i : frames) {
             if (i < 0 || nTiles < i) {
@@ -436,7 +440,8 @@ Entity::processPhase(StringView name,
             images.push_back(TiledImage::getTile(tiles, i));
         }
 
-        phases[name] = Animation(move_(images), (time_t)(1000.0 / fps));
+        time_t frameTime = static_cast<time_t>(1000.0 / fps);
+        phases[name] = Animation(move_(images), frameTime);
     }
     else {
         Log::err(descriptor,

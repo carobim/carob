@@ -185,7 +185,7 @@ Area::needsRedraw() {
                 }
                 checkedForAnimation[type] = true;
 
-                if (tileGraphics[type].needsRedraw(now)) {
+                if (tileGraphics[type]->needsRedraw(now)) {
                     return true;
                 }
             }
@@ -372,18 +372,22 @@ Area::drawTiles(DisplayList* display, const icube& tiles, int z) {
                 continue;
             }
 
-            if (!tilesAnimated[type]) {
-                tilesAnimated[type] = true;
-                tileGraphics[type].frame(now);
+            if (!tileGraphics[type]) {
+                continue;
             }
 
-            ImageID img = tileGraphics[type].frame();
-            if (img) {
-                rvec2 drawPos{float(x * width), float(y * height)};
-                // drawPos.z = depth + drawPos.y / tileDimY *
-                // ISOMETRIC_ZOFF_PER_TILE;
-                display->items.push_back_nogrow(DisplayItem{img, drawPos});
+            if (!tilesAnimated[type]) {
+                tilesAnimated[type] = true;
+                tileGraphics[type]->setFrame(now);
             }
+
+            // Image guaranteed to exist because Animation won't hold a null ImageID.
+            ImageID img = tileGraphics[type]->getFrame();
+
+            rvec2 drawPos{float(x * width), float(y * height)};
+            // drawPos.z = depth + drawPos.y / tileDimY *
+            // ISOMETRIC_ZOFF_PER_TILE;
+            display->items.push_back_nogrow(DisplayItem{img, drawPos});
         }
     }
 }

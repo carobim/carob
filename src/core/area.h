@@ -147,7 +147,7 @@ class Area {
  protected:
     Hashmap<String, TileSet> tileSets;
 
-    Vector<Animation> tileGraphics;
+    Vector<Optional<Animation>> tileGraphics;
     Vector<bool> checkedForAnimation;
     Vector<bool> tilesAnimated;
 
