@@ -38,7 +38,7 @@
 #include "util/string-view.h"
 #include "util/string.h"
 
-struct SDL2TiledImage {
+struct TiledImageData {
     int numUsers = 0;
     time_t lastUse = 0;
 
@@ -51,11 +51,11 @@ struct SDL2TiledImage {
 };
 
 static bool
-operator==(const SDL2TiledImage& a, const SDL2TiledImage& b) noexcept {
+operator==(const TiledImageData& a, const TiledImageData& b) noexcept {
     return a.texture == b.texture;
 }
 
-struct SDL2Image {
+struct ImageData {
     enum { STANDALONE, FROM_TILED_IMAGE } origin = STANDALONE;
 
     int numUsers = 0;
@@ -69,21 +69,21 @@ struct SDL2Image {
 };
 
 static bool
-operator==(const SDL2Image& a, const SDL2Image& b) noexcept {
+operator==(const ImageData& a, const ImageData& b) noexcept {
     return a.texture == b.texture && a.xoff == b.xoff && a.yoff == b.yoff;
 }
 
 static Hashmap<String, ImageID> imageIDs;
 static Hashmap<String, TiledImageID> tiledImageIDs;
-static Pool<SDL2Image> imagePool;
-static Pool<SDL2TiledImage> tiledImagePool;
+static Pool<ImageData> imagePool;
+static Pool<TiledImageData> tiledImagePool;
 
-static SDL2Image
+static ImageData
 makeImage(StringView path) {
     Optional<StringView> r = Resources::load(path);
     if (!r) {
         // Error logged.
-        return SDL2Image();
+        return ImageData();
     }
 
     assert_(r->size < UINT32_MAX);
@@ -100,13 +100,13 @@ makeImage(StringView path) {
         SDL_Surface* surface = IMG_Load_RW(ops, 1);
         if (!surface) {
             SDL_FreeSurface(surface);
-            return SDL2Image();
+            return ImageData();
         }
         SDL_Renderer* renderer = SDL2GameWindow::renderer;
         texture = SDL_CreateTextureFromSurface(renderer, surface);
         if (!texture) {
             // TODO: SDL_FreeSurace(surface); ??
-            return SDL2Image();
+            return ImageData();
         }
     }
 
@@ -118,8 +118,8 @@ makeImage(StringView path) {
     assert_(height <= 4096);
 
     int iid = imagePool.allocate();
-    SDL2Image& image = imagePool[iid];
-    image.origin = SDL2Image::STANDALONE;
+    ImageData& image = imagePool[iid];
+    image.origin = ImageData::STANDALONE;
     image.numUsers = 1;
     image.lastUse = 0;
     image.texture = texture;
@@ -131,7 +131,7 @@ makeImage(StringView path) {
     return image;
 }
 
-static SDL2TiledImage
+static TiledImageData
 makeTiledImage(StringView path, int tileWidth, int tileHeight) {
     assert_(tileWidth <= 4096);
     assert_(tileHeight <= 4096);
@@ -139,7 +139,7 @@ makeTiledImage(StringView path, int tileWidth, int tileHeight) {
     Optional<StringView> r = Resources::load(path);
     if (!r) {
         // Error logged.
-        return SDL2TiledImage();
+        return TiledImageData();
     }
 
     assert_(r->size < UINT32_MAX);
@@ -155,13 +155,13 @@ makeTiledImage(StringView path, int tileWidth, int tileHeight) {
         SDL_Surface* surface = IMG_Load_RW(ops, 1);
         if (!surface) {
             SDL_FreeSurface(surface);
-            return SDL2TiledImage();
+            return TiledImageData();
         }
         SDL_Renderer* renderer = SDL2GameWindow::renderer;
         texture = SDL_CreateTextureFromSurface(renderer, surface);
         if (!texture) {
             // TODO: SDL_FreeSurace(surface); ??
-            return SDL2TiledImage();
+            return TiledImageData();
         }
     }
 
@@ -173,7 +173,7 @@ makeTiledImage(StringView path, int tileWidth, int tileHeight) {
     assert_(height <= 4096);
 
     int tiid = tiledImagePool.allocate();
-    SDL2TiledImage& ti = tiledImagePool[tiid];
+    TiledImageData& ti = tiledImagePool[tiid];
     ti.numUsers = 1;
     ti.lastUse = 0;
     ti.texture = texture;
@@ -191,13 +191,13 @@ Images::load(StringView path) noexcept {
     Optional<ImageID*> cachedId = imageIDs.tryAt(path);
     if (cachedId) {
         int iid = ***cachedId;
-        SDL2Image& image = imagePool[iid];
+        ImageData& image = imagePool[iid];
         image.numUsers += 1;
         return ImageID(iid);
     }
 
-    SDL2Image image = makeImage(path);
-    if (image == SDL2Image()) {
+    ImageData image = makeImage(path);
+    if (image == ImageData()) {
         imageIDs[path] = mark;
         return mark;
     }
@@ -215,13 +215,13 @@ Images::loadTiles(StringView path, int tileWidth, int tileHeight) noexcept {
     Optional<TiledImageID*> cachedId = tiledImageIDs.tryAt(path);
     if (cachedId) {
         int tiid = ***cachedId;
-        SDL2TiledImage& tiledImage = tiledImagePool[tiid];
+        TiledImageData& tiledImage = tiledImagePool[tiid];
         tiledImage.numUsers += 1;
         return TiledImageID(tiid);
     }
 
-    SDL2TiledImage tiledImage = makeTiledImage(path, tileWidth, tileHeight);
-    if (tiledImage == SDL2TiledImage()) {
+    TiledImageData tiledImage = makeTiledImage(path, tileWidth, tileHeight);
+    if (tiledImage == TiledImageData()) {
         tiledImageIDs[path] = mark;
         return mark;
     }
@@ -243,7 +243,7 @@ int
 TiledImage::size(TiledImageID tiid) noexcept {
     assert_(tiid);
 
-    SDL2TiledImage& tiledImage = tiledImagePool[*tiid];
+    TiledImageData& tiledImage = tiledImagePool[*tiid];
     return tiledImage.numTiles;
 }
 
@@ -251,14 +251,14 @@ ImageID
 TiledImage::getTile(TiledImageID tiid, int i) noexcept {
     assert_(tiid);
 
-    SDL2TiledImage& ti = tiledImagePool[*tiid];
+    TiledImageData& ti = tiledImagePool[*tiid];
 
     int xoff = ti.tileWidth * static_cast<int>(i) % ti.width;
     int yoff = ti.tileWidth * static_cast<int>(i) / ti.width * ti.tileHeight;
 
     int iid = imagePool.allocate();
-    SDL2Image& image = imagePool[iid];
-    image.origin = SDL2Image::FROM_TILED_IMAGE;
+    ImageData& image = imagePool[iid];
+    image.origin = ImageData::FROM_TILED_IMAGE;
     image.numUsers = 0;
     image.lastUse = 0;
     image.texture = ti.texture;
@@ -276,7 +276,7 @@ TiledImage::release(TiledImageID tiid) noexcept {
         return;
     }
 
-    SDL2TiledImage& tiledImage = tiledImagePool[*tiid];
+    TiledImageData& tiledImage = tiledImagePool[*tiid];
 
     tiledImage.numUsers -= 1;
     assert_(tiledImage.numUsers >= 0);
@@ -290,7 +290,7 @@ void
 Image::draw(ImageID iid, float x, float y, float z) noexcept {
     assert_(iid);
 
-    SDL2Image& i = imagePool[*iid];
+    ImageData& i = imagePool[*iid];
 
     SDL_Renderer* renderer = SDL2GameWindow::renderer;
     rvec2 translation = SDL2GameWindow::translation;
@@ -308,7 +308,7 @@ int
 Image::width(ImageID iid) noexcept {
     assert_(iid);
 
-    SDL2Image& image = imagePool[*iid];
+    ImageData& image = imagePool[*iid];
     return image.width;
 }
 
@@ -316,7 +316,7 @@ int
 Image::height(ImageID iid) noexcept {
     assert_(iid);
 
-    SDL2Image& image = imagePool[*iid];
+    ImageData& image = imagePool[*iid];
     return image.height;
 }
 
@@ -326,9 +326,9 @@ Image::release(ImageID iid) noexcept {
         return;
     }
 
-    SDL2Image& image = imagePool[*iid];
+    ImageData& image = imagePool[*iid];
 
-    if (image.origin == SDL2Image::FROM_TILED_IMAGE) {
+    if (image.origin == ImageData::FROM_TILED_IMAGE) {
         imagePool.release(iid);
     }
     else {
