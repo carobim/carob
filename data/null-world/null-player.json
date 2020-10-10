@@ -4,7 +4,7 @@
         "sheet": {
             "tile_width": 1,
             "tile_height": 1,
-            "path": "pixel.png"
+            "path": "pixel.bmp"
         },
         "phases": {
             "down": {"frame": 0}
