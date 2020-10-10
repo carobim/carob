@@ -199,9 +199,9 @@ typedef ivec3 icoord;
 typedef rvec3 rcoord;
 
 static const CONSTEXPR11 icoord ICOORD_MIN = {
-    .x = INT32_MIN,
-    .y = INT32_MIN,
-    .z = INT32_MIN,
+    INT32_MIN,
+    INT32_MIN,
+    INT32_MIN,
 };
 
 #endif  // SRC_CORE_VEC_H_
