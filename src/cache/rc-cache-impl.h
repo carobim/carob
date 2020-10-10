@@ -32,6 +32,8 @@
 #include "core/client-conf.h"
 #include "core/log.h"
 #include "core/world.h"
+#include "util/string-view.h"
+#include "util/string.h"
 #include "util/vector.h"
 
 #define IN_USE_NOW -1
@@ -90,7 +92,7 @@ void
 RcCache<T>::garbageCollect() noexcept {
     time_t now = World::time();
     Vector<String> dead;
-    for (auto it = map.begin(); it != map.end(); it++) {
+    for (auto it = map.begin(); it != map.end(); ++it) {
         StringView name = it.key();
         CacheEntry& cache = it.value();
         bool unused = !cache.data || cache.data.unique();

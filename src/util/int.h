@@ -40,6 +40,11 @@ typedef unsigned int uint32_t;
 typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
 // size_t already defined.
+#ifdef  _WIN64
+typedef signed __int64 ssize_t;
+#else
+typedef signed int ssize_t;
+#endif
 #elif defined(__clang__) || defined(__GNUC__)
 typedef __INT64_TYPE__ int64_t;
 typedef __UINT64_TYPE__ uint64_t;
@@ -71,6 +76,8 @@ static const CONSTEXPR11 size_t SIZE_MAX = 0xffffffff;
 #else
 static const CONSTEXPR11 size_t SIZE_MAX = __SIZE_MAX__;
 #endif
+
+static const CONSTEXPR11 float FLT_MIN = 1.17549435082228750796873653722224568e-38f;
 
 static const CONSTEXPR11 float M_PI = 3.14159265358979323846;
 

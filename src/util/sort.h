@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** sort.h                      **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** sort.h                           **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -53,7 +53,6 @@
 #ifndef SRC_UTIL_SORT_H_
 #define SRC_UTIL_SORT_H_
 
-#include "util/algorithm.h"
 #include "util/int.h"
 #include "util/move.h"
 #include "util/noexcept.h"

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** cache.h                            **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -29,6 +29,7 @@
 #define SRC_CACHE_CACHE_H_
 
 #include "util/hashtable.h"
+#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
@@ -50,7 +51,6 @@ class Cache {
     };
 
     Hashmap<String, Entry> entries;
-
 };
 
 #endif  // SRC_CORE_CACHE_H_

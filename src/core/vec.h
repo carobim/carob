@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** vec.h                              **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -197,5 +197,11 @@ typedef vec3<float> rvec3;
 //! Coordinates.
 typedef ivec3 icoord;
 typedef rvec3 rcoord;
+
+static const CONSTEXPR11 icoord ICOORD_MIN = {
+    .x = INT32_MIN,
+    .y = INT32_MIN,
+    .z = INT32_MIN,
+};
 
 #endif  // SRC_CORE_VEC_H_

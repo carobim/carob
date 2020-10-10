@@ -29,7 +29,6 @@
 
 #include "util/assert.h"
 #include "util/int.h"
-#include "util/meta.h"
 
 //
 // Pointers

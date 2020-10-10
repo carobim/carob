@@ -32,9 +32,7 @@
 #include "util/noexcept.h"
 
 #ifdef _WIN32
-extern "C" {
-__declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
-}
+extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
 void __cdecl __debugbreak();  // Cannot be noexcept.
 #endif
 

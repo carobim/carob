@@ -29,7 +29,6 @@
 #define SRC_DATA_INPROGRESS_TIMER_H_
 
 #include "data/inprogress.h"
-
 #include "util/function.h"
 #include "util/int.h"
 #include "util/noexcept.h"

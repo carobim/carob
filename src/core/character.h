@@ -29,11 +29,12 @@
 #define SRC_CORE_CHARACTER_H_
 
 #include "core/entity.h"
-#include "core/tile-grid.h"
-#include "core/tile.h"
 #include "core/vec.h"
 #include "util/int.h"
 #include "util/optional.h"
+
+class Area;
+struct Exit;
 
 class Character : public Entity {
  public:

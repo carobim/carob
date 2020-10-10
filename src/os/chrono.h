@@ -27,8 +27,6 @@
 #ifndef SRC_OS_CHRONO_H_
 #define SRC_OS_CHRONO_H_
 
-#include "util/assert.h"
-
 typedef long long Duration;   // Nanoseconds.
 typedef long long TimePoint;  // Nanoseconds.
 

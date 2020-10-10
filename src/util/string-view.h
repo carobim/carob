@@ -28,6 +28,7 @@
 #define SRC_UTIL_STRING_VIEW_H_
 
 #include "os/c.h"
+#include "util/assert.h"
 #include "util/constexpr.h"
 #include "util/int.h"
 #include "util/markable.h"

@@ -31,6 +31,7 @@
 class DataArea;
 
 #include "core/client-conf.h"
+#include "core/vec.h"
 #include "util/string-view.h"
 
 class DataWorld {

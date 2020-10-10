@@ -29,6 +29,7 @@
 
 #include "os/condition-variable.h"
 #include "os/mutex.h"
+#include "util/move.h"
 #include "util/optional.h"
 #include "util/vector.h"
 

@@ -144,4 +144,10 @@ printf(char const* const, ...) noexcept;
 int __CRTDECL
 sprintf(char* const, char const* const, ...) noexcept;
 
+// vcruntime_string.h
+extern "C" {
+void*
+__cdecl memset(void*, int, size_t);
+}
+
 #endif  // SRC_OS_WINDOWS_C_H_

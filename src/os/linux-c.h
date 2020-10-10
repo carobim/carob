@@ -258,6 +258,8 @@ memcmp(const void*, const void*, size_t) noexcept;
 #define memcpy __builtin_memcpy
 void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
+void*
+memset(void*, int, size_t) noexcept;
 size_t
 strlen(char const*) noexcept;
 }

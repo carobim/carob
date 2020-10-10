@@ -761,9 +761,8 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
     for (int Y = y; Y < y + h; Y++) {
         for (int X = x; X < x + w; X++) {
             icoord tile = {X, Y, static_cast<int>(z)};
-            size_t hash = hash_(tile);
 
-            grid.flags.at(tile, hash) |= flags;
+            grid.flags[tile] |= flags;
             for (size_t i = 0; i < EXITS_LENGTH; i++) {
                 if (exit[i]) {
                     int dx = X - x;
@@ -774,25 +773,25 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
                     if (hwide[i]) {
                         exit[i]->coords.y += dy;
                     }
-                    grid.exits[i].at(tile, hash) = move_(*exit[i]);
+                    grid.exits[i][tile] = move_(*exit[i]);
                 }
             }
             for (size_t i = 0; i < EXITS_LENGTH; i++) {
                 if (layermods[i]) {
-                    grid.layermods[i].at(tile, hash) = *layermods[i];
+                    grid.layermods[i][tile] = *layermods[i];
                 }
             }
 
             if (enterScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_ENTER].at(tile, hash) =
+                grid.scripts[TileGrid::SCRIPT_TYPE_ENTER][tile] =
                         enterScript;
             }
             if (leaveScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_LEAVE].at(tile, hash) =
+                grid.scripts[TileGrid::SCRIPT_TYPE_LEAVE][tile] =
                         leaveScript;
             }
             if (useScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_USE].at(tile, hash) =
+                grid.scripts[TileGrid::SCRIPT_TYPE_USE][tile] =
                         useScript;
             }
         }

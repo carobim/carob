@@ -28,10 +28,11 @@
 #ifndef SRC_CORE_TILE_GRID_H_
 #define SRC_CORE_TILE_GRID_H_
 
-#include "core/tile.h"
 #include "core/vec.h"
 #include "data/data-area.h"
 #include "util/hashtable.h"
+#include "util/markable.h"
+#include "util/optional.h"
 #include "util/string.h"
 #include "util/vector.h"
 
@@ -96,6 +97,18 @@ struct Exit {
 
 typedef void (*TileScript)(Entity& triggeredBy, icoord tile);
 
+struct EmptyFloat {
+    static CONSTEXPR11 float value() {
+        return FLT_MIN;
+    }
+};
+
+struct EmptyIcoord {
+    static CONSTEXPR11 icoord value() {
+        return ICOORD_MIN;
+    }
+};
+
 class TileGrid {
  public:
     int
@@ -110,9 +123,9 @@ class TileGrid {
     bool
     inBounds(icoord phys) const noexcept;
     bool
-    inBounds(vicoord virt) const noexcept;
+    inBounds(vicoord virt) noexcept;
     bool
-    inBounds(rcoord virt) const noexcept;
+    inBounds(rcoord virt) noexcept;
 
  public:
     // Convert between virtual and physical map coordinates. Physical
@@ -124,9 +137,9 @@ class TileGrid {
     rcoord
     phys2virt_r(icoord phys) const noexcept;
     icoord
-    virt2phys(vicoord virt) const noexcept;
+    virt2phys(vicoord virt) noexcept;
     icoord
-    virt2phys(rcoord virt) const noexcept;
+    virt2phys(rcoord virt) noexcept;
     rcoord
     virt2virt(vicoord virt) const noexcept;
     vicoord
@@ -134,7 +147,7 @@ class TileGrid {
 
     // Convert between virtual and physical map depths.
     int
-    depthIndex(float depth) const noexcept;
+    depthIndex(float depth) noexcept;
     float
     indexDepth(int idx) const noexcept;
 
@@ -172,7 +185,7 @@ class TileGrid {
     ivec2 tileDim = {0, 0};
 
     // Maps virtual float-point depths to an index in our map array.
-    Hashmap<float, int> depth2idx;
+    Hashmap<float, int, EmptyFloat> depth2idx;
 
     // Maps an index in our map array to a virtual float-point depth.
     Vector<float> idx2depth;
@@ -180,7 +193,7 @@ class TileGrid {
     bool loopX = false;
     bool loopY = false;
 
-    Hashset<icoord> occupied;
+    Hashmap<icoord, bool, EmptyIcoord> occupied;
 
     enum ScriptType {
         SCRIPT_TYPE_ENTER,
@@ -189,12 +202,13 @@ class TileGrid {
         SCRIPT_TYPE_LAST,
     };
 
-    Hashmap<icoord, DataArea::TileScript> scripts[SCRIPT_TYPE_LAST];
+    Hashmap<icoord, DataArea::TileScript, EmptyIcoord>
+        scripts[SCRIPT_TYPE_LAST];
 
-    Hashmap<icoord, unsigned> flags;
+    Hashmap<icoord, unsigned, EmptyIcoord> flags;
 
-    Hashmap<icoord, Exit> exits[EXITS_LENGTH];
-    Hashmap<icoord, float> layermods[EXITS_LENGTH];
+    Hashmap<icoord, Exit, EmptyIcoord> exits[EXITS_LENGTH];
+    Hashmap<icoord, float, EmptyIcoord> layermods[EXITS_LENGTH];
 };
 
 #endif  // SRC_CORE_TILE_GRID_H_

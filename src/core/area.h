@@ -38,15 +38,18 @@
 #include "util/rc.h"
 #include "util/string-view.h"
 #include "util/string.h"
+#include "util/vector.h"
 
 #define ISOMETRIC_ZOFF_PER_TILE 0.001
+
+// FIXME: Rc<Character> and Rc<Overlay> need complete types for their
+//        destructors. Remove their usage.
 
 class AreaJSON;
 class Character;
 class DataArea;
 struct DisplayList;
 class Entity;
-class NPC;
 class Overlay;
 class Player;
 
@@ -115,7 +118,7 @@ class Area {
 
     //! Returns true if a Tile exists at the specified coordinate.
     bool
-    inBounds(Entity* ent) const;
+    inBounds(Entity* ent);
 
     // Create an NPC and insert it into the Area.
     Rc<Character>

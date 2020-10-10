@@ -29,12 +29,10 @@
 #define SRC_DATA_INPROGRESS_SOUND_H_
 
 #include "core/sounds.h"
-
-#include "core/sounds.h"
+#include "data/inprogress.h"
 #include "util/function.h"
 #include "util/int.h"
 #include "util/noexcept.h"
-#include "util/rc.h"
 #include "util/string-view.h"
 
 /**

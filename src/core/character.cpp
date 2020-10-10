@@ -279,7 +279,7 @@ Character::enterTile() noexcept {
 
 void
 Character::enterTile(icoord phys) noexcept {
-    area->grid.occupied.insert(phys);
+    area->grid.occupied[phys] = true;
 }
 
 void

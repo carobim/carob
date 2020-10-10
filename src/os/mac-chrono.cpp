@@ -88,15 +88,7 @@ SteadyClock::now() noexcept {
 
 TimePoint
 SteadyClock::nowMS() noexcept {
-    if (timebase.numer == 0 && timebase.denom == 0) {
-        kern_return_t err = mach_timebase_info(&timebase);
-        assert_(err == KERN_SUCCESS);
-    }
-
-    uint64_t machTime = mach_absolute_time();
-    uint64_t ns = machTime * timebase.numer / timebase.denom;
-
-    return TimePoint(ns_to_ms(ns));
+    return ns_to_ms(now());
 }
 
 /*

@@ -228,6 +228,11 @@ GameWindow::setCaption(StringView caption) noexcept {
     SDL_SetWindowTitle(window, String(caption).null());
 }
 
+static float
+to_s(float ns) {
+    return ns / 1000000000.f;
+}
+
 void
 GameWindow::mainLoop() noexcept {
     SDL_ShowWindow(window);
@@ -290,16 +295,24 @@ GameWindow::mainLoop() noexcept {
             sleepDuration = 0;
         }
 
-        if (!drew && sleepDuration) {
+        /*
+        Log::info(
+            "GameWindow",
+            String() << "dt " << to_s(frameStart - previousFrameStart)
+                     << " frameStart " << to_s(frameStart)
+                     << " drew " << drew
+                     << " timeTaken " << to_s(timeTaken)
+                     << " nextFrameStart " << to_s(nextFrameStart)
+                     << " sleepDuration " << to_s(sleepDuration)
+        );
+        */
+
+        // Must sleep even if we drew a frame to handle the case where we don't
+        // have vsync, but we are trying to limit frame rate.
+        //if (!drew && sleepDuration) {
+        if (sleepDuration) {
             SleepFor(sleepDuration);
         }
-
-        // Log::info("GameWindow",
-        //          String() << "dt " << (frameStart - previousFrameStart)
-        //                   << " frameStart " << frameStart << " drew " << drew
-        //                   << " timeTaken " << timeTaken << " nextFrameStart "
-        //                   << nextFrameStart << " sleepDuration "
-        //                   << sleepDuration);
 
         previousFrameStart = frameStart;
         frameStart = SteadyClock::now();

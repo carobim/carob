@@ -149,7 +149,7 @@ Player::setFrozen(bool b) noexcept {
 
 void
 Player::arrived() noexcept {
-    Entity::arrived();
+    Character::arrived();
 
     if (destExit && *destExit) {
         takeExit(*(*destExit));

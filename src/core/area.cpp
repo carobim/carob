@@ -299,7 +299,7 @@ Area::visibleTiles() const {
 }
 
 bool
-Area::inBounds(Entity* ent) const {
+Area::inBounds(Entity* ent) {
     return grid.inBounds(ent->getPixelCoord());
 }
 

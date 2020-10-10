@@ -30,7 +30,8 @@
 #include "util/int.h"
 #include "util/optional.h"
 #include "util/string-view.h"
-#include "util/string.h"
+
+class String;
 
 class MappedFile {
  public:

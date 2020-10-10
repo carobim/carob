@@ -40,7 +40,7 @@ Cache<T>::acquire(StringView key) noexcept {
     if (e) {
         Log::info("Cache", String() << key << ": requested (cached)");
         (*e)->numUsing += 1;
-        return Optional<X*>(&(*e)->data);
+        return Optional<T*>(&(*e)->data);
     }
     else {
         Log::info("Cache", String() << key << ": requested (not cached)");
@@ -51,7 +51,7 @@ Cache<T>::acquire(StringView key) noexcept {
 template<typename T>
 void
 Cache<T>::release(StringView key, time_t now) noexcept {
-    assert_(entries.contains(name);
+    assert_(entries.contains(name));
 
     Entry& e = entries[key];
     e.numUsing -= 1;

@@ -28,7 +28,7 @@
 #ifndef SRC_CORE_MUSIC_WORKER_H_
 #define SRC_CORE_MUSIC_WORKER_H_
 
-#include "util/string.h"
+#include "util/string-view.h"
 
 class MusicWorker {
  public:

@@ -83,12 +83,12 @@ TileGrid::inBounds(icoord phys) const noexcept {
 }
 
 bool
-TileGrid::inBounds(vicoord virt) const noexcept {
+TileGrid::inBounds(vicoord virt) noexcept {
     return inBounds(virt2phys(virt));
 }
 
 bool
-TileGrid::inBounds(rcoord virt) const noexcept {
+TileGrid::inBounds(rcoord virt) noexcept {
     return inBounds(virt2phys(virt));
 }
 
@@ -106,14 +106,14 @@ TileGrid::phys2virt_r(icoord phys) const noexcept {
 }
 
 icoord
-TileGrid::virt2phys(vicoord virt) const noexcept {
+TileGrid::virt2phys(vicoord virt) noexcept {
     return icoord{static_cast<int>(virt.x),
                   static_cast<int>(virt.y),
                   depthIndex(virt.z)};
 }
 
 icoord
-TileGrid::virt2phys(rcoord virt) const noexcept {
+TileGrid::virt2phys(rcoord virt) noexcept {
     return icoord{static_cast<int>(virt.x) / tileDim.x,
                   static_cast<int>(virt.y) / tileDim.y,
                   depthIndex(virt.z)};
@@ -135,7 +135,7 @@ TileGrid::virt2virt(rcoord virt) const noexcept {
 
 
 int
-TileGrid::depthIndex(float depth) const noexcept {
+TileGrid::depthIndex(float depth) noexcept {
     auto it = depth2idx.find(depth);
     if (it == depth2idx.end()) {
         Log::fatal("TileGrid",

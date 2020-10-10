@@ -33,7 +33,6 @@
 #include "os/unix-mutex.h"
 #endif
 
-#include "util/assert.h"
 #include "util/noexcept.h"
 
 class LockGuard {

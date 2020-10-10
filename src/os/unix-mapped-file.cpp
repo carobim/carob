@@ -27,6 +27,9 @@
 #include "os/unix-mapped-file.h"
 
 #include "os/c.h"
+#include "util/optional.h"
+#include "util/string-view.h"
+#include "util/string.h"
 
 Optional<MappedFile>
 MappedFile::fromPath(String& path) noexcept {

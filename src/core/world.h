@@ -32,7 +32,6 @@
 #include "core/vec.h"
 #include "util/int.h"
 #include "util/string-view.h"
-#include "util/vector.h"
 
 class Area;
 struct DisplayList;

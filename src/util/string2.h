@@ -31,8 +31,9 @@
 #include "util/noexcept.h"
 #include "util/optional.h"
 #include "util/string-view.h"
-#include "util/string.h"
 #include "util/vector.h"
+
+class String;
 
 //! Returns true if the string contains only digits, whitespace, and minus.
 bool

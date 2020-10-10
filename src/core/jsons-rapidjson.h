@@ -34,7 +34,6 @@
 #include "util/vector.h"
 
 class JSONArray;
-class JSONObject;
 
 class JSONObject {
  public:

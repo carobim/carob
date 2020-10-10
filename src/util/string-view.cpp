@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** string-view.cpp             **
-** Copyright 2019 Paul Merrill **
-*********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** string-view.cpp                  **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -67,7 +67,7 @@ StringView::rfind(char needle) const noexcept {
         return mark;
     }
 
-    size_t i = size;
+    size_t i = size - 1;
     do {
         if (data[i] == needle) {
             return StringPosition(i);
