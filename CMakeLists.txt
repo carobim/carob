@@ -470,8 +470,8 @@ endif()
 
 # Optimize at link time
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto=full")
-    string(APPEND CMAKE_CXX_FLAGS_MINSIZEREL " -flto=full")
+    string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto")
+    string(APPEND CMAKE_CXX_FLAGS_MINSIZEREL " -flto")
     string(APPEND CMAKE_CXX_FLAGS_RELWITHDEBINFO " -flto=thin")
 endif()
 
