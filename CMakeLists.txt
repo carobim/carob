@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.11)
 project(TsunagariEngine
     DESCRIPTION "Tile-based video game engine"
-    HOMEPAGE_URL "https://github.com/TsunagariEngine/Tsunagari"
     LANGUAGES CXX
 )
 
