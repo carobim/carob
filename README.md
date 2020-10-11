@@ -8,7 +8,7 @@
 | FreeBSD | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd.yml) |
 | NetBSD  | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/netbsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/netbsd.yml)   |
 
-[![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari)](https://github.com/XAMPPRocky/tokei)
+[![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari?category=code)](https://github.com/XAMPPRocky/tokei)
 
 Tsunagari is a tiling game engine inspired by the cult classic game Yume
 Nikki. It is intended as an open source alternative to the popular proprietary
