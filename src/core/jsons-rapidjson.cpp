@@ -71,7 +71,7 @@ typedef RJDocument::ValueType::Array RJArray;
 
 class JSONObjectImpl : public JSONObject {
  public:
-    virtual ~JSONObjectImpl() override = default;
+    virtual ~JSONObjectImpl() noexcept override = default;
 
     Vector<StringView>
     names() noexcept final;
@@ -124,6 +124,7 @@ class JSONObjectImpl : public JSONObject {
 class JSONObjectReal : public JSONObjectImpl {
  public:
     explicit JSONObjectReal(RJObject object) noexcept;
+    ~JSONObjectReal() noexcept {}
 
  protected:
     RJObject
@@ -136,6 +137,7 @@ class JSONObjectReal : public JSONObjectImpl {
 class JSONArrayImpl : public JSONArray {
  public:
     explicit JSONArrayImpl(RJArray array) noexcept;
+    ~JSONArrayImpl() noexcept {}
 
     size_t
     size() noexcept final;
@@ -182,6 +184,7 @@ class JSONArrayImpl : public JSONArray {
 class JSONDocImpl : public JSONObjectImpl {
  public:
     explicit JSONDocImpl(String json) noexcept;
+    ~JSONDocImpl() noexcept {}
 
     bool
     isValid() noexcept;
@@ -424,12 +427,13 @@ genJSON(StringView path) noexcept {
 
     TimeMeasure m(String() << "Constructed " << path << " as json");
 
-    JSONDocImpl document(json);
+    Rc<JSONObject> ref(new JSONDocImpl(json));
+    JSONDocImpl& document = reinterpret_cast<JSONDocImpl&>(*ref);
     if (!document.isValid()) {
         return Rc<JSONObject>();
     }
 
-    return Rc<JSONObject>(new JSONDocImpl(move_(document)));
+    return ref;
 }
 
 static RcReaderCache<Rc<JSONObject>, genJSON> documents;

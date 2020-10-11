@@ -32,8 +32,8 @@
 
 class Overlay : public Entity {
  public:
-    Overlay() = default;
-    virtual ~Overlay() = default;
+    Overlay() noexcept = default;
+    virtual ~Overlay() noexcept = default;
 
     void
     tick(time_t dt) noexcept;

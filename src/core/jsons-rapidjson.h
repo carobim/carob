@@ -37,7 +37,7 @@ class JSONArray;
 
 class JSONObject {
  public:
-    virtual ~JSONObject() = default;
+    virtual ~JSONObject() noexcept = default;
 
     virtual Vector<StringView>
     names() noexcept = 0;
@@ -83,7 +83,7 @@ class JSONObject {
 
 class JSONArray {
  public:
-    virtual ~JSONArray() = default;
+    virtual ~JSONArray() noexcept = default;
 
     virtual size_t
     size() noexcept = 0;

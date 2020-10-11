@@ -57,8 +57,8 @@ enum SetPhaseResult { PHASE_NOTFOUND, PHASE_NOTCHANGED, PHASE_CHANGED };
 // direction.
 class Entity {
  public:
-    Entity() = default;
-    virtual ~Entity() = default;
+    Entity() noexcept = default;
+    virtual ~Entity() noexcept = default;
 
     // Entity initializer
     virtual bool
