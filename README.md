@@ -6,7 +6,6 @@
 | macOS   | [![TravisCI](https://api.travis-ci.com/TsunagariEngine/Tsunagari.svg)](https://travis-ci.com/TsunagariEngine/Tsunagari)                                         |
 | Linux   | [![CircleCI](https://circleci.com/gh/TsunagariEngine/Tsunagari.svg?style=shield)](https://app.circleci.com/pipelines/github/TsunagariEngine/Tsunagari)          |
 | FreeBSD | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd.yml) |
-| NetBSD  | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/netbsd.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/netbsd.yml)   |
 
 [![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari?category=code)](https://github.com/XAMPPRocky/tokei)
 
