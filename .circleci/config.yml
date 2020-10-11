@@ -19,7 +19,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
   debian_10:
     docker:
@@ -34,7 +34,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
   ubuntu_19_10:
     docker:
@@ -49,7 +49,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
   fedora_31:
     docker:
@@ -63,7 +63,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
   arch_latest:
     docker:
@@ -78,7 +78,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
   void:
     docker:
@@ -95,7 +95,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
   void_musl:
     docker:
@@ -112,7 +112,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
   alpine_3_11:
     docker:
@@ -126,7 +126,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          cmake --build .
+          make
 
 workflows:
   version: 2
