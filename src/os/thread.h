@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** thread.h                    **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** thread.h                         **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,7 +31,7 @@
 #include "os/windows-thread.h"
 #elif defined(__APPLE__)
 #include "os/mac-thread.h"
-#elif defined(__linux__)
+#elif defined(__linux__) or defined(__EMSCRIPTEN__)
 #include "os/unix-thread.h"
 #elif defined(__FreeBSD__)
 #include "os/unix-thread.h"

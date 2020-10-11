@@ -218,6 +218,9 @@ readFile(StringView s) noexcept {
 
 static bool
 isaTTY() noexcept {
+#if defined(__EMSCRIPTEN__)
+    return false;
+#else
     static bool checked = false;
     static bool tty = false;
 
@@ -226,6 +229,7 @@ isaTTY() noexcept {
         tty = isatty(0) != 0;
     }
     return tty;
+#endif
 }
 
 void

@@ -9,8 +9,9 @@ project(TsunagariEngine LANGUAGES CXX)
 option(AV_NULL "Disable audio and video output")
 option(AV_SDL2 "Use SDL2 for audio and video output")
 option(AV_GOSU "Use Gosu for audio and video output")
+option(AV_EM "Use Emscripten for audio and video output")
 
-if(NOT AV_SDL2 AND NOT AV_GOSU)
+if(NOT AV_SDL2 AND NOT AV_GOSU AND NOT AV_EM)
     set(AV_NULL ON)
 endif()
 
@@ -57,6 +58,14 @@ if(CMAKE_SYSTEM_NAME MATCHES FreeBSD)
 endif()
 if(CMAKE_SYSTEM_NAME MATCHES NetBSD)
     set(NETBSD 1)
+endif()
+
+if(AV_EM)
+    set(WIN32 0)
+    set(APPLE 0)
+    set(LINUX 1)
+    set(FREEBSD 0)
+    set(NETBSD 0)
 endif()
 
 # Build type
@@ -107,7 +116,7 @@ if(AV_NULL)
     )
 endif()
 
-if(AV_SDL2)
+if(AV_SDL2 OR AV_EM)
     target_sources(tsunagari
         PRIVATE ${HERE}/src/av/sdl2/error.cpp
                 ${HERE}/src/av/sdl2/error.h
@@ -474,6 +483,25 @@ target_compile_definitions(pack-tool
     PRIVATE $<$<BOOL:${IS_RELEASE}>:NDEBUG>
 )
 
+# Emscripten configuration
+if(AV_EM)
+    string(APPEND CMAKE_CXX_FLAGS " -s ALLOW_MEMORY_GROWTH=1")
+    #string(APPEND CMAKE_CXX_FLAGS " -s ASSERTIONS=0")
+    #string(APPEND CMAKE_CXX_FLAGS " -s DISABLE_EXCEPTION_THROWING=1")
+    string(APPEND CMAKE_CXX_FLAGS " -s ENVIRONMENT=web")
+    #string(APPEND CMAKE_CXX_FLAGS " -s HEADLESS=1")
+    #string(APPEND CMAKE_CXX_FLAGS " -s INITIAL_MEMORY=134217728")
+    #string(APPEND CMAKE_CXX_FLAGS " -s LLD_REPORT_UNDEFINED=1")
+    #string(APPEND CMAKE_CXX_FLAGS " -s PTHREADS_DEBUG=1")
+    string(APPEND CMAKE_CXX_FLAGS " -s SDL2_IMAGE_FORMATS=[bmp]")
+    #string(APPEND CMAKE_CXX_FLAGS " -s STRICT=1")
+    #string(APPEND CMAKE_CXX_FLAGS " -s SUPPORT_LONGJMP=0")
+    string(APPEND CMAKE_CXX_FLAGS " -s USE_SDL=2")
+    string(APPEND CMAKE_CXX_FLAGS " -s USE_SDL_IMAGE=2")
+    string(APPEND CMAKE_CXX_FLAGS " -s USE_SDL_MIXER=2")
+    set(CMAKE_EXECUTABLE_SUFFIX ".html")
+endif()
+
 # Enable color within compiler's output
 if(NINJA AND CLANG)
     string(APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
@@ -495,6 +523,9 @@ if(IS_SUBPROJECT)
         PARENT_SCOPE)
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
         ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}
+        PARENT_SCOPE)
+    set(CMAKE_EXECUTABLE_SUFFIX
+        ${CMAKE_EXECUTABLE_SUFFIX}
         PARENT_SCOPE)
 endif()
 
@@ -547,7 +578,7 @@ if(APPLE)
     )
 endif()
 
-if(LINUX)
+if(LINUX AND NOT AV_EM)
     # Check if we are compiling against glibc, which needs libpthread, or
     # against musl, which doesn't.
     find_package(Threads)
@@ -557,7 +588,11 @@ if(LINUX)
     endif()
 endif()
 if(FREEBSD OR NETBSD)
-    target_link_libraries(tsunagari PUBLIC pthread)
+    target_link_libraries(tsunagari PUBLIC  pthread)
+    target_link_libraries(pack-tool PRIVATE pthread)
+endif()
+if(AV_EM)
+    target_link_libraries(tsunagari PUBLIC  pthread)
     target_link_libraries(pack-tool PRIVATE pthread)
 endif()
 

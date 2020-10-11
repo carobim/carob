@@ -98,9 +98,26 @@ munmap(void*, size_t) noexcept;
 #define PROT_READ 1
 }
 
-// bits/stat.h
-// sys/stat.h
-extern "C" {
+#if defined(__EMSCRIPTEN__)
+// musl arch/emscripten/bits/stat.h
+struct stat {
+    dev_t st_dev;
+    long __st_ino;
+    mode_t st_mode;
+    unsigned st_nlink;
+    uid_t st_uid;
+    gid_t st_gid;
+    dev_t st_rdev;
+    off_t st_size;
+    blksize_t st_blksize;
+    int st_blocks;  // blkcnt_t = int
+    struct timespec st_atim;
+    struct timespec st_mtim;
+    struct timespec st_ctim;
+    ino_t st_ino;
+};
+#else
+// glibc? arch/x86_64-linux-gnu/bits/stat.h
 struct stat {
     dev_t st_dev;
     ino_t st_ino;
@@ -118,6 +135,11 @@ struct stat {
     struct timespec st_ctim;
     long pad2[3];
 };
+#endif
+
+// bits/stat.h
+// sys/stat.h
+extern "C" {
 int
 fstat(int, struct stat*) noexcept;
 int

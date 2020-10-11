@@ -56,7 +56,7 @@ typedef __INTPTR_TYPE__ ssize_t;
 
 typedef size_t uintptr_t;
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) || defined(__EMSCRIPTEN__)
 typedef long time_t;
 #else
 typedef int64_t time_t;
@@ -80,5 +80,9 @@ static const CONSTEXPR11 size_t SIZE_MAX = __SIZE_MAX__;
 static const CONSTEXPR11 float FLT_MIN = 1.17549435082228750796873653722224568e-38f;
 
 static const CONSTEXPR11 float M_PI = 3.14159265358979323846;
+
+#if defined(__EMSCRIPTEN__)
+#define __DEFINED_time_t
+#endif
 
 #endif  // SRC_UTIL_INT_H_

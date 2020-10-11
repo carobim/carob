@@ -31,7 +31,7 @@
 #include "os/windows-c.h"
 #elif defined(__APPLE__)
 #include "os/mac-c.h"
-#elif defined(__linux__)
+#elif defined(__linux__) or defined(__EMSCRIPTEN__)
 #include "os/linux-c.h"
 #elif defined(__FreeBSD__)
 #include "os/freebsd-c.h"
