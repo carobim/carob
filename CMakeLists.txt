@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.10)
 project(TsunagariEngine
     DESCRIPTION "Tile-based video game engine"
     LANGUAGES CXX
@@ -71,9 +71,11 @@ set(IS_RELEASE
 # Targets
 #
 
-add_library(tsunagari)
-add_executable(null-world)
-add_executable(pack-tool)
+set(HERE ${CMAKE_CURRENT_LIST_DIR})
+
+add_library(tsunagari ${HERE}/src/main.cpp)
+add_executable(null-world ${HERE}/src/null-world.cpp)
+add_executable(pack-tool ${HERE}/src/pack/main.cpp)
 
 target_link_libraries(null-world tsunagari)
 
@@ -95,15 +97,8 @@ target_include_directories(tsunagari PUBLIC src)
 target_include_directories(null-world PUBLIC src)
 target_include_directories(pack-tool PRIVATE src)
 
-set(HERE ${CMAKE_CURRENT_LIST_DIR})
-
 target_sources(tsunagari
     PUBLIC  ${HERE}/src/config.h
-    PRIVATE ${HERE}/src/main.cpp
-)
-
-target_sources(null-world
-    PRIVATE ${HERE}/src/null-world.cpp
 )
 
 if(AV_NULL)
@@ -318,7 +313,6 @@ target_sources(tsunagari
 target_sources(pack-tool
     PRIVATE ${HERE}/src/pack/file-type.cpp
     PRIVATE ${HERE}/src/pack/file-type.h
-    PRIVATE ${HERE}/src/pack/main.cpp
     PRIVATE ${HERE}/src/pack/pack-reader.cpp
     PRIVATE ${HERE}/src/pack/pack-reader.h
     PRIVATE ${HERE}/src/pack/pack-writer.cpp
