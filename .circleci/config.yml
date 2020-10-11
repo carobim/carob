@@ -15,7 +15,7 @@ jobs:
           rm cmake*.deb
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
@@ -30,7 +30,7 @@ jobs:
           apt-get install -y --no-install-recommends git ca-certificates cmake make g++
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
@@ -45,7 +45,7 @@ jobs:
           apt-get install -y --no-install-recommends git ca-certificates cmake make g++
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
@@ -59,7 +59,7 @@ jobs:
           dnf install -y git cmake make gcc-c++
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
@@ -74,7 +74,7 @@ jobs:
           pacman -S --noconfirm git cmake make gcc
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
@@ -91,7 +91,7 @@ jobs:
           xbps-install -y git cmake make gcc
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
@@ -108,7 +108,7 @@ jobs:
           xbps-install -y git cmake make gcc
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
@@ -122,7 +122,7 @@ jobs:
           apk add git cmake make g++
       - checkout
       - run: |
-          git submodule update --init --recursive &&
+          git submodule update --init &&
           mkdir build &&
           cd build &&
           cmake .. &&
