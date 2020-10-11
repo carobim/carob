@@ -39,6 +39,6 @@ randInt(int min, int max) noexcept {
 float
 randFloat(float min, float max) noexcept {
     int i = rand();
-    float d = (float)i / INT32_MAX;
+    float d = static_cast<float>(i) / static_cast<float>(INT32_MAX);
     return d * (max - min) + min;
 }
