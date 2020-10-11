@@ -85,4 +85,7 @@ static const CONSTEXPR11 float M_PI = 3.14159265358979323846;
 #define __DEFINED_time_t
 #endif
 
+// Raspberry Pi OS - Buster
+#define __time_t_defined
+
 #endif  // SRC_UTIL_INT_H_
