@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.12)
 project(TsunagariEngine
     DESCRIPTION "Tile-based video game engine"
     HOMEPAGE_URL "https://github.com/TsunagariEngine/Tsunagari"
@@ -96,310 +96,312 @@ target_include_directories(tsunagari PUBLIC src)
 target_include_directories(null-world PUBLIC src)
 target_include_directories(pack-tool PRIVATE src)
 
+set(HERE ${CMAKE_CURRENT_LIST_DIR})
+
 target_sources(tsunagari
-    PUBLIC  src/config.h
-    PRIVATE src/main.cpp
+    PUBLIC  ${HERE}/src/config.h
+    PRIVATE ${HERE}/src/main.cpp
 )
 
 target_sources(null-world
-    PRIVATE src/null-world.cpp
+    PRIVATE ${HERE}/src/null-world.cpp
 )
 
 if(AV_NULL)
     target_sources(tsunagari
-        PRIVATE src/av/null/images.cpp
-                src/av/null/music.cpp
-                src/av/null/sounds.cpp
-                src/av/null/window.cpp
+        PRIVATE ${HERE}/src/av/null/images.cpp
+                ${HERE}/src/av/null/music.cpp
+                ${HERE}/src/av/null/sounds.cpp
+                ${HERE}/src/av/null/window.cpp
     )
 endif()
 
 if(AV_SDL2)
     target_sources(tsunagari
-        PRIVATE src/av/sdl2/error.cpp
-                src/av/sdl2/error.h
-                src/av/sdl2/images.cpp
-                src/av/sdl2/music.cpp
-                src/av/sdl2/sounds.cpp
-                src/av/sdl2/window.cpp
-                src/av/sdl2/window.h
+        PRIVATE ${HERE}/src/av/sdl2/error.cpp
+                ${HERE}/src/av/sdl2/error.h
+                ${HERE}/src/av/sdl2/images.cpp
+                ${HERE}/src/av/sdl2/music.cpp
+                ${HERE}/src/av/sdl2/sounds.cpp
+                ${HERE}/src/av/sdl2/window.cpp
+                ${HERE}/src/av/sdl2/window.h
     )
 endif()
 
 if(AV_GOSU)
     target_sources(tsunagari
-        PRIVATE src/av/gosu/cbuffer.cpp
-                src/av/gosu/cbuffer.h
-                src/av/gosu/gosu.h
-                src/av/gosu/images.cpp
-                src/av/null/music.cpp
-                src/av/null/sounds.cpp
-                src/av/gosu/window.cpp
-                src/av/gosu/window.h
+        PRIVATE ${HERE}/src/av/gosu/cbuffer.cpp
+                ${HERE}/src/av/gosu/cbuffer.h
+                ${HERE}/src/av/gosu/gosu.h
+                ${HERE}/src/av/gosu/images.cpp
+                ${HERE}/src/av/null/music.cpp
+                ${HERE}/src/av/null/sounds.cpp
+                ${HERE}/src/av/gosu/window.cpp
+                ${HERE}/src/av/gosu/window.h
     )
 endif()
 
 target_sources(tsunagari
-    PUBLIC src/cache/rc-cache-impl.h
-    PUBLIC src/cache/rc-cache.h
-    PUBLIC src/cache/rc-reader-cache.h
+    PUBLIC ${HERE}/src/cache/rc-cache-impl.h
+    PUBLIC ${HERE}/src/cache/rc-cache.h
+    PUBLIC ${HERE}/src/cache/rc-reader-cache.h
 )
 
 target_sources(tsunagari
-    PUBLIC  src/core/algorithm.h
-    PRIVATE src/core/animation.cpp
-    PUBLIC  src/core/animation.h
-    PRIVATE src/core/area.cpp
-    PUBLIC  src/core/area.h
-    PRIVATE src/core/area-json.cpp
-    PUBLIC  src/core/area-json.h
-    PRIVATE src/core/character.cpp
-    PUBLIC  src/core/character.h
-    PRIVATE src/core/client-conf.cpp
-    PUBLIC  src/core/client-conf.h
-    PRIVATE src/core/cooldown.cpp
-    PUBLIC  src/core/cooldown.h
-    PRIVATE src/core/display-list.cpp
-    PRIVATE src/core/display-list.h
-    PRIVATE src/core/entity.cpp
-    PUBLIC  src/core/entity.h
-    PUBLIC  src/core/images.h
-    PRIVATE src/core/jsons-rapidjson.cpp
-    PUBLIC  src/core/jsons-rapidjson.h
-    PRIVATE src/core/log.cpp
-    PUBLIC  src/core/log.h
-    PRIVATE src/core/measure.cpp
-    PUBLIC  src/core/measure.h
-    PRIVATE src/core/music.cpp
-    PUBLIC  src/core/music-worker.h
-    PUBLIC  src/core/music.h
-    PRIVATE src/core/npc.cpp
-    PUBLIC  src/core/npc.h
-    PRIVATE src/core/overlay.cpp
-    PUBLIC  src/core/overlay.h
-    PRIVATE src/core/player.cpp
-    PUBLIC  src/core/player.h
-    PUBLIC  src/core/resources.h
-    PUBLIC  src/core/sounds.h
-    PRIVATE src/core/tile.cpp
-    PUBLIC  src/core/tile.h
-    PRIVATE src/core/tile-grid.cpp
-    PUBLIC  src/core/tile-grid.h
-    PRIVATE src/core/viewport.cpp
-    PUBLIC  src/core/viewport.h
-    PRIVATE src/core/window.cpp
-    PUBLIC  src/core/window.h
-    PRIVATE src/core/world.cpp
-    PUBLIC  src/core/world.h
+    PUBLIC  ${HERE}/src/core/algorithm.h
+    PRIVATE ${HERE}/src/core/animation.cpp
+    PUBLIC  ${HERE}/src/core/animation.h
+    PRIVATE ${HERE}/src/core/area.cpp
+    PUBLIC  ${HERE}/src/core/area.h
+    PRIVATE ${HERE}/src/core/area-json.cpp
+    PUBLIC  ${HERE}/src/core/area-json.h
+    PRIVATE ${HERE}/src/core/character.cpp
+    PUBLIC  ${HERE}/src/core/character.h
+    PRIVATE ${HERE}/src/core/client-conf.cpp
+    PUBLIC  ${HERE}/src/core/client-conf.h
+    PRIVATE ${HERE}/src/core/cooldown.cpp
+    PUBLIC  ${HERE}/src/core/cooldown.h
+    PRIVATE ${HERE}/src/core/display-list.cpp
+    PRIVATE ${HERE}/src/core/display-list.h
+    PRIVATE ${HERE}/src/core/entity.cpp
+    PUBLIC  ${HERE}/src/core/entity.h
+    PUBLIC  ${HERE}/src/core/images.h
+    PRIVATE ${HERE}/src/core/jsons-rapidjson.cpp
+    PUBLIC  ${HERE}/src/core/jsons-rapidjson.h
+    PRIVATE ${HERE}/src/core/log.cpp
+    PUBLIC  ${HERE}/src/core/log.h
+    PRIVATE ${HERE}/src/core/measure.cpp
+    PUBLIC  ${HERE}/src/core/measure.h
+    PRIVATE ${HERE}/src/core/music.cpp
+    PUBLIC  ${HERE}/src/core/music-worker.h
+    PUBLIC  ${HERE}/src/core/music.h
+    PRIVATE ${HERE}/src/core/npc.cpp
+    PUBLIC  ${HERE}/src/core/npc.h
+    PRIVATE ${HERE}/src/core/overlay.cpp
+    PUBLIC  ${HERE}/src/core/overlay.h
+    PRIVATE ${HERE}/src/core/player.cpp
+    PUBLIC  ${HERE}/src/core/player.h
+    PUBLIC  ${HERE}/src/core/resources.h
+    PUBLIC  ${HERE}/src/core/sounds.h
+    PRIVATE ${HERE}/src/core/tile.cpp
+    PUBLIC  ${HERE}/src/core/tile.h
+    PRIVATE ${HERE}/src/core/tile-grid.cpp
+    PUBLIC  ${HERE}/src/core/tile-grid.h
+    PRIVATE ${HERE}/src/core/viewport.cpp
+    PUBLIC  ${HERE}/src/core/viewport.h
+    PRIVATE ${HERE}/src/core/window.cpp
+    PUBLIC  ${HERE}/src/core/window.h
+    PRIVATE ${HERE}/src/core/world.cpp
+    PUBLIC  ${HERE}/src/core/world.h
 )
 
 target_sources(tsunagari
-    PRIVATE src/data/data-area.cpp
-    PUBLIC  src/data/data-area.h
-    PUBLIC  src/data/data-world.h
-    PRIVATE src/data/inprogress.cpp
-    PUBLIC  src/data/inprogress.h
-    PUBLIC  src/data/inprogress-sound.h
-    PUBLIC  src/data/inprogress-timer.h
+    PRIVATE ${HERE}/src/data/data-area.cpp
+    PUBLIC  ${HERE}/src/data/data-area.h
+    PUBLIC  ${HERE}/src/data/data-world.h
+    PRIVATE ${HERE}/src/data/inprogress.cpp
+    PUBLIC  ${HERE}/src/data/inprogress.h
+    PUBLIC  ${HERE}/src/data/inprogress-sound.h
+    PUBLIC  ${HERE}/src/data/inprogress-timer.h
 )
 
 target_sources(tsunagari
-    PRIVATE deps/rapidjson/include/rapidjson/document.h
-    PRIVATE deps/rapidjson/include/rapidjson/reader.h
-    PRIVATE deps/rapidjson/include/rapidjson/allocators.h
-    PRIVATE deps/rapidjson/include/rapidjson/rapidjson.h
-    PRIVATE deps/rapidjson/include/rapidjson/stream.h
-    PRIVATE deps/rapidjson/include/rapidjson/encodings.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/stack.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/swap.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/strtod.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/ieee754.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/biginteger.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/diyfp.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/pow10.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/meta.h
-    PRIVATE deps/rapidjson/include/rapidjson/internal/strfunc.h
-    PRIVATE deps/rapidjson/include/rapidjson/memorystream.h
-    PRIVATE deps/rapidjson/include/rapidjson/encodedstream.h
-    PRIVATE deps/pjson/pjson.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/document.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/reader.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/allocators.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/rapidjson.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/stream.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/encodings.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/stack.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/swap.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/strtod.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/ieee754.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/biginteger.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/diyfp.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/pow10.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/meta.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/strfunc.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/memorystream.h
+    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/encodedstream.h
+    PRIVATE ${HERE}/deps/pjson/pjson.h
 )
 
 target_sources(tsunagari
-    PUBLIC src/os/c.h
-    PUBLIC src/os/chrono.h
-    PUBLIC src/os/mapped-file.h
-    PUBLIC src/os/mutex.h
-    PUBLIC src/os/thread.h
-    PUBLIC src/os/os.h
+    PUBLIC ${HERE}/src/os/c.h
+    PUBLIC ${HERE}/src/os/chrono.h
+    PUBLIC ${HERE}/src/os/mapped-file.h
+    PUBLIC ${HERE}/src/os/mutex.h
+    PUBLIC ${HERE}/src/os/thread.h
+    PUBLIC ${HERE}/src/os/os.h
 )
 target_sources(pack-tool
-    PRIVATE src/os/c.h
-    PRIVATE src/os/condition-variable.h
-    PRIVATE src/os/mapped-file.h
-    PRIVATE src/os/mutex.h
-    PRIVATE src/os/os.h
-    PRIVATE src/os/thread.h
+    PRIVATE ${HERE}/src/os/c.h
+    PRIVATE ${HERE}/src/os/condition-variable.h
+    PRIVATE ${HERE}/src/os/mapped-file.h
+    PRIVATE ${HERE}/src/os/mutex.h
+    PRIVATE ${HERE}/src/os/os.h
+    PRIVATE ${HERE}/src/os/thread.h
 )
 
 if (WIN32)
     target_sources(tsunagari
-        PRIVATE src/os/memmove.cpp
-        PRIVATE src/os/windows-c.cpp
-        PUBLIC  src/os/windows-c.h
-        PRIVATE src/os/windows-chrono.cpp
-        PRIVATE src/os/windows-mapped-file.cpp
-        PUBLIC  src/os/windows-mapped-file.h
-        PRIVATE src/os/windows.cpp
-        PUBLIC  src/os/windows.h
+        PRIVATE ${HERE}/src/os/memmove.cpp
+        PRIVATE ${HERE}/src/os/windows-c.cpp
+        PUBLIC  ${HERE}/src/os/windows-c.h
+        PRIVATE ${HERE}/src/os/windows-chrono.cpp
+        PRIVATE ${HERE}/src/os/windows-mapped-file.cpp
+        PUBLIC  ${HERE}/src/os/windows-mapped-file.h
+        PRIVATE ${HERE}/src/os/windows.cpp
+        PUBLIC  ${HERE}/src/os/windows.h
     )
     target_sources(pack-tool
-        PRIVATE src/os/memmove.cpp
-        PRIVATE src/os/windows-c.cpp
-        PRIVATE src/os/windows-c.h
-        PRIVATE src/os/windows-condition-variable.h
-        PRIVATE src/os/windows-mapped-file.cpp
-        PRIVATE src/os/windows-mapped-file.h
-        PRIVATE src/os/windows-mutex.h
-        PRIVATE src/os/windows-thread.h
-        PRIVATE src/os/windows.cpp
-        PRIVATE src/os/windows.h
+        PRIVATE ${HERE}/src/os/memmove.cpp
+        PRIVATE ${HERE}/src/os/windows-c.cpp
+        PRIVATE ${HERE}/src/os/windows-c.h
+        PRIVATE ${HERE}/src/os/windows-condition-variable.h
+        PRIVATE ${HERE}/src/os/windows-mapped-file.cpp
+        PRIVATE ${HERE}/src/os/windows-mapped-file.h
+        PRIVATE ${HERE}/src/os/windows-mutex.h
+        PRIVATE ${HERE}/src/os/windows-thread.h
+        PRIVATE ${HERE}/src/os/windows.cpp
+        PRIVATE ${HERE}/src/os/windows.h
     )
 elseif(APPLE)
     target_sources(tsunagari
-        PUBLIC  src/os/mac-c.h
-        PRIVATE src/os/mac-chrono.cpp
-        PRIVATE src/os/mac-gui.mm
-        PUBLIC  src/os/mac-gui.h
-        PRIVATE src/os/mac-thread.cpp
-        PUBLIC  src/os/mac-thread.h
-        PRIVATE src/os/unix-mapped-file.cpp
-        PUBLIC  src/os/unix-mapped-file.h
-        PUBLIC  src/os/unix-mutex.h
-        PRIVATE src/os/unix.cpp
+        PUBLIC  ${HERE}/src/os/mac-c.h
+        PRIVATE ${HERE}/src/os/mac-chrono.cpp
+        PRIVATE ${HERE}/src/os/mac-gui.mm
+        PUBLIC  ${HERE}/src/os/mac-gui.h
+        PRIVATE ${HERE}/src/os/mac-thread.cpp
+        PUBLIC  ${HERE}/src/os/mac-thread.h
+        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
+        PUBLIC  ${HERE}/src/os/unix-mapped-file.h
+        PUBLIC  ${HERE}/src/os/unix-mutex.h
+        PRIVATE ${HERE}/src/os/unix.cpp
     )
     target_sources(pack-tool
-        PRIVATE src/os/mac-c.h
-        PRIVATE src/os/mac-thread.cpp
-        PRIVATE src/os/mac-thread.h
-        PRIVATE src/os/unix-condition-variable.h
-        PRIVATE src/os/unix-mapped-file.cpp
-        PRIVATE src/os/unix-mapped-file.h
-        PRIVATE src/os/unix-mutex.h
-        PRIVATE src/os/unix.cpp
+        PRIVATE ${HERE}/src/os/mac-c.h
+        PRIVATE ${HERE}/src/os/mac-thread.cpp
+        PRIVATE ${HERE}/src/os/mac-thread.h
+        PRIVATE ${HERE}/src/os/unix-condition-variable.h
+        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
+        PRIVATE ${HERE}/src/os/unix-mapped-file.h
+        PRIVATE ${HERE}/src/os/unix-mutex.h
+        PRIVATE ${HERE}/src/os/unix.cpp
     )
 else()
     target_sources(tsunagari
-        PUBLIC  src/os/linux-c.h
-        PRIVATE src/os/unix-chrono.cpp
-        PRIVATE src/os/unix-mapped-file.cpp
-        PUBLIC  src/os/unix-mutex.h
-        PUBLIC  src/os/unix-thread.h
-        PRIVATE src/os/unix.cpp
+        PUBLIC  ${HERE}/src/os/linux-c.h
+        PRIVATE ${HERE}/src/os/unix-chrono.cpp
+        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
+        PUBLIC  ${HERE}/src/os/unix-mutex.h
+        PUBLIC  ${HERE}/src/os/unix-thread.h
+        PRIVATE ${HERE}/src/os/unix.cpp
     )
     target_sources(pack-tool
-        PRIVATE src/os/linux-c.h
-        PRIVATE src/os/unix-condition-variable.h
-        PRIVATE src/os/unix-mapped-file.cpp
-        PRIVATE src/os/unix-mapped-file.h
-        PRIVATE src/os/unix-mutex.h
-        PRIVATE src/os/unix-thread.h
-        PRIVATE src/os/unix.cpp
+        PRIVATE ${HERE}/src/os/linux-c.h
+        PRIVATE ${HERE}/src/os/unix-condition-variable.h
+        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
+        PRIVATE ${HERE}/src/os/unix-mapped-file.h
+        PRIVATE ${HERE}/src/os/unix-mutex.h
+        PRIVATE ${HERE}/src/os/unix-thread.h
+        PRIVATE ${HERE}/src/os/unix.cpp
     )
 endif()
 
 target_sources(tsunagari
-    PRIVATE src/pack/file-type.cpp
-    PUBLIC  src/pack/file-type.h
-    PRIVATE src/pack/pack-reader.cpp
-    PUBLIC  src/pack/pack-reader.h
+    PRIVATE ${HERE}/src/pack/file-type.cpp
+    PUBLIC  ${HERE}/src/pack/file-type.h
+    PRIVATE ${HERE}/src/pack/pack-reader.cpp
+    PUBLIC  ${HERE}/src/pack/pack-reader.h
 )
 
 target_sources(pack-tool
-    PRIVATE src/pack/file-type.cpp
-    PRIVATE src/pack/file-type.h
-    PRIVATE src/pack/main.cpp
-    PRIVATE src/pack/pack-reader.cpp
-    PRIVATE src/pack/pack-reader.h
-    PRIVATE src/pack/pack-writer.cpp
-    PRIVATE src/pack/pack-writer.h
-    PRIVATE src/pack/ui-log.cpp
-    PRIVATE src/pack/ui.h
-    PRIVATE src/pack/walker.cpp
-    PRIVATE src/pack/walker.h
+    PRIVATE ${HERE}/src/pack/file-type.cpp
+    PRIVATE ${HERE}/src/pack/file-type.h
+    PRIVATE ${HERE}/src/pack/main.cpp
+    PRIVATE ${HERE}/src/pack/pack-reader.cpp
+    PRIVATE ${HERE}/src/pack/pack-reader.h
+    PRIVATE ${HERE}/src/pack/pack-writer.cpp
+    PRIVATE ${HERE}/src/pack/pack-writer.h
+    PRIVATE ${HERE}/src/pack/ui-log.cpp
+    PRIVATE ${HERE}/src/pack/ui.h
+    PRIVATE ${HERE}/src/pack/walker.cpp
+    PRIVATE ${HERE}/src/pack/walker.h
 )
 
 target_sources(tsunagari
-    PRIVATE src/resources/pack.cpp
+    PRIVATE ${HERE}/src/resources/pack.cpp
 )
 
 target_sources(tsunagari
-    PUBLIC  src/util/algorithm.h
-    PUBLIC  src/util/align.h
-    PUBLIC  src/util/arc.h
-    PRIVATE src/util/assert.cpp
-    PUBLIC  src/util/assert.h
-    PRIVATE src/util/bitrecord.cpp
-    PUBLIC  src/util/bitrecord.h
-    PUBLIC  src/util/constexpr.h
-    PRIVATE src/util/fnv.cpp
-    PUBLIC  src/util/fnv.h
-    PUBLIC  src/util/function.h
-    PRIVATE src/util/hash.cpp
-    PUBLIC  src/util/hash.h
-    PUBLIC  src/util/hashtable.h
-    PUBLIC  src/util/int.h
-    PRIVATE src/util/jobs.cpp
-    PUBLIC  src/util/jobs.h
-    PUBLIC  src/util/likely.h
-    PUBLIC  src/util/list.h
-    PUBLIC  src/util/markable.h
-    PUBLIC  src/util/math2.h
-    PUBLIC  src/util/meta.h
-    PUBLIC  src/util/move.h
-    PUBLIC  src/util/new.h
-    PUBLIC  src/util/noexcept.h
-    PUBLIC  src/util/optional.h
-    PUBLIC  src/util/pool.h
-    PRIVATE src/util/random.cpp
-    PUBLIC  src/util/random.h
-    PUBLIC  src/util/rc.h
-    PRIVATE src/util/string-view.cpp
-    PUBLIC  src/util/string-view.h
-    PRIVATE src/util/string.cpp
-    PUBLIC  src/util/string.h
-    PRIVATE src/util/string2.cpp
-    PUBLIC  src/util/string2.h
-    PRIVATE src/util/transform.cpp
-    PUBLIC  src/util/transform.h
-    PUBLIC  src/util/unique.h
-    PUBLIC  src/util/vector.h
+    PUBLIC  ${HERE}/src/util/algorithm.h
+    PUBLIC  ${HERE}/src/util/align.h
+    PUBLIC  ${HERE}/src/util/arc.h
+    PRIVATE ${HERE}/src/util/assert.cpp
+    PUBLIC  ${HERE}/src/util/assert.h
+    PRIVATE ${HERE}/src/util/bitrecord.cpp
+    PUBLIC  ${HERE}/src/util/bitrecord.h
+    PUBLIC  ${HERE}/src/util/constexpr.h
+    PRIVATE ${HERE}/src/util/fnv.cpp
+    PUBLIC  ${HERE}/src/util/fnv.h
+    PUBLIC  ${HERE}/src/util/function.h
+    PRIVATE ${HERE}/src/util/hash.cpp
+    PUBLIC  ${HERE}/src/util/hash.h
+    PUBLIC  ${HERE}/src/util/hashtable.h
+    PUBLIC  ${HERE}/src/util/int.h
+    PRIVATE ${HERE}/src/util/jobs.cpp
+    PUBLIC  ${HERE}/src/util/jobs.h
+    PUBLIC  ${HERE}/src/util/likely.h
+    PUBLIC  ${HERE}/src/util/list.h
+    PUBLIC  ${HERE}/src/util/markable.h
+    PUBLIC  ${HERE}/src/util/math2.h
+    PUBLIC  ${HERE}/src/util/meta.h
+    PUBLIC  ${HERE}/src/util/move.h
+    PUBLIC  ${HERE}/src/util/new.h
+    PUBLIC  ${HERE}/src/util/noexcept.h
+    PUBLIC  ${HERE}/src/util/optional.h
+    PUBLIC  ${HERE}/src/util/pool.h
+    PRIVATE ${HERE}/src/util/random.cpp
+    PUBLIC  ${HERE}/src/util/random.h
+    PUBLIC  ${HERE}/src/util/rc.h
+    PRIVATE ${HERE}/src/util/string-view.cpp
+    PUBLIC  ${HERE}/src/util/string-view.h
+    PRIVATE ${HERE}/src/util/string.cpp
+    PUBLIC  ${HERE}/src/util/string.h
+    PRIVATE ${HERE}/src/util/string2.cpp
+    PUBLIC  ${HERE}/src/util/string2.h
+    PRIVATE ${HERE}/src/util/transform.cpp
+    PUBLIC  ${HERE}/src/util/transform.h
+    PUBLIC  ${HERE}/src/util/unique.h
+    PUBLIC  ${HERE}/src/util/vector.h
 )
 
 target_sources(pack-tool
-    PRIVATE src/util/algorithm.h
-    PRIVATE src/util/align.h
-    PRIVATE src/util/assert.cpp
-    PRIVATE src/util/assert.h
-    PRIVATE src/util/constexpr.h
-    PRIVATE src/util/fnv.cpp
-    PRIVATE src/util/fnv.h
-    PRIVATE src/util/function.h
-    PRIVATE src/util/hashtable.h
-    PRIVATE src/util/int.h
-    PRIVATE src/util/jobs.cpp
-    PRIVATE src/util/jobs.h
-    PRIVATE src/util/list.h
-    PRIVATE src/util/meta.h
-    PRIVATE src/util/move.h
-    PRIVATE src/util/new.h
-    PRIVATE src/util/noexcept.h
-    PRIVATE src/util/optional.h
-    PRIVATE src/util/sort.h
-    PRIVATE src/util/string-view.cpp
-    PRIVATE src/util/string-view.h
-    PRIVATE src/util/string.cpp
-    PRIVATE src/util/string.h
-    PRIVATE src/util/vector.h
+    PRIVATE ${HERE}/src/util/algorithm.h
+    PRIVATE ${HERE}/src/util/align.h
+    PRIVATE ${HERE}/src/util/assert.cpp
+    PRIVATE ${HERE}/src/util/assert.h
+    PRIVATE ${HERE}/src/util/constexpr.h
+    PRIVATE ${HERE}/src/util/fnv.cpp
+    PRIVATE ${HERE}/src/util/fnv.h
+    PRIVATE ${HERE}/src/util/function.h
+    PRIVATE ${HERE}/src/util/hashtable.h
+    PRIVATE ${HERE}/src/util/int.h
+    PRIVATE ${HERE}/src/util/jobs.cpp
+    PRIVATE ${HERE}/src/util/jobs.h
+    PRIVATE ${HERE}/src/util/list.h
+    PRIVATE ${HERE}/src/util/meta.h
+    PRIVATE ${HERE}/src/util/move.h
+    PRIVATE ${HERE}/src/util/new.h
+    PRIVATE ${HERE}/src/util/noexcept.h
+    PRIVATE ${HERE}/src/util/optional.h
+    PRIVATE ${HERE}/src/util/sort.h
+    PRIVATE ${HERE}/src/util/string-view.cpp
+    PRIVATE ${HERE}/src/util/string-view.h
+    PRIVATE ${HERE}/src/util/string.cpp
+    PRIVATE ${HERE}/src/util/string.h
+    PRIVATE ${HERE}/src/util/vector.h
 )
 
 
