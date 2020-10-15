@@ -310,7 +310,7 @@ Area::spawnNPC(StringView descriptor, vicoord coord, StringView phase) {
     if (!c->init(descriptor, phase)) {
         // Error logged.
         delete c;
-        return 0;
+        return nullptr;
     }
     c->setArea(this, coord);
     characters.push_back(Unique<Character>(c));
@@ -323,7 +323,7 @@ Area::spawnOverlay(StringView descriptor, vicoord coord, StringView phase) {
     if (!o->init(descriptor, phase)) {
         // Error logged.
         delete o;
-        return 0;
+        return nullptr;
     }
     o->setArea(this);
     o->teleport(coord);

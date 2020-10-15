@@ -255,7 +255,7 @@ Entity::directionStr(ivec2 facing) const noexcept {
 
 enum SetPhaseResult
 Entity::_setPhase(StringView name) noexcept {
-    Animation* newPhase = 0;
+    Animation* newPhase = nullptr;
     if (name == "stance") {
         newPhase = &phaseStance;
     }
