@@ -198,7 +198,7 @@ class JSONDocImpl : public JSONObjectImpl {
     RJDocument document;
 };
 
-Rc<JSONObject>
+JSONObject*
 genJSON(StringView path) noexcept;
 
 Vector<StringView>
@@ -417,38 +417,40 @@ JSONDocImpl::get() noexcept {
 }
 
 
-Rc<JSONObject>
+JSONObject*
 genJSON(StringView path) noexcept {
     Optional<StringView> r = Resources::load(path);
     if (!r) {
-        return Rc<JSONObject>();
+        return NULL;
     }
     StringView json = *r;
 
     TimeMeasure m(String() << "Constructed " << path << " as json");
 
-    Rc<JSONObject> ref(new JSONDocImpl(json));
-    JSONDocImpl& document = reinterpret_cast<JSONDocImpl&>(*ref);
-    if (!document.isValid()) {
-        return Rc<JSONObject>();
+    JSONDocImpl* document = new JSONDocImpl(json);
+    if (!document->isValid()) {
+        delete document;
+        return NULL;
     }
 
-    return ref;
+    return document;
 }
 
-static RcReaderCache<Rc<JSONObject>, genJSON> documents;
+static Hashmap<String, JSONObject*> documents;
 
-Rc<JSONObject>
+JSONObject*
 JSONs::load(StringView path) noexcept {
-    return documents.lifetimeRequest(path);
+    auto it = documents.find(path);
+    if (it != documents.end()) {
+        return it.value();
+    }
+
+    JSONObject* document = genJSON(path);
+    documents[path] = document;
+    return document;
 }
 
 Unique<JSONObject>
 JSONs::parse(String data) noexcept {
     return Unique<JSONObject>(new JSONDocImpl(move_(data)));
-}
-
-void
-JSONs::garbageCollect() noexcept {
-    documents.garbageCollect();
 }

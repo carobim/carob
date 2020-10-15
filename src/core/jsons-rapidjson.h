@@ -27,7 +27,6 @@
 #ifndef SRC_CORE_JSONS_H_
 #define SRC_CORE_JSONS_H_
 
-#include "util/rc.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/unique.h"
@@ -121,17 +120,13 @@ class JSONArray {
 
 class JSONs {
  public:
-    //! Load a JSON document.
-    static Rc<JSONObject>
+    // Load a JSON document. Return value is borrowed.
+    static JSONObject*
     load(StringView path) noexcept;
 
-    //! Parse a document from the outside world.
+    // Parse a document from the outside world.
     static Unique<JSONObject>
     parse(String data) noexcept;
-
-    //! Free JSON documents not recently used.
-    static void
-    garbageCollect() noexcept;
 };
 
 #endif  // SRC_CORE_JSONS_H_
