@@ -121,7 +121,7 @@ class JSONArray {
 class JSONs {
  public:
     // Load a JSON document. Return value is borrowed.
-    static JSONObject*
+    static Unique<JSONObject>
     load(StringView path) noexcept;
 
     // Parse a document from the outside world.

@@ -47,6 +47,7 @@
 #include "util/move.h"
 #include "util/optional.h"
 #include "util/string2.h"
+#include "util/unique.h"
 #include "util/vector.h"
 
 #define CHECK(x)      \
@@ -77,7 +78,7 @@ class AreaJSON : public Area {
     bool
     processTileSet(Unique<JSONObject> obj) noexcept;
     bool
-    processTileSetFile(Rc<JSONObject> obj,
+    processTileSetFile(Unique<JSONObject> obj,
                        StringView source,
                        int firstGid) noexcept;
     bool
@@ -149,7 +150,7 @@ AreaJSON::allocateMapLayer(TileGrid::LayerType type) noexcept {
 
 bool
 AreaJSON::processDescriptor() noexcept {
-    Rc<JSONObject> doc = JSONs::load(descriptor);
+    Unique<JSONObject> doc = JSONs::load(descriptor);
 
     CHECK(doc);
 
@@ -262,14 +263,14 @@ AreaJSON::processTileSet(Unique<JSONObject> obj) noexcept {
 
     // We don't handle embeded tilesets, only references to an external JSON
     // files.
-    Rc<JSONObject> doc = JSONs::load(source);
+    Unique<JSONObject> doc = JSONs::load(source);
     if (!doc) {
         Log::err(descriptor,
                  String() << source << ": failed to load JSON file");
         return false;
     }
 
-    if (!processTileSetFile(doc, source, firstGid)) {
+    if (!processTileSetFile(move_(doc), source, firstGid)) {
         Log::err(descriptor,
                  String() << source << ": failed to parse JSON tileset file");
         return false;
@@ -279,7 +280,7 @@ AreaJSON::processTileSet(Unique<JSONObject> obj) noexcept {
 }
 
 bool
-AreaJSON::processTileSetFile(Rc<JSONObject> obj,
+AreaJSON::processTileSetFile(Unique<JSONObject> obj,
                              StringView source,
                              int firstGid) noexcept {
     /*

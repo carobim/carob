@@ -29,6 +29,7 @@
 
 #include "util/assert.h"
 #include "util/noexcept.h"
+#include "util/none.h"
 
 //
 // Pointers
@@ -48,6 +49,7 @@ class Unique {
     Unique() noexcept : x(nullptr) {}
     Unique(Unique&& other) noexcept : x(other.x) { other.x = nullptr; }
     Unique(T* x) noexcept : x(x) {}
+    Unique(None) noexcept : x(0) {}
     ~Unique() noexcept { delete x; }
 
     void

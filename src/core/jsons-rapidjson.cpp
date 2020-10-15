@@ -51,8 +51,6 @@
 
 #include "core/jsons-rapidjson.h"
 
-#include "cache/rc-cache-impl.h"
-#include "cache/rc-reader-cache.h"
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/resources.h"
@@ -417,11 +415,11 @@ JSONDocImpl::get() noexcept {
 }
 
 
-JSONObject*
-genJSON(StringView path) noexcept {
+Unique<JSONObject>
+JSONs::load(StringView path) noexcept {
     Optional<StringView> r = Resources::load(path);
     if (!r) {
-        return NULL;
+        return none;
     }
     StringView json = *r;
 
@@ -430,24 +428,10 @@ genJSON(StringView path) noexcept {
     JSONDocImpl* document = new JSONDocImpl(json);
     if (!document->isValid()) {
         delete document;
-        return NULL;
+        return none;
     }
 
-    return document;
-}
-
-static Hashmap<String, JSONObject*> documents;
-
-JSONObject*
-JSONs::load(StringView path) noexcept {
-    auto it = documents.find(path);
-    if (it != documents.end()) {
-        return it.value();
-    }
-
-    JSONObject* document = genJSON(path);
-    documents[path] = document;
-    return document;
+    return Unique<JSONObject>(document);
 }
 
 Unique<JSONObject>

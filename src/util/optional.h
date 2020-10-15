@@ -32,10 +32,8 @@
 #include "util/constexpr.h"
 #include "util/move.h"
 #include "util/new.h"
+#include "util/none.h"
 #include "util/noexcept.h"
-
-struct None {};
-static None none;
 
 template<typename T>
 class Optional {

@@ -329,7 +329,7 @@ Entity::arrived() noexcept {
 
 bool
 Entity::processDescriptor() noexcept {
-    Rc<JSONObject> doc = JSONs::load(descriptor);
+    Unique<JSONObject> doc = JSONs::load(descriptor);
     if (!doc) {
         return false;
     }
