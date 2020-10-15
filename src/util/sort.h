@@ -111,7 +111,7 @@ namespace pdqsort_detail {
         if (n <= 1) {
             return;
         }
-        for (size_t start = (n - 2) / 2; start >= 0; start--) {
+        for (ssize_t start = (n - 2) / 2; start >= 0; start--) {
             sift_down(first, last, n, first + start);
         }
     }
