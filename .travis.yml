@@ -40,20 +40,20 @@ _gosu: &gosu
 
 jobs:
   include:
-  - name: 10.12 null
-    osx_image: xcode9.2
+  - name: 10.11 null
+    osx_image: xcode7.3
     <<: *null
   - name: 10.15 null
     osx_image: xcode12
     <<: *null
-  - name: 10.12 sdl2
-    osx_image: xcode9.2
+  - name: 10.13 sdl2
+    osx_image: xcode10.1
     <<: *sdl2
   - name: 10.15 sdl2
     osx_image: xcode12
     <<: *sdl2
-  - name: 10.12 gosu
-    osx_image: xcode9.2
+  - name: 10.13 gosu
+    osx_image: xcode10.1
     <<: *gosu
   - name: 10.15 gosu
     osx_image: xcode12
