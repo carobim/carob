@@ -1,40 +1,60 @@
+# Build matrix: https://docs.travis-ci.com/user/build-matrix/
 # macOS Environments: https://docs.travis-ci.com/user/reference/osx/
 
 language: cpp
-
 os: osx
-osx_image:
-  - xcode7.3
-  - xcode12
 
-matrix:
+_null: &null
+  script:
+  - mkdir build && cd build
+  - cmake ..
+  - make
+
+_sdl2: &sdl2
+ addons:
+   homebrew:
+     packages:
+     - sdl2
+     - sdl2_image
+     - sdl2_mixer
+     update: true
+ env:
+ - LDFLAGS=-L/usr/local/lib
+ script:
+ - mkdir build && cd build
+ - cmake .. -DAV_SDL2=On
+ - make V=1 VERBOSE=1
+
+_gosu: &gosu
+ addons:
+   homebrew:
+     packages:
+     - libgosu
+     update: true
+ env:
+ - LDFLAGS=-L/usr/local/lib
+ script:
+ - mkdir build && cd build
+ - cmake .. -DAV_GOSU=On
+ - make
+
+jobs:
   include:
-    - script:
-        - mkdir build
-        - cd build
-        - cmake ..
-        - cmake --build .
-    - addons:
-        homebrew:
-          packages:
-            - sdl2
-            - sdl2_image
-            - sdl2_mixer
-          update: true
-      script:
-        - mkdir build
-        - cd build
-        - cmake .. -DAV_SDL2=On
-        - cmake --build .
-    - addons:
-        homebrew:
-          packages:
-            - libgosu
-          update: true
-      env:
-        - LDFLAGS=-L/usr/local/lib
-      script:
-        - mkdir build
-        - cd build
-        - cmake .. -DAV_GOSU=On
-        - cmake --build .
+  - name: 10.12 null
+    osx_image: xcode9.2
+    <<: *null
+  - name: 10.15 null
+    osx_image: xcode12
+    <<: *null
+  - name: 10.12 sdl2
+    osx_image: xcode9.2
+    <<: *sdl2
+  - name: 10.15 sdl2
+    osx_image: xcode12
+    <<: *sdl2
+  - name: 10.12 gosu
+    osx_image: xcode9.2
+    <<: *gosu
+  - name: 10.15 gosu
+    osx_image: xcode12
+    <<: *gosu
