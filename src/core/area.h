@@ -35,9 +35,9 @@
 #include "core/vec.h"
 #include "util/hashtable.h"
 #include "util/optional.h"
-#include "util/rc.h"
 #include "util/string-view.h"
 #include "util/string.h"
+#include "util/unique.h"
 #include "util/vector.h"
 
 #define ISOMETRIC_ZOFF_PER_TILE 0.001
@@ -120,11 +120,11 @@ class Area {
     bool
     inBounds(Entity* ent);
 
-    // Create an NPC and insert it into the Area.
-    Rc<Character>
+    // Create an NPC and insert it into the Area. Returns a borrowed ref.
+    Character*
     spawnNPC(StringView descriptor, vicoord coord, StringView phase);
-    // Create an Overlay and insert it into the Area.
-    Rc<Overlay>
+    // Create an Overlay and insert it into the Area. Returns a borrowed ref.
+    Overlay*
     spawnOverlay(StringView descriptor, vicoord coord, StringView phase);
 
     DataArea*
@@ -154,8 +154,8 @@ class Area {
     Vector<bool> checkedForAnimation;
     Vector<bool> tilesAnimated;
 
-    Vector<Rc<Character>> characters;
-    Vector<Rc<Overlay>> overlays;
+    Vector<Unique<Character>> characters;
+    Vector<Unique<Overlay>> overlays;
 
     bool beenFocused = false;
     bool redraw = true;

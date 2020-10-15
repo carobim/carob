@@ -208,7 +208,7 @@ Area::tick(time_t dt) {
     for (auto& overlay : overlays) {
         overlay->tick(dt);
     }
-    erase_if(overlays, [](const Rc<Overlay>& o) { return o->isDead(); });
+    erase_if(overlays, [](const Unique<Overlay>& o) { return o->isDead(); });
 
     if (Conf::moveMode != Conf::TURN) {
         player->tick(dt);
@@ -216,7 +216,7 @@ Area::tick(time_t dt) {
         for (auto& character : characters) {
             character->tick(dt);
         }
-        erase_if(characters, [](const Rc<Character>& c) {
+        erase_if(characters, [](const Unique<Character>& c) {
             bool dead = c->isDead();
             if (dead) {
                 c->setArea(nullptr, {0, 0, 0.0});
@@ -239,7 +239,7 @@ Area::turn() {
     for (auto& character : characters) {
         character->turn();
     }
-    erase_if(characters, [](const Rc<Character>& c) {
+    erase_if(characters, [](const Unique<Character>& c) {
         bool dead = c->isDead();
         if (dead) {
             c->setArea(nullptr, {0, 0, 0.0});
@@ -304,28 +304,30 @@ Area::inBounds(Entity* ent) {
 }
 
 
-Rc<Character>
+Character*
 Area::spawnNPC(StringView descriptor, vicoord coord, StringView phase) {
-    auto c = Rc<Character>(new Character);
+    Character* c = new Character;
     if (!c->init(descriptor, phase)) {
         // Error logged.
-        return Rc<Character>();
+        delete c;
+        return 0;
     }
     c->setArea(this, coord);
-    characters.push_back(c);
+    characters.push_back(Unique<Character>(c));
     return c;
 }
 
-Rc<Overlay>
+Overlay*
 Area::spawnOverlay(StringView descriptor, vicoord coord, StringView phase) {
-    auto o = Rc<Overlay>(new Overlay);
+    Overlay* o = new Overlay;
     if (!o->init(descriptor, phase)) {
         // Error logged.
-        return Rc<Overlay>();
+        delete o;
+        return 0;
     }
     o->setArea(this);
     o->teleport(coord);
-    overlays.push_back(o);
+    overlays.push_back(Unique<Overlay>(o));
     return o;
 }
 
