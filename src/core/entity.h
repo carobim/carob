@@ -222,9 +222,8 @@ class Entity {
     String phaseName = "";
     ivec2 facing = {0, 0};
 
-    // Map from effect name to filenames.
-    //  e.g.: ["step"] = "sounds/player_step.oga"
-    Hashmap<String, String> soundPaths;
+    //  sounds["step"] = "sounds/player_step.oga"
+    String soundPathStep;
 
     Vector<OnTickFn> onTickFns;
     Vector<OnTurnFn> onTurnFns;

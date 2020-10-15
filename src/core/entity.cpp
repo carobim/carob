@@ -468,7 +468,13 @@ Entity::processSound(StringView name, StringView path) noexcept {
         return false;
     }
 
-    soundPaths[name] = path;
+    if (path == "step") {
+        soundPathStep = path;
+    }
+    else {
+        Log::err(descriptor, String() << "unknown entity sound type" << name);
+        return false;
+    }
     return true;
 }
 
