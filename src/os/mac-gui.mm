@@ -68,7 +68,9 @@ typedef NSUInteger NSStringEncoding;
 @end
 
 @interface NSFileManager : NSObject
-@property (class, readonly, strong) NSFileManager *defaultManager;
++ (NSFileManager *)defaultManager;
+// Compile error on macOS 10.11 El Capitan.
+//@property (class, readonly, strong) NSFileManager *defaultManager;
 - (BOOL)changeCurrentDirectoryPath:(NSString *)path;
 @end
 }
