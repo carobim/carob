@@ -47,7 +47,6 @@
 #include "util/bitrecord.h"
 #include "util/function.h"
 #include "util/hashtable.h"
-#include "util/rc.h"
 #include "util/unique.h"
 #include "util/vector.h"
 
@@ -55,8 +54,6 @@ class Image;
 class Player;
 
 // ScriptRef keydownScript, keyupScript;
-
-static Rc<Image> pauseInfo;
 
 static Hashmap<String, Area*> areas;
 static Area* worldArea = nullptr;
