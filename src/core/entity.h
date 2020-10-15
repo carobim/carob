@@ -217,10 +217,19 @@ class Entity {
     float angleToDest;
 
     ivec2 imgsz;
-    Hashmap<String, Animation> phases;
     Animation* phase = nullptr;
     String phaseName = "";
     ivec2 facing = {0, 0};
+
+    Animation phaseStance;
+    Animation phaseDown;
+    Animation phaseLeft;
+    Animation phaseUp;
+    Animation phaseRight;
+    Animation phaseMovingUp;
+    Animation phaseMovingRight;
+    Animation phaseMovingDown;
+    Animation phaseMovingLeft;
 
     //  sounds["step"] = "sounds/player_step.oga"
     String soundPathStep;

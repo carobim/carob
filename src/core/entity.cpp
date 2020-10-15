@@ -255,11 +255,38 @@ Entity::directionStr(ivec2 facing) const noexcept {
 
 enum SetPhaseResult
 Entity::_setPhase(StringView name) noexcept {
-    auto it = phases.find(name);
-    if (it == phases.end()) {
+    Animation* newPhase = 0;
+    if (name == "stance") {
+        newPhase = &phaseStance;
+    }
+    else if (name == "down") {
+        newPhase = &phaseDown;
+    }
+    else if (name == "left") {
+        newPhase = &phaseLeft;
+    }
+    else if (name == "up") {
+        newPhase = &phaseUp;
+    }
+    else if (name == "right") {
+        newPhase = &phaseRight;
+    }
+    else if (name == "moving up") {
+        newPhase = &phaseMovingUp;
+    }
+    else if (name == "moving right") {
+        newPhase = &phaseMovingRight;
+    }
+    else if (name == "moving down") {
+        newPhase = &phaseMovingDown;
+    }
+    else if (name == "moving left") {
+        newPhase = &phaseMovingLeft;
+    }
+    else {
         return PHASE_NOTFOUND;
     }
-    Animation* newPhase = &it.value();
+
     if (phase != newPhase) {
         time_t now = World::time();
         phase = newPhase;
@@ -403,6 +430,8 @@ Entity::processPhase(StringView name,
 
     int nTiles = TiledImage::size(tiles);
 
+    Animation animation;
+
     if (phase->hasUnsigned("frame")) {
         unsigned frame_ = phase->unsignedAt("frame");
         if (frame_ > INT32_MAX) {
@@ -415,7 +444,7 @@ Entity::processPhase(StringView name,
             return false;
         }
         ImageID image = TiledImage::getTile(tiles, frame);
-        phases[name] = Animation(image);
+        animation = Animation(image);
     }
     else if (phase->hasArray("frames")) {
         if (!phase->hasFloat("speed")) {
@@ -441,12 +470,43 @@ Entity::processPhase(StringView name,
         }
 
         time_t frameTime = static_cast<time_t>(1000.0 / fps);
-        phases[name] = Animation(move_(images), frameTime);
+        animation = Animation(move_(images), frameTime);
     }
     else {
         Log::err(descriptor,
                  "<phase> frames attribute not an int or int ranges");
         return false;
+    }
+
+    if (name == "stance") {
+        phaseStance = move_(animation);
+    }
+    else if (name == "down") {
+        phaseDown = move_(animation);
+    }
+    else if (name == "left") {
+        phaseLeft = move_(animation);
+    }
+    else if (name == "up") {
+        phaseUp = move_(animation);
+    }
+    else if (name == "right") {
+        phaseRight = move_(animation);
+    }
+    else if (name == "moving up") {
+        phaseMovingUp = move_(animation);
+    }
+    else if (name == "moving right") {
+        phaseMovingRight = move_(animation);
+    }
+    else if (name == "moving down") {
+        phaseMovingDown = move_(animation);
+    }
+    else if (name == "moving left") {
+        phaseMovingLeft = move_(animation);
+    }
+    else {
+        Log::err(descriptor, "unknown phase");
     }
 
     return true;
