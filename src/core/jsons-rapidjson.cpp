@@ -279,10 +279,10 @@ JSONObjectImpl::intAt(StringView name,
                       int upperBound) noexcept {
     int i = get()[str(name)].GetInt();
     if (i < lowerBound) {
-        Log::fatal("JSONObject::intAt", "Value out of range");
+        logFatal("JSONObject::intAt", "Value out of range");
     }
     if (i > upperBound) {
-        Log::fatal("JSONObject::intAt", "Value out of range");
+        logFatal("JSONObject::intAt", "Value out of range");
     }
     return i;
 }

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine            **
 ** cooldown.cpp                     **
 ** Copyright 2014 Michael Reiley    **
-** Copyright 2014-2019 Paul Merrill **
+** Copyright 2014-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -55,7 +55,7 @@ Cooldown::wrapOnce() noexcept {
         passed -= duration;
     }
     else {
-        Log::err("Cooldown", "wrapping when not expired");
+        logErr("Cooldown", "wrapping when not expired");
     }
 }
 
@@ -65,6 +65,6 @@ Cooldown::wrapAll() noexcept {
         passed %= duration;
     }
     else {
-        Log::err("Cooldown", "wrapping when not expired");
+        logErr("Cooldown", "wrapping when not expired");
     }
 }

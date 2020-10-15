@@ -127,8 +127,8 @@ GameWindow::mainLoop() noexcept {
                 nextFrameStart += idealFrameTime;
                 framesDropped += 1;
             }
-            Log::info("GameWindow",
-                      String() << "Dropped " << framesDropped << " frames");
+            logInfo("GameWindow",
+                    String() << "Dropped " << framesDropped << " frames");
         }
     }
 #ifdef __clang__

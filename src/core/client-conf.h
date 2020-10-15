@@ -38,7 +38,7 @@ struct Conf {
     //! Game Movement Mode
     enum MovementMode { TURN, TILE, NOTILE };
 
-    static Log::Verbosity verbosity;
+    static LogVerbosity verbosity;
     static MovementMode moveMode;
     static ivec2 windowSize;
     static bool fullscreen;

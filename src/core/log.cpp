@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** log.cpp                            **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -42,7 +42,7 @@
 #include "os/mac-gui.h"
 #endif
 
-static Log::Verbosity verb = Log::Verbosity::NORMAL;
+static LogVerbosity verb = LogVerbosity::NORMAL;
 
 static time_t startTime;
 
@@ -82,19 +82,19 @@ makeTimestamp() noexcept {
 }
 
 bool
-Log::init() noexcept {
+logInit() noexcept {
     startTime = GameWindow::time();
     return true;
 }
 
 void
-Log::setVerbosity(Log::Verbosity v) noexcept {
+logSetVerbosity(LogVerbosity v) noexcept {
     verb = v;
 }
 
 void
-Log::info(StringView domain, StringView msg) noexcept {
-    if (verb > Log::Verbosity::NORMAL) {
+logInfo(StringView domain, StringView msg) noexcept {
+    if (verb > LogVerbosity::NORMAL) {
         LockGuard lock(stdoutMutex);
 
         setTermColor(TC_GREEN, Stdout);
@@ -113,8 +113,8 @@ Log::info(StringView domain, StringView msg) noexcept {
 }
 
 void
-Log::err(StringView domain, StringView msg) noexcept {
-    if (verb > Log::Verbosity::QUIET) {
+logErr(StringView domain, StringView msg) noexcept {
+    if (verb > LogVerbosity::QUIET) {
         {
             LockGuard lock(stdoutMutex);
 
@@ -152,7 +152,7 @@ void __cdecl __debugbreak();
 #endif
 
 void
-Log::fatal(StringView domain, StringView msg) noexcept {
+logFatal(StringView domain, StringView msg) noexcept {
     {
         LockGuard lock(stdoutMutex);
 
@@ -188,18 +188,18 @@ Log::fatal(StringView domain, StringView msg) noexcept {
 }
 
 void
-Log::reportVerbosityOnStartup() noexcept {
+logReportVerbosityOnStartup() noexcept {
     LockGuard lock(stdoutMutex);
 
     StringView verbString;
     switch (Conf::verbosity) {
-    case Log::Verbosity::QUIET:
+    case LogVerbosity::QUIET:
         verbString = "QUIET";
         break;
-    case Log::Verbosity::NORMAL:
+    case LogVerbosity::NORMAL:
         verbString = "NORMAL";
         break;
-    case Log::Verbosity::VERBOSE:
+    case LogVerbosity::VERBOSE:
         verbString = "VERBOSE";
         break;
     }

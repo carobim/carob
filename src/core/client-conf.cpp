@@ -35,7 +35,7 @@
 #include "util/string2.h"
 #include "util/vector.h"
 
-Log::Verbosity Conf::verbosity = Log::Verbosity::VERBOSE;
+LogVerbosity Conf::verbosity = LogVerbosity::VERBOSE;
 Conf::MovementMode Conf::moveMode;
 ivec2 Conf::windowSize = {640, 480};
 bool Conf::fullscreen = false;
@@ -52,14 +52,14 @@ Conf::parse(StringView filename) noexcept {
     Optional<String> file = readFile(filename);
 
     if (!file) {
-        Log::fatal(filename, String() << "Could not find " << filename);
+        logFatal(filename, String() << "Could not find " << filename);
         return false;
     }
 
     Unique<JSONObject> doc = JSONs::parse(move_(*file));
 
     if (!doc) {
-        Log::err(filename, String() << "Could not parse " << filename);
+        logErr(filename, String() << "Could not parse " << filename);
         return false;
     }
 
@@ -69,18 +69,17 @@ Conf::parse(StringView filename) noexcept {
         if (engine->hasString("verbosity")) {
             StringView verbosity = engine->stringAt("verbosity");
             if (verbosity == "quiet") {
-                Conf::verbosity = Log::Verbosity::QUIET;
+                Conf::verbosity = LogVerbosity::QUIET;
             }
             else if (verbosity == "normal") {
-                Conf::verbosity = Log::Verbosity::NORMAL;
+                Conf::verbosity = LogVerbosity::NORMAL;
             }
             else if (verbosity == "verbose") {
-                Conf::verbosity = Log::Verbosity::VERBOSE;
+                Conf::verbosity = LogVerbosity::VERBOSE;
             }
             else {
-                Log::err(filename,
-                         "Unknown value for \"engine.verbosity\", using "
-                         "default");
+                logErr(filename,
+                       "Unknown value for \"engine.verbosity\", using default");
             }
         }
     }

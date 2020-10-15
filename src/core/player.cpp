@@ -56,7 +56,7 @@ Player::Player() noexcept : Character(), velocity{0, 0} {
 
 void
 Player::destroy() noexcept {
-    Log::fatal("Player", "destroy(): Player should not be destroyed");
+    logFatal("Player", "destroy(): Player should not be destroyed");
 }
 
 void
@@ -166,6 +166,6 @@ Player::takeExit(const Exit& exit) noexcept {
     if (!World::focusArea(exit.area, exit.coords)) {
         // Roll back movement if exit failed to open.
         setTileCoords(fromCoord);
-        Log::err("Exit", String() << exit.area << ": failed to load properly");
+        logErr("Exit", String() << exit.area << ": failed to load properly");
     }
 }

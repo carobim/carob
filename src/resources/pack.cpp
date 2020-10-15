@@ -49,8 +49,8 @@ openPackFile() noexcept {
 
     pack = PackReader::fromFile(path);
     if (!pack) {
-        Log::fatal("PackResources",
-                   String() << path << ": could not open archive");
+        logFatal("PackResources",
+                 String() << path << ": could not open archive");
         return false;
     }
 
@@ -73,8 +73,8 @@ Resources::load(StringView path) noexcept {
     PackReader::BlobIndex index = pack->findIndex(path);
 
     if (index == PackReader::BLOB_NOT_FOUND) {
-        Log::err("PackResources",
-                 String() << getFullPath(path) << ": file missing");
+        logErr("PackResources",
+               String() << getFullPath(path) << ": file missing");
         return none;
     }
 
@@ -82,8 +82,8 @@ Resources::load(StringView path) noexcept {
 
     // Will it fit in memory?
     if (blobSize > UINT32_MAX) {
-        Log::err("PackResources",
-                 String() << getFullPath(path) << ": file too large");
+        logErr("PackResources",
+               String() << getFullPath(path) << ": file too large");
         return none;
     }
 

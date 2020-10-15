@@ -191,7 +191,7 @@ AreaJSON::processDescriptor() noexcept {
             CHECK(processObjectGroup(move_(layer)));
         }
         else {
-            Log::err(descriptor,
+            logErr(descriptor,
                      "Each layer must be a tilelayer or objectlayer");
             return false;
         }
@@ -212,7 +212,7 @@ AreaJSON::processMapProperties(Unique<JSONObject> obj) noexcept {
     */
 
     if (!obj->hasString("name")) {
-        Log::err(descriptor, "Area must have \"name\" property");
+        logErr(descriptor, "Area must have \"name\" property");
     }
 
     name = obj->stringAt("name");
@@ -265,14 +265,14 @@ AreaJSON::processTileSet(Unique<JSONObject> obj) noexcept {
     // files.
     Unique<JSONObject> doc = JSONs::load(source);
     if (!doc) {
-        Log::err(descriptor,
-                 String() << source << ": failed to load JSON file");
+        logErr(descriptor,
+               String() << source << ": failed to load JSON file");
         return false;
     }
 
     if (!processTileSetFile(move_(doc), source, firstGid)) {
-        Log::err(descriptor,
-                 String() << source << ": failed to parse JSON tileset file");
+        logErr(descriptor,
+               String() << source << ": failed to parse JSON tileset file");
         return false;
     }
 
@@ -321,7 +321,7 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
     CHECK(tilex <= 0x7FFF && tiley <= 0x7FFF);  // Reasonable limit?
 
     if (grid.tileDim && grid.tileDim.x != tilex && grid.tileDim.y != tiley) {
-        Log::err(descriptor,
+        logErr(descriptor,
                  "Tileset's width/height contradict earlier <layer>");
         return false;
     }
@@ -339,7 +339,7 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
     // Load tileset image.
     TiledImageID images = Images::loadTiles(imgSource, tilex, tiley);
     if (!images) {
-        Log::err(descriptor, "Tileset image not found");
+        logErr(descriptor, "Tileset image not found");
         return false;
     }
 
@@ -368,16 +368,16 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
             // tileset, if the tileset were a flat array.
             Optional<unsigned> id_ = parseUInt(id);
             if (!id_) {
-                Log::err(descriptor, "Tile type id is invalid");
+                logErr(descriptor, "Tile type id is invalid");
                 return false;
             }
             if (*id_ > INT32_MAX) {
-                Log::err(descriptor, "Tile type id is invalid");
+                logErr(descriptor, "Tile type id is invalid");
                 return false;
             }
             int id__ = static_cast<int>(*id_);
             if (nTiles <= id__) {
-                Log::err(descriptor, "Tile type id is invalid");
+                logErr(descriptor, "Tile type id is invalid");
                 return false;
             }
 
@@ -428,7 +428,7 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
         // Make sure the first member is this tile.
         Optional<int> firstFrame = parseInt(frames[0]);
         if (!firstFrame || *firstFrame != id) {
-            Log::err(descriptor,
+            logErr(descriptor,
                      String() << "first member of tile id " << id
                               << " animation must be itself.");
             return false;
@@ -439,19 +439,19 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
         for (StringView& frame : frames) {
             Optional<unsigned> idx = parseUInt(frame);
             if (!idx) {
-                Log::err(descriptor,
+                logErr(descriptor,
                          "couldn't parse frame index for animated tile");
                 return false;
             }
             if (*idx > INT32_MAX) {
-                Log::err(descriptor, "frame index out of bounds");
+                logErr(descriptor, "frame index out of bounds");
                 return false;
             }
 
             int idx_ = static_cast<int>(*idx);
 
             if (nTiles <= idx_) {
-                Log::err(descriptor,
+                logErr(descriptor,
                          "frame index out of range for animated tile");
                 return false;
             }
@@ -468,7 +468,7 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
 
     if (framesvec.size() || frameLen) {
         if (framesvec.empty() || !frameLen) {
-            Log::err(
+            logErr(
                     descriptor,
                     "Tile type must either have both frames and speed or none");
             return false;
@@ -502,7 +502,7 @@ AreaJSON::processLayer(Unique<JSONObject> obj) noexcept {
     const int y = obj->intAt("height");
 
     if (grid.dim.x != x || grid.dim.y != y) {
-        Log::err(descriptor, "layer x,y size != map x,y size");
+        logErr(descriptor, "layer x,y size != map x,y size");
         return false;
     }
 
@@ -526,14 +526,14 @@ AreaJSON::processLayerProperties(Unique<JSONObject> obj) noexcept {
     */
 
     if (!obj->hasStringFloat("depth")) {
-        Log::err(descriptor, "A tilelayer must have the \"depth\" property");
+        logErr(descriptor, "A tilelayer must have the \"depth\" property");
         return false;
     }
 
     const float depth = obj->stringFloatAt("depth");
 
     if (grid.depth2idx.find(depth) != grid.depth2idx.end()) {
-        Log::err(descriptor, "Layers cannot share a depth");
+        logErr(descriptor, "Layers cannot share a depth");
         return false;
     }
 
@@ -562,7 +562,7 @@ AreaJSON::processLayerData(Unique<JSONArray> arr) noexcept {
         unsigned gid = arr->unsignedAt(i);
 
         if (gid >= tileGraphics.size()) {
-            Log::err(descriptor, "Invalid tile gid");
+            logErr(descriptor, "Invalid tile gid");
             return false;
         }
 
@@ -614,14 +614,14 @@ AreaJSON::processObjectGroupProperties(Unique<JSONObject> obj) noexcept {
     */
 
     if (!obj->hasStringFloat("depth")) {
-        Log::err(descriptor, "An objectlayer must have the \"depth\" property");
+        logErr(descriptor, "An objectlayer must have the \"depth\" property");
         return false;
     }
 
     const float depth = obj->stringFloatAt("depth");
 
     if (grid.depth2idx.find(depth) != grid.depth2idx.end()) {
-        Log::err(descriptor, "Layers cannot share a depth");
+        logErr(descriptor, "Layers cannot share a depth");
         return false;
     }
 
@@ -814,7 +814,7 @@ AreaJSON::splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept {
             *flags |= TILE_NOWALK_NPC;
         }
         else {
-            Log::err(descriptor, String() << "Invalid tile flag: " << str);
+            logErr(descriptor, String() << "Invalid tile flag: " << str);
             return false;
         }
     }
@@ -870,7 +870,7 @@ AreaJSON::parseExit(StringView dest,
     Vector<StringView> strs = splitStr(dest, ",");
 
     if (strs.size() != 4) {
-        Log::err(descriptor, "exit: Invalid format");
+        logErr(descriptor, "exit: Invalid format");
         return false;
     }
 
@@ -880,7 +880,7 @@ AreaJSON::parseExit(StringView dest,
     StringView z = strs[3];
 
     if (!isIntegerOrPlus(x) || !isIntegerOrPlus(y) || !isIntegerOrPlus(z)) {
-        Log::err(descriptor, "exit: Invalid format");
+        logErr(descriptor, "exit: Invalid format");
         return false;
     }
 
@@ -914,19 +914,19 @@ AreaJSON::parseARGB(StringView str,
     Vector<StringView> strs = splitStr(str, ",");
 
     if (strs.size() != 4) {
-        Log::err(descriptor, "invalid ARGB format");
+        logErr(descriptor, "invalid ARGB format");
         return false;
     }
 
     for (size_t i = 0; i < 4; i++) {
         Optional<int> v = parseInt(strs[i]);
         if (!v) {
-            Log::err(descriptor, "invalid ARGB format");
+            logErr(descriptor, "invalid ARGB format");
             return false;
         }
         int v_ = *v;
         if (!(0 <= v_ && v_ < 256)) {
-            Log::err(descriptor, "ARGB values must be between 0 and 255");
+            logErr(descriptor, "ARGB values must be between 0 and 255");
             return false;
         }
         *channels[i] = (unsigned char)v_;

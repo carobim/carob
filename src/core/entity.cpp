@@ -161,8 +161,8 @@ Entity::setPhase(StringView name) noexcept {
     if (res == PHASE_NOTFOUND) {
         res = _setPhase("stance");
         if (res == PHASE_NOTFOUND) {
-            Log::err(descriptor,
-                     String() << "phase '" << name << "' not found");
+            logErr(descriptor,
+                   String() << "phase '" << name << "' not found");
         }
     }
     return res == PHASE_CHANGED;
@@ -435,12 +435,12 @@ Entity::processPhase(StringView name,
     if (phase->hasUnsigned("frame")) {
         unsigned frame_ = phase->unsignedAt("frame");
         if (frame_ > INT32_MAX) {
-            Log::err(descriptor, "<phase> frame attribute index out of bounds");
+            logErr(descriptor, "<phase> frame attribute index out of bounds");
             return false;
         }
         int frame = static_cast<int>(frame_);
         if (frame >= nTiles) {
-            Log::err(descriptor, "<phase> frame attribute index out of bounds");
+            logErr(descriptor, "<phase> frame attribute index out of bounds");
             return false;
         }
         ImageID image = TiledImage::getTile(tiles, frame);
@@ -448,9 +448,9 @@ Entity::processPhase(StringView name,
     }
     else if (phase->hasArray("frames")) {
         if (!phase->hasFloat("speed")) {
-            Log::err(descriptor,
-                     "<phase> speed attribute must be present and "
-                     "must be decimal");
+            logErr(descriptor,
+                   "<phase> speed attribute must be present and "
+                   "must be decimal");
             return false;
         }
         float fps = phase->floatAt("speed");
@@ -462,8 +462,8 @@ Entity::processPhase(StringView name,
         Vector<ImageID> images;
         for (int i : frames) {
             if (i < 0 || nTiles < i) {
-                Log::err(descriptor,
-                         "<phase> frames attribute index out of bounds");
+                logErr(descriptor,
+                       "<phase> frames attribute index out of bounds");
                 return false;
             }
             images.push_back(TiledImage::getTile(tiles, i));
@@ -473,8 +473,7 @@ Entity::processPhase(StringView name,
         animation = Animation(move_(images), frameTime);
     }
     else {
-        Log::err(descriptor,
-                 "<phase> frames attribute not an int or int ranges");
+        logErr(descriptor, "<phase> frames attribute not an int or int ranges");
         return false;
     }
 
@@ -506,7 +505,7 @@ Entity::processPhase(StringView name,
         phaseMovingLeft = move_(animation);
     }
     else {
-        Log::err(descriptor, "unknown phase");
+        logErr(descriptor, "unknown phase");
     }
 
     return true;
@@ -524,7 +523,7 @@ Entity::processSounds(Unique<JSONObject> sounds) noexcept {
 bool
 Entity::processSound(StringView name, StringView path) noexcept {
     if (!path.size) {
-        Log::err(descriptor, "sound path is empty");
+        logErr(descriptor, "sound path is empty");
         return false;
     }
 
@@ -532,7 +531,7 @@ Entity::processSound(StringView name, StringView path) noexcept {
         soundPathStep = path;
     }
     else {
-        Log::err(descriptor, String() << "unknown entity sound type" << name);
+        logErr(descriptor, String() << "unknown entity sound type" << name);
         return false;
     }
     return true;
@@ -550,7 +549,7 @@ Entity::processScripts(Unique<JSONObject> scripts) noexcept {
 bool
 Entity::processScript(StringView /*name*/, StringView path) noexcept {
     if (!path.size) {
-        Log::err(descriptor, "script path is empty");
+        logErr(descriptor, "script path is empty");
         return false;
     }
 
@@ -559,8 +558,8 @@ Entity::processScript(StringView /*name*/, StringView path) noexcept {
     //     return false;
 
     // if (!setScript(trigger, script)) {
-    //     Log::err(descriptor,
-    //         "unrecognized script trigger: " + trigger);
+    //     logErr(descriptor,
+    //            "unrecognized script trigger: " + trigger);
     //     return false;
     // }
 

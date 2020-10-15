@@ -267,9 +267,7 @@ Area::setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b) {
 TileSet*
 Area::getTileSet(StringView imagePath) {
     if (!tileSets.contains(imagePath)) {
-        String msg;
-        msg << "tileset " << imagePath << " not found";
-        Log::err("Area", msg);
+        logErr("Area", String() << "tileset " << imagePath << " not found");
         return nullptr;
     }
     return &tileSets[imagePath];

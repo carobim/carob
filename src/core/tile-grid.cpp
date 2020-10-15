@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** tile-grid.cpp                      **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -138,8 +138,8 @@ int
 TileGrid::depthIndex(float depth) noexcept {
     auto it = depth2idx.find(depth);
     if (it == depth2idx.end()) {
-        Log::fatal("TileGrid",
-                   String() << "Attempt to access invalid layer: " << depth);
+        logFatal("TileGrid",
+                 String() << "Attempt to access invalid layer: " << depth);
     }
     return it.value();
 }

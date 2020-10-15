@@ -83,12 +83,12 @@ World::init() noexcept {
     Conf::moveMode = DataWorld::moveMode;
 
     if (!player->init(DataWorld::playerFile, DataWorld::playerStartPhase)) {
-        Log::fatal("World", "failed to load player");
+        logFatal("World", "failed to load player");
         return false;
     }
 
     if (!focusArea(DataWorld::startArea, DataWorld::startCoords)) {
-        Log::fatal("World", "failed to load initial Area");
+        logFatal("World", "failed to load initial Area");
         return false;
     }
 
@@ -227,7 +227,7 @@ World::setPaused(bool b) noexcept {
     }
 
     if (!paused && !b) {
-        Log::err("World", "trying to unpause, but not paused");
+        logErr("World", "trying to unpause, but not paused");
         return;
     }
 

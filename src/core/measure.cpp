@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** measure.cpp                      **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -54,8 +54,8 @@ getSignpost(String description) noexcept {
         return signposts[description];
     }
     else {
-        Log::info("Measure",
-                  String() << description << " is signpost " << nextSignpost);
+        logInfo("Measure",
+                String() << description << " is signpost " << nextSignpost);
         signposts[move_(description)] = nextSignpost;
         return nextSignpost++;
     }
@@ -79,7 +79,7 @@ TimeMeasure::~TimeMeasure() noexcept {
     TimePoint end = SteadyClock::now();
 
     Duration elapsed = end - start;
-    Log::info("Measure",
-              String() << description << " took " << ns_to_s_d(elapsed)
-                       << " seconds");
+    logInfo("Measure",
+            String() << description << " took " << ns_to_s_d(elapsed)
+                     << " seconds");
 }

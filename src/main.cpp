@@ -59,7 +59,7 @@ main() noexcept {
 
     srand((unsigned)time(nullptr));
 
-    if (!Log::init()) {
+    if (!logInit()) {
         return 1;
     }
 
@@ -71,9 +71,9 @@ main() noexcept {
 
     Conf::parse(CLIENT_CONF_PATH);
 
-    Log::setVerbosity(Conf::verbosity);
-    Log::info("Main", String() << "Starting " << TSUNAGARI_RELEASE_VERSION);
-    Log::reportVerbosityOnStartup();
+    logSetVerbosity(Conf::verbosity);
+    logInfo("Main", String() << "Starting " << TSUNAGARI_RELEASE_VERSION);
+    logReportVerbosityOnStartup();
 
     {
         TimeMeasure m("Constructed window");
@@ -81,14 +81,14 @@ main() noexcept {
     }
 
     if (!DataWorld::init()) {
-        Log::fatal("Main", "DataWorld::init");
+        logFatal("Main", "DataWorld::init");
         return 1;
     }
 
     {
         TimeMeasure m("Constructed world");
         if (!World::init()) {
-            Log::fatal("Main", "World::init");
+            logFatal("Main", "World::init");
             return 1;
         }
     }
