@@ -33,7 +33,6 @@
 #include "core/jsons-rapidjson.h"
 #include "core/vec.h"
 #include "util/function.h"
-#include "util/hashtable.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/vector.h"
