@@ -636,7 +636,7 @@ if(AV_SDL2)
                 ${SDL2_mixer_INCLUDE_DIRS}
     )
 
-    target_link_directories(tsunagari
+    link_directories(tsunagari
         PUBLIC ${SDL2_LIBRARY_DIRS}
                ${SDL2_image_LIBRARY_DIRS}
                ${SDL2_mixer_LIBRARY_DIRS}
@@ -672,7 +672,7 @@ if(AV_GOSU)
     endif()
 
     target_include_directories(tsunagari PRIVATE ${GOSU_INCLUDE_DIRS})
-    target_link_directories(tsunagari PUBLIC ${GOSU_LIBRARY_DIRS})
+    link_directories(tsunagari PUBLIC ${GOSU_LIBRARY_DIRS})
     target_link_libraries(tsunagari
         PUBLIC ${GOSU_LIBRARIES}
                ${GOSU_DEPENDENCIES}
