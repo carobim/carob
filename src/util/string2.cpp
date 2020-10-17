@@ -185,19 +185,19 @@ iequals(StringView a, StringView b) noexcept {
     return true;
 }
 
+static const StringView true_ = "true";
+static const StringView yes = "yes";
+static const StringView on = "on";
+
+static const StringView false_ = "false";
+static const StringView no = "no";
+static const StringView off = "off";
+
 Optional<bool>
 parseBool(StringView s) noexcept {
-    static const StringView true_ = "true";
-    static const StringView yes = "yes";
-    static const StringView on = "on";
-
     if (iequals(s, true_) || iequals(s, yes) || iequals(s, on) || s == "1") {
         return Optional<bool>(true);
     }
-
-    static const StringView false_ = "false";
-    static const StringView no = "no";
-    static const StringView off = "off";
 
     if (iequals(s, false_) || iequals(s, no) || iequals(s, off) || s == "0") {
         return Optional<bool>(false);
