@@ -357,6 +357,7 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/util/math2.h
     PUBLIC  ${HERE}/src/util/meta.h
     PUBLIC  ${HERE}/src/util/move.h
+    PRIVATE ${HERE}/src/util/new.cpp
     PUBLIC  ${HERE}/src/util/new.h
     PUBLIC  ${HERE}/src/util/noexcept.h
     PUBLIC  ${HERE}/src/util/optional.h
@@ -392,6 +393,7 @@ target_sources(pack-tool
     PRIVATE ${HERE}/src/util/list.h
     PRIVATE ${HERE}/src/util/meta.h
     PRIVATE ${HERE}/src/util/move.h
+    PRIVATE ${HERE}/src/util/new.cpp
     PRIVATE ${HERE}/src/util/new.h
     PRIVATE ${HERE}/src/util/noexcept.h
     PRIVATE ${HERE}/src/util/optional.h
@@ -576,6 +578,8 @@ if(APPLE)
         PUBLIC /System/Library/Frameworks/Cocoa.framework
                /System/Library/Frameworks/Foundation.framework
     )
+
+    string(APPEND CMAKE_EXE_LINKER_FLAGS " --no-standard-libraries -lSystem")
 endif()
 
 if(LINUX AND NOT AV_EM)
