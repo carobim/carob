@@ -53,22 +53,22 @@ struct AnimationData {
 static Pool<AnimationData> pool;
 
 static AnimationID
-makeSingleFrame(ImageID iid) {
+makeSingleFrame(ImageID iid) noexcept {
     return -*iid - 1;
 }
 
 static bool
-isSingleFrame(AnimationID aid) {
+isSingleFrame(AnimationID aid) noexcept {
     return aid < 0;
 }
 
 static ImageID
-getSingleFrame(AnimationID aid) {
+getSingleFrame(AnimationID aid) noexcept {
     return ImageID(-aid - 1);
 }
 
 static void
-copy(AnimationID& self, AnimationID other) {
+copy(AnimationID& self, AnimationID other) noexcept {
     if (isSingleFrame(other)) {
         self = other;
     }
@@ -83,14 +83,14 @@ copy(AnimationID& self, AnimationID other) {
 }
 
 static void
-move(AnimationID& self, AnimationID& other) {
+move(AnimationID& self, AnimationID& other) noexcept {
     // Take over the AnimationID of the other.
     self = other;
     other = -1;
 }
 
 static void
-destroy(AnimationID aid) {
+destroy(AnimationID aid) noexcept {
     if (!isSingleFrame(aid)) {
         pool.release(aid);
     }
