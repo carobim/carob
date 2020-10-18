@@ -28,12 +28,17 @@
 #include "core/client-conf.h"
 
 #include "config.h"
-#include "core/jsons-rapidjson.h"
+#include "core/jsons.h"
 #include "os/os.h"
 #include "util/move.h"
 #include "util/string.h"
 #include "util/string2.h"
 #include "util/vector.h"
+
+#define CHECK(x)      \
+    if (!(x)) {       \
+        return false; \
+    }
 
 LogVerbosity Conf::verbosity = LogVerbosity::VERBOSE;
 Conf::MovementMode Conf::moveMode;
@@ -56,18 +61,31 @@ Conf::parse(StringView filename) noexcept {
         return false;
     }
 
-    Unique<JSONObject> doc = JSONs::parse(move_(*file));
-
+    Optional<JsonDocument> doc = loadJson(move_(*file));
     if (!doc) {
         logErr(filename, String() << "Could not parse " << filename);
         return false;
     }
 
-    if (doc->hasObject("engine")) {
-        Unique<JSONObject> engine = doc->objectAt("engine");
+    JsonValue root = doc->root;
 
-        if (engine->hasString("verbosity")) {
-            StringView verbosity = engine->stringAt("verbosity");
+    JsonValue engineValue = root["engine"];
+    JsonValue windowValue = root["window"];
+    JsonValue audioValue = root["audio"];
+    JsonValue cacheValue = root["cache"];
+
+    CHECK(engineValue.isObject() || engineValue.isNull());
+    CHECK(windowValue.isObject() || windowValue.isNull());
+    CHECK(audioValue.isObject() || audioValue.isNull());
+    CHECK(cacheValue.isObject() || cacheValue.isNull());
+
+    if (engineValue.isObject()) {
+        JsonValue verbosityValue = engineValue["verbosity"];
+
+        CHECK(verbosityValue.isString() || verbosityValue.isNull());
+
+        if (verbosityValue.isString()) {
+            StringView verbosity = verbosityValue.toString();
             if (verbosity == "quiet") {
                 Conf::verbosity = LogVerbosity::QUIET;
             }
@@ -84,36 +102,48 @@ Conf::parse(StringView filename) noexcept {
         }
     }
 
-    if (doc->hasObject("window")) {
-        Unique<JSONObject> window = doc->objectAt("window");
+    if (windowValue.isObject()) {
+        JsonValue widthValue = windowValue["width"];
+        JsonValue heightValue = windowValue["height"];
+        JsonValue fullscreenValue = windowValue["fullscreen"];
 
-        if (window->hasUnsigned("width")) {
-            Conf::windowSize.x = window->intAt("width", 1, 100000);
-        }
-        if (window->hasUnsigned("height")) {
-            Conf::windowSize.y = window->intAt("height", 1, 100000);
-        }
-        if (window->hasBool("fullscreen")) {
-            Conf::fullscreen = window->boolAt("fullscreen");
-        }
-    }
+        CHECK(widthValue.isNumber() || widthValue.isNull());
+        CHECK(heightValue.isNumber() || heightValue.isNull());
+        CHECK(fullscreenValue.isBool() || fullscreenValue.isNull());
 
-    if (doc->hasObject("audio")) {
-        Unique<JSONObject> audio = doc->objectAt("audio");
-
-        if (audio->hasUnsigned("musicvolume")) {
-            Conf::musicVolume = audio->intAt("musicvolume", 0, 100);
+        if (widthValue.isNumber()) {
+            Conf::windowSize.x = widthValue.toInt();
         }
-        if (audio->hasUnsigned("soundvolume")) {
-            Conf::soundVolume = audio->intAt("soundvolume", 0, 100);
+        if (heightValue.isNumber()) {
+            Conf::windowSize.y = heightValue.toInt();
+        }
+        if (fullscreenValue.isBool()) {
+            Conf::fullscreen = fullscreenValue.toBool();
         }
     }
 
-    if (doc->hasObject("cache")) {
-        Unique<JSONObject> cache = doc->objectAt("cache");
+    if (audioValue.isObject()) {
+        JsonValue musicvolumeValue = audioValue["musicvolume"];
+        JsonValue soundvolumeValue = audioValue["soundvolume"];
 
-        if (cache->hasUnsigned("ttl")) {
-            Conf::cacheTTL = cache->unsignedAt("ttl") != 0;
+        CHECK(musicvolumeValue.isNumber() || musicvolumeValue.isNull());
+        CHECK(soundvolumeValue.isNumber() || soundvolumeValue.isNull());
+
+        if (musicvolumeValue.isNumber()) {
+            Conf::musicVolume = musicvolumeValue.toInt();
+        }
+        if (soundvolumeValue.isNumber()) {
+            Conf::soundVolume = soundvolumeValue.toInt();
+        }
+    }
+
+    if (cacheValue.isObject()) {
+        JsonValue ttlValue = cacheValue["ttl"];
+
+        CHECK(ttlValue.isNumber() || ttlValue.isNull());
+
+        if (ttlValue.isNumber()) {
+            Conf::cacheTTL = ttlValue.toInt();
         }
     }
 

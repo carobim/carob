@@ -102,7 +102,7 @@ union JsonValue {
     }
 
     inline bool
-    isBoolean() noexcept {
+    isBool() noexcept {
         JsonTag tag = getTag();
         return tag == JSON_TRUE || tag == JSON_FALSE;
     }
@@ -143,7 +143,7 @@ union JsonValue {
 
     inline int
     toBool() noexcept {
-        // assert_(isBoolean());
+        // assert_(isBool());
         return getTag() == JSON_TRUE;
     }
 
