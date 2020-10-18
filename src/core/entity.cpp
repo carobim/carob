@@ -100,7 +100,7 @@ parseDescriptor(Entity* e) noexcept {
     CHECK(scriptsValue.isObject() || scriptsValue.isNull());
 
     if (speedValue.isNumber()) {
-        e->tilesPerSecond = speedValue.toNumber();
+        e->tilesPerSecond = static_cast<float>(speedValue.toNumber());
 
         if (e->area) {
             assert_(e->area->grid.tileDim.x == e->area->grid.tileDim.y);
@@ -208,7 +208,7 @@ parsePhase(Entity* e,
             //        "must be decimal");
             // return false;
         }
-        float fps = speedValue.toNumber();
+        float fps = static_cast<float>(speedValue.toNumber());
         assert_(fps != 0.0f);
 
         Vector<ImageID> images;
