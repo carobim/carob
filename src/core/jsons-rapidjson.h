@@ -24,8 +24,8 @@
 // IN THE SOFTWARE.
 // **********
 
-#ifndef SRC_CORE_JSONS_H_
-#define SRC_CORE_JSONS_H_
+#ifndef SRC_CORE_JSONS_RAPIDJSON_H_
+#define SRC_CORE_JSONS_RAPIDJSON_H_
 
 #include "util/string-view.h"
 #include "util/string.h"
@@ -129,4 +129,4 @@ class JSONs {
     parse(String data) noexcept;
 };
 
-#endif  // SRC_CORE_JSONS_H_
+#endif  // SRC_CORE_JSONS_RAPIDJSON_H_

@@ -168,6 +168,8 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/core/images.h
     PRIVATE ${HERE}/src/core/jsons-rapidjson.cpp
     PUBLIC  ${HERE}/src/core/jsons-rapidjson.h
+    PRIVATE ${HERE}/src/core/jsons.cpp
+    PUBLIC  ${HERE}/src/core/jsons.h
     PRIVATE ${HERE}/src/core/log.cpp
     PUBLIC  ${HERE}/src/core/log.h
     PRIVATE ${HERE}/src/core/measure.cpp
@@ -351,6 +353,8 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/util/int.h
     PRIVATE ${HERE}/src/util/jobs.cpp
     PUBLIC  ${HERE}/src/util/jobs.h
+    PRIVATE ${HERE}/src/util/json.cpp
+    PUBLIC  ${HERE}/src/util/json.h
     PUBLIC  ${HERE}/src/util/likely.h
     PUBLIC  ${HERE}/src/util/list.h
     PUBLIC  ${HERE}/src/util/markable.h

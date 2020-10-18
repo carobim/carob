@@ -91,7 +91,10 @@ union JsonValue {
                reinterpret_cast<size_t>(payload);
     }
 
-    inline operator bool() noexcept { return getTag() != JSON_NULL; }
+    inline bool
+    isNull() noexcept {
+        return getTag() == JSON_NULL;
+    }
 
     inline bool
     isNumber() noexcept {
@@ -163,7 +166,7 @@ union JsonValue {
     }
 
     inline StringView
-    toStringView() noexcept {
+    toString() noexcept {
         // assert_(isString());
         return StringView(reinterpret_cast<char*>(getPayload()));
     }
@@ -255,7 +258,9 @@ struct JsonAllocator {
 };
 
 class JsonDocument {
-    JsonDocument(String json) noexcept;  // Destructively edits json.
+ public:
+    JsonDocument() noexcept : ok(false) {}
+    JsonDocument(String text) noexcept;  // Destructively edits text.
     JsonDocument(JsonDocument&&) noexcept;
     ~JsonDocument() noexcept;
 
@@ -263,8 +268,12 @@ class JsonDocument {
     void
     operator=(const JsonAllocator&) = delete;
 
-    bool ok;
+ public:
     JsonValue root;
+    bool ok;
+
+ private:
+    String text;
     JsonAllocator allocator;
 };
 

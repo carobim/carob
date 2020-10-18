@@ -447,14 +447,15 @@ JsonAllocator::operator=(JsonAllocator&& other) {
     other.head = nullptr;
 }
 
-JsonDocument::JsonDocument(String json) noexcept {
-    json << StringView("", 1);  // Add a null byte.
-    ok = parse(json.data(), &root, allocator);
+JsonDocument::JsonDocument(String text) noexcept : text(move_(text)) {
+    this->text << StringView("", 1);  // Add a null byte.
+    ok = parse(this->text.data(), &root, allocator);
 }
 
 JsonDocument::JsonDocument(JsonDocument&& other) noexcept {
-    ok = other.ok;
     root = other.root;
+    ok = other.ok;
+    text = move_(other.text);
     allocator.head = other.allocator.head;
 
     other.ok = false;
@@ -462,5 +463,5 @@ JsonDocument::JsonDocument(JsonDocument&& other) noexcept {
 }
 
 JsonDocument::~JsonDocument() noexcept {
-    // deallocate(head);
+    allocator.deallocate();
 }

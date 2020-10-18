@@ -32,6 +32,7 @@
 #include "core/entity.h"
 #include "core/images.h"
 #include "core/jsons-rapidjson.h"
+#include "core/jsons.h"
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/overlay.h"
@@ -78,11 +79,11 @@ class AreaJSON : public Area {
     bool
     processTileSet(Unique<JSONObject> obj) noexcept;
     bool
-    processTileSetFile(Unique<JSONObject> obj,
+    processTileSetFile(JsonValue obj,
                        StringView source,
                        int firstGid) noexcept;
     bool
-    processTileType(Unique<JSONObject> obj,
+    processTileType(JsonValue obj,
                     Optional<Animation>& graphic,
                     TiledImageID img,
                     int id) noexcept;
@@ -262,13 +263,13 @@ AreaJSON::processTileSet(Unique<JSONObject> obj) noexcept {
 
     // We don't handle embeded tilesets, only references to an external JSON
     // files.
-    Unique<JSONObject> doc = JSONs::load(source);
+    Optional<JsonDocument> doc = loadJson(source);
     if (!doc) {
         logErr(descriptor, String() << source << ": failed to load JSON file");
         return false;
     }
 
-    if (!processTileSetFile(move_(doc), source, firstGid)) {
+    if (!processTileSetFile(doc->root, source, firstGid)) {
         logErr(descriptor,
                String() << source << ": failed to parse JSON tileset file");
         return false;
@@ -278,7 +279,7 @@ AreaJSON::processTileSet(Unique<JSONObject> obj) noexcept {
 }
 
 bool
-AreaJSON::processTileSetFile(Unique<JSONObject> obj,
+AreaJSON::processTileSetFile(JsonValue obj,
                              StringView source,
                              int firstGid) noexcept {
     /*
@@ -305,15 +306,22 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
     unsigned pixelw, pixelh;
     unsigned width, height;
 
-    CHECK(obj->hasString("image"));
-    CHECK(obj->hasUnsigned("imageheight"));
-    CHECK(obj->hasUnsigned("imagewidth"));
-    CHECK(obj->hasString("name"));
-    CHECK(obj->hasUnsigned("tileheight"));
-    CHECK(obj->hasUnsigned("tilewidth"));
+    JsonValue imageNode = obj["image"];
+    JsonValue imagewidthNode = obj["imagewidth"];
+    JsonValue imageheightNode = obj["imageheight"];
+    JsonValue tilewidthNode = obj["tilewidth"];
+    JsonValue tileheightNode = obj["tileheight"];
+    JsonValue tilespropertiesNode = obj["tileproperties"];
 
-    tilex = obj->unsignedAt("tilewidth");
-    tiley = obj->unsignedAt("tileheight");
+    CHECK(imageNode.isString());
+    CHECK(imagewidthNode.isNumber());
+    CHECK(imageheightNode.isNumber());
+    CHECK(tilewidthNode.isNumber());
+    CHECK(tileheightNode.isNumber());
+    CHECK(tilespropertiesNode.isObject() || tilespropertiesNode.isNull());
+
+    tilex = tilewidthNode.toInt();
+    tiley = tileheightNode.toInt();
 
     CHECK(tilex > 0 && tiley > 0);
     CHECK(tilex <= 0x7FFF && tiley <= 0x7FFF);  // Reasonable limit?
@@ -324,13 +332,13 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
     }
     grid.tileDim = ivec2{static_cast<int>(tilex), static_cast<int>(tiley)};
 
-    pixelw = obj->unsignedAt("imagewidth");
-    pixelh = obj->unsignedAt("imageheight");
+    pixelw = imagewidthNode.toInt();
+    pixelh = imageheightNode.toInt();
 
     width = pixelw / grid.tileDim.x;
     height = pixelh / grid.tileDim.y;
 
-    String imgSource = String() << dirname(source) << obj->stringAt("image");
+    String imgSource = String() << dirname(source) << imageNode.toString();
     tileSets[imgSource] = TileSet{firstGid, (size_t)width, (size_t)height};
 
     // Load tileset image.
@@ -349,45 +357,41 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
         tileGraphics.push_back(Optional<Animation>(Animation(image)));
     }
 
-    if (obj->hasObject("tileproperties")) {
-        // Handle explicitly declared "non-vanilla" types.
+    if (!tilespropertiesNode.isObject()) {
+        return true;
+    }
 
-        Unique<JSONObject> tilesProperties = obj->objectAt("tileproperties");
-        Vector<StringView> tileIds = tilesProperties->names();
+    // Handle explicitly declared "non-vanilla" types.
 
-        for (auto& id : tileIds) {
-            // Must be an object... can't be an int... :)
-            CHECK(tilesProperties->hasObject(id));
+    for (JsonNode& tilepropertiesNode : tilespropertiesNode) {
+        CHECK(tilepropertiesNode.value.isObject());
 
-            Unique<JSONObject> tileProperties = tilesProperties->objectAt(id);
+        // "id" is 0-based index of a tile in the current
+        // tileset, if the tileset were a flat array.
+        Optional<unsigned> id_ = parseUInt(tilepropertiesNode.key);
+        if (!id_) {
+            logErr(descriptor, "Tile type id is invalid");
+            return false;
+        }
+        if (*id_ > INT32_MAX) {
+            logErr(descriptor, "Tile type id is invalid");
+            return false;
+        }
+        int id__ = static_cast<int>(*id_);
+        if (nTiles <= id__) {
+            logErr(descriptor, "Tile type id is invalid");
+            return false;
+        }
 
-            // "id" is 0-based index of a tile in the current
-            // tileset, if the tileset were a flat array.
-            Optional<unsigned> id_ = parseUInt(id);
-            if (!id_) {
-                logErr(descriptor, "Tile type id is invalid");
-                return false;
-            }
-            if (*id_ > INT32_MAX) {
-                logErr(descriptor, "Tile type id is invalid");
-                return false;
-            }
-            int id__ = static_cast<int>(*id_);
-            if (nTiles <= id__) {
-                logErr(descriptor, "Tile type id is invalid");
-                return false;
-            }
+        // "gid" is the global area-wide id of the tile.
+        int gid = id__ + firstGid;
 
-            // "gid" is the global area-wide id of the tile.
-            int gid = id__ + firstGid;
-
-            Optional<Animation>& graphic = tileGraphics[gid];
-            if (!processTileType(move_(tileProperties),
-                                 graphic,
-                                 images,
-                                 static_cast<int>(id__))) {
-                return false;
-            }
+        Optional<Animation>& graphic = tileGraphics[gid];
+        if (!processTileType(tilepropertiesNode.value,
+                             graphic,
+                             images,
+                             static_cast<int>(id__))) {
+            return false;
         }
     }
 
@@ -395,7 +399,7 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
 }
 
 bool
-AreaJSON::processTileType(Unique<JSONObject> obj,
+AreaJSON::processTileType(JsonValue obj,
                           Optional<Animation>& graphic,
                           TiledImageID images,
                           int id) noexcept {
@@ -409,18 +413,20 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
     // The id has already been handled by processTileSet, so we don't have
     // to worry about it.
 
+    JsonValue framesNode = obj["frames"];
+    JsonValue speedNode = obj["speed"];
+
+    CHECK(framesNode.isString() || framesNode.isNull());
+    CHECK(speedNode.isString() || speedNode.isNull());
+
     // If a Tile is animated, it needs both member frames and a speed.
     Vector<ImageID> framesvec;
     Optional<int> frameLen;
 
     int nTiles = TiledImage::size(images);
 
-    if (obj->hasString("frames")) {
-        String memtemp;
-        Vector<StringView> frames;
-
-        memtemp = obj->stringAt("frames");
-        frames = splitStr(memtemp, ",");
+    if (framesNode.isString()) {
+        Vector<StringView> frames = splitStr(framesNode.toString(), ",");
 
         // Make sure the first member is this tile.
         Optional<int> firstFrame = parseInt(frames[0]);
@@ -456,9 +462,8 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
             framesvec.push_back(TiledImage::getTile(images, idx_));
         }
     }
-    if (obj->hasString("speed")) {
-        StringView _hertz = obj->stringAt("speed");
-        Optional<float> hertz = parseFloat(_hertz);
+    if (speedNode.isString()) {
+        Optional<float> hertz = parseFloat(speedNode.toString());
         CHECK(hertz);
         frameLen = (int)(1000.0 / *hertz);
     }
