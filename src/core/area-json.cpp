@@ -173,7 +173,7 @@ AreaJSON::processDescriptor() noexcept {
 
     CHECK(processMapProperties(propertiesValue));
 
-    CHECK(!tilesetsValue.toNode());
+    CHECK(tilesetsValue.toNode());
 
     for (JsonNode& tilesetNode : tilesetsValue) {
         JsonValue tilesetValue = tilesetNode.value;
@@ -182,7 +182,7 @@ AreaJSON::processDescriptor() noexcept {
         CHECK(processTileSet(tilesetValue));
     }
 
-    CHECK(!layersValue.toNode());
+    CHECK(layersValue.toNode());
 
     for (JsonNode& layerNode : layersValue) {
         JsonValue layerValue = layerNode.value;

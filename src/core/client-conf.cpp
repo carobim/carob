@@ -28,8 +28,8 @@
 #include "core/client-conf.h"
 
 #include "config.h"
-#include "core/jsons.h"
 #include "os/os.h"
+#include "util/json.h"
 #include "util/move.h"
 #include "util/string.h"
 #include "util/string2.h"
@@ -61,13 +61,13 @@ Conf::parse(StringView filename) noexcept {
         return false;
     }
 
-    Optional<JsonDocument> doc = loadJson(move_(*file));
-    if (!doc) {
+    JsonDocument doc = JsonDocument(move_(*file));
+    if (!doc.ok) {
         logErr(filename, String() << "Could not parse " << filename);
         return false;
     }
 
-    JsonValue root = doc->root;
+    JsonValue root = doc.root;
 
     JsonValue engineValue = root["engine"];
     JsonValue windowValue = root["window"];
