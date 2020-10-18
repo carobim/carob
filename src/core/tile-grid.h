@@ -98,13 +98,15 @@ struct Exit {
 typedef void (*TileScript)(Entity& triggeredBy, icoord tile);
 
 struct EmptyFloat {
-    static CONSTEXPR11 float value() {
+    static CONSTEXPR11 float
+    value() {
         return FLT_MIN;
     }
 };
 
 struct EmptyIcoord {
-    static CONSTEXPR11 icoord value() {
+    static CONSTEXPR11 icoord
+    value() {
         return ICOORD_MIN;
     }
 };
@@ -203,7 +205,7 @@ class TileGrid {
     };
 
     Hashmap<icoord, DataArea::TileScript, EmptyIcoord>
-        scripts[SCRIPT_TYPE_LAST];
+            scripts[SCRIPT_TYPE_LAST];
 
     Hashmap<icoord, unsigned, EmptyIcoord> flags;
 

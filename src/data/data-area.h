@@ -49,27 +49,36 @@ class DataArea {
 
     Area* area = nullptr;  // borrowed reference
 
-    virtual void onLoad() noexcept;
-    virtual void onFocus() noexcept;
-    virtual void onTick(time_t dt) noexcept;
-    virtual void onTurn() noexcept;
+    virtual void
+    onLoad() noexcept;
+    virtual void
+    onFocus() noexcept;
+    virtual void
+    onTick(time_t dt) noexcept;
+    virtual void
+    onTurn() noexcept;
 
     // For scripts
 
     //! Play a sound with a 3% speed variation applied to it.
-    void playSoundEffect(StringView sound) noexcept;
+    void
+    playSoundEffect(StringView sound) noexcept;
 
-    void add(Unique<InProgress> inProgress) noexcept;
+    void
+    add(Unique<InProgress> inProgress) noexcept;
 
     // For engine
-    void tick(time_t dt) noexcept;
-    void turn() noexcept;
+    void
+    tick(time_t dt) noexcept;
+    void
+    turn() noexcept;
 
     Hashmap<StringView, TileScript> scripts;
 
  private:
     DataArea(const DataArea&) = delete;
-    DataArea& operator=(const DataArea&) = delete;
+    DataArea&
+    operator=(const DataArea&) = delete;
 
     Vector<Unique<InProgress>> inProgresses;
 };

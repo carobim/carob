@@ -31,7 +31,7 @@
 
 class Thread {
  public:
-    explicit Thread(Function<void()> f) noexcept;
+    explicit Thread(Function<void() noexcept> f) noexcept;
     Thread(Thread&& other) noexcept;
     ~Thread() noexcept;
 

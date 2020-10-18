@@ -36,12 +36,16 @@
 template<typename T>
 class Cache {
  public:
-    Optional<T*> acquire(StringView key) noexcept;
-    void release(StringView key, time_t now) noexcept;
+    Optional<T*>
+    acquire(StringView key) noexcept;
+    void
+    release(StringView key, time_t now) noexcept;
 
-    void set(StringView key, T data) noexcept;
+    void
+    set(StringView key, T data) noexcept;
 
-    void garbageCollect(time_t lastUsedBefore) noexcept;
+    void
+    garbageCollect(time_t lastUsedBefore) noexcept;
 
  private:
     struct Entry {

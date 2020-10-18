@@ -191,8 +191,7 @@ AreaJSON::processDescriptor() noexcept {
             CHECK(processObjectGroup(move_(layer)));
         }
         else {
-            logErr(descriptor,
-                     "Each layer must be a tilelayer or objectlayer");
+            logErr(descriptor, "Each layer must be a tilelayer or objectlayer");
             return false;
         }
     }
@@ -265,8 +264,7 @@ AreaJSON::processTileSet(Unique<JSONObject> obj) noexcept {
     // files.
     Unique<JSONObject> doc = JSONs::load(source);
     if (!doc) {
-        logErr(descriptor,
-               String() << source << ": failed to load JSON file");
+        logErr(descriptor, String() << source << ": failed to load JSON file");
         return false;
     }
 
@@ -321,8 +319,7 @@ AreaJSON::processTileSetFile(Unique<JSONObject> obj,
     CHECK(tilex <= 0x7FFF && tiley <= 0x7FFF);  // Reasonable limit?
 
     if (grid.tileDim && grid.tileDim.x != tilex && grid.tileDim.y != tiley) {
-        logErr(descriptor,
-                 "Tileset's width/height contradict earlier <layer>");
+        logErr(descriptor, "Tileset's width/height contradict earlier <layer>");
         return false;
     }
     grid.tileDim = ivec2{static_cast<int>(tilex), static_cast<int>(tiley)};
@@ -429,8 +426,8 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
         Optional<int> firstFrame = parseInt(frames[0]);
         if (!firstFrame || *firstFrame != id) {
             logErr(descriptor,
-                     String() << "first member of tile id " << id
-                              << " animation must be itself.");
+                   String() << "first member of tile id " << id
+                            << " animation must be itself.");
             return false;
         }
 
@@ -440,7 +437,7 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
             Optional<unsigned> idx = parseUInt(frame);
             if (!idx) {
                 logErr(descriptor,
-                         "couldn't parse frame index for animated tile");
+                       "couldn't parse frame index for animated tile");
                 return false;
             }
             if (*idx > INT32_MAX) {
@@ -452,7 +449,7 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
 
             if (nTiles <= idx_) {
                 logErr(descriptor,
-                         "frame index out of range for animated tile");
+                       "frame index out of range for animated tile");
                 return false;
             }
 
@@ -468,9 +465,8 @@ AreaJSON::processTileType(Unique<JSONObject> obj,
 
     if (framesvec.size() || frameLen) {
         if (framesvec.empty() || !frameLen) {
-            logErr(
-                    descriptor,
-                    "Tile type must either have both frames and speed or none");
+            logErr(descriptor,
+                   "Tile type must either have both frames and speed or none");
             return false;
         }
         // Add 'now' to Animation constructor??
@@ -784,16 +780,13 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
             }
 
             if (enterScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_ENTER][tile] =
-                        enterScript;
+                grid.scripts[TileGrid::SCRIPT_TYPE_ENTER][tile] = enterScript;
             }
             if (leaveScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_LEAVE][tile] =
-                        leaveScript;
+                grid.scripts[TileGrid::SCRIPT_TYPE_LEAVE][tile] = leaveScript;
             }
             if (useScript) {
-                grid.scripts[TileGrid::SCRIPT_TYPE_USE][tile] =
-                        useScript;
+                grid.scripts[TileGrid::SCRIPT_TYPE_USE][tile] = useScript;
             }
         }
     }

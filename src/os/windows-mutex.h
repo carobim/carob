@@ -38,24 +38,37 @@ typedef struct {
 #define SRWLOCK_INIT \
     { 0 }
 
-WINBASEAPI VOID WINAPI AcquireSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
-WINBASEAPI BOOLEAN WINAPI TryAcquireSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
-WINBASEAPI VOID WINAPI ReleaseSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
+WINBASEAPI VOID WINAPI
+AcquireSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
+WINBASEAPI BOOLEAN WINAPI
+TryAcquireSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
+WINBASEAPI VOID WINAPI
+ReleaseSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
 }
 
 class Mutex {
  public:
     constexpr Mutex() noexcept = default;
 
-    inline void lock() noexcept { AcquireSRWLockExclusive(&m); }
-    inline bool tryLock() noexcept { return TryAcquireSRWLockExclusive(&m) != 0; }
-    inline void unlock() noexcept { ReleaseSRWLockExclusive(&m); }
+    inline void
+    lock() noexcept {
+        AcquireSRWLockExclusive(&m);
+    }
+    inline bool
+    tryLock() noexcept {
+        return TryAcquireSRWLockExclusive(&m) != 0;
+    }
+    inline void
+    unlock() noexcept {
+        ReleaseSRWLockExclusive(&m);
+    }
 
     SRWLOCK m = SRWLOCK_INIT;
 
  private:
     Mutex(const Mutex&) = delete;
-    Mutex& operator=(const Mutex&) = delete;
+    Mutex&
+    operator=(const Mutex&) = delete;
 };
 
 #endif  // SRC_OS_WINDOWS_MUTEX_H_

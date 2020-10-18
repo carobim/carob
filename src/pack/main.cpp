@@ -86,7 +86,8 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
     }
 
     LockGuard guard(ctx.packMutex);
-    ctx.pack->addBlob(move_(path), static_cast<uint32_t>(data_.size()), data_.data());
+    ctx.pack->addBlob(
+            move_(path), static_cast<uint32_t>(data_.size()), data_.data());
 
     data_.reset_lose_memory();  // Don't delete data pointer.
 }

@@ -101,8 +101,7 @@ main() noexcept {
 }
 
 #ifdef _WIN32
-int __stdcall
-WinMain(void*, void*, void*, int) {
+int __stdcall WinMain(void*, void*, void*, int) {
     return main();
 }
 #endif

@@ -40,7 +40,7 @@ static Vector<Thread> workers;
 static int jobsRunning = 0;
 
 // Empty jobs are the signal to quit.
-static Vector<Function<void() noexcept>> jobs;
+static Vector<Job> jobs;
 
 // Whether the destructor has been called,
 static bool tearingDown = false;
@@ -56,7 +56,7 @@ static ConditionVariable jobsDone;
 
 static void
 work() noexcept {
-    Function<void() noexcept> job;
+    Job job;
 
     do {
         {
@@ -101,7 +101,7 @@ JobsEnqueue(Job job) noexcept {
     }
 
     if (workers.size() < workerLimit) {
-        workers.push_back(Thread(Function<void() noexcept>(work)));
+        workers.push_back(Thread(Job(work)));
     }
 
     jobAvailable.notifyOne();

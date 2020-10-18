@@ -36,8 +36,10 @@ class BitRecord {
  public:
     explicit BitRecord(size_t length) noexcept;
 
-    bool& operator[](size_t idx) noexcept;
-    bool operator[](size_t idx) const noexcept;
+    bool&
+    operator[](size_t idx) noexcept;
+    bool
+    operator[](size_t idx) const noexcept;
     Vector<size_t>
     diff(const BitRecord& other) const noexcept;
 

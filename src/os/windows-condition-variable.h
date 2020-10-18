@@ -60,12 +60,20 @@ class ConditionVariable {
     inline ConditionVariable() noexcept = default;
 
     ConditionVariable(const ConditionVariable&) = delete;
-    ConditionVariable& operator=(const ConditionVariable&) = delete;
+    ConditionVariable&
+    operator=(const ConditionVariable&) = delete;
 
-    inline void notifyOne() noexcept { WakeConditionVariable(&cv); }
-    inline void notifyAll() noexcept { WakeAllConditionVariable(&cv); }
+    inline void
+    notifyOne() noexcept {
+        WakeConditionVariable(&cv);
+    }
+    inline void
+    notifyAll() noexcept {
+        WakeAllConditionVariable(&cv);
+    }
 
-    inline void wait(LockGuard& lock) noexcept {
+    inline void
+    wait(LockGuard& lock) noexcept {
         BOOL ok = SleepConditionVariableSRW(&cv, &lock.m.m, INFINITE, 0);
         (void)ok;
         assert_(ok);  // GetLastError();

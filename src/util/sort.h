@@ -59,7 +59,8 @@
 
 namespace pdqsort_detail {
     template<typename T>
-    void sift_down(T* first, T* /*last*/, size_t len, T* start) noexcept {
+    void
+    sift_down(T* first, T* /*last*/, size_t len, T* start) noexcept {
         // left-child of start is at 2 * start + 1
         // right-child of start is at 2 * start + 2
         size_t child = start - first;
@@ -106,7 +107,9 @@ namespace pdqsort_detail {
         *start = move_(top);
     }
 
-    template<typename T> void make_heap(T* first, T* last) noexcept {
+    template<typename T>
+    void
+    make_heap(T* first, T* last) noexcept {
         size_t n = last - first;
         if (n <= 1) {
             return;
@@ -116,14 +119,18 @@ namespace pdqsort_detail {
         }
     }
 
-    template<typename T> void pop_heap(T* first, T* last, size_t len) noexcept {
+    template<typename T>
+    void
+    pop_heap(T* first, T* last, size_t len) noexcept {
         if (len > 1) {
             swap_(*first, *--last);
             sift_down(first, last, len - 1, first);
         }
     }
 
-    template<typename T> void sort_heap(T* first, T* last) noexcept {
+    template<typename T>
+    void
+    sort_heap(T* first, T* last) noexcept {
         for (size_t n = last - first; n > 1; last--, n--) {
             pop_heap(first, last, n);
         }
@@ -153,7 +160,9 @@ namespace pdqsort_detail {
     };
 
     // Returns floor(log2(n)), assumes n > 0.
-    template<typename T> inline int log2(T n) noexcept {
+    template<typename T>
+    inline int
+    log2(T n) noexcept {
         int log = 0;
         while (n >>= 1) {
             ++log;
@@ -162,7 +171,9 @@ namespace pdqsort_detail {
     }
 
     // Sorts [begin, end) using insertion sort.
-    template<typename T> inline void insertion_sort(T* begin, T* end) noexcept {
+    template<typename T>
+    inline void
+    insertion_sort(T* begin, T* end) noexcept {
         if (begin == end) {
             return;
         }
@@ -190,7 +201,8 @@ namespace pdqsort_detail {
     // *(begin - 1) is an element smaller than or equal to any element in
     // [begin, end).
     template<typename T>
-    inline void unguarded_insertion_sort(T* begin, T* end) noexcept {
+    inline void
+    unguarded_insertion_sort(T* begin, T* end) noexcept {
         if (begin == end)
             return;
 
@@ -216,7 +228,8 @@ namespace pdqsort_detail {
     // than partial_insertion_sort_limit elements were moved, and abort sorting.
     // Otherwise it will successfully sort and return true.
     template<typename T>
-    inline bool partial_insertion_sort(T* begin, T* end) noexcept {
+    inline bool
+    partial_insertion_sort(T* begin, T* end) noexcept {
         if (begin == end) {
             return true;
         }
@@ -247,32 +260,39 @@ namespace pdqsort_detail {
         return true;
     }
 
-    template<typename T> inline void sort2(T* a, T* b) noexcept {
+    template<typename T>
+    inline void
+    sort2(T* a, T* b) noexcept {
         if (*b < *a) {
             swap_(*a, *b);
         }
     }
 
     // Sorts the elements *a, *b and *c.
-    template<typename T> inline void sort3(T* a, T* b, T* c) noexcept {
+    template<typename T>
+    inline void
+    sort3(T* a, T* b, T* c) noexcept {
         sort2(a, b);
         sort2(b, c);
         sort2(a, b);
     }
 
-    template<typename T> inline T* align_cacheline(T* p) noexcept {
+    template<typename T>
+    inline T*
+    align_cacheline(T* p) noexcept {
         size_t ip = reinterpret_cast<size_t>(p);
         ip = (ip + cacheline_size - 1) & -cacheline_size;
         return reinterpret_cast<T*>(ip);
     }
 
     template<typename T>
-    inline void swap_offsets(T* first,
-                             T* last,
-                             unsigned char* offsets_l,
-                             unsigned char* offsets_r,
-                             int num,
-                             bool use_swaps) noexcept {
+    inline void
+    swap_offsets(T* first,
+                 T* last,
+                 unsigned char* offsets_l,
+                 unsigned char* offsets_r,
+                 int num,
+                 bool use_swaps) noexcept {
         if (use_swaps) {
             // This case is needed for the descending distribution, where we
             // need to have proper swapping for pdqsort to remain O(n).
@@ -295,7 +315,8 @@ namespace pdqsort_detail {
         }
     }
 
-    template<typename T> struct partition_result {
+    template<typename T>
+    struct partition_result {
         T* pivot_pos;
         bool already_partitioned;
     };
@@ -307,7 +328,8 @@ namespace pdqsort_detail {
     // median of at least 3 elements and that [begin, end) is at least
     // insertion_sort_threshold long.
     template<typename T>
-    inline partition_result<T> partition_right(T* begin, T* end) noexcept {
+    inline partition_result<T>
+    partition_right(T* begin, T* end) noexcept {
         // Move pivot into local for speed.
         T pivot(move_(*begin));
 
@@ -357,7 +379,9 @@ namespace pdqsort_detail {
     // sequence already was partitioned. Since this is rarely used (the many
     // equal case), and in that case pdqsort already has O(n) performance, no
     // block quicksort is applied here for simplicity.
-    template<typename T> inline T* partition_left(T* begin, T* end) noexcept {
+    template<typename T>
+    inline T*
+    partition_left(T* begin, T* end) noexcept {
         T pivot(move_(*begin));
         T* first = begin;
         T* last = end;
@@ -388,10 +412,11 @@ namespace pdqsort_detail {
     }
 
     template<typename T>
-    inline void pdqsort_loop(T* begin,
-                             T* end,
-                             int bad_allowed,
-                             bool leftmost = true) noexcept {
+    inline void
+    pdqsort_loop(T* begin,
+                 T* end,
+                 int bad_allowed,
+                 bool leftmost = true) noexcept {
         // Use a while loop for tail recursion elimination.
         while (true) {
             size_t size = end - begin;

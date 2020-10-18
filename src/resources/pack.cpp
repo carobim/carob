@@ -24,10 +24,9 @@
 // IN THE SOFTWARE.
 // **********
 
-#include "core/resources.h"
-
 #include "core/log.h"
 #include "core/measure.h"
+#include "core/resources.h"
 #include "data/data-world.h"
 #include "os/mutex.h"
 #include "pack/pack-reader.h"

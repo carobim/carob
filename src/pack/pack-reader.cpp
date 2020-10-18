@@ -31,6 +31,7 @@
 #include "util/hashtable.h"
 #include "util/int.h"
 #include "util/move.h"
+#include "util/new.h"
 #include "util/noexcept.h"
 #include "util/optional.h"
 
@@ -119,7 +120,10 @@ PackReader::fromFile(StringView path) noexcept {
         return Unique<PackReader>();
     }
 
-    PackReaderImpl* reader = new PackReaderImpl;
+    PackReaderImpl* reader =
+            static_cast<PackReaderImpl*>(malloc(sizeof(PackReaderImpl)));
+    new (reader) PackReaderImpl;
+
     reader->file = move_(file);
     reader->header = header;
 

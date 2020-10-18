@@ -36,11 +36,13 @@ BitRecord::BitRecord(size_t length) noexcept {
     }
 }
 
-bool& BitRecord::operator[](size_t idx) noexcept {
+bool&
+BitRecord::operator[](size_t idx) noexcept {
     return states[idx];
 }
 
-bool BitRecord::operator[](size_t idx) const noexcept {
+bool
+BitRecord::operator[](size_t idx) const noexcept {
     return states[idx];
 }
 

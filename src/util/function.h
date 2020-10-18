@@ -27,6 +27,7 @@
 #ifndef SRC_UTIL_FUNCTION_H_
 #define SRC_UTIL_FUNCTION_H_
 
+#include "os/c.h"
 #include "util/align.h"
 #include "util/assert.h"
 #include "util/meta.h"
@@ -64,7 +65,7 @@ namespace function {
     class base;
 
     template<class R, class... ArgTypes>
-    class NO_VTABLE base<R(ArgTypes...)> {
+    class NO_VTABLE base<R(ArgTypes...) noexcept> {
         base(const base&) noexcept;
         base&
         operator=(const base&) noexcept;
@@ -88,17 +89,18 @@ namespace function {
     class func;
 
     template<class F, class R, class... ArgTypes>
-    class func<F, R(ArgTypes...)> final : public base<R(ArgTypes...)> {
+    class func<F, R(ArgTypes...) noexcept> final
+            : public base<R(ArgTypes...) noexcept> {
         F f;
 
      public:
         explicit func(F&& f) noexcept : f(move_(f)) {}
         explicit func(const F& f) noexcept : f(f) {}
 
-        base<R(ArgTypes...)>*
+        base<R(ArgTypes...) noexcept>*
         clone() const noexcept;
         void
-        clone(base<R(ArgTypes...)>*) const noexcept;
+        clone(base<R(ArgTypes...) noexcept>*) const noexcept;
         void
         destroy() noexcept;
         void
@@ -109,39 +111,43 @@ namespace function {
 
     template<class F, class R, class... ArgTypes>
     base<R(ArgTypes...)>*
-    func<F, R(ArgTypes...)>::clone() const noexcept {
-        return new func(f);
+    func<F, R(ArgTypes...) noexcept>::clone() const noexcept {
+        void* buf = malloc(sizeof(F));
+        new (buf) F(f);
+        return reinterpret_cast<base<R(ArgTypes...) noexcept>*>(buf);
     }
 
     template<class F, class R, class... ArgTypes>
     void
-    func<F, R(ArgTypes...)>::clone(base<R(ArgTypes...)>* p) const noexcept {
+    func<F, R(ArgTypes...)>::clone(
+            base<R(ArgTypes...) noexcept>* p) const noexcept {
         new (p) func(f);
     }
 
     template<class F, class R, class... ArgTypes>
     void
-    func<F, R(ArgTypes...)>::destroy() noexcept {
+    func<F, R(ArgTypes...) noexcept>::destroy() noexcept {
         f.~F();
     }
 
     template<class F, class R, class... ArgTypes>
     void
-    func<F, R(ArgTypes...)>::destroyDeallocate() noexcept {
+    func<F, R(ArgTypes...) noexcept>::destroyDeallocate() noexcept {
         delete this;
     }
 
     template<class F, class R, class... ArgTypes>
     R
-    func<F, R(ArgTypes...)>::operator()(ArgTypes&&... args) noexcept {
-        return invoke(f, forward_<ArgTypes>(args)...);
+    func<F, R(ArgTypes...) noexcept>::operator()(ArgTypes&&... args) noexcept {
+        // return invoke(f, forward_<ArgTypes>(args)...);
+        return f(forward_<ArgTypes>(args)...);
     }
 }  // namespace function
 
 template<class R, class... ArgTypes>
-class Function<R(ArgTypes...)> {
+class Function<R(ArgTypes...) noexcept> {
  private:
-    typedef function::base<R(ArgTypes...)> base;
+    typedef function::base<R(ArgTypes...) noexcept> base;
 
     static base*
     asBase(void* p) noexcept {
@@ -162,13 +168,13 @@ class Function<R(ArgTypes...)> {
     template<class F>
     void
     set(F& something,
-        EnableIf<sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf)> =
-                True()) noexcept;
+        EnableIf<sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
+                 sizeof(buf)> = True()) noexcept;
     template<class F>
     void
     set(F& something,
-        EnableIf<!(sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf))> =
-                True()) noexcept;
+        EnableIf<!(sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
+                   sizeof(buf))> = True()) noexcept;
 
     Function&
     operator=(const Function&) noexcept;
@@ -188,7 +194,7 @@ class Function<R(ArgTypes...)> {
 };
 
 template<class R, class... ArgTypes>
-Function<R(ArgTypes...)>::Function(const Function& other) noexcept {
+Function<R(ArgTypes...) noexcept>::Function(const Function& other) noexcept {
     if (other.f == nullptr) {
         f = nullptr;
     }
@@ -202,7 +208,7 @@ Function<R(ArgTypes...)>::Function(const Function& other) noexcept {
 }
 
 template<class R, class... ArgTypes>
-Function<R(ArgTypes...)>::Function(Function&& other) noexcept {
+Function<R(ArgTypes...) noexcept>::Function(Function&& other) noexcept {
     if (other.f == nullptr) {
         f = nullptr;
     }
@@ -218,40 +224,43 @@ Function<R(ArgTypes...)>::Function(Function&& other) noexcept {
 
 template<class R, class... ArgTypes>
 template<class F>
-Function<R(ArgTypes...)>::Function(F something) noexcept : f(nullptr) {
+Function<R(ArgTypes...) noexcept>::Function(F something) noexcept : f(nullptr) {
     set(something);
 }
 
 template<class R, class... ArgTypes>
 template<class F>
 void
-Function<R(ArgTypes...)>::set(
+Function<R(ArgTypes...) noexcept>::set(
         F& something,
-        EnableIf<sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf)>
-) noexcept {
-    f = new ((void*)&buf) function::func<F, R(ArgTypes...)>(move_(something));
+        EnableIf<sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
+                 sizeof(buf)>) noexcept {
+    f = new ((void*)&buf)
+            function::func<F, R(ArgTypes...) noexcept>(move_(something));
 }
 
 template<class R, class... ArgTypes>
 template<class F>
 void
-Function<R(ArgTypes...)>::set(
+Function<R(ArgTypes...) noexcept>::set(
         F& something,
-        EnableIf<!(sizeof(function::func<F, R(ArgTypes...)>) <= sizeof(buf))>
-) noexcept {
-    f = new function::func<F, R(ArgTypes...)>(move_(something));
+        EnableIf<!(sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
+                   sizeof(buf))>) noexcept {
+    void* buf = malloc(sizeof(F));
+    new (buf) F(move_(something));
+    f = reinterpret_cast<function::func<F, R(ArgTypes...) noexcept>*>(buf);
 }
 
 template<class R, class... ArgTypes>
-Function<R(ArgTypes...)>&
-Function<R(ArgTypes...)>::operator=(const Function& other) noexcept {
+Function<R(ArgTypes...) noexcept>&
+Function<R(ArgTypes...) noexcept>::operator=(const Function& other) noexcept {
     Function(other).swap(*this);
     return *this;
 }
 
 template<class R, class... ArgTypes>
-Function<R(ArgTypes...)>&
-Function<R(ArgTypes...)>::operator=(Function&& other) noexcept {
+Function<R(ArgTypes...) noexcept>&
+Function<R(ArgTypes...) noexcept>::operator=(Function&& other) noexcept {
     this->~Function();
     if (other.f == nullptr) {
         f = nullptr;
@@ -269,14 +278,14 @@ Function<R(ArgTypes...)>::operator=(Function&& other) noexcept {
 
 template<class R, class... ArgTypes>
 template<class F>
-Function<R(ArgTypes...)>&
-Function<R(ArgTypes...)>::operator=(F&& other) noexcept {
+Function<R(ArgTypes...) noexcept>&
+Function<R(ArgTypes...) noexcept>::operator=(F&& other) noexcept {
     Function(forward_<F>(other)).swap(*this);
     return *this;
 }
 
 template<class R, class... ArgTypes>
-Function<R(ArgTypes...)>::~Function() noexcept {
+Function<R(ArgTypes...) noexcept>::~Function() noexcept {
     if ((void*)f == &buf) {
         f->destroy();
     }
@@ -287,7 +296,7 @@ Function<R(ArgTypes...)>::~Function() noexcept {
 
 template<class R, class... ArgTypes>
 void
-Function<R(ArgTypes...)>::swap(Function& other) noexcept {
+Function<R(ArgTypes...) noexcept>::swap(Function& other) noexcept {
     if (&other == this) {
         return;
     }
@@ -325,7 +334,7 @@ Function<R(ArgTypes...)>::swap(Function& other) noexcept {
 
 template<class R, class... ArgTypes>
 R
-Function<R(ArgTypes...)>::operator()(ArgTypes... args) const noexcept {
+Function<R(ArgTypes...) noexcept>::operator()(ArgTypes... args) const noexcept {
     assert_(f != nullptr);
     return (*f)(forward_<ArgTypes>(args)...);
 }

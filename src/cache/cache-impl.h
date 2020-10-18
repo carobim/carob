@@ -74,7 +74,7 @@ Cache<T>::set(StringView key, T data) noexcept {
 template<typename T>
 void
 Cache<T>::garbageCollect(time_t lastUsedBefore) noexcept {
-    for (auto it = entries.begin(); it != entries.end(); ) {
+    for (auto it = entries.begin(); it != entries.end();) {
         CacheEntry& entry = it.value();
         if (entry.numUsed == 0 && entry.lastUsed < lastUsedBefore) {
             StringView key = it.key();

@@ -30,6 +30,7 @@
 #include "util/assert.h"
 #include "util/int.h"
 #include "util/move.h"
+#include "util/new.h"
 
 // mach/thread_act.h
 extern "C" {
@@ -52,24 +53,25 @@ struct thread_extended_policy {
 
 static void*
 run(void* f) noexcept {
-    Function<void()>* fun = reinterpret_cast<Function<void()>*>(f);
+    Function<void() noexcept>* fun =
+            reinterpret_cast<Function<void() noexcept>*>(f);
     (*fun)();
     return nullptr;
 }
 
-Thread::Thread(Function<void()> f) noexcept {
-    Function<void()>* fun = new Function<void()>(move_(f));
+Thread::Thread(Function<void() noexcept> f) noexcept {
+    using F = Function<void() noexcept>;
 
-    int err = pthread_create(reinterpret_cast<pthread_t*>(&t),
-                             nullptr,
-                             run,
-                             static_cast<void*>(fun));
+    void* fun = malloc(sizeof(F));
+    new (fun) F(move_(f));
+
+    int err =
+            pthread_create(reinterpret_cast<pthread_t*>(&t), nullptr, run, fun);
     (void)err;
     assert_(err == 0);
 }
 
-Thread::Thread(Thread&& other) noexcept
-        : t(other.t) {
+Thread::Thread(Thread&& other) noexcept : t(other.t) {
     other.t = nullptr;
 }
 
@@ -91,7 +93,7 @@ Thread::join() noexcept {
 void
 Thread::disableTimerCoalescing() noexcept {
     thread_extended_policy policyInfo = {
-        .timeshare = false,
+            .timeshare = false,
     };
 
     thread_policy_set(mach_thread_self(),

@@ -51,11 +51,14 @@ typedef struct _SYSTEM_INFO {
     WORD wProcessorRevision;
 } SYSTEM_INFO, *LPSYSTEM_INFO;
 
-WINBASEAPI BOOL WINAPI CloseHandle(HANDLE hObject) noexcept;
-WINBASEAPI VOID WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo) noexcept;
-WINBASEAPI DWORD WINAPI WaitForSingleObjectEx(HANDLE hHandle,
-                                              DWORD dwMilliseconds,
-                                              BOOL bAlertable) noexcept;
+WINBASEAPI BOOL WINAPI
+CloseHandle(HANDLE hObject) noexcept;
+WINBASEAPI VOID WINAPI
+GetSystemInfo(LPSYSTEM_INFO lpSystemInfo) noexcept;
+WINBASEAPI DWORD WINAPI
+WaitForSingleObjectEx(HANDLE hHandle,
+                      DWORD dwMilliseconds,
+                      BOOL bAlertable) noexcept;
 _ACRTIMP uintptr_t __cdecl _beginthreadex(
         void* security,
         unsigned stack_size,
@@ -92,9 +95,11 @@ class Thread {
     inline ~Thread() noexcept { assert_(id == 0); }
 
     Thread(const Thread&) = delete;
-    Thread& operator=(const Thread&) = delete;
+    Thread&
+    operator=(const Thread&) = delete;
 
-    inline void join() noexcept {
+    inline void
+    join() noexcept {
         assert_(id != 0);
 
         DWORD err = WaitForSingleObjectEx(id, INFINITE, false);
@@ -108,14 +113,15 @@ class Thread {
         id = 0;
     }
 
-    static inline unsigned hardware_concurrency() noexcept {
+    static inline unsigned
+    hardware_concurrency() noexcept {
         SYSTEM_INFO info;
         GetSystemInfo(&info);
         return info.dwNumberOfProcessors;
     }
 
-    static void disableTimerCoalescing() noexcept {
-    }
+    static void
+    disableTimerCoalescing() noexcept {}
 
     HANDLE id = 0;
 };

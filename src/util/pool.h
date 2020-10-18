@@ -60,7 +60,8 @@ class Pool {
         nextFree = i;
     }
 
-    T& operator[](int i) noexcept {
+    T&
+    operator[](int i) noexcept {
         assert_(0 <= i && i < allocated);
         return storage[i];
     }

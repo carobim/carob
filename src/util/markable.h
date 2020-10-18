@@ -52,8 +52,7 @@ class Markable {
     Markable(const T& x) noexcept
             : x(x) {}
     CONSTEXPR11
-    Markable(M) noexcept
-            : x(MarkedValue) {}
+    Markable(M) noexcept : x(MarkedValue) {}
     CONSTEXPR11
     Markable(Markable&& other) noexcept = default;
     CONSTEXPR11
@@ -86,20 +85,24 @@ class Markable {
     }
     inline CONSTEXPR11 operator bool() const noexcept { return exists(); }
 
-    inline CONSTEXPR14 const T* operator->() const noexcept {
+    inline CONSTEXPR14 const T*
+    operator->() const noexcept {
         assert_(exists());
         return &x;
     }
-    inline CONSTEXPR14 T* operator->() noexcept {
+    inline CONSTEXPR14 T*
+    operator->() noexcept {
         assert_(exists());
         return &x;
     }
 
-    inline CONSTEXPR14 const T& operator*() const noexcept {
+    inline CONSTEXPR14 const T&
+    operator*() const noexcept {
         assert_(exists());
         return x;
     }
-    inline CONSTEXPR14 T& operator*() noexcept {
+    inline CONSTEXPR14 T&
+    operator*() noexcept {
         assert_(exists());
         return x;
     }

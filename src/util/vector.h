@@ -32,8 +32,8 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-// 1. Redistributions of source code must retain the above copyright notice, this
-//    list of conditions and the following disclaimer.
+// 1. Redistributions of source code must retain the above copyright notice,
+//    this list of conditions and the following disclaimer.
 //
 // 2. Redistributions in binary form must reproduce the above copyright notice,
 //    this list of conditions and the following disclaimer in the documentation
@@ -130,8 +130,10 @@ class Vector {
     const T*
     data() const noexcept;
 
-    T& operator[](size_t n) noexcept;
-    const T& operator[](size_t n) const noexcept;
+    T&
+    operator[](size_t n) noexcept;
+    const T&
+    operator[](size_t n) const noexcept;
 
     T&
     at(size_t n) noexcept;
@@ -469,7 +471,8 @@ Vector<T>::data() const noexcept {
 
 
 template<typename T>
-inline T& Vector<T>::operator[](size_t n) noexcept {
+inline T&
+Vector<T>::operator[](size_t n) noexcept {
     assert_(n < static_cast<size_t>(mpEnd - mpBegin));
 
     return *(mpBegin + n);
@@ -477,7 +480,8 @@ inline T& Vector<T>::operator[](size_t n) noexcept {
 
 
 template<typename T>
-inline const T& Vector<T>::operator[](size_t n) const noexcept {
+inline const T&
+Vector<T>::operator[](size_t n) const noexcept {
     assert_(n < static_cast<size_t>(mpEnd - mpBegin));
 
     return *(mpBegin + n);

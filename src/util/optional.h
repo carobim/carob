@@ -32,8 +32,8 @@
 #include "util/constexpr.h"
 #include "util/move.h"
 #include "util/new.h"
-#include "util/none.h"
 #include "util/noexcept.h"
+#include "util/none.h"
 
 template<typename T>
 class Optional {
@@ -141,20 +141,24 @@ class Optional {
 
     inline CONSTEXPR11 operator bool() const noexcept { return exists; }
 
-    inline CONSTEXPR14 const T* operator->() const noexcept {
+    inline CONSTEXPR14 const T*
+    operator->() const noexcept {
         assert_(exists);
         return &x();
     }
-    inline CONSTEXPR14 const T& operator*() const noexcept {
+    inline CONSTEXPR14 const T&
+    operator*() const noexcept {
         assert_(exists);
         return x();
     }
 
-    inline CONSTEXPR14 T* operator->() noexcept {
+    inline CONSTEXPR14 T*
+    operator->() noexcept {
         assert_(exists);
         return &x();
     }
-    inline CONSTEXPR14 T& operator*() noexcept {
+    inline CONSTEXPR14 T&
+    operator*() noexcept {
         assert_(exists);
         return x();
     }

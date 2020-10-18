@@ -63,10 +63,12 @@ class List {
         friend List;
 
      public:
-        inline CONSTEXPR14 T& operator*() const noexcept {
+        inline CONSTEXPR14 T&
+        operator*() const noexcept {
             return links->toNode()->x;
         }
-        inline CONSTEXPR14 T* operator->() const noexcept {
+        inline CONSTEXPR14 T*
+        operator->() const noexcept {
             return &links->toNode()->x;
         }
         inline void
@@ -84,8 +86,7 @@ class List {
 
      private:
         CONSTEXPR11
-        Iterator(Links* links) noexcept
-                : links(links) {}
+        Iterator(Links* links) noexcept : links(links) {}
         Links* links;
     };
 
@@ -93,10 +94,12 @@ class List {
         friend List;
 
      public:
-        inline const T& operator*() const noexcept {
+        inline const T&
+        operator*() const noexcept {
             return links->toNode()->x;
         }
-        inline const T* operator->() const noexcept {
+        inline const T*
+        operator->() const noexcept {
             return &links->toNode()->x;
         }
         inline void

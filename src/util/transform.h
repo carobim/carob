@@ -38,10 +38,13 @@ struct Transform {
     static Transform
     translate(float x, float y) noexcept;
 
-    Transform operator*(const Transform& other) noexcept;
+    Transform
+    operator*(const Transform& other) noexcept;
 
-    float& operator[](int i) noexcept;
-    const float& operator[](int i) const noexcept;
+    float&
+    operator[](int i) noexcept;
+    const float&
+    operator[](int i) const noexcept;
 
     float matrix[16];
 };

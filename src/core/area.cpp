@@ -381,7 +381,8 @@ Area::drawTiles(DisplayList* display, const icube& tiles, int z) {
                 tileGraphics[type]->setFrame(now);
             }
 
-            // Image guaranteed to exist because Animation won't hold a null ImageID.
+            // Image guaranteed to exist because Animation won't hold a null
+            // ImageID.
             ImageID img = tileGraphics[type]->getFrame();
 
             rvec2 drawPos{float(x * width), float(y * height)};

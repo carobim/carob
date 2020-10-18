@@ -309,7 +309,7 @@ GameWindow::mainLoop() noexcept {
 
         // Must sleep even if we drew a frame to handle the case where we don't
         // have vsync, but we are trying to limit frame rate.
-        //if (!drew && sleepDuration) {
+        // if (!drew && sleepDuration) {
         if (sleepDuration) {
             SleepFor(sleepDuration);
         }

@@ -55,7 +55,8 @@ class vec2 {
 
     operator bool() noexcept { return x || y; }
 
-    float distanceTo(vec2<T> other) noexcept {
+    float
+    distanceTo(vec2<T> other) noexcept {
         T dx = x - other.x;
         T dy = y - other.y;
         return sqrt(dx * dx + dy * dy);
@@ -69,7 +70,8 @@ struct vec3 {
 
     operator bool() noexcept { return x || y || z; }
 
-    float distanceTo(vec3<T> other) noexcept {
+    float
+    distanceTo(vec3<T> other) noexcept {
         T dx = x - other.x;
         T dy = y - other.y;
         return static_cast<float>(sqrt(dx * dx + dy * dy));
@@ -79,75 +81,49 @@ struct vec3 {
 template<class T>
 vec2<T>
 operator+(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return {
-        a.x + b.x,
-        a.y + b.y
-    };
+    return {a.x + b.x, a.y + b.y};
 }
 
 template<class T>
 vec3<T>
 operator+(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return {
-        a.x + b.x,
-        a.y + b.y,
-        a.z + b.z
-    };
+    return {a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
 template<class T>
 vec2<T>
 operator-(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return {
-        a.x - b.x,
-        a.y - b.y
-    };
+    return {a.x - b.x, a.y - b.y};
 }
 
 template<class T>
 vec3<T>
 operator-(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return {
-        a.x - b.x,
-        a.y - b.y,
-        a.z - b.z
-    };
+    return {a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
 template<class T, class CO>
-vec2<T> operator*(CO co, const vec2<T>& a) noexcept {
-    return {
-        a.x * (T)co,
-        a.y * (T)co
-    };
+vec2<T>
+operator*(CO co, const vec2<T>& a) noexcept {
+    return {a.x * (T)co, a.y * (T)co};
 }
 
 template<class T, class CO>
-vec3<T> operator*(CO co, const vec3<T>& a) noexcept {
-    return {
-        a.x * (T)co,
-        a.y * (T)co,
-        a.z * (T)co
-    };
+vec3<T>
+operator*(CO co, const vec3<T>& a) noexcept {
+    return {a.x * (T)co, a.y * (T)co, a.z * (T)co};
 }
 
 template<class T, class CO>
 vec2<T>
 operator/(const vec2<T>& a, CO co) noexcept {
-    return {
-        a.x / (T)co,
-        a.y / (T)co
-    };
+    return {a.x / (T)co, a.y / (T)co};
 }
 
 template<class T, class CO>
 vec3<T>
 operator/(const vec3<T>& a, CO co) noexcept {
-    return {
-        a.x / (T)co,
-        a.y / (T)co,
-        a.z / (T)co
-    };
+    return {a.x / (T)co, a.y / (T)co, a.z / (T)co};
 }
 
 template<class T>
@@ -199,9 +175,9 @@ typedef ivec3 icoord;
 typedef rvec3 rcoord;
 
 static const CONSTEXPR11 icoord ICOORD_MIN = {
-    INT32_MIN,
-    INT32_MIN,
-    INT32_MIN,
+        INT32_MIN,
+        INT32_MIN,
+        INT32_MIN,
 };
 
 #endif  // SRC_CORE_VEC_H_

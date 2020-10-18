@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack-writer.cpp                  **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -86,9 +86,11 @@ operator<(const Blob& a, const Blob& b) noexcept {
 
 class PackWriterImpl : public PackWriter {
  public:
-    bool writeToFile(StringView path) noexcept;
+    bool
+    writeToFile(StringView path) noexcept;
 
-    void addBlob(String path, BlobSize size, const void* data) noexcept;
+    void
+    addBlob(String path, BlobSize size, const void* data) noexcept;
 
  private:
     Vector<Blob> blobs;
@@ -97,7 +99,11 @@ class PackWriterImpl : public PackWriter {
 
 Unique<PackWriter>
 PackWriter::make() noexcept {
-    return Unique<PackWriter>(new PackWriterImpl);
+    void* buf = malloc(sizeof(PackWriterImpl));
+    new (buf) PackWriterImpl;
+    PackWriterImpl* writer = reinterpret_cast<PackWriterImpl*>(buf);
+
+    return Unique<PackWriter>(writer);
 }
 
 bool
@@ -211,8 +217,10 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
     }
 
     // Write file.
-    return writeFileVec(
-            path, static_cast<uint32_t>(writeLengths.size()), writeLengths.data(), writeDatas.data());
+    return writeFileVec(path,
+                        static_cast<uint32_t>(writeLengths.size()),
+                        writeLengths.data(),
+                        writeDatas.data());
 }
 
 void

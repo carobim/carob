@@ -85,7 +85,8 @@
 // correctly) or where having a default value as a key is necessary.
 template<typename T>
 struct Empty {
-    static CONSTEXPR11 T value() noexcept {
+    static CONSTEXPR11 T
+    value() noexcept {
         return T();
     }
 };
@@ -136,9 +137,7 @@ class Hashmap {
         }
 
      private:
-        explicit iterator(Hashmap* hm) noexcept : hm(hm) {
-            advancePastEmpty();
-        }
+        explicit iterator(Hashmap* hm) noexcept : hm(hm) { advancePastEmpty(); }
         explicit iterator(Hashmap* hm, size_t idx) noexcept
                 : hm(hm), idx(idx) {}
 
@@ -164,7 +163,7 @@ class Hashmap {
             pow2 <<= 1;
         }
 
-        //buckets.resize(pow2);
+        // buckets.resize(pow2);
         // FIXME: Can this be made more efficient?
         buckets.reserve(pow2);
         for (size_t i = 0; i < pow2; i++) {

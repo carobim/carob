@@ -44,15 +44,18 @@ Transform::translate(float x, float y) noexcept {
     return Transform{{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1}};
 }
 
-float& Transform::operator[](int i) noexcept {
+float&
+Transform::operator[](int i) noexcept {
     return matrix[i];
 }
 
-const float& Transform::operator[](int i) const noexcept {
+const float&
+Transform::operator[](int i) const noexcept {
     return matrix[i];
 }
 
-Transform Transform::operator*(const Transform& right) noexcept {
+Transform
+Transform::operator*(const Transform& right) noexcept {
     const Transform& left = *this;
 
     Transform result;

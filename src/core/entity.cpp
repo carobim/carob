@@ -161,8 +161,7 @@ Entity::setPhase(StringView name) noexcept {
     if (res == PHASE_NOTFOUND) {
         res = _setPhase("stance");
         if (res == PHASE_NOTFOUND) {
-            logErr(descriptor,
-                   String() << "phase '" << name << "' not found");
+            logErr(descriptor, String() << "phase '" << name << "' not found");
         }
     }
     return res == PHASE_CHANGED;

@@ -34,17 +34,20 @@
 #include "util/vector.h"
 
 // TODO: Replace with lock-free variant.
-template<class T> class SafeHeap {
+template<class T>
+class SafeHeap {
  public:
     SafeHeap() noexcept : alive(true) {}
 
-    void push(T t) noexcept {
+    void
+    push(T t) noexcept {
         LockGuard lock(m);
         q.push_back(t);
         c.notifyOne();
     }
 
-    Optional<T> pop() noexcept {
+    Optional<T>
+    pop() noexcept {
         LockGuard lock(m);
         while (alive && q.empty()) {
             c.wait(lock);
@@ -59,7 +62,8 @@ template<class T> class SafeHeap {
         }
     }
 
-    void end() noexcept {
+    void
+    end() noexcept {
         alive = false;
         c.notifyAll();
     }

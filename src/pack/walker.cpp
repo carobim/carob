@@ -45,7 +45,7 @@ walkPath(WalkContext& ctx, StringView path) noexcept {
         for (auto& name : names) {
             String child;
             child << path << dirSeparator << name;
-            JobsEnqueue([&ctx, child /* = move_(child) */] {
+            JobsEnqueue([&ctx, child /* = move_(child) */]() noexcept {
                 walkPath(ctx, child);
             });
         }
@@ -61,8 +61,8 @@ walk(Vector<StringView> paths, Function<void(StringView)> op) noexcept {
     ctx.op = move_(op);
 
     for (auto& path : paths) {
-        JobsEnqueue([&] { walkPath(ctx, path); });
+        JobsEnqueue([&]() noexcept { walkPath(ctx, path); });
     }
 
-	JobsFlush();
+    JobsFlush();
 }
