@@ -528,7 +528,12 @@ endif()
 #endif()
 
 # Strip symbols
-if(APPLE AND CLANG)
+if(LINUX OR FREEBSD OR NETBSD)
+    # GNU binutils
+    string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE " -Wl,--strip-all")
+    string(APPEND CMAKE_EXE_LINKER_FLAGS_MINSIZEREL " -Wl,--strip-all")
+elseif(APPLE)
+    # macOS linker
     string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE " -Wl,-x -Wl,-dead_strip")
     string(APPEND CMAKE_EXE_LINKER_FLAGS_MINSIZEREL " -Wl,-x -Wl,-dead_strip")
 endif()
