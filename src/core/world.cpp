@@ -33,7 +33,6 @@
 #include "core/client-conf.h"
 #include "core/display-list.h"
 #include "core/images.h"
-#include "core/jsons-rapidjson.h"
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/music.h"
