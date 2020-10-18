@@ -306,7 +306,7 @@ Character*
 Area::spawnNPC(StringView descriptor, vicoord coord, StringView phase) {
     Character* c = new Character;
     if (!c->init(descriptor, phase)) {
-        // Error logged.
+        logErr("Area", String() << "Failed to load entity " << descriptor);
         delete c;
         return nullptr;
     }
@@ -319,7 +319,7 @@ Overlay*
 Area::spawnOverlay(StringView descriptor, vicoord coord, StringView phase) {
     Overlay* o = new Overlay;
     if (!o->init(descriptor, phase)) {
-        // Error logged.
+        logErr("Area", String() << "Failed to load entity " << descriptor);
         delete o;
         return nullptr;
     }
