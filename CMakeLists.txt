@@ -579,7 +579,10 @@ if(APPLE)
                /System/Library/Frameworks/Foundation.framework
     )
 
-    string(APPEND CMAKE_EXE_LINKER_FLAGS " --no-standard-libraries -lSystem")
+    if(NOT AV_GOSU)
+        string(APPEND CMAKE_EXE_LINKER_FLAGS
+                      " --no-standard-libraries -lSystem")
+    endif()
 endif()
 
 if(LINUX AND NOT AV_EM)

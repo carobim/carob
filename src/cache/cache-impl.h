@@ -38,12 +38,12 @@ Optional<T*>
 Cache<T>::acquire(StringView key) noexcept {
     Optional<Entry*> e = entries.tryAt(key);
     if (e) {
-        Log::info("Cache", String() << key << ": requested (cached)");
+        logInfo("Cache", String() << key << ": requested (cached)");
         (*e)->numUsing += 1;
         return Optional<T*>(&(*e)->data);
     }
     else {
-        Log::info("Cache", String() << key << ": requested (not cached)");
+        logInfo("Cache", String() << key << ": requested (not cached)");
         return none;
     }
 }
@@ -78,7 +78,7 @@ Cache<T>::garbageCollect(time_t lastUsedBefore) noexcept {
         CacheEntry& entry = it.value();
         if (entry.numUsed == 0 && entry.lastUsed < lastUsedBefore) {
             StringView key = it.key();
-            Log::info("Cache", String() << key << ": purged");
+            logInfo("Cache", String() << key << ": purged");
             it = entries.erase(it);
         }
         else {

@@ -38,7 +38,7 @@ sdlError(StringView system, StringView function) noexcept {
     if (err.size > 0) {
         message << ": " << err;
     }
-    Log::err(system, message);
+    logErr(system, message);
 }
 
 void
@@ -48,5 +48,5 @@ sdlDie(StringView system, StringView function) noexcept {
     if (err.size > 0) {
         message << ": " << err;
     }
-    Log::fatal(system, message);
+    logFatal(system, message);
 }

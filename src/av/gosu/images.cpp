@@ -100,8 +100,8 @@ makeImage(StringView path) {
         Gosu::load_image_file(bitmap, Gosu::Reader{&buffer, 0});
     }
 
-    Log::info("Images",
-              String() << "Bitmap " << path << " is " << bitmap.w << "×"
+    logInfo("Images",
+             String() << "Bitmap " << path << " is " << bitmap.w << "×"
                        << bitmap.h);
     TimeMeasure m(String() << "Constructed " << path << " as image");
     return Optional<GosuImage>(
@@ -130,9 +130,9 @@ makeTiledImage(StringView path, unsigned tileW, unsigned tileH) {
         Gosu::load_image_file(bitmap, Gosu::Reader{&buffer, 0});
     }
 
-    Log::info("Images",
-              String() << "Bitmap " << path << " is " << bitmap.w << "×"
-                       << bitmap.h);
+    logInfo("Images",
+             String() << "Bitmap " << path << " is " << bitmap.w << "×"
+                      << bitmap.h);
 
     GosuTiledImage tiledImage;
     tiledImage.images.reserve(bitmap.w * bitmap.h / (tileW * tileH));
@@ -153,9 +153,9 @@ makeTiledImage(StringView path, unsigned tileW, unsigned tileH) {
         }
     }
 
-    Log::info("Images",
-              String() << "TiledImage " << path << " has "
-                       << tiledImage.images.size() << " tiles");
+    logInfo("Images",
+             String() << "TiledImage " << path << " has "
+                      << tiledImage.images.size() << " tiles");
     return Optional<GosuTiledImage>(move_(tiledImage));
 }
 

@@ -202,9 +202,9 @@ GameWindow::create() noexcept {
     StringView name = info.name;
     bool vsync = (info.flags & SDL_RENDERER_PRESENTVSYNC) != 0;
 
-    Log::info("SDL2GameWindow",
-              String("Rendering will be done with ")
-                      << name << (vsync ? " with vsync" : " without vsync"));
+    logInfo("SDL2GameWindow",
+             String("Rendering will be done with ")
+                     << name << (vsync ? " with vsync" : " without vsync"));
 
     SDL_SetRenderDrawColor(SDL2GameWindow::renderer, 0x00, 0x00, 0x00, 0xFF);
 }
@@ -267,7 +267,7 @@ GameWindow::mainLoop() noexcept {
             World::tick(dt);
         }
         else {
-            // Log::info("SDL2GameWindow", "dt == 0");
+            // logInfo("SDL2GameWindow", "dt == 0");
         }
 
         bool drew = false;
@@ -296,7 +296,7 @@ GameWindow::mainLoop() noexcept {
         }
 
         /*
-        Log::info(
+        logInfo(
             "GameWindow",
             String() << "dt " << to_s(frameStart - previousFrameStart)
                      << " frameStart " << to_s(frameStart)
@@ -324,8 +324,8 @@ GameWindow::mainLoop() noexcept {
                 nextFrameStart += idealFrameTime;
                 framesDropped += 1;
             }
-            Log::info("GameWindow",
-                      String() << "Dropped " << framesDropped << " frames");
+            logInfo("GameWindow",
+                     String() << "Dropped " << framesDropped << " frames");
         }
     }
 }

@@ -43,14 +43,14 @@ T
 RcCache<T>::momentaryRequest(StringView name) noexcept {
     auto it = map.find(name);
     if (it != map.end()) {
-        // Log::info("RcCache", String() << name << ": requested (cached)");
+        // logInfo("RcCache", String() << name << ": requested (cached)");
         CacheEntry& entry = it.value();
         // Set lastUsed to now because it won't be used
         // by the time garbageCollect() gets to it.
         entry.lastUsed = World::time();
         return entry.data;
     }
-    Log::info("RcCache", String() << name << ": requested");
+    logInfo("RcCache", String() << name << ": requested");
     return T();
 }
 
@@ -59,12 +59,12 @@ T
 RcCache<T>::lifetimeRequest(StringView name) noexcept {
     auto it = map.find(name);
     if (it != map.end()) {
-        // Log::info("RcCache", String() << name << ": requested (cached)");
+        // logInfo("RcCache", String() << name << ": requested (cached)");
         CacheEntry& entry = it.value();
         entry.lastUsed = IN_USE_NOW;
         return entry.data;
     }
-    Log::info("RcCache", String() << name << ": requested");
+    logInfo("RcCache", String() << name << ": requested");
     return T();
 }
 
@@ -101,11 +101,11 @@ RcCache<T>::garbageCollect() noexcept {
         }
         if (cache.lastUsed == IN_USE_NOW) {
             cache.lastUsed = now;
-            // Log::info("RcCache", String() << name << ": unused");
+            // logInfo("RcCache", String() << name << ": unused");
         }
         else if (now > cache.lastUsed + Conf::cacheTTL * 1000) {
             dead.push_back(name);
-            Log::info("RcCache", String() << name << ": purged");
+            logInfo("RcCache", String() << name << ": purged");
         }
     }
     for (auto it = dead.begin(); it != dead.end(); it++) {

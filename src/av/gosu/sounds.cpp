@@ -78,9 +78,9 @@ void
 GosuSoundInstance::volume(double attemptedVolume) {
     double volume = bound(attemptedVolume, 0.0, 1.0);
     if (attemptedVolume != volume) {
-        Log::info("SoundInstance",
-                  Formatter("Attempted to set volume to %, setting it to %") %
-                          attemptedVolume % volume);
+        og::info("SoundInstance",
+                 Formatter("Attempted to set volume to %, setting it to %") %
+                         attemptedVolume % volume);
     }
     assert_(0 <= conf.soundVolume && conf.soundVolume <= 100);
     instance.set_volume(volume * conf.soundVolume / 100.0);
@@ -90,9 +90,9 @@ void
 GosuSoundInstance::pan(double attemptedPan) {
     double pan = bound(attemptedPan, 0.0, 1.0);
     if (attemptedPan != pan) {
-        Log::info("SoundInstance",
-                  Formatter("Attempted to set pan to %, setting it to %") %
-                          attemptedPan % pan);
+        og::info("SoundInstance",
+                 Formatter("Attempted to set pan to %, setting it to %") %
+                         attemptedPan % pan);
     }
     instance.set_pan(pan);
 }
@@ -101,9 +101,9 @@ void
 GosuSoundInstance::speed(double attemptedSpeed) {
     double speed = bound(attemptedSpeed, 0.0, 100.0);
     if (attemptedSpeed != speed) {
-        Log::info("SoundInstance",
-                  Formatter("Attempted to set speed to %, setting it to %") %
-                          attemptedSpeed % speed);
+        og::info("SoundInstance",
+                 Formatter("Attempted to set speed to %, setting it to %") %
+                         attemptedSpeed % speed);
     }
     instance.set_speed(speed);
 }
