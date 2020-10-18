@@ -566,7 +566,7 @@ if(LINUX AND NOT AV_EM)
     execute_process(COMMAND ldd --version
                     OUTPUT_VARIABLE LDD_VERSION)
 
-    if("${LDD_VERSION}" MATCHES " GLIBC (2.[0-9]*)")
+    if("${LDD_VERSION}" MATCHES "GLIBC (2.[0-9]*)")
         set(GLIBC_VERSION "${CMAKE_MATCH_1}")
         message("Found glibc ${GLIBC_VERSION}")
     elseif("${LDD_VERSION}" MATCHES "Version ([0-9.]+)")
