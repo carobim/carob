@@ -31,27 +31,27 @@ typedef long long Duration;   // Nanoseconds.
 typedef long long TimePoint;  // Nanoseconds.
 
 constexpr Duration
-ns_to_ms(Duration d) {
+ns_to_ms(Duration d) noexcept {
     return d / 1000000;
 }
 constexpr Duration
-ns_to_s(Duration d) {
+ns_to_s(Duration d) noexcept {
     return d / 1000000000;
 }
 constexpr Duration
-s_to_ms(Duration d) {
+s_to_ms(Duration d) noexcept {
     return d * 1000;
 }
 constexpr Duration
-s_to_ns(Duration d) {
+s_to_ns(Duration d) noexcept {
     return d * 1000000000;
 }
 constexpr float
-ms_to_s_d(Duration d) {
+ms_to_s_d(Duration d) noexcept {
     return d / 1000.0f;
 }
 constexpr float
-ns_to_s_d(Duration d) {
+ns_to_s_d(Duration d) noexcept {
     return d / 1000000000.0f;
 }
 
