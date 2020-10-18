@@ -30,7 +30,7 @@
 #include "util/function.h"
 #include "util/noexcept.h"
 
-typedef Function<void()> Job;
+typedef Function<void() noexcept> Job;
 
 void
 JobsEnqueue(Job job) noexcept;
