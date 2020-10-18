@@ -286,11 +286,11 @@ parseSound(Entity* e, StringView name, StringView path) noexcept {
         return false;
     }
 
-    if (path == "step") {
+    if (name == "step") {
         e->soundPathStep = path;
     }
     else {
-        logErr(e->descriptor, String() << "unknown entity sound type" << name);
+        logErr(e->descriptor, String() << "unknown entity sound " << name);
         return false;
     }
     return true;
