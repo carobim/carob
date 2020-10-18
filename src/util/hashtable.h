@@ -85,7 +85,7 @@
 // correctly) or where having a default value as a key is necessary.
 template<typename T>
 struct Empty {
-    static CONSTEXPR11 T value() {
+    static CONSTEXPR11 T value() noexcept {
         return T();
     }
 };
