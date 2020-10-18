@@ -23,7 +23,7 @@ _sdl2: &sdl2
  script:
  - mkdir build && cd build
  - cmake .. -DAV_SDL2=On
- - make V=1 VERBOSE=1
+ - make
 
 _gosu: &gosu
  addons:
