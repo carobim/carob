@@ -30,7 +30,6 @@
 
 #include "core/animation.h"
 #include "core/images.h"
-#include "core/jsons-rapidjson.h"
 #include "core/vec.h"
 #include "util/function.h"
 #include "util/string-view.h"
@@ -166,29 +165,7 @@ class Entity {
     virtual void
     arrived() noexcept;
 
-    // JSON parsing functions used in constructing an Entity
-    bool
-    processDescriptor() noexcept;
-    bool
-    processSprite(Unique<JSONObject> sprite) noexcept;
-    bool
-    processPhases(Unique<JSONObject> phases, TiledImageID tiles) noexcept;
-    bool
-    processPhase(StringView name,
-                 Unique<JSONObject> phase,
-                 TiledImageID tiles) noexcept;
-    bool
-    processSounds(Unique<JSONObject> sounds) noexcept;
-    bool
-    processSound(StringView name, StringView path) noexcept;
-    bool
-    processScripts(Unique<JSONObject> scripts) noexcept;
-    bool
-    processScript(StringView name, StringView path) noexcept;
-    // bool setScript(StringView trigger, ScriptRef& script) noexcept;
-
-
- protected:
+ public:
     // Set to true if the Entity was destroyed this tick.
     bool dead = false;
 

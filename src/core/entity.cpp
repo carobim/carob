@@ -31,7 +31,7 @@
 #include "core/client-conf.h"
 #include "core/display-list.h"
 #include "core/images.h"
-#include "core/jsons-rapidjson.h"
+#include "core/jsons.h"
 #include "core/log.h"
 #include "core/resources.h"
 #include "core/world.h"
@@ -53,10 +53,315 @@ static StringView directions[][3] = {
 };
 
 
+/*
+ * JSON DESCRIPTOR CODE BELOW
+ */
+
+static bool
+parseDescriptor(Entity* e) noexcept;
+static bool
+parseSprite(Entity* e, JsonValue sprite) noexcept;
+static bool
+parsePhases(Entity* e, JsonValue phases, TiledImageID tiles) noexcept;
+static bool
+parsePhase(Entity* e,
+           StringView name,
+           JsonValue phase,
+           TiledImageID tiles) noexcept;
+static bool
+parseSounds(Entity* e, JsonValue sounds) noexcept;
+static bool
+parseSound(Entity* e, StringView name, StringView path) noexcept;
+static bool
+parseScripts(Entity* e, JsonValue scripts) noexcept;
+static bool
+parseScript(Entity* e, StringView name, StringView path) noexcept;
+// static static bool
+// setScript(Entity* e, StringView trigger, ScriptRef& script) noexcept;
+
+static bool
+parseDescriptor(Entity* e) noexcept {
+    Optional<JsonDocument> document = loadJson(e->descriptor);
+    if (!document) {
+        return false;
+    }
+
+    JsonValue root = document->root;
+    CHECK(root.isObject());
+
+    JsonValue speedValue = root["speed"];
+    JsonValue spriteValue = root["sprite"];
+    JsonValue soundsValue = root["sounds"];
+    JsonValue scriptsValue = root["scripts"];
+
+    CHECK(speedValue.isNumber() || speedValue.isNull());
+    CHECK(spriteValue.isObject() || spriteValue.isNull());
+    CHECK(soundsValue.isObject() || soundsValue.isNull());
+    CHECK(scriptsValue.isObject() || scriptsValue.isNull());
+
+    if (speedValue.isNumber()) {
+        e->tilesPerSecond = speedValue.toNumber();
+
+        if (e->area) {
+            assert_(e->area->grid.tileDim.x == e->area->grid.tileDim.y);
+            e->pixelsPerSecond = e->tilesPerSecond * e->area->grid.tileDim.x;
+        }
+    }
+    if (spriteValue.isObject()) {
+        CHECK(parseSprite(e, spriteValue));
+    }
+    if (soundsValue.isObject()) {
+        CHECK(parseSounds(e, soundsValue));
+    }
+    if (scriptsValue.isObject()) {
+        CHECK(parseScripts(e, scriptsValue));
+    }
+    return true;
+}
+
+static bool
+parseSprite(Entity* e, JsonValue sprite) noexcept {
+    JsonValue sheetValue = sprite["sheet"];
+    JsonValue phasesValue = sprite["phases"];
+
+    CHECK(sheetValue.isObject());
+    CHECK(phasesValue.isObject());
+
+    JsonValue sheet = sheetValue;
+
+    JsonValue tilewidthValue = sheetValue["tile_width"];
+    JsonValue tileheightValue = sheetValue["tile_height"];
+    JsonValue pathValue = sheetValue["path"];
+
+    CHECK(tilewidthValue.isNumber());
+    CHECK(tileheightValue.isNumber());
+    CHECK(pathValue.isString());
+
+    e->imgsz.x = tilewidthValue.toInt();
+    e->imgsz.y = tileheightValue.toInt();
+    StringView path = pathValue.toString();
+
+    TiledImageID tiles = Images::loadTiles(path, e->imgsz.x, e->imgsz.y);
+    CHECK(tiles);
+
+    return parsePhases(e, phasesValue, tiles);
+}
+
+static bool
+parsePhases(Entity* e, JsonValue phases, TiledImageID tiles) noexcept {
+    for (JsonNode& node : phases) {
+        CHECK(node.value.isObject());
+        CHECK(parsePhase(e, node.key, node.value, tiles));
+    }
+    return true;
+}
+
+static Vector<int>
+intArrayToVector(JsonValue array) noexcept {
+    Vector<int> v;
+    for (JsonNode& node : array) {
+        if (node.value.isNumber()) {
+            v.push_back(node.value.toInt());
+        }
+    }
+    return v;
+}
+
+static bool
+parsePhase(Entity* e,
+           StringView name,
+           JsonValue phase,
+           TiledImageID tiles) noexcept {
+    // Each phase requires a 'name' and a 'frame' or 'frames'. Additionally,
+    // 'speed' is required if 'frames' is found.
+
+    JsonValue frameValue = phase["frame"];
+    JsonValue framesValue = phase["frames"];
+    JsonValue speedValue = phase["speed"];
+
+    CHECK(frameValue.isNumber() || frameValue.isNull());
+    CHECK(framesValue.isArray() || framesValue.isNull());
+    CHECK(speedValue.isNumber() || speedValue.isNull());
+
+    CHECK(frameValue.isNumber() || framesValue.isArray());
+    CHECK(!frameValue.isNumber() || !framesValue.isArray());
+    CHECK(!framesValue.isArray() || speedValue.isNumber());
+
+    int nTiles = TiledImage::size(tiles);
+
+    Animation animation;
+
+    if (frameValue.isNumber()) {
+        int frame = frameValue.toInt();
+        if (frame >= nTiles) {
+            logErr(e->descriptor, "<phase> frame attribute index out of bounds");
+            return false;
+        }
+        ImageID image = TiledImage::getTile(tiles, frame);
+        animation = Animation(image);
+    }
+    else if (framesValue.isArray()) {
+        if (!speedValue.isNumber()) {
+            // Cannot get to this point because of CHECKs above.
+            // logErr(descriptor,
+            //        "<phase> speed attribute must be present and "
+            //        "must be decimal");
+            // return false;
+        }
+        float fps = speedValue.toNumber();
+        assert_(fps != 0.0f);
+
+        Vector<ImageID> images;
+        for (JsonNode& node : framesValue) {
+            JsonValue frameValue = node.value;
+
+            CHECK(frameValue.isNumber());
+            int frame = frameValue.toInt();
+
+            if (frame < 0 || nTiles < frame) {
+                logErr(e->descriptor,
+                       "<phase> frames attribute index out of bounds");
+                return false;
+            }
+            images.push_back(TiledImage::getTile(tiles, frame));
+        }
+        assert_(images.size() > 0);
+
+        time_t frameTime = static_cast<time_t>(1000.0 / fps);
+        animation = Animation(move_(images), frameTime);
+    }
+    else {
+        // Cannot get to this point because of CHECKs above.
+        // logErr(descriptor, "<phase> frames attribute not an int or int ranges");
+        // return false;
+    }
+
+    if (name == "stance") {
+        e->phaseStance = move_(animation);
+    }
+    else if (name == "down") {
+        e->phaseDown = move_(animation);
+    }
+    else if (name == "left") {
+        e->phaseLeft = move_(animation);
+    }
+    else if (name == "up") {
+        e->phaseUp = move_(animation);
+    }
+    else if (name == "right") {
+        e->phaseRight = move_(animation);
+    }
+    else if (name == "moving up") {
+        e->phaseMovingUp = move_(animation);
+    }
+    else if (name == "moving right") {
+        e->phaseMovingRight = move_(animation);
+    }
+    else if (name == "moving down") {
+        e->phaseMovingDown = move_(animation);
+    }
+    else if (name == "moving left") {
+        e->phaseMovingLeft = move_(animation);
+    }
+    else {
+        logErr(e->descriptor, "unknown phase");
+    }
+
+    return true;
+}
+
+static bool
+parseSounds(Entity* e, JsonValue sounds) noexcept {
+    for (JsonNode& node : sounds) {
+        CHECK(node.value.isString());
+        CHECK(parseSound(e, node.key, node.value.toString()));
+    }
+    return true;
+}
+
+static bool
+parseSound(Entity* e, StringView name, StringView path) noexcept {
+    if (!path.size) {
+        logErr(e->descriptor, "sound path is empty");
+        return false;
+    }
+
+    if (path == "step") {
+        e->soundPathStep = path;
+    }
+    else {
+        logErr(e->descriptor, String() << "unknown entity sound type" << name);
+        return false;
+    }
+    return true;
+}
+
+static bool
+parseScripts(Entity* e, JsonValue scripts) noexcept {
+    for (JsonNode& node : scripts) {
+        CHECK(node.value.isString());
+        CHECK(parseScript(e, node.key, node.value.toString()));
+    }
+    return true;
+}
+
+static bool
+parseScript(Entity* e, StringView /*name*/, StringView path) noexcept {
+    if (!path.size) {
+        logErr(e->descriptor, "script path is empty");
+        return false;
+    }
+
+    // ScriptRef script = Script::create(filename);
+    // if (!script || !script->validate()) {
+    //     return false;
+    // }
+
+    // if (!setScript(trigger, script)) {
+    //     logErr(e->descriptor,
+    //            "unrecognized script trigger: " + trigger);
+    //     return false;
+    // }
+
+    return true;
+}
+
+/*
+static bool
+setScript(Entity* e, StringView trigger, ScriptRef& script) noexcept {
+    if (trigger == "on_tick") {
+        tickScript = script;
+        return true;
+    }
+    if (trigger == "on_turn") {
+        turnScript = script;
+        return true;
+    }
+    if (trigger == "on_tile_entry") {
+        tileEntryScript = script;
+        return true;
+    }
+    if (trigger == "on_tile_exit") {
+        tileExitScript = script;
+        return true;
+    }
+    if (trigger == "on_delete") {
+        deleteScript = script;
+        return true;
+    }
+    return false;
+}
+*/
+
+
+/*
+ * PUBLIC ENTITY CODE BELOW
+ */
+
 bool
 Entity::init(StringView descriptor, StringView initialPhase) noexcept {
     this->descriptor = descriptor;
-    CHECK(processDescriptor());
+    CHECK(parseDescriptor(this));
     setPhase(initialPhase);
     return true;
 }
@@ -347,246 +652,3 @@ Entity::arrived() noexcept {
     // for (auto& fn : onArrivedFns)
     //     fn();
 }
-
-
-/*
- * JSON DESCRIPTOR CODE BELOW
- */
-
-bool
-Entity::processDescriptor() noexcept {
-    Unique<JSONObject> doc = JSONs::load(descriptor);
-    if (!doc) {
-        return false;
-    }
-
-    if (doc->hasFloat("speed")) {
-        tilesPerSecond = doc->floatAt("speed");
-
-        if (area) {
-            assert_(area->grid.tileDim.x == area->grid.tileDim.y);
-            pixelsPerSecond = tilesPerSecond * area->grid.tileDim.x;
-        }
-    }
-    if (doc->hasObject("sprite")) {
-        CHECK(processSprite(doc->objectAt("sprite")));
-    }
-    if (doc->hasObject("sounds")) {
-        CHECK(processSounds(doc->objectAt("sounds")));
-    }
-    if (doc->hasObject("scripts")) {
-        CHECK(processScripts(doc->objectAt("scripts")));
-    }
-    return true;
-}
-
-bool
-Entity::processSprite(Unique<JSONObject> sprite) noexcept {
-    CHECK(sprite->hasObject("sheet"));
-    CHECK(sprite->hasObject("phases"));
-
-    Unique<JSONObject> sheet = sprite->objectAt("sheet");
-    CHECK(sheet->hasUnsigned("tile_width"));
-    CHECK(sheet->hasUnsigned("tile_height"));
-    CHECK(sheet->hasString("path"));
-
-    imgsz.x = sheet->intAt("tile_width");
-    imgsz.y = sheet->intAt("tile_height");
-    StringView path = sheet->stringAt("path");
-    TiledImageID tiles = Images::loadTiles(path, imgsz.x, imgsz.y);
-    CHECK(tiles);
-
-    return processPhases(sprite->objectAt("phases"), tiles);
-}
-
-bool
-Entity::processPhases(Unique<JSONObject> phases, TiledImageID tiles) noexcept {
-    for (StringView name : phases->names()) {
-        CHECK(phases->hasObject(name));
-        CHECK(processPhase(name, phases->objectAt(name), tiles));
-    }
-    return true;
-}
-
-Vector<int>
-intArrayToVector(Unique<JSONArray> array) noexcept {
-    Vector<int> v;
-    for (size_t i = 0; i < array->size(); i++) {
-        if (array->isUnsigned(i)) {
-            v.push_back(array->intAt(i));
-        }
-    }
-    return v;
-}
-
-bool
-Entity::processPhase(StringView name,
-                     Unique<JSONObject> phase,
-                     TiledImageID tiles) noexcept {
-    // Each phase requires a 'name' and a 'frame' or 'frames'. Additionally,
-    // 'speed' is required if 'frames' is found.
-    CHECK(phase->hasUnsigned("frame") || phase->hasArray("frames"));
-
-    int nTiles = TiledImage::size(tiles);
-
-    Animation animation;
-
-    if (phase->hasUnsigned("frame")) {
-        unsigned frame_ = phase->unsignedAt("frame");
-        if (frame_ > INT32_MAX) {
-            logErr(descriptor, "<phase> frame attribute index out of bounds");
-            return false;
-        }
-        int frame = static_cast<int>(frame_);
-        if (frame >= nTiles) {
-            logErr(descriptor, "<phase> frame attribute index out of bounds");
-            return false;
-        }
-        ImageID image = TiledImage::getTile(tiles, frame);
-        animation = Animation(image);
-    }
-    else if (phase->hasArray("frames")) {
-        if (!phase->hasFloat("speed")) {
-            logErr(descriptor,
-                   "<phase> speed attribute must be present and "
-                   "must be decimal");
-            return false;
-        }
-        float fps = phase->floatAt("speed");
-        assert_(fps != 0.0f);
-
-        Vector<int> frames = intArrayToVector(phase->arrayAt("frames"));
-        assert_(frames.size() > 0);
-
-        Vector<ImageID> images;
-        for (int i : frames) {
-            if (i < 0 || nTiles < i) {
-                logErr(descriptor,
-                       "<phase> frames attribute index out of bounds");
-                return false;
-            }
-            images.push_back(TiledImage::getTile(tiles, i));
-        }
-
-        time_t frameTime = static_cast<time_t>(1000.0 / fps);
-        animation = Animation(move_(images), frameTime);
-    }
-    else {
-        logErr(descriptor, "<phase> frames attribute not an int or int ranges");
-        return false;
-    }
-
-    if (name == "stance") {
-        phaseStance = move_(animation);
-    }
-    else if (name == "down") {
-        phaseDown = move_(animation);
-    }
-    else if (name == "left") {
-        phaseLeft = move_(animation);
-    }
-    else if (name == "up") {
-        phaseUp = move_(animation);
-    }
-    else if (name == "right") {
-        phaseRight = move_(animation);
-    }
-    else if (name == "moving up") {
-        phaseMovingUp = move_(animation);
-    }
-    else if (name == "moving right") {
-        phaseMovingRight = move_(animation);
-    }
-    else if (name == "moving down") {
-        phaseMovingDown = move_(animation);
-    }
-    else if (name == "moving left") {
-        phaseMovingLeft = move_(animation);
-    }
-    else {
-        logErr(descriptor, "unknown phase");
-    }
-
-    return true;
-}
-
-bool
-Entity::processSounds(Unique<JSONObject> sounds) noexcept {
-    for (StringView name : sounds->names()) {
-        CHECK(sounds->hasString(name));
-        CHECK(processSound(name, sounds->stringAt(name)));
-    }
-    return true;
-}
-
-bool
-Entity::processSound(StringView name, StringView path) noexcept {
-    if (!path.size) {
-        logErr(descriptor, "sound path is empty");
-        return false;
-    }
-
-    if (path == "step") {
-        soundPathStep = path;
-    }
-    else {
-        logErr(descriptor, String() << "unknown entity sound type" << name);
-        return false;
-    }
-    return true;
-}
-
-bool
-Entity::processScripts(Unique<JSONObject> scripts) noexcept {
-    for (StringView name : scripts->names()) {
-        CHECK(scripts->hasString(name));
-        CHECK(processScript(name, scripts->stringAt(name)));
-    }
-    return true;
-}
-
-bool
-Entity::processScript(StringView /*name*/, StringView path) noexcept {
-    if (!path.size) {
-        logErr(descriptor, "script path is empty");
-        return false;
-    }
-
-    // ScriptRef script = Script::create(filename);
-    // if (!script || !script->validate())
-    //     return false;
-
-    // if (!setScript(trigger, script)) {
-    //     logErr(descriptor,
-    //            "unrecognized script trigger: " + trigger);
-    //     return false;
-    // }
-
-    return true;
-}
-
-/*
-bool Entity::setScript(StringView trigger, ScriptRef& script) noexcept {
-    if (trigger == "on_tick") {
-        tickScript = script;
-        return true;
-    }
-    if (trigger == "on_turn") {
-        turnScript = script;
-        return true;
-    }
-    if (trigger == "on_tile_entry") {
-        tileEntryScript = script;
-        return true;
-    }
-    if (trigger == "on_tile_exit") {
-        tileExitScript = script;
-        return true;
-    }
-    if (trigger == "on_delete") {
-        deleteScript = script;
-        return true;
-    }
-    return false;
-}
-*/
