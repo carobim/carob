@@ -93,12 +93,10 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
 
 static bool
 createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
-    UI ui;
-
     CreateArchiveContext ctx;
     ctx.pack = PackWriter::make();
 
-    walk(move_(paths), [&](StringView path) { addFile(ctx, path); });
+    walk(move_(paths), [&](StringView path) noexcept { addFile(ctx, path); });
 
     uiShowWritingArchive(archivePath);
 
@@ -107,8 +105,6 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
 
 static bool
 listArchive(StringView archivePath) noexcept {
-    UI ui;
-
     Unique<PackReader> pack = PackReader::fromFile(archivePath);
 
     if (pack) {
@@ -182,8 +178,6 @@ putFile(StringView path, uint32_t size, void* data) noexcept {
 
 static bool
 extractArchive(StringView archivePath) noexcept {
-    UI ui;
-
     Unique<PackReader> pack = PackReader::fromFile(archivePath);
 
     if (pack) {

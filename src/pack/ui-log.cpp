@@ -25,66 +25,45 @@
 // **********
 
 #include "os/c.h"
-#include "os/mutex.h"
 #include "pack/ui.h"
-#include "util/jobs.h"
 #include "util/noexcept.h"
 #include "util/string.h"
-#include "util/unique.h"
 
-static Mutex mutex;
 static bool scheduled = false;
 static String buf;
 bool verbose = false;
 
-UI::~UI() noexcept {
-    JobsFlush();
-}
-
-static void
-flush() noexcept {
-    LockGuard lock(mutex);
-    printf("%s", buf.null().get());
-    buf.clear();
-    scheduled = false;
-}
-
-static void
-scheduleMessage(StringView message) noexcept {
-    if (!verbose) {
-        return;
-    }
-
-    LockGuard lock(mutex);
-    buf << message;
-    if (!scheduled) {
-        JobsEnqueue(flush);
-        scheduled = true;
-    }
-}
-
 void
 uiShowSkippedMissingFile(StringView path) noexcept {
-    scheduleMessage(String() << "Skipped " << path << ": file not found\n");
+    String message;
+    message << "Skipped " << path << ": file not found\n";
+    printf("%s", message.null().get());
 }
 
 void
 uiShowAddedFile(StringView path, size_t size) noexcept {
-    scheduleMessage(String() << "Added " << path << ": " << size << " bytes\n");
+    String message;
+    message << "Added " << path << ": " << size << " bytes\n";
+    printf("%s", message.null().get());
 }
 
 void
 uiShowWritingArchive(StringView archivePath) noexcept {
-    scheduleMessage(String() << "Writing to " << archivePath << "\n");
+    String message;
+    message << "Writing to " << archivePath << "\n";
+    printf("%s", message.null().get());
 }
 
 void
 uiShowListingEntry(StringView blobPath, uint64_t blobSize) noexcept {
-    scheduleMessage(String() << blobPath << ": " << blobSize << " bytes\n");
+    String message;
+    message << blobPath << ": " << blobSize << " bytes\n";
+    printf("%s", message.null().get());
 }
 
 void
 uiShowExtractingFile(StringView blobPath, uint64_t blobSize) noexcept {
-    scheduleMessage(String() << "Extracting " << blobPath << ": " << blobSize
-                             << " bytes\n");
+    String message;
+    message << "Extracting " << blobPath << ": " << blobSize << " bytes\n";
+    printf("%s", message.null().get());
 }
