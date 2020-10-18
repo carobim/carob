@@ -112,8 +112,9 @@ namespace function {
     template<class F, class R, class... ArgTypes>
     base<R(ArgTypes...)>*
     func<F, R(ArgTypes...) noexcept>::clone() const noexcept {
-        void* buf = malloc(sizeof(F));
-        new (buf) F(f);
+        // return new func(f);
+        void* buf = malloc(sizeof(func));
+        new (buf) func(f);
         return reinterpret_cast<base<R(ArgTypes...) noexcept>*>(buf);
     }
 
@@ -246,9 +247,12 @@ Function<R(ArgTypes...) noexcept>::set(
         F& something,
         EnableIf<!(sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
                    sizeof(buf))>) noexcept {
-    void* buf = malloc(sizeof(F));
-    new (buf) F(move_(something));
-    f = reinterpret_cast<function::func<F, R(ArgTypes...) noexcept>*>(buf);
+    // f = new function::func<F, R(ArgTypes...)>(move_(something));
+    using T = function::func<F, R(ArgTypes...)>;
+
+    void* buf = malloc(sizeof(T));
+    new (buf) T(move_(something));
+    f = reinterpret_cast<T*>(buf);
 }
 
 template<class R, class... ArgTypes>
