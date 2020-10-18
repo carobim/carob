@@ -554,12 +554,12 @@ AreaJSON::processLayerProperties(JsonValue obj) noexcept {
 
     JsonValue depthValue = obj["depth"];
 
-    if (!depthValue.isNumber()) {
+    if (!depthValue.isString() || !parseFloat(depthValue.toString())) {
         logErr(descriptor, "A tilelayer must have the \"depth\" property");
         return false;
     }
 
-    const float depth = depthValue.toNumber();
+    const float depth = *parseFloat(depthValue.toString());
 
     if (grid.depth2idx.find(depth) != grid.depth2idx.end()) {
         logErr(descriptor, "Layers cannot share a depth");
