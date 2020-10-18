@@ -24,8 +24,8 @@
 // IN THE SOFTWARE.
 // **********
 
-#ifndef SRC_UTIL_SCHEDULER_H_
-#define SRC_UTIL_SCHEDULER_H_
+#ifndef SRC_UTIL_JOBS_H_
+#define SRC_UTIL_JOBS_H_
 
 #include "util/function.h"
 #include "util/noexcept.h"
@@ -37,4 +37,4 @@ JobsEnqueue(Job job) noexcept;
 void
 JobsFlush() noexcept;
 
-#endif  // SRC_UTIL_SCHEDULER_H_
+#endif  // SRC_UTIL_JOBS_H_
