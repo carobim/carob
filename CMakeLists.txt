@@ -90,10 +90,6 @@ target_link_libraries(null-world tsunagari)
 # Sources in deps
 #
 
-target_include_directories(tsunagari
-    PUBLIC deps/rapidjson/include
-    PUBLIC deps/pjson
-)
 
 #
 # Sources in src
@@ -166,8 +162,6 @@ target_sources(tsunagari
     PRIVATE ${HERE}/src/core/entity.cpp
     PUBLIC  ${HERE}/src/core/entity.h
     PUBLIC  ${HERE}/src/core/images.h
-    PRIVATE ${HERE}/src/core/jsons-rapidjson.cpp
-    PUBLIC  ${HERE}/src/core/jsons-rapidjson.h
     PRIVATE ${HERE}/src/core/jsons.cpp
     PUBLIC  ${HERE}/src/core/jsons.h
     PRIVATE ${HERE}/src/core/log.cpp
@@ -205,27 +199,6 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/data/inprogress.h
     PUBLIC  ${HERE}/src/data/inprogress-sound.h
     PUBLIC  ${HERE}/src/data/inprogress-timer.h
-)
-
-target_sources(tsunagari
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/document.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/reader.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/allocators.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/rapidjson.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/stream.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/encodings.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/stack.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/swap.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/strtod.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/ieee754.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/biginteger.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/diyfp.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/pow10.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/meta.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/internal/strfunc.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/memorystream.h
-    PRIVATE ${HERE}/deps/rapidjson/include/rapidjson/encodedstream.h
-    PRIVATE ${HERE}/deps/pjson/pjson.h
 )
 
 target_sources(tsunagari

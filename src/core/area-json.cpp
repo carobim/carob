@@ -31,7 +31,6 @@
 #include "core/character.h"
 #include "core/entity.h"
 #include "core/images.h"
-#include "core/jsons-rapidjson.h"
 #include "core/jsons.h"
 #include "core/log.h"
 #include "core/measure.h"
@@ -75,9 +74,9 @@ class AreaJSON : public Area {
     bool
     processDescriptor() noexcept;
     bool
-    processMapProperties(Unique<JSONObject> obj) noexcept;
+    processMapProperties(JsonValue obj) noexcept;
     bool
-    processTileSet(Unique<JSONObject> obj) noexcept;
+    processTileSet(JsonValue obj) noexcept;
     bool
     processTileSetFile(JsonValue obj,
                        StringView source,
@@ -88,17 +87,17 @@ class AreaJSON : public Area {
                     TiledImageID img,
                     int id) noexcept;
     bool
-    processLayer(Unique<JSONObject> obj) noexcept;
+    processLayer(JsonValue obj) noexcept;
     bool
-    processLayerProperties(Unique<JSONObject> obj) noexcept;
+    processLayerProperties(JsonValue obj) noexcept;
     bool
-    processLayerData(Unique<JSONArray> arr) noexcept;
+    processLayerData(JsonValue arr) noexcept;
     bool
-    processObjectGroup(Unique<JSONObject> obj) noexcept;
+    processObjectGroup(JsonValue obj) noexcept;
     bool
-    processObjectGroupProperties(Unique<JSONObject> obj) noexcept;
+    processObjectGroupProperties(JsonValue obj) noexcept;
     bool
-    processObject(Unique<JSONObject> obj) noexcept;
+    processObject(JsonValue obj) noexcept;
     bool
     splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept;
     bool
@@ -151,45 +150,54 @@ AreaJSON::allocateMapLayer(TileGrid::LayerType type) noexcept {
 
 bool
 AreaJSON::processDescriptor() noexcept {
-    Unique<JSONObject> doc = JSONs::load(descriptor);
-
+    Optional<JsonDocument> doc = loadJson(descriptor);
     CHECK(doc);
 
-    CHECK(doc->hasUnsigned("width"));
-    CHECK(doc->hasUnsigned("height"));
+    JsonValue root = doc->root;
 
-    grid.dim.x = doc->unsignedAt("width");
-    grid.dim.y = doc->unsignedAt("height");
+    JsonValue widthValue = root["width"];
+    JsonValue heightValue = root["height"];
+    JsonValue propertiesValue = root["properties"];
+    JsonValue tilesetsValue = root["tilesets"];
+    JsonValue layersValue = root["layers"];
+
+    CHECK(widthValue.isNumber());
+    CHECK(heightValue.isNumber());
+    CHECK(propertiesValue.isObject());
+    CHECK(tilesetsValue.isArray());
+    CHECK(layersValue.isArray());
+
+    grid.dim.x = widthValue.toInt();
+    grid.dim.y = heightValue.toInt();
     grid.dim.z = 0;
 
-    CHECK(doc->hasObject("properties"));
-    CHECK(processMapProperties(doc->objectAt("properties")));
+    CHECK(processMapProperties(propertiesValue));
 
-    CHECK(doc->hasArray("tilesets"));
-    Unique<JSONArray> tilesets = doc->arrayAt("tilesets");
-    CHECK(tilesets->size() > 0);
+    CHECK(!tilesetsValue.toNode());
 
-    for (size_t i = 0; i < tilesets->size(); i++) {
-        CHECK(tilesets->isObject(i));
-        CHECK(processTileSet(tilesets->objectAt(i)));
+    for (JsonNode& tilesetNode : tilesetsValue) {
+        JsonValue tilesetValue = tilesetNode.value;
+        CHECK(tilesetValue.isObject());
+
+        CHECK(processTileSet(tilesetValue));
     }
 
-    CHECK(doc->hasArray("layers"));
-    Unique<JSONArray> layers = doc->arrayAt("layers");
-    CHECK(layers->size() > 0);
+    CHECK(!layersValue.toNode());
 
-    for (size_t i = 0; i < layers->size(); i++) {
-        CHECK(layers->isObject(i));
-        Unique<JSONObject> layer = layers->objectAt(i);
+    for (JsonNode& layerNode : layersValue) {
+        JsonValue layerValue = layerNode.value;
+        CHECK(layerValue.isObject());
 
-        CHECK(layer->hasString("type"));
-        StringView type = layer->stringAt("type");
+        JsonValue typeValue = layerValue["type"];
+        CHECK(typeValue.isString());
+
+        StringView type = typeValue.toString();
 
         if (type == "tilelayer") {
-            CHECK(processLayer(move_(layer)));
+            CHECK(processLayer(layerValue));
         }
         else if (type == "objectgroup") {
-            CHECK(processObjectGroup(move_(layer)));
+            CHECK(processObjectGroup(layerValue));
         }
         else {
             logErr(descriptor, "Each layer must be a tilelayer or objectlayer");
@@ -201,7 +209,7 @@ AreaJSON::processDescriptor() noexcept {
 }
 
 bool
-AreaJSON::processMapProperties(Unique<JSONObject> obj) noexcept {
+AreaJSON::processMapProperties(JsonValue obj) noexcept {
     /*
      {
        "name": "Wooded Area"
@@ -211,23 +219,32 @@ AreaJSON::processMapProperties(Unique<JSONObject> obj) noexcept {
      }
     */
 
-    if (!obj->hasString("name")) {
+    JsonValue nameValue = obj["name"];
+    JsonValue musicValue = obj["music"];
+    JsonValue loopValue = obj["loop"];
+    JsonValue coloroverlayValue = obj["coloroverlay"];
+
+    CHECK(musicValue.isString() || musicValue.isNull());
+    CHECK(loopValue.isString() || loopValue.isNull());
+    CHECK(coloroverlayValue.isString() || coloroverlayValue.isNull());
+
+    if (!nameValue.isString()) {
         logErr(descriptor, "Area must have \"name\" property");
     }
 
-    name = obj->stringAt("name");
+    name = nameValue.toString();
 
-    if (obj->hasString("music")) {
-        musicPath = obj->stringAt("music");
+    if (musicValue.isString()) {
+        musicPath = musicValue.toString();
     }
-    if (obj->hasString("loop")) {
-        StringView directions = obj->stringAt("loop");
+    if (loopValue.isString()) {
+        StringView directions = loopValue.toString();
         grid.loopX = directions.find('x');
         grid.loopY = directions.find('y');
     }
-    if (obj->hasString("color_overlay")) {
+    if (coloroverlayValue.isString()) {
         unsigned char a, r, g, b;
-        CHECK(parseARGB(obj->stringAt("color_overlay"), a, r, g, b));
+        CHECK(parseARGB(coloroverlayValue.toString(), a, r, g, b));
         colorOverlayARGB = (uint32_t)(a << 24) + (uint32_t)(r << 16) +
                            (uint32_t)(g << 8) + (uint32_t)b;
     }
@@ -248,18 +265,23 @@ dirname(StringView path) noexcept {
 }
 
 bool
-AreaJSON::processTileSet(Unique<JSONObject> obj) noexcept {
+AreaJSON::processTileSet(JsonValue obj) noexcept {
     /*
      {
        "firstgid": 1,
        "source": "tiles\/forest.png.json"
      }
     */
-    CHECK(obj->hasUnsigned("firstgid"));
-    const unsigned firstGid = obj->unsignedAt("firstgid");
 
-    CHECK(obj->hasString("source"));
-    String source = String() << dirname(descriptor) << obj->stringAt("source");
+    JsonValue firstgidValue = obj["firstgid"];
+    JsonValue sourceValue = obj["source"];
+
+    CHECK(firstgidValue.isNumber());
+    CHECK(sourceValue.isString());
+
+    const unsigned firstGid = firstgidValue.toInt();
+
+    String source = String() << dirname(descriptor) << sourceValue.toString();
 
     // We don't handle embeded tilesets, only references to an external JSON
     // files.
@@ -484,7 +506,7 @@ AreaJSON::processTileType(JsonValue obj,
 }
 
 bool
-AreaJSON::processLayer(Unique<JSONObject> obj) noexcept {
+AreaJSON::processLayer(JsonValue obj) noexcept {
     /*
      {
        "data": [9, 9, 9, ..., 3, 9, 9],
@@ -496,11 +518,18 @@ AreaJSON::processLayer(Unique<JSONObject> obj) noexcept {
      }
     */
 
-    CHECK(obj->hasInt("width"));
-    CHECK(obj->hasInt("height"));
+    JsonValue widthValue = obj["width"];
+    JsonValue heightValue = obj["height"];
+    JsonValue propertiesValue = obj["properties"];
+    JsonValue dataValue = obj["data"];
 
-    const int x = obj->intAt("width");
-    const int y = obj->intAt("height");
+    CHECK(widthValue.isNumber());
+    CHECK(heightValue.isNumber());
+    CHECK(propertiesValue.isObject());
+    CHECK(dataValue.isArray());
+
+    const int x = widthValue.toInt();
+    const int y = heightValue.toInt();
 
     if (grid.dim.x != x || grid.dim.y != y) {
         logErr(descriptor, "layer x,y size != map x,y size");
@@ -509,29 +538,28 @@ AreaJSON::processLayer(Unique<JSONObject> obj) noexcept {
 
     allocateMapLayer(TileGrid::LayerType::TILE_LAYER);
 
-    CHECK(obj->hasObject("properties"));
-    CHECK(processLayerProperties(obj->objectAt("properties")));
-
-    CHECK(obj->hasArray("data"));
-    CHECK(processLayerData(obj->arrayAt("data")));
+    CHECK(processLayerProperties(propertiesValue));
+    CHECK(processLayerData(dataValue));
 
     return true;
 }
 
 bool
-AreaJSON::processLayerProperties(Unique<JSONObject> obj) noexcept {
+AreaJSON::processLayerProperties(JsonValue obj) noexcept {
     /*
      {
        "depth": "-0.5"
      }
     */
 
-    if (!obj->hasStringFloat("depth")) {
+    JsonValue depthValue = obj["depth"];
+
+    if (!depthValue.isNumber()) {
         logErr(descriptor, "A tilelayer must have the \"depth\" property");
         return false;
     }
 
-    const float depth = obj->stringFloatAt("depth");
+    const float depth = depthValue.toNumber();
 
     if (grid.depth2idx.find(depth) != grid.depth2idx.end()) {
         logErr(descriptor, "Layers cannot share a depth");
@@ -546,7 +574,7 @@ AreaJSON::processLayerProperties(Unique<JSONObject> obj) noexcept {
 }
 
 bool
-AreaJSON::processLayerData(Unique<JSONArray> arr) noexcept {
+AreaJSON::processLayerData(JsonValue arr) noexcept {
     /*
      [9, 9, 9, ..., 3, 9, 9]
     */
@@ -558,9 +586,10 @@ AreaJSON::processLayerData(Unique<JSONArray> arr) noexcept {
 
     size_t x = 0, y = 0;
 
-    for (size_t i = 0; i < arr->size(); i++) {
-        CHECK(arr->isUnsigned(i));
-        unsigned gid = arr->unsignedAt(i);
+    for (JsonNode& node : arr) {
+        CHECK(node.value.isNumber());
+
+        unsigned gid = node.value.toInt();
 
         if (gid >= tileGraphics.size()) {
             logErr(descriptor, "Invalid tile gid");
@@ -583,7 +612,7 @@ AreaJSON::processLayerData(Unique<JSONArray> arr) noexcept {
 }
 
 bool
-AreaJSON::processObjectGroup(Unique<JSONObject> obj) noexcept {
+AreaJSON::processObjectGroup(JsonValue obj) noexcept {
     /*
      {
        "name": "Prop(1)",
@@ -592,36 +621,40 @@ AreaJSON::processObjectGroup(Unique<JSONObject> obj) noexcept {
      }
     */
 
-    CHECK(obj->hasObject("properties"));
-    CHECK(processObjectGroupProperties(obj->objectAt("properties")));
+    JsonValue propertiesValue = obj["properties"];
+    JsonValue objectsValue = obj["objects"];
 
-    CHECK(obj->hasArray("objects"));
-    Unique<JSONArray> objects = obj->arrayAt("objects");
+    CHECK(propertiesValue.isObject());
+    CHECK(objectsValue.isArray());
 
-    for (size_t i = 0; i < objects->size(); i++) {
-        CHECK(objects->isObject(i));
-        CHECK(processObject(objects->objectAt(i)));
+    CHECK(processObjectGroupProperties(propertiesValue));
+
+    for (JsonNode& objectNode : objectsValue) {
+        CHECK(objectNode.value.isObject());
+        CHECK(processObject(objectNode.value));
     }
 
     return true;
 }
 
 bool
-AreaJSON::processObjectGroupProperties(Unique<JSONObject> obj) noexcept {
+AreaJSON::processObjectGroupProperties(JsonValue obj) noexcept {
     /*
      {
        "depth": "0.0"
      }
     */
 
-    if (!obj->hasStringFloat("depth")) {
+    JsonValue depthValue = obj["depth"];
+
+    if (!depthValue.isString() || !parseFloat(depthValue.toString())) {
         logErr(descriptor, "An objectlayer must have the \"depth\" property");
         return false;
     }
 
-    const float depth = obj->stringFloatAt("depth");
+    const float depth = *parseFloat(depthValue.toString());
 
-    if (grid.depth2idx.find(depth) != grid.depth2idx.end()) {
+    if (grid.depth2idx.contains(depth)) {
         logErr(descriptor, "Layers cannot share a depth");
         return false;
     }
@@ -635,7 +668,7 @@ AreaJSON::processObjectGroupProperties(Unique<JSONObject> obj) noexcept {
 }
 
 bool
-AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
+AreaJSON::processObject(JsonValue obj) noexcept {
     /*
      {
        "height": 16,
@@ -652,10 +685,51 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
      }
     */
 
-    if (!obj->hasObject("properties")) {
+    JsonValue propertiesValue = obj["properties"];
+    if (!propertiesValue.isObject()) {
         // Empty tile object. Odd, but acceptable.
         return true;
     }
+
+    JsonValue xValue = obj["x"];
+    JsonValue yValue = obj["y"];
+    JsonValue widthValue = obj["width"];
+    JsonValue heightValue = obj["height"];
+
+    CHECK(xValue.isNumber());
+    CHECK(yValue.isNumber());
+    CHECK(widthValue.isNumber());
+    CHECK(heightValue.isNumber());
+
+    JsonValue flagsValue = propertiesValue["flags"];
+    JsonValue onenterValue = propertiesValue["on_enter"];
+    JsonValue onleaveValue = propertiesValue["on_leave"];
+    JsonValue onuseValue = propertiesValue["on_use"];
+    JsonValue exitValue = propertiesValue["exit"];
+    JsonValue exitupValue = propertiesValue["exit:up"];
+    JsonValue exitdownValue = propertiesValue["exit:down"];
+    JsonValue exitleftValue = propertiesValue["exit:left"];
+    JsonValue exitrightValue = propertiesValue["exit:right"];
+    JsonValue layermodValue = propertiesValue["layermod"];
+    JsonValue layermodupValue = propertiesValue["layermod:up"];
+    JsonValue layermoddownValue = propertiesValue["layermod:down"];
+    JsonValue layermodleftValue = propertiesValue["layermod:left"];
+    JsonValue layermodrightValue = propertiesValue["layermod:right"];
+
+    CHECK(flagsValue.isString() || flagsValue.isNull());
+    CHECK(onenterValue.isString() || onenterValue.isNull());
+    CHECK(onleaveValue.isString() || onleaveValue.isNull());
+    CHECK(onuseValue.isString() || onuseValue.isNull());
+    CHECK(exitValue.isString() || exitValue.isNull());
+    CHECK(exitupValue.isString() || exitupValue.isNull());
+    CHECK(exitdownValue.isString() || exitdownValue.isNull());
+    CHECK(exitleftValue.isString() || exitleftValue.isNull());
+    CHECK(exitrightValue.isString() || exitrightValue.isNull());
+    CHECK(layermodValue.isNull() || (layermodValue.isString() && parseFloat(layermodValue.toString())));
+    CHECK(layermodValue.isNull() || (layermodupValue.isString() && parseFloat(layermodupValue.toString())));
+    CHECK(layermodValue.isNull() || (layermoddownValue.isString() && parseFloat(layermoddownValue.toString())));
+    CHECK(layermodValue.isNull() || (layermodleftValue.isString() && parseFloat(layermodleftValue.toString())));
+    CHECK(layermodValue.isNull() || (layermodrightValue.isString() && parseFloat(layermodrightValue.toString())));
 
     const size_t z = static_cast<size_t>(grid.dim.z) - 1;
 
@@ -671,75 +745,73 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
     Optional<float> layermods[5];
     unsigned flags = 0x0;
 
-    Unique<JSONObject> props = obj->objectAt("properties");
-
-    if (props->hasString("flags")) {
-        CHECK(splitTileFlags(props->stringAt("flags"), &flags));
+    if (flagsValue.isString()) {
+        CHECK(splitTileFlags(flagsValue.toString(), &flags));
     }
 
-    if (props->hasString("on_enter")) {
-        StringView scriptName = props->stringAt("on_enter");
+    if (onenterValue.isString()) {
+        StringView scriptName = onenterValue.toString();
         enterScript = dataArea->scripts[scriptName];
     }
-    if (props->hasString("on_leave")) {
-        StringView scriptName = props->stringAt("on_leave");
+    if (onleaveValue.isString()) {
+        StringView scriptName = onleaveValue.toString();
         leaveScript = dataArea->scripts[scriptName];
     }
-    if (props->hasString("on_use")) {
-        StringView scriptName = props->stringAt("on_use");
+    if (onuseValue.isString()) {
+        StringView scriptName = onuseValue.toString();
         useScript = dataArea->scripts[scriptName];
     }
 
-    if (props->hasString("exit")) {
-        StringView value = props->stringAt("exit");
+    if (exitValue.isString()) {
+        StringView value = exitValue.toString();
         CHECK(parseExit(value,
                         exit[EXIT_NORMAL],
                         &wwide[EXIT_NORMAL],
                         &hwide[EXIT_NORMAL]));
         flags |= TILE_NOWALK_NPC;
     }
-    if (props->hasString("exit:up")) {
-        StringView value = props->stringAt("exit:up");
+    if (exitupValue.isString()) {
+        StringView value = exitupValue.toString();
         CHECK(parseExit(
                 value, exit[EXIT_UP], &wwide[EXIT_UP], &hwide[EXIT_UP]));
     }
-    if (props->hasString("exit:down")) {
-        StringView value = props->stringAt("exit:down");
+    if (exitdownValue.isString()) {
+        StringView value = exitdownValue.toString();
         CHECK(parseExit(
                 value, exit[EXIT_DOWN], &wwide[EXIT_DOWN], &hwide[EXIT_DOWN]));
     }
-    if (props->hasString("exit:left")) {
-        StringView value = props->stringAt("exit:left");
+    if (exitleftValue.isString()) {
+        StringView value = exitleftValue.toString();
         CHECK(parseExit(
                 value, exit[EXIT_LEFT], &wwide[EXIT_LEFT], &hwide[EXIT_LEFT]));
     }
-    if (props->hasString("exit:right")) {
-        StringView value = props->stringAt("exit:right");
+    if (exitrightValue.isString()) {
+        StringView value = exitrightValue.toString();
         CHECK(parseExit(value,
                         exit[EXIT_RIGHT],
                         &wwide[EXIT_RIGHT],
                         &hwide[EXIT_RIGHT]));
     }
 
-    if (props->hasStringFloat("layermod")) {
-        float mod = props->stringFloatAt("layermod");
+    if (layermodValue.isString()) {
+        float mod = parseFloat(layermodValue.toString());
         layermods[EXIT_NORMAL] = mod;
         flags |= TILE_NOWALK_NPC;
     }
-    if (props->hasStringFloat("layermod:up")) {
-        float mod = props->stringFloatAt("layermod:up");
+    if (layermodupValue.isString()) {
+        float mod = parseFloat(layermodupValue.toString());
         layermods[EXIT_UP] = mod;
     }
-    if (props->hasStringFloat("layermod:down")) {
-        float mod = props->stringFloatAt("layermod:down");
+    if (layermoddownValue.isString()) {
+        float mod = parseFloat(layermoddownValue.toString());
         layermods[EXIT_DOWN] = mod;
     }
-    if (props->hasStringFloat("layermod:left")) {
-        float mod = props->stringFloatAt("layermod:left");
+    if (layermodleftValue.isString()) {
+        float mod = parseFloat(layermodleftValue.toString());
         layermods[EXIT_LEFT] = mod;
     }
-    if (props->hasStringFloat("layermod:right")) {
-        float mod = props->stringFloatAt("layermod:right");
+    if (layermodrightValue.isString()) {
+        float mod = parseFloat(layermodrightValue.toString());
         layermods[EXIT_RIGHT] = mod;
     }
 
@@ -747,14 +819,10 @@ AreaJSON::processObject(Unique<JSONObject> obj) noexcept {
     // of the map. We don't keep an intermediary "object" object lying
     // around.
 
-    CHECK(obj->hasInt("x"));
-    CHECK(obj->hasInt("y"));
-    CHECK(obj->hasInt("width"));
-    CHECK(obj->hasInt("height"));
-    const int x = obj->intAt("x") / grid.tileDim.x;
-    const int y = obj->intAt("y") / grid.tileDim.y;
-    const int w = obj->intAt("width") / grid.tileDim.x;
-    const int h = obj->intAt("height") / grid.tileDim.y;
+    const int x = xValue.toInt() / grid.tileDim.x;
+    const int y = yValue.toInt() / grid.tileDim.y;
+    const int w = widthValue.toInt() / grid.tileDim.x;
+    const int h = heightValue.toInt() / grid.tileDim.y;
 
     CHECK(x + w <= grid.dim.x);
     CHECK(y + h <= grid.dim.y);
