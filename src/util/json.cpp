@@ -442,7 +442,7 @@ JsonValue::operator[](StringView key) noexcept {
 }
 
 void
-JsonAllocator::operator=(JsonAllocator&& other) {
+JsonAllocator::operator=(JsonAllocator&& other) noexcept {
     head = other.head;
     other.head = nullptr;
 }
