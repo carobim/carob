@@ -69,6 +69,8 @@ if(AV_EM)
 endif()
 
 # Build type
+set(IS_DEBUG
+    "$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>")
 set(IS_RELEASE
     "$<OR:$<CONFIG:Release>,$<CONFIG:MinSizeRel>,$<CONFIG:RelWithDebInfo>>")
 
@@ -456,10 +458,10 @@ if(CLANG OR GCC)
 endif()
 
 target_compile_definitions(tsunagari
-    PUBLIC $<$<BOOL:${IS_RELEASE}>:NDEBUG>
+    PUBLIC $<$<NOT:${IS_DEBUG}>:NDEBUG>
 )
 target_compile_definitions(pack-tool
-    PRIVATE $<$<BOOL:${IS_RELEASE}>:NDEBUG>
+    PRIVATE $<$<NOT:${IS_DEBUG}>:NDEBUG>
 )
 
 # Emscripten configuration
