@@ -564,7 +564,10 @@ endif()
 
 if(LINUX AND NOT AV_EM)
     execute_process(COMMAND ldd --version
-                    OUTPUT_VARIABLE LDD_VERSION)
+                    OUTPUT_VARIABLE LDD_OUT
+                    ERROR_VARIABLE LDD_ERR)
+
+    set(LDD_VERSION "${LDD_OUT}${LDD_ERR}")
 
     if("${LDD_VERSION}" MATCHES "GLIBC (2.[0-9]*)")
         set(GLIBC_VERSION "${CMAKE_MATCH_1}")
