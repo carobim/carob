@@ -403,9 +403,9 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
 # Compilation options
 #
 
-target_compile_features(tsunagari PUBLIC cxx_std_14)
-target_compile_features(null-world PUBLIC cxx_std_14)
-target_compile_features(pack-tool PUBLIC cxx_std_14)
+target_compile_features(tsunagari PUBLIC cxx_std_11)
+target_compile_features(null-world PUBLIC cxx_std_11)
+target_compile_features(pack-tool PUBLIC cxx_std_11)
 set_target_properties(tsunagari PROPERTIES CXX_EXTENSIONS OFF)
 set_target_properties(null-world PROPERTIES CXX_EXTENSIONS OFF)
 set_target_properties(pack-tool PROPERTIES CXX_EXTENSIONS OFF)
