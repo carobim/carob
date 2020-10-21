@@ -1,6 +1,7 @@
 version: 2.1
 
 jobs:
+  # Uses CMake 3.8, GCC 4.9
   debian_8_jessie:
     docker:
       - image: debian:8-slim
@@ -16,6 +17,7 @@ jobs:
           /opt/cmake-3.8.0-Linux-x86_64/bin/cmake .. -G Ninja &&
           ninja
 
+  # Uses GCC 8
   debian_10_buster:
     docker:
       - image: debian:10-slim
@@ -30,13 +32,14 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  ubuntu_18_04:
+  # Uses CMake 3.10, GCC 7
+  ubuntu_18_04_bionic:
     docker:
       - image: ubuntu:18.04
     steps:
       - run: |
           apt-get update &&
-          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends cmake g++ ninja-build
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
@@ -44,7 +47,8 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  ubuntu_20_04:
+  # Uses CMake 3.16, GCC 9
+  ubuntu_20_04_focal:
     docker:
       - image: ubuntu:20.04
     steps:
@@ -58,6 +62,7 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
+  # Uses CMake 3.17, GCC 9
   fedora_30:
     docker:
       - image: fedora:30
@@ -71,6 +76,7 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
+  # Uses CMake 3.17, GCC 10
   fedora_32:
     docker:
       - image: fedora:32
@@ -132,6 +138,7 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
+  # Uses CMake 3.15, GCC 9
   alpine_3_11:
     docker:
       - image: alpine:3.11
@@ -145,6 +152,7 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
+  # Uses CMake 3.17, GCC 9
   alpine_3_12:
     docker:
       - image: alpine:3.12
@@ -164,8 +172,8 @@ workflows:
     jobs:
       - debian_8_jessie
       - debian_10_buster
-      - ubuntu_18_04
-      - ubuntu_20_04
+      - ubuntu_18_04_bionic
+      - ubuntu_20_04_focal
       - fedora_30
       - fedora_32
       - arch_latest
