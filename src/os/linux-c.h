@@ -60,7 +60,7 @@ struct timespec {
 };
 typedef unsigned uid_t;
 
-#if __LONG_WIDTH__ == 64
+#if __LONG_MAX__ == 0x7fffffffffffffffL
 // arch/x86_64/bits/stat.h
 struct pthread_cond_t {
     union {
@@ -77,7 +77,7 @@ struct pthread_mutex_t {
     };
 };
 
-#elif __LONG_WIDTH__ == 32
+#elif __LONG_MAX__ == 0x7fffffff
 // arch/arm/bits/stat.h
 // arch/i386/bits/stat.h
 struct pthread_cond_t {
@@ -141,7 +141,7 @@ struct stat {
     struct timespec st_ctim;
     ino_t st_ino;
 };
-#elif __LONG_WIDTH__ == 64
+#elif __LONG_MAX__ == 0x7fffffffffffffffL
 // arch/x86_64/bits/stat.h
 struct stat {
     dev_t st_dev;
@@ -160,7 +160,7 @@ struct stat {
     struct timespec st_ctim;
     long __unused[3];
 };
-#elif __LONG_WIDTH__ == 32
+#elif __LONG_MAX__ == 0x7fffffff
 // arch/arm/bits/stat.h
 // arch/i386/bits/stat.h
 struct stat {
