@@ -30,6 +30,20 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
+  ubuntu_18_04:
+    docker:
+      - image: ubuntu:18.04
+    steps:
+      - run: |
+          apt-get update &&
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends cmake g++ ninja-build
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          ninja
+
   ubuntu_20_04:
     docker:
       - image: ubuntu:20.04
@@ -150,6 +164,7 @@ workflows:
     jobs:
       - debian_8_jessie
       - debian_10_buster
+      - ubuntu_18_04
       - ubuntu_20_04
       - fedora_30
       - fedora_32
