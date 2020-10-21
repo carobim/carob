@@ -48,7 +48,7 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.16, GCC 9
+  # Has CMake 3.16, GCC 9, Ninja 1.10
   ubuntu_20_04_focal:
     docker:
       - image: ubuntu:20.04
@@ -96,14 +96,13 @@ jobs:
       - image: archlinux/base:latest
     steps:
       - run: |
-          pacman -Sy &&
-          pacman -S --noconfirm cmake gcc ninja
+          pacman -Sy --noconfirm cmake gcc samurai
       - checkout
       - run: |
           mkdir build &&
           cd build &&
           cmake .. -G Ninja &&
-          ninja
+          samu
 
   void:
     shell: /bin/sh
