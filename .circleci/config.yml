@@ -140,6 +140,7 @@ jobs:
       - image: alpine:3.6
     steps:
       - run: |
+          apk update &&
           apk add cmake g++ ninja
       - checkout
       - run: |
@@ -154,6 +155,7 @@ jobs:
       - image: alpine:3.12
     steps:
       - run: |
+          apk update &&
           apk add cmake g++ samurai
       - checkout
       - run: |
