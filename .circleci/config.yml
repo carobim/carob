@@ -63,14 +63,13 @@ jobs:
     steps:
       - run: |
           pacman -Sy &&
-          pacman -S --noconfirm git cmake make gcc
+          pacman -S --noconfirm cmake gcc ninja
       - checkout
       - run: |
-          git submodule update --init &&
           mkdir build &&
           cd build &&
-          cmake .. &&
-          make
+          cmake .. -G Ninja &&
+          ninja
 
   void:
     docker:
