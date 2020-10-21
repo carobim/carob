@@ -41,7 +41,7 @@ jobs:
       - run: |
           echo 'deb http://old-releases.ubuntu.com/ubuntu/ artful main universe' > /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
+          apt-get install -y --no-install-recommends cmake gcc g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
