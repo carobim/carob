@@ -113,7 +113,6 @@ jobs:
       - run: |
           xbps-install -S &&
           xbps-install -uy xbps &&
-          xbps-install -uy &&
           xbps-install -y bash cmake gcc samurai
       - checkout
       - run: |
@@ -130,7 +129,6 @@ jobs:
       - run: |
           xbps-install -S &&
           xbps-install -uy xbps &&
-          xbps-install -uy &&
           xbps-install -y cmake gcc samurai
       - checkout
       - run: |
