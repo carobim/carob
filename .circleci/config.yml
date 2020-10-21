@@ -139,10 +139,10 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.15, GCC 9
-  alpine_3_11:
+  # Has CMake 3.8, GCC 6, Ninja 1.7
+  alpine_3_6:
     docker:
-      - image: alpine:3.11
+      - image: alpine:3.6
     steps:
       - run: |
           apk add cmake g++ ninja
@@ -153,19 +153,19 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.17, GCC 9
+  # Has CMake 3.17, GCC 9, Samurai 1.1
   alpine_3_12:
     docker:
       - image: alpine:3.12
     steps:
       - run: |
-          apk add cmake g++ ninja
+          apk add cmake g++ samurai
       - checkout
       - run: |
           mkdir build &&
           cd build &&
           cmake .. -G Ninja &&
-          ninja
+          samu
 
 workflows:
   version: 2
@@ -180,5 +180,5 @@ workflows:
       - arch_latest
       - void
       - void_musl
-      - alpine_3_11
+      - alpine_3_6
       - alpine_3_12
