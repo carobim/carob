@@ -1,27 +1,22 @@
 version: 2.1
 
 jobs:
-  debian_9:
+  debian_8_jessie:
     docker:
-      - image: debian:9-slim
+      - image: debian:8-slim
     steps:
       - run: |
-          echo 'deb http://deb.debian.org/debian stretch-backports main' >> /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends git ca-certificates openssh-client libuv1/stretch-backports make g++ &&
-          apt-get install -y --no-install-recommends libarchive13 cmake-data/stretch-backports libcurl3 libjsoncpp1 librhash0 &&
-          (apt-get download cmake/stretch-backports || true) &&
-          dpkg --force-all -i cmake*.deb &&
-          rm cmake*.deb
+          apt-get install -y --no-install-recommends g++ ninja-build &&
+          curl -L https://github.com/Kitware/CMake/releases/download/v3.8.0/cmake-3.8.0-Linux-x86_64.tar.gz | tar xz
       - checkout
       - run: |
-          git submodule update --init &&
           mkdir build &&
           cd build &&
-          cmake .. &&
+          /cmake-3.8.0-Linux-x86_64/bin/cmake .. -G Ninja &&
           make
 
-  debian_10:
+  debian_10_buster:
     docker:
       - image: debian:10-slim
     steps:
@@ -132,8 +127,8 @@ workflows:
   version: 2
   build_all:
     jobs:
-      - debian_9
-      - debian_10
+      - debian_8_jessie
+      - debian_10_buster
       - ubuntu_19_10
       - fedora_31
       - arch_latest
