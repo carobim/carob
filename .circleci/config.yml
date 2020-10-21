@@ -110,8 +110,7 @@ jobs:
       - image: voidlinux/voidlinux:latest
     steps:
       - run: |
-          xbps-install -S &&
-          xbps-install -uy xbps &&
+          xbps-install -Suy xbps &&
           xbps-install -y bash cmake gcc samurai
       - checkout
       - run: |
@@ -126,8 +125,7 @@ jobs:
       - image: voidlinux/voidlinux-musl:latest
     steps:
       - run: |
-          xbps-install -S &&
-          xbps-install -uy xbps &&
+          xbps-install -Suy xbps &&
           xbps-install -y cmake gcc samurai
       - checkout
       - run: |
