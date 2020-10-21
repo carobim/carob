@@ -114,13 +114,13 @@ jobs:
           xbps-install -S &&
           xbps-install -uy xbps &&
           xbps-install -uy &&
-          xbps-install -y bash cmake gcc ninja
+          xbps-install -y bash cmake gcc samurai
       - checkout
       - run: |
           mkdir build &&
           cd build &&
           cmake .. -G Ninja &&
-          ninja
+          samu
 
   void_musl:
     shell: /bin/sh
@@ -131,13 +131,13 @@ jobs:
           xbps-install -S &&
           xbps-install -uy xbps &&
           xbps-install -uy &&
-          xbps-install -y cmake gcc ninja
+          xbps-install -y cmake gcc samurai
       - checkout
       - run: |
           mkdir build &&
           cd build &&
           cmake .. -G Ninja &&
-          ninja
+          samu
 
   # Has CMake 3.8, GCC 6, Ninja 1.7
   alpine_3_6:
