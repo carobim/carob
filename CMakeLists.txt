@@ -484,11 +484,13 @@ if(AV_EM)
 endif()
 
 # Enable color within compiler's output
-if(NINJA AND CLANG)
-    string(APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
-endif()
-if(NINJA AND GCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
-    string(APPEND CMAKE_CXX_FLAGS " -fdiagnostics-color=always")
+if(NOT DEFINED ENV{CI})
+    if(NINJA AND CLANG)
+        string(APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
+    endif()
+    if(NINJA AND GCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
+        string(APPEND CMAKE_CXX_FLAGS " -fdiagnostics-color=always")
+    endif()
 endif()
 
 # Share variables with parent.
