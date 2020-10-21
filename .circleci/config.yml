@@ -105,9 +105,9 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  alpine_3_11:
+  alpine_3_12:
     docker:
-      - image: alpine:3.11
+      - image: alpine:3.12
     steps:
       - run: |
           apk add cmake g++ ninja
@@ -129,4 +129,4 @@ workflows:
       - arch_latest
       - void
       - void_musl
-      - alpine_3_11
+      - alpine_3_12
