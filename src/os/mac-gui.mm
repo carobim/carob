@@ -54,7 +54,7 @@ typedef unsigned long NSUInteger;
 typedef NSInteger NSModalResponse;
 typedef NSUInteger NSStringEncoding;
 #define NSUTF8StringEncoding 4
-    
+
 @protocol NSObject
 - (oneway void)release;
 @end
