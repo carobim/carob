@@ -33,12 +33,13 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.10, GCC 7
-  ubuntu_18_04_bionic:
+  # Has CMake 3.9, GCC 7, Ninja 1.7
+  ubuntu_17_10_artful:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:17.10
     steps:
       - run: |
+          echo 'deb http://old-releases.ubuntu.com/ubuntu/ artful main universe' > /etc/apt/sources.list &&
           apt-get update &&
           apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
@@ -170,7 +171,7 @@ workflows:
     jobs:
       - debian_8_jessie
       - debian_10_buster
-      - ubuntu_18_04_bionic
+      - ubuntu_17_10_artful
       - ubuntu_20_04_focal
       - fedora_24
       - fedora_32
