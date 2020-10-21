@@ -487,7 +487,7 @@ endif()
 if(NINJA AND CLANG)
     string(APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
 endif()
-if(NINJA AND GCC)
+if(NINJA AND GCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
     string(APPEND CMAKE_CXX_FLAGS " -fdiagnostics-color=always")
 endif()
 
