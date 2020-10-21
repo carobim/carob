@@ -44,19 +44,18 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  fedora_31:
+  fedora_32:
     docker:
-      - image: fedora:31
+      - image: fedora:32
     steps:
       - run: |
-          dnf install -y git cmake make gcc-c++
+          dnf install -y git cmake gcc-c++ ninja-build
       - checkout
       - run: |
-          git submodule update --init &&
           mkdir build &&
           cd build &&
-          cmake .. &&
-          make
+          cmake .. -G Ninja &&
+          ninja
 
   arch_latest:
     docker:
@@ -128,7 +127,7 @@ workflows:
       - debian_8_jessie
       - debian_10_buster
       - ubuntu_20_04
-      - fedora_31
+      - fedora_32
       - arch_latest
       - void
       - void_musl
