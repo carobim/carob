@@ -36,7 +36,7 @@ jobs:
     steps:
       - run: |
           apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
