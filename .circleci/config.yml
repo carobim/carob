@@ -108,14 +108,13 @@ jobs:
       - image: alpine:3.11
     steps:
       - run: |
-          apk add git cmake make g++
+          apk add cmake g++ ninja
       - checkout
       - run: |
-          git submodule update --init &&
           mkdir build &&
           cd build &&
-          cmake .. &&
-          make
+          cmake .. -G Ninja &&
+          ninja
 
 workflows:
   version: 2
