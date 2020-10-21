@@ -84,7 +84,6 @@ class Vector {
 
  public:
     typedef T* iterator;
-    typedef const T* const_iterator;
 
  public:
     Vector() noexcept;
@@ -96,7 +95,7 @@ class Vector {
     ~Vector() noexcept;
 
     Vector<T>&
-    operator=(const Vector<T>& x) noexcept;
+    operator=(Vector<T>& x) noexcept = delete;
     Vector<T>&
     operator=(Vector<T>&& x) noexcept;
 
@@ -105,20 +104,16 @@ class Vector {
 
     iterator
     begin() noexcept;
-    const_iterator
-    begin() const noexcept;
 
     iterator
     end() noexcept;
-    const_iterator
-    end() const noexcept;
 
     bool
-    empty() const noexcept;
+    empty() noexcept;
     size_t
     size() const noexcept;
     size_t
-    capacity() const noexcept;
+    capacity() noexcept;
 
     void
     resize(size_t n) noexcept;
@@ -126,29 +121,19 @@ class Vector {
     reserve(size_t n) noexcept;
 
     T*
-    data() noexcept;
-    const T*
     data() const noexcept;
 
     T&
     operator[](size_t n) noexcept;
-    const T&
-    operator[](size_t n) const noexcept;
 
     T&
     at(size_t n) noexcept;
-    const T&
-    at(size_t n) const noexcept;
 
     T&
     front() noexcept;
-    const T&
-    front() const noexcept;
 
     T&
     back() noexcept;
-    const T&
-    back() const noexcept;
 
     void
     push_back(const T& value) noexcept;
@@ -195,7 +180,7 @@ class Vector {
 
  protected:
     void
-    DoAssign(const_iterator first, const_iterator last) noexcept;
+    DoAssign(iterator first, iterator last) noexcept;
 
     template<typename... Args>
     void
@@ -359,9 +344,10 @@ inline Vector<T>::~Vector() noexcept {
 }
 
 
+/*
 template<typename T>
 Vector<T>&
-Vector<T>::operator=(const Vector<T>& x) noexcept {
+Vector<T>::operator=(Vector<T>& x) noexcept {
     assert_(false && "Copying a vector by value.");
     if (this != &x) {
         DoAssign(x.begin(), x.end());
@@ -369,6 +355,7 @@ Vector<T>::operator=(const Vector<T>& x) noexcept {
 
     return *this;
 }
+*/
 
 
 template<typename T>
@@ -389,13 +376,6 @@ Vector<T>::begin() noexcept {
 
 
 template<typename T>
-inline typename Vector<T>::const_iterator
-Vector<T>::begin() const noexcept {
-    return mpBegin;
-}
-
-
-template<typename T>
 inline typename Vector<T>::iterator
 Vector<T>::end() noexcept {
     return mpEnd;
@@ -403,16 +383,9 @@ Vector<T>::end() noexcept {
 
 
 template<typename T>
-inline typename Vector<T>::const_iterator
-Vector<T>::end() const noexcept {
-    return mpEnd;
-}
-
-
-template<typename T>
 bool
-Vector<T>::empty() const noexcept {
-    return (mpBegin == mpEnd);
+Vector<T>::empty() noexcept {
+    return mpBegin == mpEnd;
 }
 
 
@@ -425,7 +398,7 @@ Vector<T>::size() const noexcept {
 
 template<typename T>
 inline size_t
-Vector<T>::capacity() const noexcept {
+Vector<T>::capacity() noexcept {
     return (size_t)(mCapacity - mpBegin);
 }
 
@@ -458,13 +431,6 @@ Vector<T>::reserve(size_t n) noexcept {
 
 template<typename T>
 inline T*
-Vector<T>::data() noexcept {
-    return mpBegin;
-}
-
-
-template<typename T>
-inline const T*
 Vector<T>::data() const noexcept {
     return mpBegin;
 }
@@ -473,15 +439,6 @@ Vector<T>::data() const noexcept {
 template<typename T>
 inline T&
 Vector<T>::operator[](size_t n) noexcept {
-    assert_(n < static_cast<size_t>(mpEnd - mpBegin));
-
-    return *(mpBegin + n);
-}
-
-
-template<typename T>
-inline const T&
-Vector<T>::operator[](size_t n) const noexcept {
     assert_(n < static_cast<size_t>(mpEnd - mpBegin));
 
     return *(mpBegin + n);
@@ -502,15 +459,6 @@ Vector<T>::at(size_t n) noexcept {
 
 
 template<typename T>
-inline const T&
-Vector<T>::at(size_t n) const noexcept {
-    assert_(n < static_cast<size_t>(mpEnd - mpBegin));
-
-    return *(mpBegin + n);
-}
-
-
-template<typename T>
 inline T&
 Vector<T>::front() noexcept {
     assert_(mpEnd > mpBegin);
@@ -520,26 +468,8 @@ Vector<T>::front() noexcept {
 
 
 template<typename T>
-inline const T&
-Vector<T>::front() const noexcept {
-    assert_(mpEnd > mpBegin);
-
-    return *mpBegin;
-}
-
-
-template<typename T>
 inline T&
 Vector<T>::back() noexcept {
-    assert_(mpEnd > mpBegin);
-
-    return *(mpEnd - 1);
-}
-
-
-template<typename T>
-inline const T&
-Vector<T>::back() const noexcept {
     assert_(mpEnd > mpBegin);
 
     return *(mpEnd - 1);
@@ -780,7 +710,7 @@ Vector<T>::swap(Vector<T>& x) noexcept {
 
 template<typename T>
 inline void
-Vector<T>::DoAssign(const_iterator first, const_iterator last) noexcept {
+Vector<T>::DoAssign(iterator first, iterator last) noexcept {
     iterator position(mpBegin);
 
     while ((position != mpEnd) && (first != last)) {
@@ -996,7 +926,7 @@ Vector<T>::DoInsertValueEnd(Args&&... args) noexcept {
 
 template<typename T>
 inline bool
-operator==(const Vector<T>& a, const Vector<T>& b) noexcept {
+operator==(Vector<T>& a, Vector<T>& b) noexcept {
     if (a.size() != b.size()) {
         return false;
     }
@@ -1012,7 +942,7 @@ operator==(const Vector<T>& a, const Vector<T>& b) noexcept {
 
 template<typename T>
 inline bool
-operator!=(const Vector<T>& a, const Vector<T>& b) noexcept {
+operator!=(Vector<T>& a, Vector<T>& b) noexcept {
     if (a.size() != b.size()) {
         return true;
     }

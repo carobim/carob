@@ -67,6 +67,7 @@ getSingleFrame(AnimationID aid) noexcept {
     return ImageID(-aid - 1);
 }
 
+/*
 static void
 copy(AnimationID& self, AnimationID other) noexcept {
     if (isSingleFrame(other)) {
@@ -81,6 +82,7 @@ copy(AnimationID& self, AnimationID other) noexcept {
         data = otherData;
     }
 }
+*/
 
 static void
 move(AnimationID& self, AnimationID& other) noexcept {
@@ -126,9 +128,11 @@ Animation::Animation(Vector<ImageID> frames, time_t frameTime) noexcept {
     data.currentImage = data.frames[0];
 }
 
+/*
 Animation::Animation(const Animation& other) noexcept {
     copy(aid, other.aid);
 }
+*/
 
 Animation::Animation(Animation&& other) noexcept {
     move(aid, other.aid);
@@ -138,12 +142,14 @@ Animation::~Animation() noexcept {
     destroy(aid);
 }
 
+/*
 Animation&
 Animation::operator=(const Animation& other) noexcept {
     destroy(aid);
     copy(aid, other.aid);
     return *this;
 }
+*/
 
 Animation&
 Animation::operator=(Animation&& other) noexcept {

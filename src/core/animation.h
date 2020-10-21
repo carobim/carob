@@ -71,12 +71,12 @@ class Animation {
      */
     Animation(Vector<ImageID> frames, time_t frameTime) noexcept;
 
-    Animation(const Animation& other) noexcept;
+    Animation(const Animation& other) noexcept = delete;
     Animation(Animation&& other) noexcept;
     ~Animation() noexcept;
 
     Animation&
-    operator=(const Animation& other) noexcept;
+    operator=(const Animation& other) noexcept = delete;
     Animation&
     operator=(Animation&& other) noexcept;
 
