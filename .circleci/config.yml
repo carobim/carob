@@ -79,14 +79,13 @@ jobs:
           xbps-install -S &&
           xbps-install -uy xbps &&
           xbps-install -uy &&
-          xbps-install -y git cmake make gcc
+          xbps-install -y cmake gcc ninja
       - checkout
       - run: |
-          git submodule update --init &&
           mkdir build &&
           cd build &&
-          cmake .. &&
-          make
+          cmake .. -G Ninja &&
+          ninja
 
   void_musl:
     docker:
@@ -96,14 +95,13 @@ jobs:
           xbps-install -S &&
           xbps-install -uy xbps &&
           xbps-install -uy &&
-          xbps-install -y git cmake make gcc
+          xbps-install -y cmake gcc ninja
       - checkout
       - run: |
-          git submodule update --init &&
           mkdir build &&
           cd build &&
-          cmake .. &&
-          make
+          cmake .. -G Ninja &&
+          ninja
 
   alpine_3_11:
     docker:
