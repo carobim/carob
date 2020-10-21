@@ -22,14 +22,13 @@ jobs:
     steps:
       - run: |
           apt-get update &&
-          apt-get install -y --no-install-recommends git ca-certificates cmake make g++
+          apt-get install -y --no-install-recommends ca-certificates cmake g++ ninja-build
       - checkout
       - run: |
-          git submodule update --init &&
           mkdir build &&
           cd build &&
-          cmake .. &&
-          make
+          cmake .. -G Ninja &&
+          ninja
 
   ubuntu_19_10:
     docker:
