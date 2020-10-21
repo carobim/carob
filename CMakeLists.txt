@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(TsunagariEngine LANGUAGES CXX)
+project(TsunagariEngine LANGUAGES C CXX)
 
 
 #
@@ -25,7 +25,7 @@ option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
 # Variables
 #
 
-# Whether this is a subproject in a larger project.
+# Whether this is a subproject in a larger project
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 if("${SUBPROJECT}" STREQUAL "")
     set(SUBPROJECT 1)
@@ -493,7 +493,7 @@ if(NOT DEFINED ENV{CI})
     endif()
 endif()
 
-# Share variables with parent.
+# Share variables with parent
 if(IS_SUBPROJECT)
     set(CMAKE_CXX_FLAGS
         ${CMAKE_CXX_FLAGS}
@@ -525,9 +525,8 @@ if(CLANG OR GCC)
 endif()
 
 # Do not link to libc++
-#if(APPLE)
-#   string(APPEND CMAKE_EXE_LINKER_FLAGS " -nostdlib -lSystem")
-#endif()
+set(CMAKE_CXX_LINK_EXECUTABLE
+    "<CMAKE_C_COMPILER> <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 
 # Strip symbols
 if(LINUX OR FREEBSD OR NETBSD)
@@ -540,7 +539,7 @@ elseif(APPLE)
     string(APPEND CMAKE_EXE_LINKER_FLAGS_MINSIZEREL " -Wl,-x -Wl,-dead_strip")
 endif()
 
-# Share variables with parent.
+# Share variables with parent
 if(IS_SUBPROJECT)
     set(CMAKE_EXE_LINKER_FLAGS
         ${CMAKE_EXE_LINKER_FLAGS}
@@ -557,7 +556,7 @@ if(IS_SUBPROJECT)
 endif()
 
 if(APPLE)
-    # FIXME: Change to be target-specific.
+    # FIXME: Change to be target-specific
     set(GUI_TYPE MACOSX_BUNDLE)
 
     target_link_libraries(tsunagari
@@ -594,7 +593,7 @@ if(LINUX AND NOT AV_EM)
     endif()
 
     if(GLIBC_VERSION)
-        target_link_libraries(tsunagari PUBLIC  pthread)
+        target_link_libraries(tsunagari PUBLIC  m pthread)
         target_link_libraries(pack-tool PRIVATE pthread)
     endif()
 endif()

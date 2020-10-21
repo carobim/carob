@@ -24,7 +24,7 @@
 // IN THE SOFTWARE.
 // **********
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 
 #include "os/c.h"
 #include "os/os.h"
@@ -53,9 +53,7 @@ operator delete[](void* ptr) noexcept {
     free(ptr);
 }
 
-extern "C" void
-__cxa_pure_virtual() noexcept {
-    exitProcess(1);
-}
+void*
+__cxa_pure_virtual = 0;
 
-#endif  // __APPLE__
+#endif  // defined(__APPLE__) || defined(__linux__)
