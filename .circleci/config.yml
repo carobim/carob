@@ -72,8 +72,9 @@ jobs:
           ninja
 
   void:
+    shell: /bin/sh
     docker:
-      - image: tsunagariengine/voidlinux-bash:latest
+      - image: voidlinux/voidlinux:latest
     steps:
       - run: |
           xbps-install -S &&
@@ -88,8 +89,9 @@ jobs:
           ninja
 
   void_musl:
+    shell: /bin/sh
     docker:
-      - image: tsunagariengine/voidlinux-musl-bash:latest
+      - image: voidlinux/voidlinux-musl:latest
     steps:
       - run: |
           xbps-install -S &&
