@@ -114,7 +114,7 @@ class Area {
     //! Returns a physical cubic range of Tiles that are visible on-screen.
     //! Takes actual map size into account.
     icube
-    visibleTiles() const;
+    visibleTiles();
 
     //! Returns true if a Tile exists at the specified coordinate.
     bool
@@ -143,9 +143,9 @@ class Area {
  protected:
     //! Calculate frame to show for each type of tile
     void
-    drawTiles(DisplayList* display, const icube& tiles, int z);
+    drawTiles(DisplayList* display, icube& tiles, int z);
     void
-    drawEntities(DisplayList* display, const icube& tiles, int z);
+    drawEntities(DisplayList* display, icube& tiles, int z);
 
  protected:
     Hashmap<String, TileSet> tileSets;

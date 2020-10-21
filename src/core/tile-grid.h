@@ -123,7 +123,7 @@ class TileGrid {
 
     //! Returns true if a Tile exists at the specified coordinate.
     bool
-    inBounds(icoord phys) const noexcept;
+    inBounds(icoord phys) noexcept;
     bool
     inBounds(vicoord virt) noexcept;
     bool
@@ -135,23 +135,23 @@ class TileGrid {
     // is represented by an arbirarily chosen integer in the physical system.
     // Virtual coordinates include the correct floating-point depth.
     vicoord
-    phys2virt_vi(icoord phys) const noexcept;
+    phys2virt_vi(icoord phys) noexcept;
     rcoord
-    phys2virt_r(icoord phys) const noexcept;
+    phys2virt_r(icoord phys) noexcept;
     icoord
     virt2phys(vicoord virt) noexcept;
     icoord
     virt2phys(rcoord virt) noexcept;
     rcoord
-    virt2virt(vicoord virt) const noexcept;
+    virt2virt(vicoord virt) noexcept;
     vicoord
-    virt2virt(rcoord virt) const noexcept;
+    virt2virt(rcoord virt) noexcept;
 
     // Convert between virtual and physical map depths.
     int
     depthIndex(float depth) noexcept;
     float
-    indexDepth(int idx) const noexcept;
+    indexDepth(int idx) noexcept;
 
     // Gets the correct destination for an Entity wanting to move off of this
     // tile in <code>facing</code> direction.

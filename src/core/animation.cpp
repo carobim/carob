@@ -166,7 +166,7 @@ Animation::restart(time_t now) noexcept {
 }
 
 bool
-Animation::needsRedraw(time_t now) const noexcept {
+Animation::needsRedraw(time_t now) noexcept {
     if (isSingleFrame(aid)) {
         return false;
     }
@@ -199,7 +199,7 @@ Animation::setFrame(time_t now) noexcept {
 }
 
 ImageID
-Animation::getFrame() const noexcept {
+Animation::getFrame() noexcept {
     if (isSingleFrame(aid)) {
         return getSingleFrame(aid);
     }

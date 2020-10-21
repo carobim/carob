@@ -257,7 +257,7 @@ World::storeKeys() noexcept {
 
 void
 World::restoreKeys() noexcept {
-    const BitRecord& now = GameWindow::keysDown;
+    BitRecord& now = GameWindow::keysDown;
     BitRecord then = keyStates.back();
     Vector<size_t> diffs = now.diff(then);
 

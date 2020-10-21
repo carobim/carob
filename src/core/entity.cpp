@@ -397,7 +397,7 @@ Entity::draw(DisplayList* display) noexcept {
 }
 
 bool
-Entity::needsRedraw(const icube& visiblePixels) const noexcept {
+Entity::needsRedraw(icube& visiblePixels) noexcept {
     if (!phase) {
         // Entity is invisible.
         return false;
@@ -435,7 +435,7 @@ Entity::needsRedraw(const icube& visiblePixels) const noexcept {
 }
 
 bool
-Entity::isDead() const noexcept {
+Entity::isDead() noexcept {
     return dead;
 }
 
@@ -454,8 +454,8 @@ Entity::turn() noexcept {
     }
 }
 
-const StringView
-Entity::getFacing() const noexcept {
+StringView
+Entity::getFacing() noexcept {
     return directionStr(facing);
 }
 
@@ -473,7 +473,7 @@ Entity::setPhase(StringView name) noexcept {
 }
 
 ivec2
-Entity::getImageSize() const noexcept {
+Entity::getImageSize() noexcept {
     return imgsz;
 }
 
@@ -489,7 +489,7 @@ Entity::setAnimationMoving() noexcept {
 
 
 rcoord
-Entity::getPixelCoord() const noexcept {
+Entity::getPixelCoord() noexcept {
     return r;
 }
 
@@ -508,13 +508,13 @@ Entity::setArea(Area* area) noexcept {
 }
 
 float
-Entity::getSpeedInPixels() const noexcept {
+Entity::getSpeedInPixels() noexcept {
     float tileWidth = static_cast<float>(area->grid.tileDim.x);
     return getSpeedInTiles() * tileWidth;
 }
 
 float
-Entity::getSpeedInTiles() const noexcept {
+Entity::getSpeedInTiles() noexcept {
     return tilesPerSecond;
 }
 
@@ -553,7 +553,7 @@ Entity::setFacing(ivec2 facing) noexcept {
 }
 
 StringView
-Entity::directionStr(ivec2 facing) const noexcept {
+Entity::directionStr(ivec2 facing) noexcept {
     return directions[facing.y + 1][facing.x + 1];
 }
 

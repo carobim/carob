@@ -76,7 +76,7 @@ TileGrid::setTileType(vicoord virt, int type) noexcept {
 }
 
 bool
-TileGrid::inBounds(icoord phys) const noexcept {
+TileGrid::inBounds(icoord phys) noexcept {
     return (loopX || (0 <= phys.x && phys.x < dim.x)) &&
            (loopY || (0 <= phys.y && phys.y < dim.y)) &&
            (0 <= phys.z && phys.z < dim.z);
@@ -94,12 +94,12 @@ TileGrid::inBounds(rcoord virt) noexcept {
 
 
 vicoord
-TileGrid::phys2virt_vi(icoord phys) const noexcept {
+TileGrid::phys2virt_vi(icoord phys) noexcept {
     return vicoord{phys.x, phys.y, indexDepth(phys.z)};
 }
 
 rcoord
-TileGrid::phys2virt_r(icoord phys) const noexcept {
+TileGrid::phys2virt_r(icoord phys) noexcept {
     return rcoord{static_cast<float>(phys.x * tileDim.x),
                   static_cast<float>(phys.y * tileDim.y),
                   indexDepth(phys.z)};
@@ -120,14 +120,14 @@ TileGrid::virt2phys(rcoord virt) noexcept {
 }
 
 rcoord
-TileGrid::virt2virt(vicoord virt) const noexcept {
+TileGrid::virt2virt(vicoord virt) noexcept {
     return rcoord{static_cast<float>(virt.x * tileDim.x),
                   static_cast<float>(virt.y * tileDim.y),
                   virt.z};
 }
 
 vicoord
-TileGrid::virt2virt(rcoord virt) const noexcept {
+TileGrid::virt2virt(rcoord virt) noexcept {
     return vicoord{static_cast<int>(virt.x) / tileDim.x,
                    static_cast<int>(virt.y) / tileDim.y,
                    virt.z};
@@ -145,7 +145,7 @@ TileGrid::depthIndex(float depth) noexcept {
 }
 
 float
-TileGrid::indexDepth(int idx) const noexcept {
+TileGrid::indexDepth(int idx) noexcept {
     assert_(0 <= idx && idx <= dim.z);
     return idx2depth[(size_t)idx];
 }

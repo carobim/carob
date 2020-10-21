@@ -162,7 +162,7 @@ Player::arrived() noexcept {
 }
 
 void
-Player::takeExit(const Exit& exit) noexcept {
+Player::takeExit(Exit& exit) noexcept {
     if (!World::focusArea(exit.area, exit.coords)) {
         // Roll back movement if exit failed to open.
         setTileCoords(fromCoord);

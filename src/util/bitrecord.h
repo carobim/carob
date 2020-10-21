@@ -38,10 +38,8 @@ class BitRecord {
 
     bool&
     operator[](size_t idx) noexcept;
-    bool
-    operator[](size_t idx) const noexcept;
     Vector<size_t>
-    diff(const BitRecord& other) const noexcept;
+    diff(BitRecord& other) noexcept;
 
  private:
     Vector<bool> states;

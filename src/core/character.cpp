@@ -67,12 +67,12 @@ Character::destroy() noexcept {
 }
 
 icoord
-Character::getTileCoords_i() const noexcept {
+Character::getTileCoords_i() noexcept {
     return area->grid.virt2phys(r);
 }
 
 vicoord
-Character::getTileCoords_vi() const noexcept {
+Character::getTileCoords_vi() noexcept {
     return area->grid.virt2virt(r);
 }
 

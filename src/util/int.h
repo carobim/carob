@@ -62,25 +62,25 @@ typedef long time_t;
 typedef int64_t time_t;
 #endif
 
-static const CONSTEXPR11 int32_t INT32_MIN = 0x80000000;
-static const CONSTEXPR11 int32_t INT32_MAX = 0x7fffffff;
-static const CONSTEXPR11 int64_t INT64_MAX = 0x7fffffffffffffff;
-static const CONSTEXPR11 int64_t INT64_MIN = 0x8000000000000000;
-static const CONSTEXPR11 uint32_t UINT32_MAX = 0xffffffff;
-static const CONSTEXPR11 uint64_t UINT64_MAX = 0xffffffffffffffff;
+static CONSTEXPR11 int32_t INT32_MIN = 0x80000000;
+static CONSTEXPR11 int32_t INT32_MAX = 0x7fffffff;
+static CONSTEXPR11 int64_t INT64_MAX = 0x7fffffffffffffff;
+static CONSTEXPR11 int64_t INT64_MIN = 0x8000000000000000;
+static CONSTEXPR11 uint32_t UINT32_MAX = 0xffffffff;
+static CONSTEXPR11 uint64_t UINT64_MAX = 0xffffffffffffffff;
 
 #if defined(_WIN64)
-static const CONSTEXPR11 size_t SIZE_MAX = 0xffffffffffffffff;
+static CONSTEXPR11 size_t SIZE_MAX = 0xffffffffffffffff;
 #elif defined(_WIN32)
-static const CONSTEXPR11 size_t SIZE_MAX = 0xffffffff;
+static CONSTEXPR11 size_t SIZE_MAX = 0xffffffff;
 #else
-static const CONSTEXPR11 size_t SIZE_MAX = __SIZE_MAX__;
+static CONSTEXPR11 size_t SIZE_MAX = __SIZE_MAX__;
 #endif
 
-static const CONSTEXPR11 float FLT_MIN =
+static CONSTEXPR11 float FLT_MIN =
         1.17549435082228750796873653722224568e-38f;
 
-static const CONSTEXPR11 float M_PI = 3.14159265358979323846;
+static CONSTEXPR11 float M_PI = 3.14159265358979323846;
 
 #if defined(__EMSCRIPTEN__)
 #define __DEFINED_time_t

@@ -136,8 +136,8 @@ Area::needsRedraw() {
         return true;
     }
 
-    const icube tiles = visibleTiles();
-    const icube pixels = {
+    icube tiles = visibleTiles();
+    icube pixels = {
             tiles.x1 * grid.tileDim.x,
             tiles.y1 * grid.tileDim.y,
             tiles.z1,
@@ -149,12 +149,12 @@ Area::needsRedraw() {
     if (player->needsRedraw(pixels)) {
         return true;
     }
-    for (const auto& character : characters) {
+    for (auto& character : characters) {
         if (character->needsRedraw(pixels)) {
             return true;
         }
     }
-    for (const auto& overlay : overlays) {
+    for (auto& overlay : overlays) {
         if (overlay->needsRedraw(pixels)) {
             return true;
         }
@@ -208,7 +208,7 @@ Area::tick(time_t dt) {
     for (auto& overlay : overlays) {
         overlay->tick(dt);
     }
-    erase_if(overlays, [](const Unique<Overlay>& o) { return o->isDead(); });
+    erase_if(overlays, [](Unique<Overlay>& o) { return o->isDead(); });
 
     if (Conf::moveMode != Conf::TURN) {
         player->tick(dt);
@@ -216,7 +216,7 @@ Area::tick(time_t dt) {
         for (auto& character : characters) {
             character->tick(dt);
         }
-        erase_if(characters, [](const Unique<Character>& c) {
+        erase_if(characters, [](Unique<Character>& c) {
             bool dead = c->isDead();
             if (dead) {
                 c->setArea(nullptr, {0, 0, 0.0});
@@ -239,7 +239,7 @@ Area::turn() {
     for (auto& character : characters) {
         character->turn();
     }
-    erase_if(characters, [](const Unique<Character>& c) {
+    erase_if(characters, [](Unique<Character>& c) {
         bool dead = c->isDead();
         if (dead) {
             c->setArea(nullptr, {0, 0, 0.0});
@@ -275,7 +275,7 @@ Area::getTileSet(StringView imagePath) {
 
 
 icube
-Area::visibleTiles() const {
+Area::visibleTiles() {
     rvec2 screen = Viewport::getVirtRes();
     rvec2 off = Viewport::getMapOffset();
 
@@ -347,7 +347,7 @@ Area::runScript(TileGrid::ScriptType type,
 
 
 void
-Area::drawTiles(DisplayList* display, const icube& tiles, int z) {
+Area::drawTiles(DisplayList* display, icube& tiles, int z) {
     time_t now = World::time();
 
     tilesAnimated.resize(static_cast<size_t>(tileGraphics.size()));
@@ -394,7 +394,7 @@ Area::drawTiles(DisplayList* display, const icube& tiles, int z) {
 }
 
 void
-Area::drawEntities(DisplayList* display, const icube& tiles, int z) {
+Area::drawEntities(DisplayList* display, icube& tiles, int z) {
     float depth = grid.idx2depth[(size_t)z];
 
     for (auto& character : characters) {

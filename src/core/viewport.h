@@ -76,14 +76,14 @@ class Viewport {
     static void
     jumpToPt(rvec2 pt) noexcept;
     static void
-    jumpToEntity(const Entity* e) noexcept;
+    jumpToEntity(Entity* e) noexcept;
 
     // Continuously follow.
     static void
-    trackEntity(const Entity* e) noexcept;
+    trackEntity(Entity* e) noexcept;
 
     static void
-    setArea(const Area* a) noexcept;
+    setArea(Area* a) noexcept;
 };
 
 #endif  // SRC_CORE_VIEWPORT_H_

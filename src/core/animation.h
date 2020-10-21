@@ -94,7 +94,7 @@ class Animation {
      * @now current time in milliseconds
      */
     bool
-    needsRedraw(time_t now) const noexcept;
+    needsRedraw(time_t now) noexcept;
 
     /**
      * Returns the image that should be displayed at this time.
@@ -108,7 +108,7 @@ class Animation {
      * Returns the last image that should have been displayed.
      */
     ImageID
-    getFrame() const noexcept;
+    getFrame() noexcept;
 
  private:
     AnimationID aid;

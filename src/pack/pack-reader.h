@@ -45,15 +45,15 @@ class PackReader {
     virtual ~PackReader() = default;
 
     virtual BlobIndex
-    size() const noexcept = 0;
+    size() noexcept = 0;
 
     virtual BlobIndex
     findIndex(StringView path) noexcept = 0;
 
     virtual StringView
-    getBlobPath(BlobIndex index) const noexcept = 0;
+    getBlobPath(BlobIndex index) noexcept = 0;
     virtual BlobSize
-    getBlobSize(BlobIndex index) const noexcept = 0;
+    getBlobSize(BlobIndex index) noexcept = 0;
     virtual void*
     getBlobData(BlobIndex index) noexcept = 0;
 

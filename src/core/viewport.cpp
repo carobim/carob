@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** viewport.cpp                       **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -40,8 +40,8 @@ static rvec2 off = {0, 0};
 static rvec2 virtRes;
 
 static TrackingMode mode = TM_MANUAL;
-static const Area* viewportArea = nullptr;
-static const Entity* targete;
+static Area* viewportArea = nullptr;
+static Entity* targete;
 
 static rvec2
 centerOn(rvec2 pt) noexcept {
@@ -80,7 +80,7 @@ offsetForPt(rvec2 pt) noexcept {
 }
 
 static void
-_jumpToEntity(const Entity* e) noexcept {
+_jumpToEntity(Entity* e) noexcept {
     rcoord pos = e->getPixelCoord();
     ivec2 td = viewportArea->grid.tileDim;
     rvec2 center = rvec2{pos.x + td.x / 2, pos.y + td.y / 2};
@@ -190,7 +190,7 @@ Viewport::jumpToPt(rvec2 pt) noexcept {
 }
 
 void
-Viewport::jumpToEntity(const Entity* e) noexcept {
+Viewport::jumpToEntity(Entity* e) noexcept {
     mode = TM_MANUAL;  // API implies mode change.
     _jumpToEntity(e);
 }
@@ -198,7 +198,7 @@ Viewport::jumpToEntity(const Entity* e) noexcept {
 
 // Continuously follow.
 void
-Viewport::trackEntity(const Entity* e) noexcept {
+Viewport::trackEntity(Entity* e) noexcept {
     mode = TM_FOLLOW_ENTITY;
     targete = e;
     update();
@@ -206,6 +206,6 @@ Viewport::trackEntity(const Entity* e) noexcept {
 
 
 void
-Viewport::setArea(const Area* a) noexcept {
+Viewport::setArea(Area* a) noexcept {
     viewportArea = a;
 }

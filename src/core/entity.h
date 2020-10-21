@@ -69,9 +69,9 @@ class Entity {
     void
     draw(DisplayList* display) noexcept;
     bool
-    needsRedraw(const icube& visiblePixels) const noexcept;
+    needsRedraw(icube& visiblePixels) noexcept;
     bool
-    isDead() const noexcept;
+    isDead() noexcept;
 
     virtual void
     tick(time_t dt) noexcept;
@@ -83,8 +83,8 @@ class Entity {
     void
     setFacing(ivec2 facing) noexcept;
 
-    const StringView
-    getFacing() const noexcept;
+    StringView
+    getFacing() noexcept;
 
     // Change the graphic. Returns true if it was changed to something
     // different.
@@ -92,7 +92,7 @@ class Entity {
     setPhase(StringView name) noexcept;
 
     ivec2
-    getImageSize() const noexcept;
+    getImageSize() noexcept;
 
     void
     setAnimationStanding() noexcept;
@@ -103,7 +103,7 @@ class Entity {
     // The offset from the upper-left of the Area to the upper-left of the
     // Tile the Entity is standing on.
     rcoord
-    getPixelCoord() const noexcept;
+    getPixelCoord() noexcept;
 
 
     // Gets the Entity's current Area.
@@ -118,10 +118,10 @@ class Entity {
 
     // Gets speed in pixels per second.
     float
-    getSpeedInPixels() const noexcept;
+    getSpeedInPixels() noexcept;
     // Gets speed in tiles per second.
     float
-    getSpeedInTiles() const noexcept;
+    getSpeedInTiles() noexcept;
 
 
     virtual void
@@ -148,7 +148,7 @@ class Entity {
 
     // Gets a string describing a direction.
     StringView
-    directionStr(ivec2 facing) const noexcept;
+    directionStr(ivec2 facing) noexcept;
 
     enum SetPhaseResult
     _setPhase(StringView name) noexcept;

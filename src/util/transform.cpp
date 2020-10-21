@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** transform.cpp                    **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -49,14 +49,9 @@ Transform::operator[](int i) noexcept {
     return matrix[i];
 }
 
-const float&
-Transform::operator[](int i) const noexcept {
-    return matrix[i];
-}
-
 Transform
-Transform::operator*(const Transform& right) noexcept {
-    const Transform& left = *this;
+Transform::operator*(Transform& right) noexcept {
+    Transform& left = *this;
 
     Transform result;
     for (int i = 0; i < 16; i++) {

@@ -50,8 +50,8 @@ class MappedFile {
     operator=(MappedFile&& other) noexcept;
 
     template<typename T>
-    const T
-    at(size_t offset) const noexcept {
+    T
+    at(size_t offset) noexcept {
         return reinterpret_cast<T>(map + offset);
     }
 

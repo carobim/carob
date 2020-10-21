@@ -51,9 +51,9 @@ class Character : public Entity {
 
     //! Retrieve position within Area.
     icoord
-    getTileCoords_i() const noexcept;
+    getTileCoords_i() noexcept;
     vicoord
-    getTileCoords_vi() const noexcept;
+    getTileCoords_vi() noexcept;
 
     //! Set location within Area.
     void

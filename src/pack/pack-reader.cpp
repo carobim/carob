@@ -65,15 +65,15 @@ struct BlobMetadata {
 class PackReaderImpl : public PackReader {
  public:
     BlobIndex
-    size() const noexcept;
+    size() noexcept;
 
     BlobIndex
     findIndex(StringView path) noexcept;
 
     StringView
-    getBlobPath(BlobIndex index) const noexcept;
+    getBlobPath(BlobIndex index) noexcept;
     BlobSize
-    getBlobSize(BlobIndex index) const noexcept;
+    getBlobSize(BlobIndex index) noexcept;
     void*
     getBlobData(BlobIndex index) noexcept;
 
@@ -88,11 +88,11 @@ class PackReaderImpl : public PackReader {
     MappedFile file;
 
     // Pointers into `file`.
-    const HeaderBlock* header;
-    const PathOffset* pathOffsets;
-    const char* paths;
-    const BlobMetadata* metadatas;
-    const uint32_t* dataOffsets;
+    HeaderBlock* header;
+    PathOffset* pathOffsets;
+    char* paths;
+    BlobMetadata* metadatas;
+    uint32_t* dataOffsets;
 
     bool lookupsConstructed = false;
     Hashmap<StringView, BlobIndex> lookups;
@@ -145,7 +145,7 @@ PackReader::fromFile(StringView path) noexcept {
 }
 
 PackReader::BlobIndex
-PackReaderImpl::size() const noexcept {
+PackReaderImpl::size() noexcept {
     return header->blobCount;
 }
 
@@ -166,14 +166,14 @@ PackReaderImpl::findIndex(StringView path) noexcept {
 }
 
 StringView
-PackReaderImpl::getBlobPath(PackReader::BlobIndex index) const noexcept {
+PackReaderImpl::getBlobPath(PackReader::BlobIndex index) noexcept {
     uint32_t begin = pathOffsets[index];
     uint32_t end = pathOffsets[index + 1];
     return StringView(paths + begin, end - begin);
 }
 
 PackReader::BlobSize
-PackReaderImpl::getBlobSize(PackReader::BlobIndex index) const noexcept {
+PackReaderImpl::getBlobSize(PackReader::BlobIndex index) noexcept {
     return metadatas[index].uncompressedSize;
 }
 

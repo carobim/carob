@@ -290,7 +290,7 @@ parseFloat(StringView s) noexcept {
 }
 
 int
-parseInt100(const char* s) noexcept {
+parseInt100(char* s) noexcept {
     int i = atoi(s);
     return bound(i, 0, 100);
 }

@@ -66,7 +66,7 @@ class Player : public Character {
     arrived() noexcept final;
 
     void
-    takeExit(const Exit& exit) noexcept;
+    takeExit(Exit& exit) noexcept;
 
  private:
     //! Stores intent to move continuously in some direction.

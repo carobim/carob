@@ -70,7 +70,7 @@ Optional<float>
 parseFloat(StringView s) noexcept;
 
 int
-parseInt100(const char* s) noexcept;
+parseInt100(char* s) noexcept;
 
 //! Split a string by a delimiter.
 Vector<StringView>
