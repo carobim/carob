@@ -177,8 +177,7 @@ union JsonValue {
         return reinterpret_cast<JsonNode*>(getPayload());
     }
 
-    JsonValue
-    operator[](StringView key) noexcept;
+    JsonValue operator[](StringView key) noexcept;
 
     inline uint64_t
     getPayload() noexcept {
@@ -208,15 +207,9 @@ struct JsonIterator {
         return node != other.node;
     }
 
-    inline JsonNode&
-    operator*() noexcept {
-        return *node;
-    }
+    inline JsonNode& operator*() noexcept { return *node; }
 
-    inline JsonNode&
-    operator->() noexcept {
-        return *node;
-    }
+    inline JsonNode& operator->() noexcept { return *node; }
 };
 
 inline JsonIterator

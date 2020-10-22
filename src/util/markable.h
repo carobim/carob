@@ -85,14 +85,12 @@ class Markable {
     }
     inline CONSTEXPR11 operator bool() const noexcept { return exists(); }
 
-    inline CONSTEXPR14 T*
-    operator->() noexcept {
+    inline CONSTEXPR14 T* operator->() noexcept {
         assert_(exists());
         return &x;
     }
 
-    inline CONSTEXPR14 T&
-    operator*() noexcept {
+    inline CONSTEXPR14 T& operator*() noexcept {
         assert_(exists());
         return x;
     }

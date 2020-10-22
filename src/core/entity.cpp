@@ -194,7 +194,8 @@ parsePhase(Entity* e,
     if (frameValue.isNumber()) {
         int frame = frameValue.toInt();
         if (frame >= nTiles) {
-            logErr(e->descriptor, "<phase> frame attribute index out of bounds");
+            logErr(e->descriptor,
+                   "<phase> frame attribute index out of bounds");
             return false;
         }
         ImageID image = TiledImage::getTile(tiles, frame);
@@ -232,7 +233,8 @@ parsePhase(Entity* e,
     }
     else {
         // Cannot get to this point because of CHECKs above.
-        // logErr(descriptor, "<phase> frames attribute not an int or int ranges");
+        // logErr(descriptor,
+        //        "<phase> frames attribute not an int or int ranges");
         // return false;
     }
 

@@ -123,8 +123,7 @@ class Vector {
     T*
     data() const noexcept;
 
-    T&
-    operator[](size_t n) noexcept;
+    T& operator[](size_t n) noexcept;
 
     T&
     at(size_t n) noexcept;
@@ -437,8 +436,7 @@ Vector<T>::data() const noexcept {
 
 
 template<typename T>
-inline T&
-Vector<T>::operator[](size_t n) noexcept {
+inline T& Vector<T>::operator[](size_t n) noexcept {
     assert_(n < static_cast<size_t>(mpEnd - mpBegin));
 
     return *(mpBegin + n);

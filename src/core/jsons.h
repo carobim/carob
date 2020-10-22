@@ -31,6 +31,7 @@
 #include "util/optional.h"
 #include "util/string-view.h"
 
-Optional<JsonDocument> loadJson(StringView path) noexcept;
+Optional<JsonDocument>
+loadJson(StringView path) noexcept;
 
 #endif  // SRC_CORE_JSONS_H_

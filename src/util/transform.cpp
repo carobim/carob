@@ -44,13 +44,11 @@ Transform::translate(float x, float y) noexcept {
     return Transform{{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1}};
 }
 
-float&
-Transform::operator[](int i) noexcept {
+float& Transform::operator[](int i) noexcept {
     return matrix[i];
 }
 
-Transform
-Transform::operator*(Transform& right) noexcept {
+Transform Transform::operator*(Transform& right) noexcept {
     Transform& left = *this;
 
     Transform result;

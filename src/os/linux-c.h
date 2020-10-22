@@ -234,8 +234,18 @@ double
 sqrt(double) noexcept;
 
 // pthread.h
-#define PTHREAD_MUTEX_INITIALIZER { { { 0 } } }
-#define PTHREAD_COND_INITIALIZER  { { { 0 } } }
+#define PTHREAD_MUTEX_INITIALIZER \
+    {                             \
+        {                         \
+            { 0 }                 \
+        }                         \
+    }
+#define PTHREAD_COND_INITIALIZER \
+    {                            \
+        {                        \
+            { 0 }                \
+        }                        \
+    }
 int
 pthread_mutex_destroy(pthread_mutex_t*) noexcept;
 int

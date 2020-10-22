@@ -103,14 +103,12 @@ operator-(const vec3<T>& a, const vec3<T>& b) noexcept {
 }
 
 template<class T, class CO>
-vec2<T>
-operator*(CO co, const vec2<T>& a) noexcept {
+vec2<T> operator*(CO co, const vec2<T>& a) noexcept {
     return {a.x * (T)co, a.y * (T)co};
 }
 
 template<class T, class CO>
-vec3<T>
-operator*(CO co, const vec3<T>& a) noexcept {
+vec3<T> operator*(CO co, const vec3<T>& a) noexcept {
     return {a.x * (T)co, a.y * (T)co, a.z * (T)co};
 }
 

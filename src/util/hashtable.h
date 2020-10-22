@@ -118,14 +118,8 @@ class Hashmap {
             advancePastEmpty();
         }
 
-        Entry&
-        operator*() const noexcept {
-            return hm->buckets[idx];
-        }
-        Entry*
-        operator->() const noexcept {
-            return &hm->buckets[idx];
-        }
+        Entry& operator*() const noexcept { return hm->buckets[idx]; }
+        Entry* operator->() const noexcept { return &hm->buckets[idx]; }
 
         Key&
         key() noexcept {
@@ -228,12 +222,10 @@ class Hashmap {
     }
 
     // Read
-    Value&
-    operator[](const Key& key) noexcept {
+    Value& operator[](const Key& key) noexcept {
         return emplaceImpl(key)->second;
     }
-    Value&
-    operator[](Key&& key) noexcept {
+    Value& operator[](Key&& key) noexcept {
         return emplaceImpl(move_(key))->second;
     }
 

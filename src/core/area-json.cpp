@@ -78,9 +78,7 @@ class AreaJSON : public Area {
     bool
     processTileSet(JsonValue obj) noexcept;
     bool
-    processTileSetFile(JsonValue obj,
-                       StringView source,
-                       int firstGid) noexcept;
+    processTileSetFile(JsonValue obj, StringView source, int firstGid) noexcept;
     bool
     processTileType(JsonValue obj,
                     Optional<Animation>& graphic,
@@ -725,11 +723,17 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     CHECK(exitdownValue.isString() || exitdownValue.isNull());
     CHECK(exitleftValue.isString() || exitleftValue.isNull());
     CHECK(exitrightValue.isString() || exitrightValue.isNull());
-    CHECK(layermodValue.isNull() || (layermodValue.isString() && parseFloat(layermodValue.toString())));
-    CHECK(layermodValue.isNull() || (layermodupValue.isString() && parseFloat(layermodupValue.toString())));
-    CHECK(layermodValue.isNull() || (layermoddownValue.isString() && parseFloat(layermoddownValue.toString())));
-    CHECK(layermodValue.isNull() || (layermodleftValue.isString() && parseFloat(layermodleftValue.toString())));
-    CHECK(layermodValue.isNull() || (layermodrightValue.isString() && parseFloat(layermodrightValue.toString())));
+    CHECK(layermodValue.isNull() ||
+          (layermodValue.isString() && parseFloat(layermodValue.toString())));
+    CHECK(layermodValue.isNull() || (layermodupValue.isString() &&
+                                     parseFloat(layermodupValue.toString())));
+    CHECK(layermodValue.isNull() || (layermoddownValue.isString() &&
+                                     parseFloat(layermoddownValue.toString())));
+    CHECK(layermodValue.isNull() || (layermodleftValue.isString() &&
+                                     parseFloat(layermodleftValue.toString())));
+    CHECK(layermodValue.isNull() ||
+          (layermodrightValue.isString() &&
+           parseFloat(layermodrightValue.toString())));
 
     const size_t z = static_cast<size_t>(grid.dim.z) - 1;
 

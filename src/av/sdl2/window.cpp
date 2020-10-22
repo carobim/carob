@@ -203,8 +203,8 @@ GameWindow::create() noexcept {
     bool vsync = (info.flags & SDL_RENDERER_PRESENTVSYNC) != 0;
 
     logInfo("SDL2GameWindow",
-             String("Rendering will be done with ")
-                     << name << (vsync ? " with vsync" : " without vsync"));
+            String("Rendering will be done with ")
+                    << name << (vsync ? " with vsync" : " without vsync"));
 
     SDL_SetRenderDrawColor(SDL2GameWindow::renderer, 0x00, 0x00, 0x00, 0xFF);
 }
@@ -325,7 +325,7 @@ GameWindow::mainLoop() noexcept {
                 framesDropped += 1;
             }
             logInfo("GameWindow",
-                     String() << "Dropped " << framesDropped << " frames");
+                    String() << "Dropped " << framesDropped << " frames");
         }
     }
 }

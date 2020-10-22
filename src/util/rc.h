@@ -87,13 +87,11 @@ class Rc {
     get() const noexcept {
         return x;
     }
-    T*
-    operator->() const noexcept {
+    T* operator->() const noexcept {
         assert_(x);
         return x;
     }
-    T&
-    operator*() const noexcept {
+    T& operator*() const noexcept {
         assert_(x);
         return *x;
     }
@@ -186,13 +184,11 @@ class CompactRc {
     get() const noexcept {
         return data->x;
     }
-    T*
-    operator->() const noexcept {
+    T* operator->() const noexcept {
         assert_(data);
         return data->x;
     }
-    T&
-    operator*() const noexcept {
+    T& operator*() const noexcept {
         assert_(data);
         return *data->x;
     }
