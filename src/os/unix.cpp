@@ -37,9 +37,9 @@ getFileSize(StringView path_) noexcept {
 
     struct stat status;
     if (stat(path.null(), &status)) {
-        return mark;
+        return FS_ERROR;
     }
-    return Filesize(static_cast<uint64_t>(status.st_size));
+    return static_cast<Filesize>(status.st_size);
 }
 
 bool
@@ -187,7 +187,7 @@ noexcept { int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666); if
 Optional<String>
 readFile(String& path) noexcept {
     Filesize size = getFileSize(path);
-    if (!size) {
+    if (size == FS_ERROR) {
         return Optional<String>();
     }
 
@@ -197,9 +197,9 @@ readFile(String& path) noexcept {
     }
 
     String contents;
-    contents.resize(*size);
+    contents.resize(size);
 
-    ssize_t read = fread(contents.data(), *size, 1, f);
+    ssize_t read = fread(contents.data(), size, 1, f);
     if (read != 1) {
         fclose(f);
         return Optional<String>();

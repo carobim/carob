@@ -126,20 +126,20 @@ getFileSize(StringView path) noexcept {
                              0,
                              nullptr);
     if (file == INVALID_HANDLE_VALUE) {
-        return mark;
+        return FS_ERROR;
     }
 
     LARGE_INTEGER size;
     BOOL ok = GetFileSizeEx(file, &size);
     if (!ok) {
-        return mark;
+        return FS_ERROR;
     }
 
     ok = CloseHandle(file);
     (void)ok;
     assert_(ok);
 
-    return Filesize(static_cast<uint64_t>(size.QuadPart));
+    return static_cast<Filesize>(size.QuadPart);
 }
 
 bool
@@ -249,12 +249,10 @@ listDir(StringView path) noexcept {
 
 Optional<String>
 readFile(StringView path) noexcept {
-    Filesize size__ = getFileSize(path);
-    if (!size__) {
+    Filesize size_ = getFileSize(path);
+    if (size_ == FS_ERROR) {
         return none;
     }
-
-    uint64_t size_ = *size__;
 
     if (size_ > UINT32_MAX) {
         return none;

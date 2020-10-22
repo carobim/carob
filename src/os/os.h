@@ -28,7 +28,6 @@
 #define SRC_OS_OS_H_
 
 #include "util/int.h"
-#include "util/markable.h"
 #include "util/noexcept.h"
 #include "util/optional.h"
 #include "util/string-view.h"
@@ -37,7 +36,9 @@
 
 extern const char dirSeparator;
 
-typedef Markable<uint64_t, UINT64_MAX> Filesize;
+typedef uint64_t Filesize;
+
+#define FS_ERROR UINT64_MAX
 
 Filesize
 getFileSize(StringView path) noexcept;
