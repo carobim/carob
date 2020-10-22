@@ -30,6 +30,7 @@
 #include "pack/file-type.h"
 #include "pack/pack-reader.h"
 #include "util/int.h"
+#include "util/move.h"
 #include "util/noexcept.h"
 #include "util/sort.h"
 #include "util/string.h"
@@ -113,7 +114,11 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
     // Sort blobs by size (smallest first).
     if (!sorted) {
         sorted = true;
-        pdqsort(blobs.begin(), blobs.end());
+
+        Blob* data = blobs.data();
+#define LESS(i, j) data[i] < data[j]
+#define SWAP(i, j) swap_(data[i], data[j])
+        QSORT(blobs.size(), LESS, SWAP);
     }
 
     // Determine block offsets.
