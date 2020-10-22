@@ -13,6 +13,6 @@
 		"soundvolume": 100
 	},
 	"cache": {
-		"ttl": 300  // Unused item expiration time in seconds.
+		"ttl": 300
 	}
 }
