@@ -454,7 +454,7 @@ endif()
 if(CLANG OR GCC)
     string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto")
     string(APPEND CMAKE_CXX_FLAGS_MINSIZEREL " -flto")
-    string(APPEND CMAKE_CXX_FLAGS_RELWITHDEBINFO " -flto=thin")
+    string(APPEND CMAKE_CXX_FLAGS_RELWITHDEBINFO " -flto")
 endif()
 
 target_compile_definitions(tsunagari
