@@ -8,7 +8,6 @@ for:
     only:
       - image: Visual Studio 2015
   build_script:
-    - git submodule update --init
     - mkdir build
     - cd build
     - cmake .. -G "Visual Studio 14 2015"
@@ -17,7 +16,6 @@ for:
     only:
       - image: Visual Studio 2017
   build_script:
-    - git submodule update --init
     - mkdir build
     - cd build
     - cmake .. -G "Visual Studio 15 2017"
@@ -26,7 +24,6 @@ for:
     only:
       - image: Visual Studio 2019
   build_script:
-    - git submodule update --init
     - mkdir build
     - cd build
     - cmake .. -G "Visual Studio 16 2019"
