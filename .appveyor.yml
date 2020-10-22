@@ -7,24 +7,24 @@ for:
 - matrix:
     only:
     - image: Visual Studio 2015
-    build_script:
-    - mkdir build
-    - cd build
-    - cmake .. -G "Visual Studio 14 2015"
-    - cmake --build .
+  build_script:
+  - mkdir build
+  - cd build
+  - cmake .. -G "Visual Studio 14 2015"
+  - cmake --build .
 - matrix:
     only:
     - image: Visual Studio 2017
-    build_script:
-    - mkdir build
-    - cd build
-    - cmake .. -G "Visual Studio 15 2017"
-    - cmake --build .
+  build_script:
+  - mkdir build
+  - cd build
+  - cmake .. -G "Visual Studio 15 2017"
+  - cmake --build .
 - matrix:
     only:
     - image: Visual Studio 2019
-    build_script:
-    - mkdir build
-    - cd build
-    - cmake .. -G "Visual Studio 16 2019"
-    - cmake --build .
+  build_script:
+  - mkdir build
+  - cd build
+  - cmake .. -G "Visual Studio 16 2019"
+  - cmake --build .
