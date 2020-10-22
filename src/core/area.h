@@ -42,9 +42,6 @@
 
 #define ISOMETRIC_ZOFF_PER_TILE 0.001
 
-// FIXME: Rc<Character> and Rc<Overlay> need complete types for their
-//        destructors. Remove their usage.
-
 class AreaJSON;
 class Character;
 class DataArea;
