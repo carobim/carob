@@ -325,21 +325,6 @@ wFixConsole() noexcept {
     //}
 }
 
-/* From gosu/src/Utility.cpp by Julian Raschke in 2007 */
-/*
-std::wstring widen(StringView s) noexcept {
-  size_t wideLen = mbstowcs(0, String(s).null(), 0);
-  if (wideLen == static_cast<size_t>(-1)) {
-    throw std::runtime_error("Could not convert from string to wstring: " + s);
-  }
-
-  vector<wchar_t> buf(wideLen + 1);
-  mbstowcs(&buf.front(), String(s).null(), buf.size());
-
-  return std::wstring(buf.begin(), buf.end() - 1);
-}
-*/
-
 void
 wMessageBox(StringView title, StringView text) noexcept {
     // World::instance().setPaused(true);

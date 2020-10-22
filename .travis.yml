@@ -25,19 +25,6 @@ _sdl2: &sdl2
  - cmake .. -DAV_SDL2=On
  - make
 
-_gosu: &gosu
- addons:
-   homebrew:
-     packages:
-     - libgosu
-     update: true
- env:
- - LDFLAGS=-L/usr/local/lib
- script:
- - mkdir build && cd build
- - cmake .. -DAV_GOSU=On
- - make
-
 jobs:
   include:
   - name: 10.11 null
@@ -52,9 +39,3 @@ jobs:
   - name: 10.15 sdl2
     osx_image: xcode12
     <<: *sdl2
-# - name: 10.13 gosu
-#   osx_image: xcode10.1
-#   <<: *gosu
-# - name: 10.15 gosu
-#   osx_image: xcode12
-#   <<: *gosu

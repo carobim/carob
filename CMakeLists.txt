@@ -8,15 +8,13 @@ project(TsunagariEngine LANGUAGES C CXX)
 
 option(AV_NULL "Disable audio and video output")
 option(AV_SDL2 "Use SDL2 for audio and video output")
-option(AV_GOSU "Use Gosu for audio and video output")
 option(AV_EM "Use Emscripten for audio and video output")
 
-if(NOT AV_SDL2 AND NOT AV_GOSU AND NOT AV_EM)
+if(NOT AV_SDL2 AND NOT AV_EM)
     set(AV_NULL ON)
 endif()
 
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
-option(USE_GOSU_CONFIG_MODULE "Use the GosuConfig.cmake module to find SDL2" ON)
 
 option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
 
@@ -123,19 +121,6 @@ if(AV_SDL2 OR AV_EM)
                 ${HERE}/src/av/sdl2/sounds.cpp
                 ${HERE}/src/av/sdl2/window.cpp
                 ${HERE}/src/av/sdl2/window.h
-    )
-endif()
-
-if(AV_GOSU)
-    target_sources(tsunagari
-        PRIVATE ${HERE}/src/av/gosu/cbuffer.cpp
-                ${HERE}/src/av/gosu/cbuffer.h
-                ${HERE}/src/av/gosu/gosu.h
-                ${HERE}/src/av/gosu/images.cpp
-                ${HERE}/src/av/null/music.cpp
-                ${HERE}/src/av/null/sounds.cpp
-                ${HERE}/src/av/gosu/window.cpp
-                ${HERE}/src/av/gosu/window.h
     )
 endif()
 
@@ -564,10 +549,8 @@ if(APPLE)
                /System/Library/Frameworks/Foundation.framework
     )
 
-    if(NOT AV_GOSU)
-        string(APPEND CMAKE_EXE_LINKER_FLAGS
-                      " --no-standard-libraries -lSystem")
-    endif()
+    string(APPEND CMAKE_EXE_LINKER_FLAGS
+                  " --no-standard-libraries -lSystem")
 endif()
 
 if(LINUX AND NOT AV_EM)
@@ -657,35 +640,5 @@ if(AV_SDL2)
         PUBLIC ${SDL2_LIBRARIES}
                ${SDL2_image_LIBRARIES}
                ${SDL2_mixer_LIBRARIES}
-    )
-endif()
-
-if(AV_GOSU)
-    if(USE_GOSU_CONFIG_MODULE)
-        find_package(Gosu REQUIRED)
-    else()
-        set(GOSU_INCLUDE_DIRS "" CACHE PATH
-            "Directory with Gosu headers")
-
-        set(GOSU_LIBRARY_DIRS "" CACHE PATH
-            "Directory with Gosu library")
-
-        set(GOSU_LIBRARIES "" CACHE STRING
-            "Name of Gosu library")
-
-        set(GOSU_DEPENDENCIES "" CACHE STRING
-            "Names of Gosu dependency libraries")
-    endif()
-
-    if("${GOSU_LIBRARIES}" STREQUAL "")
-        message(SEND_ERROR "When not using GosuConfig.cmake, please"
-            " manually set Gosu include dirs and libraries")
-    endif()
-
-    target_include_directories(tsunagari PRIVATE ${GOSU_INCLUDE_DIRS})
-    link_directories(${GOSU_LIBRARY_DIRS})
-    target_link_libraries(tsunagari
-        PUBLIC ${GOSU_LIBRARIES}
-               ${GOSU_DEPENDENCIES}
     )
 endif()

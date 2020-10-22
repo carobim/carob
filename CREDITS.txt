@@ -27,19 +27,6 @@ License:
 
 -----
 
-=== LibGosu ===
-
-Copyright (c) 2004-2019:
-	Julian Raschke
-	Jan Lücker
-	All contributors.
-
-License:
-	MIT License
-	<http://www.opensource.org/licenses/mit-license.php>
-
------
-
 === TMX Map Format ===
 
 Copyright (c) 2008-2012:
