@@ -24,7 +24,8 @@
 // IN THE SOFTWARE.
 // **********
 
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) || \
+        defined(__NetBSD__)
 
 #include "os/c.h"
 #include "os/os.h"
@@ -58,7 +59,7 @@ operator delete(void* ptr, size_t) noexcept {
     free(ptr);
 }
 
-void*
-__cxa_pure_virtual = 0;
+void* __cxa_pure_virtual = 0;
 
-#endif  // defined(__APPLE__) || defined(__linux__)
+#endif  // defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) ||
+        // defined(__NetBSD__)
