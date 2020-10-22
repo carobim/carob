@@ -34,11 +34,11 @@ static const StringView mediaExtensions[] = {".oga", ".png"};
 
 FileType
 determineFileType(StringView path) noexcept {
-    auto dot = path.rfind('.');
-    if (!dot) {
+    StringPosition dot = path.rfind('.');
+    if (dot == SV_NOT_FOUND) {
         return FT_UNKNOWN;
     }
-    StringView extension = path.substr(*dot);
+    StringView extension = path.substr(dot);
     for (auto& textExtension : textExtensions) {
         if (extension == textExtension) {
             return FT_TEXT;

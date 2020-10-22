@@ -237,8 +237,8 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
     }
     if (loopValue.isString()) {
         StringView directions = loopValue.toString();
-        grid.loopX = directions.find('x');
-        grid.loopY = directions.find('y');
+        grid.loopX = directions.find('x') != SV_NOT_FOUND;
+        grid.loopY = directions.find('y') != SV_NOT_FOUND;
     }
     if (coloroverlayValue.isString()) {
         unsigned char a, r, g, b;
@@ -259,7 +259,9 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
 static StringView
 dirname(StringView path) noexcept {
     StringPosition slash = path.rfind('/');
-    return !slash ? "" : path.substr(0, static_cast<size_t>(*slash) + 1);
+    return slash == SV_NOT_FOUND
+        ? ""
+        : path.substr(0, slash + 1);
 }
 
 bool
@@ -954,10 +956,10 @@ AreaJSON::parseExit(StringView dest,
         return false;
     }
 
-    if (x.find('+')) {
+    if (x.find('+') != SV_NOT_FOUND) {
         x = x.substr(0, x.size - 1);
     }
-    if (y.find('+')) {
+    if (y.find('+') != SV_NOT_FOUND) {
         y = y.substr(0, y.size - 1);
     }
 
@@ -967,8 +969,8 @@ AreaJSON::parseExit(StringView dest,
 
     exit = Exit{area, *x_, *y_, *z_};
 
-    *wwide = x.find('+');
-    *hwide = y.find('+');
+    *wwide = x.find('+') != SV_NOT_FOUND;
+    *hwide = y.find('+') != SV_NOT_FOUND;
 
     return true;
 }

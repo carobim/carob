@@ -34,7 +34,7 @@ StringPosition
 StringView::find(char needle) const noexcept {
     char* result = static_cast<char*>(memchr(data, needle, size));
     if (result == nullptr) {
-        return mark;
+        return SV_NOT_FOUND;
     }
     return StringPosition(result - data);
 }
@@ -44,7 +44,7 @@ StringView::find(StringView needle) const noexcept {
     char* result =
             static_cast<char*>(memmem(data, size, needle.data, needle.size));
     if (result == nullptr) {
-        return mark;
+        return SV_NOT_FOUND;
     }
     return StringPosition(result - data);
 }
@@ -56,7 +56,7 @@ StringView::find(StringView needle, size_t start) const noexcept {
     char* result = static_cast<char*>(
             memmem(data + start, size - start, needle.data, needle.size));
     if (result == nullptr) {
-        return mark;
+        return SV_NOT_FOUND;
     }
     return StringPosition(result - data);
 }
@@ -64,7 +64,7 @@ StringView::find(StringView needle, size_t start) const noexcept {
 StringPosition
 StringView::rfind(char needle) const noexcept {
     if (size == 0) {
-        return mark;
+        return SV_NOT_FOUND;
     }
 
     size_t i = size - 1;
@@ -75,7 +75,7 @@ StringView::rfind(char needle) const noexcept {
         i--;
     } while (i > 0);
 
-    return mark;
+    return SV_NOT_FOUND;
 }
 
 size_t

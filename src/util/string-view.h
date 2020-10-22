@@ -31,10 +31,11 @@
 #include "util/assert.h"
 #include "util/constexpr.h"
 #include "util/int.h"
-#include "util/markable.h"
 #include "util/noexcept.h"
 
-typedef Markable<size_t, SIZE_MAX> StringPosition;
+typedef size_t StringPosition;
+
+#define SV_NOT_FOUND SIZE_MAX
 
 class StringView {
  public:

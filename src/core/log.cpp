@@ -70,9 +70,8 @@ makeTimestamp() noexcept {
 
     StringView v = s.view();
 
-    StringPosition idx = v.find('.');
-    if (idx) {
-        size_t dot = *idx;
+    StringPosition dot = v.find('.');
+    if (dot != SV_NOT_FOUND) {
         v = v.substr(0, min_(v.size, dot + 4));
     }
 

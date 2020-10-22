@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** string2.cpp                        **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -300,10 +300,10 @@ splitStr(StringView input, StringView delimiter) noexcept {
     Vector<StringView> strlist;
     size_t i = 0;
 
-    for (StringPosition pos = input.find(delimiter); pos;
+    for (StringPosition pos = input.find(delimiter); pos != SV_NOT_FOUND;
          pos = input.find(delimiter, i)) {
-        strlist.push_back(input.substr(i, *pos - i));
-        i = *pos + delimiter.size;
+        strlist.push_back(input.substr(i, pos - i));
+        i = pos + delimiter.size;
     }
 
     if (input.size != i) {
@@ -318,19 +318,17 @@ parseRanges(StringView format) noexcept {
     for (StringView range : splitStr(format, ",")) {
         StringPosition dash = range.find('-');
 
-        if (!dash) {
+        if (dash == SV_NOT_FOUND) {
             Optional<int> i = parseInt(range);
             if (!i) {
                 return none;
             }
 
-            ints.push_back(*i);
+            ints.push_back(i);
         }
         else {
-            size_t dash_ = *dash;
-
-            StringView rngbeg = range.substr(0, dash_);
-            StringView rngend = range.substr(dash_ + 1);
+            StringView rngbeg = range.substr(0, dash);
+            StringView rngend = range.substr(dash + 1);
 
             Optional<int> beg = parseInt(rngbeg);
             Optional<int> end = parseInt(rngend);
