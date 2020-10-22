@@ -52,9 +52,9 @@ jobs:
   - name: 10.15 sdl2
     osx_image: xcode12
     <<: *sdl2
-  - name: 10.13 gosu
-    osx_image: xcode10.1
-    <<: *gosu
-  - name: 10.15 gosu
-    osx_image: xcode12
-    <<: *gosu
+# - name: 10.13 gosu
+#   osx_image: xcode10.1
+#   <<: *gosu
+# - name: 10.15 gosu
+#   osx_image: xcode12
+#   <<: *gosu
