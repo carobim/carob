@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** main.cpp                         **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -29,7 +29,6 @@
 #include "os/os.h"
 #include "pack/pack-reader.h"
 #include "pack/pack-writer.h"
-#include "pack/ui.h"
 #include "pack/walker.h"
 #include "util/int.h"
 #include "util/move.h"
@@ -40,6 +39,7 @@
 #include "util/unique.h"
 
 static String exe;
+static bool verbose = false;
 
 static void
 usage() noexcept {
@@ -62,13 +62,17 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
     Optional<String> data = readFile(path);
 
     if (!data) {
-        uiShowSkippedMissingFile(path);
+        if (verbose) {
+            printf("%s", (String() << "Skipped " << path << ": file not found\n\0").null().get());
+        }
         return;
     }
 
     String data_ = move_(*data);
 
-    uiShowAddedFile(path, data_.size());
+    if (verbose) {
+        printf("%s", (String() << "Added " << path << ": " << data_.size() << " bytes\n").null().get());
+    }
 
     // Write the file path to the pack file with '/' instead of '\\' on Windows.
     String standardizedPath;
@@ -99,7 +103,9 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
 
     walk(move_(paths), [&](StringView path) noexcept { addFile(ctx, path); });
 
-    uiShowWritingArchive(archivePath);
+    if (verbose) {
+        printf("%s", (String() << "Writing to " << archivePath << "\n").null().get());
+    }
 
     return ctx.pack->writeToFile(archivePath);
 }
@@ -209,7 +215,9 @@ extractArchive(StringView archivePath) noexcept {
                 blobPath = standardizedPath;
             }
 
-            uiShowExtractingFile(blobPath, blobSize);
+            if (verbose) {
+                printf("%s", (String() << "Extracting " << blobPath << ": " << blobSize << " bytes\n").null().get());
+            }
 
             putFile(blobPath, blobSize, blobData);
         }

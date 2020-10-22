@@ -300,8 +300,6 @@ target_sources(pack-tool
     PRIVATE ${HERE}/src/pack/pack-reader.h
     PRIVATE ${HERE}/src/pack/pack-writer.cpp
     PRIVATE ${HERE}/src/pack/pack-writer.h
-    PRIVATE ${HERE}/src/pack/ui-log.cpp
-    PRIVATE ${HERE}/src/pack/ui.h
     PRIVATE ${HERE}/src/pack/walker.cpp
     PRIVATE ${HERE}/src/pack/walker.h
 )
