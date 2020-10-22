@@ -141,7 +141,7 @@ union JsonValue {
                                     JSON_VALUE_TAG_MASK);
     }
 
-    inline int
+    inline bool
     toBool() noexcept {
         // assert_(isBool());
         return getTag() == JSON_TRUE;
