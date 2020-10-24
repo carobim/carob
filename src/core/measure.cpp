@@ -27,6 +27,8 @@
 #include "core/measure.h"
 
 #include "core/log.h"
+#include "util/move.h"
+#include "util/noexcept.h"
 
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
 #include "util/hashtable.h"
@@ -80,6 +82,5 @@ TimeMeasure::~TimeMeasure() noexcept {
 
     Duration elapsed = end - start;
     logInfo("Measure",
-            String() << description << " took " << ns_to_s_d(elapsed)
-                     << " seconds");
+            description << " took " << ns_to_s_d(elapsed) << " seconds");
 }

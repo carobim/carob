@@ -32,7 +32,7 @@
 #include "util/vector.h"
 
 struct DisplayItem {
-    ImageID image;
+    Image image;
     rvec2 destination;
 };
 

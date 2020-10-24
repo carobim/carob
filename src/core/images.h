@@ -29,52 +29,54 @@
 #define SRC_CORE_IMAGES_H_
 
 #include "util/int.h"
-#include "util/markable.h"
 #include "util/string-view.h"
 
-typedef Markable<int, INT32_MIN> TiledImageID;
-typedef Markable<int, INT32_MIN> ImageID;
+struct Image {
+    void* texture;
 
-class Images {
- public:
-    // Load an image from the file at the given path.
-    static ImageID
-    load(StringView path) noexcept;
+    uint32_t x      : 16;
+    uint32_t y      : 16;
 
-    // Load an image of tiles from the file at the given path. Each tile
-    // with width and heigh as specified.
-    static TiledImageID
-    loadTiles(StringView path, int tileWidth, int tileHeight) noexcept;
-
-    // Free images not recently used.
-    static void
-    prune(time_t latestPermissibleUse) noexcept;
+    uint32_t width  : 16;
+    uint32_t height : 16;
 };
 
-class TiledImage {
- public:
-    static int
-    size(TiledImageID tiid) noexcept;
+struct TiledImage {
+    Image image;
 
-    static ImageID
-    getTile(TiledImageID tiid, int i) noexcept;
+    uint32_t tileWidth  : 10;  // 0-1023
+    uint32_t tileHeight : 10;  // 0-1023
 
-    static void
-    release(TiledImageID tiid) noexcept;
+    uint32_t numTiles   : 12;  // 0-4095
 };
 
-class Image {
- public:
-    static void
-    draw(ImageID iid, float x, float y, float z) noexcept;
+// Load an image from the file at the given path.
+Image
+imageLoad(StringView path) noexcept;
 
-    static int
-    width(ImageID iid) noexcept;
-    static int
-    height(ImageID iid) noexcept;
+#define IMAGE_VALID(image) (image.texture != 0)
 
-    static void
-    release(ImageID iid) noexcept;
-};
+void
+imageDraw(Image image, float x, float y, float z) noexcept;
+
+void
+imageRelease(Image image) noexcept;
+
+// Load an image of tiles from the file at the given path. Each tile with width
+// and heigh as specified.
+TiledImage
+tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight) noexcept;
+
+#define TILES_VALID(tiles) (tiles.image.texture != 0)
+
+void
+tilesRelease(TiledImage tiles) noexcept;
+
+Image
+tileAt(TiledImage tiles, uint32_t index) noexcept;
+
+// Free images and tiled images not recently used.
+void
+imagesPrune(time_t latestPermissibleUse) noexcept;
 
 #endif  // SRC_CORE_IMAGES_H_

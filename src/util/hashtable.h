@@ -26,19 +26,6 @@
 
 // Original source downloaded from: https://github.com/rigtorp/HashMap
 
-#ifndef SRC_UTIL_HASHTABLE_H_
-#define SRC_UTIL_HASHTABLE_H_
-
-#include "util/algorithm.h"
-#include "util/assert.h"
-#include "util/constexpr.h"
-#include "util/hash.h"
-#include "util/int.h"
-#include "util/move.h"
-#include "util/noexcept.h"
-#include "util/optional.h"
-#include "util/vector.h"
-
 /*
  * Copyright (c) 2017 Erik Rigtorp <erik@rigtorp.se>
  *
@@ -60,6 +47,19 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  */
+
+#ifndef SRC_UTIL_HASHTABLE_H_
+#define SRC_UTIL_HASHTABLE_H_
+
+#include "util/algorithm.h"
+#include "util/assert.h"
+#include "util/constexpr.h"
+#include "util/hash.h"
+#include "util/int.h"
+#include "util/move.h"
+#include "util/noexcept.h"
+#include "util/optional.h"
+#include "util/vector.h"
 
 /*
  * HashMap

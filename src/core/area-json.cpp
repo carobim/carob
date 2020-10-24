@@ -82,7 +82,7 @@ class AreaJSON : public Area {
     bool
     processTileType(JsonValue obj,
                     Optional<Animation>& graphic,
-                    TiledImageID img,
+                    TiledImage img,
                     int id) noexcept;
     bool
     processLayer(JsonValue obj) noexcept;
@@ -364,18 +364,18 @@ AreaJSON::processTileSetFile(JsonValue obj,
     tileSets[imgSource] = TileSet{firstGid, (size_t)width, (size_t)height};
 
     // Load tileset image.
-    TiledImageID images = Images::loadTiles(imgSource, tilex, tiley);
-    if (!images) {
+    TiledImage images = tilesLoad(imgSource, tilex, tiley);
+    if (!TILES_VALID(images)) {
         logErr(descriptor, "Tileset image not found");
         return false;
     }
 
-    int nTiles = TiledImage::size(images);
+    int nTiles = images.numTiles;
     tileGraphics.reserve(nTiles);
 
     // Initialize "vanilla" tile type array.
     for (int i = 0; i < nTiles; i++) {
-        ImageID image = TiledImage::getTile(images, i);
+        Image image = tileAt(images, i);
         tileGraphics.push_back(Optional<Animation>(Animation(image)));
     }
 
@@ -423,7 +423,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
 bool
 AreaJSON::processTileType(JsonValue obj,
                           Optional<Animation>& graphic,
-                          TiledImageID images,
+                          TiledImage images,
                           int id) noexcept {
     /*
       {
@@ -442,10 +442,10 @@ AreaJSON::processTileType(JsonValue obj,
     CHECK(speedNode.isString() || speedNode.isNull());
 
     // If a Tile is animated, it needs both member frames and a speed.
-    Vector<ImageID> framesvec;
+    Vector<Image> framesvec;
     Optional<int> frameLen;
 
-    int nTiles = TiledImage::size(images);
+    int nTiles = images.numTiles;
 
     if (framesNode.isString()) {
         Vector<StringView> frames = splitStr(framesNode.toString(), ",");
@@ -462,26 +462,26 @@ AreaJSON::processTileType(JsonValue obj,
         // Add frames to our animation.
         // We already have one from TileType's constructor.
         for (StringView& frame : frames) {
-            Optional<unsigned> idx = parseUInt(frame);
-            if (!idx) {
+            Optional<unsigned> idx_ = parseUInt(frame);
+            if (!idx_) {
                 logErr(descriptor,
                        "couldn't parse frame index for animated tile");
                 return false;
             }
-            if (*idx > INT32_MAX) {
+            if (*idx_ > INT32_MAX) {
                 logErr(descriptor, "frame index out of bounds");
                 return false;
             }
 
-            int idx_ = static_cast<int>(*idx);
+            int idx = static_cast<int>(*idx_);
 
-            if (nTiles <= idx_) {
+            if (nTiles <= idx) {
                 logErr(descriptor,
                        "frame index out of range for animated tile");
                 return false;
             }
 
-            framesvec.push_back(TiledImage::getTile(images, idx_));
+            framesvec.push_back(tileAt(images, idx));
         }
     }
     if (speedNode.isString()) {

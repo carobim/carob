@@ -62,12 +62,12 @@ parseDescriptor(Entity* e) noexcept;
 static bool
 parseSprite(Entity* e, JsonValue sprite) noexcept;
 static bool
-parsePhases(Entity* e, JsonValue phases, TiledImageID tiles) noexcept;
+parsePhases(Entity* e, JsonValue phases, TiledImage tiles) noexcept;
 static bool
 parsePhase(Entity* e,
            StringView name,
            JsonValue phase,
-           TiledImageID tiles) noexcept;
+           TiledImage tiles) noexcept;
 static bool
 parseSounds(Entity* e, JsonValue sounds) noexcept;
 static bool
@@ -141,14 +141,14 @@ parseSprite(Entity* e, JsonValue sprite) noexcept {
     e->imgsz.y = tileheightValue.toInt();
     StringView path = pathValue.toString();
 
-    TiledImageID tiles = Images::loadTiles(path, e->imgsz.x, e->imgsz.y);
-    CHECK(tiles);
+    TiledImage tiles = tilesLoad(path, e->imgsz.x, e->imgsz.y);
+    CHECK(TILES_VALID(tiles));
 
     return parsePhases(e, phasesValue, tiles);
 }
 
 static bool
-parsePhases(Entity* e, JsonValue phases, TiledImageID tiles) noexcept {
+parsePhases(Entity* e, JsonValue phases, TiledImage tiles) noexcept {
     for (JsonNode& node : phases) {
         CHECK(node.value.isObject());
         CHECK(parsePhase(e, node.key, node.value, tiles));
@@ -171,7 +171,7 @@ static bool
 parsePhase(Entity* e,
            StringView name,
            JsonValue phase,
-           TiledImageID tiles) noexcept {
+           TiledImage tiles) noexcept {
     // Each phase requires a 'name' and a 'frame' or 'frames'. Additionally,
     // 'speed' is required if 'frames' is found.
 
@@ -187,7 +187,7 @@ parsePhase(Entity* e,
     CHECK(!frameValue.isNumber() || !framesValue.isArray());
     CHECK(!framesValue.isArray() || speedValue.isNumber());
 
-    int nTiles = TiledImage::size(tiles);
+    int nTiles = tiles.numTiles;
 
     Animation animation;
 
@@ -198,7 +198,7 @@ parsePhase(Entity* e,
                    "<phase> frame attribute index out of bounds");
             return false;
         }
-        ImageID image = TiledImage::getTile(tiles, frame);
+        Image image = tileAt(tiles, frame);
         animation = Animation(image);
     }
     else if (framesValue.isArray()) {
@@ -212,7 +212,7 @@ parsePhase(Entity* e,
         float fps = static_cast<float>(speedValue.toNumber());
         assert_(fps != 0.0f);
 
-        Vector<ImageID> images;
+        Vector<Image> images;
         for (JsonNode& node : framesValue) {
             JsonValue frameValue = node.value;
 
@@ -224,7 +224,7 @@ parsePhase(Entity* e,
                        "<phase> frames attribute index out of bounds");
                 return false;
             }
-            images.push_back(TiledImage::getTile(tiles, frame));
+            images.push_back(tileAt(tiles, frame));
         }
         assert_(images.size() > 0);
 
@@ -239,31 +239,31 @@ parsePhase(Entity* e,
     }
 
     if (name == "stance") {
-        e->phaseStance = move_(animation);
+        e->phaseStance = animation;
     }
     else if (name == "down") {
-        e->phaseDown = move_(animation);
+        e->phaseDown = animation;
     }
     else if (name == "left") {
-        e->phaseLeft = move_(animation);
+        e->phaseLeft = animation;
     }
     else if (name == "up") {
-        e->phaseUp = move_(animation);
+        e->phaseUp = animation;
     }
     else if (name == "right") {
-        e->phaseRight = move_(animation);
+        e->phaseRight = animation;
     }
     else if (name == "moving up") {
-        e->phaseMovingUp = move_(animation);
+        e->phaseMovingUp = animation;
     }
     else if (name == "moving right") {
-        e->phaseMovingRight = move_(animation);
+        e->phaseMovingRight = animation;
     }
     else if (name == "moving down") {
-        e->phaseMovingDown = move_(animation);
+        e->phaseMovingDown = animation;
     }
     else if (name == "moving left") {
-        e->phaseMovingLeft = move_(animation);
+        e->phaseMovingLeft = animation;
     }
     else {
         logErr(e->descriptor, "unknown phase");

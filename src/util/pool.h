@@ -28,52 +28,62 @@
 #define SRC_UTIL_POOL_H_
 
 #include "os/c.h"
-#include "util/constexpr.h"
+#include "util/int.h"
 #include "util/noexcept.h"
 
+#define POOL_END UINT32_MAX
+
+// Pool
+//
+// Simple growable array. All memory is uninitialized: constructors and
+// destructors are never called on entries. Can delete entries anywhere in the
+// array in O(1) time.
+//
+// Suggested to use exclusively with POD types.
 template<typename T>
 class Pool {
  private:
-    typedef int Link;
-
-    static CONSTEXPR11 const Link END = -1;
+    typedef uint32_t Link;
 
  public:
-    Pool() = default;
+    Pool() : storage(0), allocated(0), nextFree(POOL_END) {}
     ~Pool() { free(reinterpret_cast<char*>(storage)); }
 
     // Returns an unconstructed piece of memory.
-    int
+    uint32_t
     allocate() noexcept {
-        if (nextFree == END) {
+        if (nextFree == POOL_END) {
             grow();
         }
-        int id = nextFree;
+        uint32_t id = nextFree;
         nextFree = asLink(nextFree);
         return id;
     }
 
     // Releases memory without destructing the object within.
     void
-    release(int i) noexcept {
+    release(uint32_t i) noexcept {
+        assert_(0 <= i && i < allocated);
         asLink(i) = nextFree;
         nextFree = i;
     }
 
-    T& operator[](int i) noexcept {
+    T& operator[](uint32_t i) noexcept {
         assert_(0 <= i && i < allocated);
         return storage[i];
     }
 
  private:
+    Pool(const Pool&) {}
+
     Link&
-    asLink(int i) noexcept {
+    asLink(uint32_t i) noexcept {
         return *reinterpret_cast<Link*>(reinterpret_cast<char*>(&storage[i]));
     }
 
     void
-    grow() {
-        int newAllocated = allocated == 0 ? 4 : allocated * 2;
+    grow() noexcept {
+        uint32_t newAllocated = allocated == 0 ? 4 : allocated * 2;
 
         T* newStorage = reinterpret_cast<T*>(malloc(sizeof(T) * newAllocated));
         memcpy(newStorage, storage, sizeof(T) * allocated);
@@ -82,17 +92,17 @@ class Pool {
         nextFree = allocated;
         storage = newStorage;
 
-        for (int i = allocated; i < newAllocated - 1; i++) {
+        for (uint32_t i = allocated; i < newAllocated - 1; i++) {
             asLink(i) = i + 1;
         }
-        asLink(newAllocated - 1) = END;
+        asLink(newAllocated - 1) = POOL_END;
 
         allocated = newAllocated;
     }
 
-    T* storage = nullptr;
-    int allocated = 0;
-    Link nextFree = END;
+    T* storage;
+    uint32_t allocated;
+    Link nextFree;
 };
 
 #endif  // SRC_UTIL_POOL_H_

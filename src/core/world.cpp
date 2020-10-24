@@ -278,7 +278,7 @@ void
 World::garbageCollect() noexcept {
     time_t latestPermissibleUse = total - Conf::cacheTTL * 1000;
 
-    Images::prune(latestPermissibleUse);
+    imagesPrune(latestPermissibleUse);
     Music::garbageCollect();
     Sounds::prune(latestPermissibleUse);
 }

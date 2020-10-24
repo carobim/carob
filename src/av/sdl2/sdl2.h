@@ -107,7 +107,11 @@ SDL_RWops*
 SDL_RWFromMem(void*, int) noexcept;
 
 // SDL_surface.h
-typedef struct SDL_Surface SDL_Surface;
+struct SDL_Surface {
+    uint32_t foo1;
+    void* foo2;
+    int w, h;
+};
 void
 SDL_FreeSurface(SDL_Surface*) noexcept;
 

@@ -74,10 +74,10 @@ displayListPresent(DisplayList* display) noexcept {
                 GameWindow::translate(
                         -display->scroll.x, -display->scroll.y, [&] {
                             for (auto& item : display->items) {
-                                Image::draw(item.image,
-                                            item.destination.x,
-                                            item.destination.y,
-                                            0);
+                                imageDraw(item.image,
+                                          item.destination.x,
+                                          item.destination.y,
+                                          0);
                             }
                         });
             });
@@ -94,13 +94,13 @@ displayListPresent(DisplayList* display) noexcept {
         float ww = static_cast<float>(GameWindow::width());
         float wh = static_cast<float>(GameWindow::height());
         GameWindow::drawRect(0, ww, 0, wh, 0x7F000000);
-        ImageID pauseInfo = Images::load("resource/pause_overlay.bmp");
-        if (pauseInfo) {
-            float iw = static_cast<float>(Image::width(pauseInfo));
-            float ih = static_cast<float>(Image::height(pauseInfo));
+        Image pauseInfo = imageLoad("resource/pause_overlay.bmp");
+        if (IMAGE_VALID(pauseInfo)) {
+            float iw = static_cast<float>(pauseInfo.width);
+            float ih = static_cast<float>(pauseInfo.height);
             float top = 1e10;
-            Image::draw(pauseInfo, ww / 2 - iw / 2, wh / 2 - ih / 2, top);
+            imageDraw(pauseInfo, ww / 2 - iw / 2, wh / 2 - ih / 2, top);
         }
-        Image::release(pauseInfo);
+        imageRelease(pauseInfo);
     }
 }

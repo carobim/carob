@@ -32,7 +32,7 @@
 #include "util/int.h"
 #include "util/vector.h"
 
-typedef int AnimationID;
+typedef uint32_t AnimationID;
 
 /**
  * An Animation is a sequence of bitmap images (called frames) used to creates
@@ -57,7 +57,7 @@ class Animation {
      *
      * @param frame static image
      */
-    explicit Animation(ImageID frame) noexcept;
+    explicit Animation(Image frame) noexcept;
 
     /**
      * Constructs a Animation from a list of frames.
@@ -69,15 +69,15 @@ class Animation {
      * @param frameTime length of time in milliseconds that each frame
      *        will display for
      */
-    Animation(Vector<ImageID> frames, time_t frameTime) noexcept;
+    Animation(Vector<Image> frames, time_t frameTime) noexcept;
 
-    Animation(const Animation& other) noexcept = delete;
+    Animation(Animation& other) noexcept;
     Animation(Animation&& other) noexcept;
     ~Animation() noexcept;
 
-    Animation&
-    operator=(const Animation& other) noexcept = delete;
-    Animation&
+    void
+    operator=(Animation& other) noexcept;
+    void
     operator=(Animation&& other) noexcept;
 
     /**
@@ -101,17 +101,17 @@ class Animation {
      *
      * @now current time in milliseconds
      */
-    ImageID
+    Image
     setFrame(time_t now) noexcept;
 
     /**
      * Returns the last image that should have been displayed.
      */
-    ImageID
+    Image
     getFrame() noexcept;
 
  private:
-    AnimationID aid;
+    AnimationID id;
 };
 
 #endif  // SRC_CORE_ANIMATION_H_

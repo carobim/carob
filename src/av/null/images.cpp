@@ -26,37 +26,32 @@
 
 #include "core/images.h"
 
-ImageID
-Images::load(StringView path) noexcept {
-    return ImageID(0);
-}
-TiledImageID
-Images::loadTiles(StringView path, int tileWidth, int tileHeight) noexcept {
-    return TiledImageID(0);
-}
-void
-Images::prune(time_t latestPermissibleUse) noexcept {}
+static Image
+nullImage = { reinterpret_cast<void*>(1), 0, 0, 1, 1 };
 
-int
-TiledImage::size(TiledImageID tiid) noexcept {
-    return 1000;
+Image
+imageLoad(StringView path) noexcept {
+    return nullImage;
 }
-ImageID
-TiledImage::getTile(TiledImageID tiid, int i) noexcept {
-    return ImageID(0);
-}
-void
-TiledImage::release(TiledImageID tiid) noexcept {}
 
 void
-Image::draw(ImageID iid, float x, float y, float z) noexcept {}
-int
-Image::width(ImageID iid) noexcept {
-    return 1;
-}
-int
-Image::height(ImageID iid) noexcept {
-    return 1;
-}
+imageDraw(Image image, float x, float y, float z) noexcept {}
+
 void
-Image::release(ImageID iid) noexcept {}
+imageRelease(Image image) noexcept {}
+
+TiledImage
+tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight) noexcept {
+    return { nullImage, 1, 1, 1 };
+}
+
+void
+tilesRelease(TiledImage tiles) noexcept {}
+
+Image
+tileAt(TiledImage tiles, uint32_t index) noexcept {
+    return nullImage;
+}
+
+void
+imagesPrune(time_t latestPermissibleUse) noexcept {}
