@@ -132,11 +132,6 @@ void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
 }
 
-static inline time_t __CRTDECL
-time(time_t* _Time) noexcept {
-    return _time64(reinterpret_cast<__time64_t*>(_Time));
-}
-
 int __CRTDECL
 fprintf(FILE* const, char const* const, ...) noexcept;
 int __CRTDECL

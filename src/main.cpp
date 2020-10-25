@@ -34,6 +34,7 @@
 #include "core/world.h"
 #include "data/data-world.h"
 #include "os/c.h"
+#include "os/chrono.h"
 #include "os/thread.h"
 #include "util/int.h"
 
@@ -57,7 +58,7 @@ main() noexcept {
     wFixConsole();
 #endif
 
-    srand((unsigned)time(nullptr));
+    srand(static_cast<unsigned>(SteadyClock::now()));
 
     if (!logInit()) {
         return 1;

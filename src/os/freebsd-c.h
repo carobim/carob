@@ -282,8 +282,6 @@ int
 clock_gettime(clockid_t, struct timespec*) noexcept;
 int
 nanosleep(const struct timespec*, struct timespec*) noexcept;
-time_t
-time(time_t*) noexcept;
 #define CLOCK_MONOTONIC 4
 }
 
