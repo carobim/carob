@@ -131,6 +131,7 @@ typedef struct {
     int w, h, refresh_rate;
     void* driverdata;
 } SDL_DisplayMode;
+typedef void* SDL_GLContext;
 SDL_Window*
 SDL_CreateWindow(const char*, int, int, int, int, uint32_t) noexcept;
 int
@@ -147,6 +148,10 @@ void
 SDL_ShowWindow(SDL_Window*) noexcept;
 void*
 SDL_GL_GetProcAddress(const char*) noexcept;
+SDL_GLContext
+SDL_GL_CreateContext(SDL_Window*) noexcept;
+void
+SDL_GL_SwapWindow(SDL_Window*) noexcept;
 #define SDL_WINDOW_FULLSCREEN              0x00000001
 #define SDL_WINDOW_HIDDEN                  0x00000008
 #define SDL_WINDOWPOS_UNDEFINED_MASK       0x1FFF0000u

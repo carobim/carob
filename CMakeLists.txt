@@ -111,8 +111,8 @@ if(AV_SDL2 OR AV_EM)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/sdl2/error.cpp
         ${HERE}/src/av/sdl2/error.h
-        ${HERE}/src/av/sdl2/images.cpp
-        #${HERE}/src/av/gl/images.cpp
+        #${HERE}/src/av/sdl2/images.cpp
+        ${HERE}/src/av/gl/images.cpp
         ${HERE}/src/av/sdl2/music.cpp
         ${HERE}/src/av/sdl2/sounds.cpp
         ${HERE}/src/av/sdl2/window.cpp
