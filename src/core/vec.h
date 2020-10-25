@@ -48,9 +48,8 @@ struct icube {
     int x2, y2, z2;
 };
 
-template<class T>
-class vec2 {
- public:
+template<typename T>
+struct vec2 {
     T x, y;
 
     operator bool() noexcept { return x || y; }
@@ -63,9 +62,8 @@ class vec2 {
     }
 };
 
-template<class T>
+template<typename T>
 struct vec3 {
- public:
     T x, y, z;
 
     operator bool() noexcept { return x || y || z; }
@@ -78,83 +76,83 @@ struct vec3 {
     }
 };
 
-template<class T>
+template<typename T>
 vec2<T>
 operator+(const vec2<T>& a, const vec2<T>& b) noexcept {
     return {a.x + b.x, a.y + b.y};
 }
 
-template<class T>
+template<typename T>
 vec3<T>
 operator+(const vec3<T>& a, const vec3<T>& b) noexcept {
     return {a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
-template<class T>
+template<typename T>
 vec2<T>
 operator-(const vec2<T>& a, const vec2<T>& b) noexcept {
     return {a.x - b.x, a.y - b.y};
 }
 
-template<class T>
+template<typename T>
 vec3<T>
 operator-(const vec3<T>& a, const vec3<T>& b) noexcept {
     return {a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
-template<class T, class CO>
+template<typename T, typename CO>
 vec2<T> operator*(CO co, const vec2<T>& a) noexcept {
     return {a.x * (T)co, a.y * (T)co};
 }
 
-template<class T, class CO>
+template<typename T, typename CO>
 vec3<T> operator*(CO co, const vec3<T>& a) noexcept {
     return {a.x * (T)co, a.y * (T)co, a.z * (T)co};
 }
 
-template<class T, class CO>
+template<typename T, typename CO>
 vec2<T>
 operator/(const vec2<T>& a, CO co) noexcept {
     return {a.x / (T)co, a.y / (T)co};
 }
 
-template<class T, class CO>
+template<typename T, typename CO>
 vec3<T>
 operator/(const vec3<T>& a, CO co) noexcept {
     return {a.x / (T)co, a.y / (T)co, a.z / (T)co};
 }
 
-template<class T>
+template<typename T>
 bool
 operator==(const vec2<T>& a, const vec2<T>& b) noexcept {
     return a.x == b.x && a.y == b.y;
 }
 
-template<class T>
+template<typename T>
 bool
 operator!=(const vec2<T>& a, const vec2<T>& b) noexcept {
     return a.x != b.x || a.y != b.y;
 }
 
-template<class T>
+template<typename T>
 bool
 operator==(const vec3<T>& a, const vec3<T>& b) noexcept {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
-template<class T>
+template<typename T>
 bool
 operator!=(const vec3<T>& a, const vec3<T>& b) noexcept {
     return a.x != b.x || a.y != b.y || a.z != b.z;
 }
 
-template<class T>
+template<typename T>
 size_t
 hash_(vec2<T> a) noexcept {
     return fnvHash(reinterpret_cast<const char*>(&a), sizeof(a));
 }
 
-template<class T>
+template<typename T>
 size_t
 hash_(vec3<T> a) noexcept {
     return fnvHash(reinterpret_cast<const char*>(&a), sizeof(a));

@@ -43,8 +43,6 @@
 #include "core/viewport.h"
 #include "core/window.h"
 #include "data/data-world.h"
-#include "util/bitrecord.h"
-#include "util/function.h"
 #include "util/hashtable.h"
 #include "util/unique.h"
 #include "util/vector.h"
@@ -73,7 +71,8 @@ static bool redraw = false;
 static bool userPaused = false;
 static int paused = 0;
 
-static Vector<BitRecord> keyStates;
+static Keys keyStates[10];
+static size_t numKeyStates = 0;
 
 bool
 World::init() noexcept {
@@ -104,14 +103,14 @@ World::time() noexcept {
 }
 
 void
-World::buttonDown(KeyboardKey key) noexcept {
+World::buttonDown(Key key) noexcept {
     switch (key) {
-    case KBEscape:
-        setPaused(paused == 0);
+    case KEY_ESCAPE:
+        setPaused(!paused);
         redraw = true;
         break;
     default:
-        if (!paused && keyStates.empty()) {
+        if (!paused && numKeyStates == 0) {
             worldArea->buttonDown(key);
             // if (keydownScript)
             //     keydownScript->invoke();
@@ -121,12 +120,12 @@ World::buttonDown(KeyboardKey key) noexcept {
 }
 
 void
-World::buttonUp(KeyboardKey key) noexcept {
+World::buttonUp(Key key) noexcept {
     switch (key) {
-    case KBEscape:
+    case KEY_ESCAPE:
         break;
     default:
-        if (!paused && keyStates.empty()) {
+        if (!paused && numKeyStates == 0) {
             worldArea->buttonUp(key);
             // if (keyupScript)
             //     keyupScript->invoke();
@@ -252,24 +251,25 @@ World::setPaused(bool b) noexcept {
 
 void
 World::storeKeys() noexcept {
-    keyStates.push_back(GameWindow::keysDown);
+    keyStates[numKeyStates++] = windowKeysDown;
 }
 
 void
 World::restoreKeys() noexcept {
-    BitRecord& now = GameWindow::keysDown;
-    BitRecord then = keyStates.back();
-    Vector<size_t> diffs = now.diff(then);
+    Keys now = windowKeysDown;
+    Keys then = keyStates[numKeyStates - 1];
 
-    keyStates.pop_back();
+    numKeyStates--;
 
-    for (size_t key : diffs) {
-        KeyboardKey key_ = static_cast<KeyboardKey>(key);
-        if (now[key_]) {
-            buttonDown(key_);
-        }
-        else {
-            buttonUp(key_);
+    for (size_t i = 0; i < sizeof(Keys) * 8; i++) {
+        Key key = (now ^ then) & (i << 1);
+        if (key) {
+            if (now & key) {
+                buttonDown(key);
+            }
+            else {
+                buttonUp(key);
+            }
         }
     }
 }

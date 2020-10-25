@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** window.h                         **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -30,11 +30,13 @@
 #include "av/sdl2/sdl2.h"
 #include "core/vec.h"
 
-class SDL2GameWindow {
- public:
-    static SDL_Renderer* renderer;
-    static rvec2 translation;
-    static rvec2 scaling;
-};
+extern SDL_Window* sdl2Window;
+extern rvec2 sdl2Translation;
+extern rvec2 sdl2Scaling;
+
+void
+imageStartFrame() noexcept;
+void
+imageEndFrame() noexcept;
 
 #endif  // SRC_AV_SDL2_WINDOW_H_

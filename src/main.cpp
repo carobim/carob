@@ -27,6 +27,7 @@
 
 #include "config.h"
 #include "core/client-conf.h"
+#include "core/images.h"
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/resources.h"
@@ -76,10 +77,8 @@ main() noexcept {
     logInfo("Main", String() << "Starting " << TSUNAGARI_RELEASE_VERSION);
     logReportVerbosityOnStartup();
 
-    {
-        TimeMeasure m("Constructed window");
-        GameWindow::create();
-    }
+    windowCreate();
+    imageInit();
 
     if (!DataWorld::init()) {
         logFatal("Main", "DataWorld::init");
@@ -94,9 +93,9 @@ main() noexcept {
         }
     }
 
-    GameWindow::setCaption(DataWorld::name);
+    windowSetCaption(DataWorld::name);
 
-    GameWindow::mainLoop();
+    windowMainLoop();
 
     return 0;
 }

@@ -26,6 +26,7 @@
 
 #include "core/images.h"
 
+#include "av/sdl2/error.h"
 #include "av/sdl2/sdl2.h"
 #include "av/sdl2/window.h"
 #include "core/log.h"
@@ -42,15 +43,80 @@
 #define ATLAS_WIDTH 2048
 #define ATLAS_HEIGHT 512
 
+static SDL_Renderer* renderer = 0;
 static SDL_Texture* atlas = 0;
 static uint32_t atlasUsed = 0;
 
 static HashVector<TiledImage> images;
 
+void
+imageInit() noexcept {
+    TimeMeasure m("Created SDL2 renderer");
+
+    renderer = SDL_CreateRenderer(
+            sdl2Window,
+            -1,
+            SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |
+                SDL_RENDERER_TARGETTEXTURE);
+
+    if (renderer == nullptr) {
+        sdlDie("SDL2", "SDL_CreateRenderer");
+    }
+
+    SDL_RendererInfo info;
+
+    if (SDL_GetRendererInfo(renderer, &info) < 0) {
+        sdlDie("SDL2", "SDL_GetRendererInfo");
+    }
+
+    StringView name = info.name;
+    bool vsync = (info.flags & SDL_RENDERER_PRESENTVSYNC) != 0;
+
+    logInfo("SDL2",
+            String("Rendering will be done with ")
+                    << name << (vsync ? " with vsync" : " without vsync"));
+
+    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+
+    // Blank until the start of a frame.
+    //SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xFF);
+    //SDL_RenderClear(renderer);
+    //SDL_RenderPresent(renderer);
+}
+
+void
+imageStartFrame() noexcept {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+}
+
+void
+imageEndFrame() noexcept {
+    SDL_RenderPresent(renderer);
+}
+
+void
+imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept {
+    uint8_t a = static_cast<uint8_t>((argb >> 24) & 0xFF);
+    uint8_t r = static_cast<uint8_t>((argb >> 16) & 0xFF);
+    uint8_t g = static_cast<uint8_t>((argb >> 8) & 0xFF);
+    uint8_t b = static_cast<uint8_t>((argb >> 0) & 0xFF);
+
+    SDL_Rect rect = {
+        static_cast<int>(x1),
+        static_cast<int>(y1),
+        static_cast<int>(x2 - x1),
+        static_cast<int>(y2 - y1)
+    };
+
+    SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_RenderFillRect(renderer, &rect);
+}
+
 static void
 initAtlas() noexcept {
     if (atlas == 0) {
-        SDL_Renderer* renderer = SDL2GameWindow::renderer;
         atlas = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
                                   SDL_TEXTUREACCESS_TARGET, ATLAS_WIDTH,
                                   ATLAS_HEIGHT);
@@ -109,7 +175,6 @@ load(StringView path) noexcept {
         //
         // Copy surface into the atlas to the right of the previous image,
         // or at the left edge, if there was no previous image.
-        SDL_Renderer* renderer = SDL2GameWindow::renderer;
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
         SDL_FreeSurface(surface);
 
@@ -164,9 +229,8 @@ void
 imageDraw(Image image, float x, float y, float z) noexcept {
     assert_(IMAGE_VALID(image));
 
-    SDL_Renderer* renderer = SDL2GameWindow::renderer;
-    rvec2 translation = SDL2GameWindow::translation;
-    rvec2 scaling = SDL2GameWindow::scaling;
+    rvec2 translation = sdl2Translation;
+    rvec2 scaling = sdl2Scaling;
 
     SDL_Texture* texture = static_cast<SDL_Texture*>(image.texture);
     SDL_Rect src{image.x, image.y, image.width, image.height};

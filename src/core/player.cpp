@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** player.cpp                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -40,7 +40,7 @@
         return false; \
     }
 
-static Player* globalPlayer = nullptr;
+static Player* globalPlayer = 0;
 
 Player&
 Player::instance() noexcept {
@@ -48,7 +48,7 @@ Player::instance() noexcept {
 }
 
 
-Player::Player() noexcept : Character(), velocity{0, 0} {
+Player::Player() noexcept : Character(), velocity({0, 0}), numMovements(0) {
     globalPlayer = this;
     nowalkFlags = TILE_NOWALK | TILE_NOWALK_PLAYER;
     nowalkExempt = TILE_NOWALK_EXIT;
@@ -66,7 +66,7 @@ Player::startMovement(ivec2 delta) noexcept {
         moveByTile(delta);
         break;
     case Conf::TILE:
-        movements.push_back(delta);
+        movements[numMovements++] = delta;
         velocity = delta;
         moveByTile(velocity);
         break;
@@ -82,15 +82,21 @@ Player::stopMovement(ivec2 delta) noexcept {
     case Conf::TURN:
         break;
     case Conf::TILE:
-        for (auto it = movements.begin(); it != movements.end(); ++it) {
-            if (*it == delta) {
-                movements.erase_unsorted(it);
-                break;
+        for (size_t i = 0; i < numMovements; i++) {
+            if (movements[i] == delta) {
+                // Erase movement.
+                for (size_t j = i; j < numMovements - 1; j++) {
+                    movements[j] = movements[j + 1];
+                }
+                numMovements--;
             }
         }
-        velocity = movements.size() ? movements.back() : ivec2{0, 0};
-        if (velocity) {
+        if (numMovements) {
+            velocity = movements[numMovements - 1];
             moveByTile(velocity);
+        }
+        else {
+            velocity = {0, 0};
         }
         break;
     case Conf::NOTILE:
@@ -111,8 +117,7 @@ Player::moveByTile(ivec2 delta) noexcept {
     setFacing(delta);
 
     // Left SHIFT allows changing facing, but disallows movement.
-    if (GameWindow::keysDown[KBLeftShift] ||
-        GameWindow::keysDown[KBRightShift]) {
+    if (windowKeysDown & KEY_LEFT_SHIFT || windowKeysDown & KEY_RIGHT_SHIFT) {
         setAnimationStanding();
         redraw = true;
         return;

@@ -66,21 +66,21 @@ Area::focus() {
 }
 
 void
-Area::buttonDown(KeyboardKey key) {
+Area::buttonDown(Key key) {
     switch (key) {
-    case KBLeftArrow:
+    case KEY_LEFT_ARROW:
         player->startMovement({-1, 0});
         break;
-    case KBRightArrow:
+    case KEY_RIGHT_ARROW:
         player->startMovement({1, 0});
         break;
-    case KBUpArrow:
+    case KEY_UP_ARROW:
         player->startMovement({0, -1});
         break;
-    case KBDownArrow:
+    case KEY_DOWN_ARROW:
         player->startMovement({0, 1});
         break;
-    case KBSpace:
+    case KEY_SPACE:
         player->useTile();
         break;
     default:
@@ -89,18 +89,18 @@ Area::buttonDown(KeyboardKey key) {
 }
 
 void
-Area::buttonUp(KeyboardKey key) {
+Area::buttonUp(Key key) {
     switch (key) {
-    case KBLeftArrow:
+    case KEY_LEFT_ARROW:
         player->stopMovement({-1, 0});
         break;
-    case KBRightArrow:
+    case KEY_RIGHT_ARROW:
         player->stopMovement({1, 0});
         break;
-    case KBUpArrow:
+    case KEY_UP_ARROW:
         player->stopMovement({0, -1});
         break;
-    case KBDownArrow:
+    case KEY_DOWN_ARROW:
         player->stopMovement({0, 1});
         break;
     default:

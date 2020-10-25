@@ -61,7 +61,7 @@ chomp(StringView str) noexcept {
 
 static String
 makeTimestamp() noexcept {
-    time_t now = GameWindow::time();
+    time_t now = windowTime();
 
     float secs = (now - startTime) / (float)1000.0;
 
@@ -82,7 +82,7 @@ makeTimestamp() noexcept {
 
 bool
 logInit() noexcept {
-    startTime = GameWindow::time();
+    startTime = windowTime();
     return true;
 }
 

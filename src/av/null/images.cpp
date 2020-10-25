@@ -29,6 +29,9 @@
 static Image
 nullImage = { reinterpret_cast<void*>(1), 0, 0, 1, 1 };
 
+void
+imageInit() noexcept {}
+
 Image
 imageLoad(StringView path) noexcept {
     return nullImage;

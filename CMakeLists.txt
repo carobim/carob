@@ -117,6 +117,7 @@ if(AV_SDL2 OR AV_EM)
         PRIVATE ${HERE}/src/av/sdl2/error.cpp
                 ${HERE}/src/av/sdl2/error.h
                 ${HERE}/src/av/sdl2/images.cpp
+                #${HERE}/src/av/gl/images.cpp
                 ${HERE}/src/av/sdl2/music.cpp
                 ${HERE}/src/av/sdl2/sounds.cpp
                 ${HERE}/src/av/sdl2/window.cpp
@@ -299,8 +300,6 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/util/arc.h
     PRIVATE ${HERE}/src/util/assert.cpp
     PUBLIC  ${HERE}/src/util/assert.h
-    PRIVATE ${HERE}/src/util/bitrecord.cpp
-    PUBLIC  ${HERE}/src/util/bitrecord.h
     PUBLIC  ${HERE}/src/util/constexpr.h
     PRIVATE ${HERE}/src/util/fnv.cpp
     PUBLIC  ${HERE}/src/util/fnv.h

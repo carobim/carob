@@ -27,12 +27,11 @@
 #include "core/display-list.h"
 
 #include "core/window.h"
-#include "util/function.h"
 #include "util/int.h"
 #include "util/math2.h"
 
 static void
-pushLetterbox(DisplayList* display, Function<void()> op) noexcept {
+pushLetterbox(DisplayList* display) noexcept {
     // Aspect ratio correction.
     rvec2 sz = display->size;
     rvec2 lb = -1 * display->padding;
@@ -62,38 +61,43 @@ pushLetterbox(DisplayList* display, Function<void()> op) noexcept {
         height = min(height, sz.y - 2 * physScroll.y);
     }
 
-    GameWindow::clip(x, y, width, height, op);
+    windowPushClip(x, y, width, height);
+}
+
+static void
+popLetterbox() noexcept {
+    windowPopClip();
 }
 
 void
 displayListPresent(DisplayList* display) noexcept {
-    pushLetterbox(display, [&] {
-        // Zoom and pan the Area to fit on-screen.
-        GameWindow::translate(-display->padding.x, -display->padding.y, [&] {
-            GameWindow::scale(display->scale.x, display->scale.y, [&] {
-                GameWindow::translate(
-                        -display->scroll.x, -display->scroll.y, [&] {
-                            for (auto& item : display->items) {
-                                imageDraw(item.image,
-                                          item.destination.x,
-                                          item.destination.y,
-                                          0);
-                            }
-                        });
-            });
-        });
+    pushLetterbox(display);
 
-        if ((display->colorOverlayARGB & 0xFF000000) != 0) {
-            float ww = static_cast<float>(GameWindow::width());
-            float wh = static_cast<float>(GameWindow::height());
-            GameWindow::drawRect(0, ww, 0, wh, display->colorOverlayARGB);
-        }
-    });
+    // Zoom and pan the Area to fit on-screen.
+    windowPushTranslate(-display->padding.x, -display->padding.y);
+    windowPushScale(display->scale.x, display->scale.y);
+    windowPushTranslate(-display->scroll.x, -display->scroll.y);
+
+    for (auto& item : display->items) {
+        imageDraw(item.image, item.destination.x, item.destination.y, 0);
+    }
+
+    windowPopTranslate();
+    windowPopScale();
+    windowPopTranslate();
+
+    if (display->colorOverlayARGB & 0xFF000000) {
+        float ww = static_cast<float>(windowWidth());
+        float wh = static_cast<float>(windowHeight());
+        imageDrawRect(0, ww, 0, wh, display->colorOverlayARGB);
+    }
+
+    popLetterbox();
 
     if (display->paused) {
-        float ww = static_cast<float>(GameWindow::width());
-        float wh = static_cast<float>(GameWindow::height());
-        GameWindow::drawRect(0, ww, 0, wh, 0x7F000000);
+        float ww = static_cast<float>(windowWidth());
+        float wh = static_cast<float>(windowHeight());
+        imageDrawRect(0, ww, 0, wh, 0x7F000000);
         Image pauseInfo = imageLoad("resource/pause_overlay.bmp");
         if (IMAGE_VALID(pauseInfo)) {
             float iw = static_cast<float>(pauseInfo.width);

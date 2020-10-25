@@ -30,7 +30,6 @@
 
 #include "core/character.h"
 #include "core/vec.h"
-#include "util/vector.h"
 
 struct Exit;
 
@@ -72,9 +71,9 @@ class Player : public Character {
     //! Stores intent to move continuously in some direction.
     ivec2 velocity;
 
-    //! Stack storing depressed keyboard keys in the form of movement
-    //! vectors.
-    Vector<ivec2> movements;
+    //! Stack storing depressed keyboard keys in the form of movement vectors.
+    ivec2 movements[8];
+    size_t numMovements;
 };
 
 #endif  // SRC_CORE_PLAYER_H_

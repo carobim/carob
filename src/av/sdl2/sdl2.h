@@ -144,6 +144,8 @@ void
 SDL_SetWindowTitle(SDL_Window*, const char*) noexcept;
 void
 SDL_ShowWindow(SDL_Window*) noexcept;
+void*
+SDL_GL_GetProcAddress(const char*) noexcept;
 #define SDL_WINDOW_FULLSCREEN 0x00000001
 #define SDL_WINDOW_HIDDEN 0x00000008
 #define SDL_WINDOWPOS_UNDEFINED_MASK 0x1FFF0000u

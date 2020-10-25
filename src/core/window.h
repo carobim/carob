@@ -28,64 +28,55 @@
 #ifndef SRC_CORE_WINDOW_H_
 #define SRC_CORE_WINDOW_H_
 
-#include "core/keyboard.h"
-#include "util/bitrecord.h"
-#include "util/function.h"
 #include "util/string-view.h"
 
-// This class is structurally the main class of the Tsunagari Tile Engine.
-// It handles input and drawing.
-class GameWindow {
- public:
-    static void
-    create() noexcept;
+typedef uint32_t Key;
+typedef uint32_t Keys;
 
-    //! Time since epoch.
-    static time_t
-    time() noexcept;
+#define KEY_ESCAPE        0x1
+#define KEY_LEFT_CONTROL  0x2
+#define KEY_RIGHT_CONTROL 0x4
+#define KEY_LEFT_SHIFT    0x8
+#define KEY_RIGHT_SHIFT   0x10
+#define KEY_SPACE         0x20
+#define KEY_LEFT_ARROW    0x40
+#define KEY_RIGHT_ARROW   0x80
+#define KEY_UP_ARROW      0x100
+#define KEY_DOWN_ARROW    0x200
 
-    //! Width of the window in pixels.
-    static int
-    width() noexcept;
+// This module is handles input and drawing.
 
-    //! Height of the window in pixels.
-    static int
-    height() noexcept;
+void windowCreate() noexcept;
 
-    //! Set window manager caption.
-    static void
-    setCaption(StringView caption) noexcept;
+//! Time since epoch.
+time_t windowTime() noexcept;
 
-    //! Show the window and start the main loop.
-    static void
-    mainLoop() noexcept;
+//! Width of the window in pixels.
+int windowWidth() noexcept;
 
-    /**
-     * Draws a rectangle on the screen of the specified color. Coordinates
-     * are in virtual pixels.
-     */
-    static void
-    drawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept;
+//! Height of the window in pixels.
+int windowHeight() noexcept;
 
-    static void
-    scale(float x, float y, Function<void()> op) noexcept;
-    static void
-    translate(float x, float y, Function<void()> op) noexcept;
-    static void
-    clip(float x,
-         float y,
-         float width,
-         float height,
-         Function<void()> op) noexcept;
+//! Set window manager caption.
+void windowSetCaption(StringView caption) noexcept;
 
-    static void
-    emitKeyDown(KeyboardKey key) noexcept;
-    static void
-    emitKeyUp(KeyboardKey key) noexcept;
-    static void
-    close() noexcept;
+//! Show the window and start the main loop.
+void windowMainLoop() noexcept;
 
-    static BitRecord keysDown;
-};
+void windowPushScale(float x, float y) noexcept;
+void windowPopScale() noexcept;
+void windowPushTranslate(float x, float y) noexcept;
+void windowPopTranslate() noexcept;
+void windowPushClip(float x, float y, float width, float height) noexcept;
+void windowPopClip() noexcept;
+
+void
+windowEmitKeyDown(Key key) noexcept;
+void
+windowEmitKeyUp(Key key) noexcept;
+void
+windowClose() noexcept;
+
+extern Keys windowKeysDown;
 
 #endif  // SRC_CORE_WINDOW_H_

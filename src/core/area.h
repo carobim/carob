@@ -29,10 +29,10 @@
 #define SRC_CORE_AREA_H_
 
 #include "core/animation.h"
-#include "core/keyboard.h"
 #include "core/tile-grid.h"
 #include "core/tile.h"
 #include "core/vec.h"
+#include "core/window.h"
 #include "util/hashtable.h"
 #include "util/optional.h"
 #include "util/string-view.h"
@@ -69,9 +69,9 @@ class Area {
 
     //! Processes keyboard input, calling the Player object when necessary.
     void
-    buttonDown(KeyboardKey key);
+    buttonDown(Key key);
     void
-    buttonUp(KeyboardKey key);
+    buttonUp(Key key);
 
     //! Renders all visible Tiles and Entities within this Area.
     void

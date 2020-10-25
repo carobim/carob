@@ -36,30 +36,30 @@
 #include "util/string.h"
 
 void
-GameWindow::create() noexcept {}
+windowCreate() noexcept {}
 
 time_t
-GameWindow::time() noexcept {
+windowTime() noexcept {
     TimePoint now = SteadyClock::now();
     return ns_to_ms(now);
 }
 
 int
-GameWindow::width() noexcept {
+windowWidth() noexcept {
     return Conf::windowSize.x;
 }
 
 int
-GameWindow::height() noexcept {
+windowHeight() noexcept {
     return Conf::windowSize.y;
 }
 
 void
-GameWindow::setCaption(StringView) noexcept {}
+windowSetCaption(StringView) noexcept {}
 
 void
-GameWindow::mainLoop() noexcept {
-    DisplayList dl;
+windowMainLoop() noexcept {
+    DisplayList dl = {};
 
     const Duration idealFrameTime = s_to_ns(1) / 60;
 
@@ -137,14 +137,20 @@ GameWindow::mainLoop() noexcept {
 }
 
 void
-GameWindow::drawRect(float, float, float, float, uint32_t) noexcept {}
+windowDrawRect(float, float, float, float, uint32_t) noexcept {}
 
 void
-GameWindow::scale(float, float, Function<void()>) noexcept {}
+windowPushScale(float, float) noexcept {}
 void
-GameWindow::translate(float, float, Function<void()>) noexcept {}
+windowPopScale() noexcept {}
 void
-GameWindow::clip(float, float, float, float, Function<void()>) noexcept {}
+windowPushTranslate(float, float) noexcept {}
+void
+windowPopTranslate() noexcept {}
+void
+windowPushClip(float, float, float, float) noexcept {}
+void
+windowPopClip() noexcept {}
 
 void
-GameWindow::close() noexcept {}
+windowClose() noexcept {}

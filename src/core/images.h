@@ -50,6 +50,9 @@ struct TiledImage {
     uint32_t numTiles   : 12;  // 0-4095
 };
 
+void
+imageInit() noexcept;
+
 // Load an image from the file at the given path.
 Image
 imageLoad(StringView path) noexcept;
@@ -78,5 +81,13 @@ tileAt(TiledImage tiles, uint32_t index) noexcept;
 // Free images and tiled images not recently used.
 void
 imagesPrune(time_t latestPermissibleUse) noexcept;
+
+/**
+ * Draws a rectangle on the screen of the specified color. Coordinates
+ * are in virtual pixels.
+ */
+void imageDrawRect(float x1, float x2, float y1, float y2,
+                   uint32_t argb) noexcept;
+
 
 #endif  // SRC_CORE_IMAGES_H_

@@ -37,18 +37,18 @@ struct DisplayItem {
 };
 
 struct DisplayList {
-    bool loopX = false;
-    bool loopY = false;
+    bool loopX;
+    bool loopY;
 
-    rvec2 padding = {0.0f, 0.0f};
-    rvec2 scale = {0.0f, 0.0f};
-    rvec2 scroll = {0.0f, 0.0f};
-    rvec2 size = {0.0f, 0.0f};
+    rvec2 padding;
+    rvec2 scale;
+    rvec2 scroll;
+    rvec2 size;
 
     Vector<DisplayItem> items;
 
-    uint32_t colorOverlayARGB = 0x00000000;
-    bool paused = false;  // TODO: Move to colorOverlay & overlay.
+    uint32_t colorOverlayARGB;
+    bool paused;  // TODO: Move to colorOverlay & overlay.
 };
 
 void

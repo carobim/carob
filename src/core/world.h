@@ -28,8 +28,8 @@
 #ifndef SRC_CORE_WORLD_H_
 #define SRC_CORE_WORLD_H_
 
-#include "core/keyboard.h"
 #include "core/vec.h"
+#include "core/window.h"
 #include "util/int.h"
 #include "util/string-view.h"
 
@@ -60,9 +60,9 @@ class World {
      * Process key presses.
      */
     static void
-    buttonDown(KeyboardKey btn) noexcept;
+    buttonDown(Key btn) noexcept;
     static void
-    buttonUp(KeyboardKey btn) noexcept;
+    buttonUp(Key btn) noexcept;
 
     /**
      * Draw game state to the screen.

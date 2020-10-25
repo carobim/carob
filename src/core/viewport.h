@@ -72,8 +72,6 @@ class Viewport {
 
     // Immediatly center render offset. Stop any tracking.
     static void
-    jumpToPt(ivec2 pt) noexcept;
-    static void
     jumpToPt(rvec2 pt) noexcept;
     static void
     jumpToEntity(Entity* e) noexcept;

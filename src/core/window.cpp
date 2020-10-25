@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** window.cpp                         **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -30,17 +30,18 @@
 #include "core/world.h"
 #include "os/os.h"
 
-BitRecord GameWindow::keysDown = BitRecord(KB_SIZE);
+Keys windowKeysDown = 0;
 
 void
-GameWindow::emitKeyDown(KeyboardKey key) noexcept {
-    bool wasDown = keysDown[key];
+windowEmitKeyDown(Key key) noexcept {
+    bool wasDown = !!(windowKeysDown & key);
 
-    keysDown[key] = true;
+    windowKeysDown |= key;
 
-    if (keysDown[KBEscape] &&
-        (keysDown[KBLeftShift] || keysDown[KBRightShift])) {
-        close();
+    if (windowKeysDown & KEY_ESCAPE &&
+            (windowKeysDown & KEY_LEFT_SHIFT ||
+             windowKeysDown & KEY_RIGHT_SHIFT)) {
+        windowClose();
         exitProcess(0);
     }
 
@@ -50,10 +51,10 @@ GameWindow::emitKeyDown(KeyboardKey key) noexcept {
 }
 
 void
-GameWindow::emitKeyUp(KeyboardKey key) noexcept {
-    bool wasDown = keysDown[key];
+windowEmitKeyUp(Key key) noexcept {
+    bool wasDown = !!(windowKeysDown & key);
 
-    keysDown[key] = false;
+    windowKeysDown &= ~key;
 
     if (wasDown) {
         World::buttonUp(key);
