@@ -39,7 +39,33 @@
 #include "util/string-view.h"
 #include "util/string.h"
 
+#define ATLAS_WIDTH 2048
+#define ATLAS_HEIGHT 512
+
+static SDL_Texture* atlas = 0;
+static uint32_t atlasUsed = 0;
+
 static HashVector<TiledImage> images;
+
+static void
+initAtlas() noexcept {
+    if (atlas == 0) {
+        SDL_Renderer* renderer = SDL2GameWindow::renderer;
+        atlas = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
+                                  SDL_TEXTUREACCESS_TARGET, ATLAS_WIDTH,
+                                  ATLAS_HEIGHT);
+        if (atlas == 0) {
+            logFatal("SDL2", "Failed to create texture");
+        }
+
+        SDL_SetTextureBlendMode(atlas, SDL_BLENDMODE_BLEND);
+
+        SDL_SetRenderTarget(renderer, atlas);
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 0);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderTarget(renderer, 0);
+    }
+}
 
 static TiledImage*
 load(StringView path) noexcept {
@@ -59,14 +85,16 @@ load(StringView path) noexcept {
             SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r->data)),
                           static_cast<int>(r->size));
 
-    SDL_Texture* texture;
-    int width, height;
+    int x = atlasUsed;
+    int y = 0;
+    int width;
+    int height;
 
     {
         TimeMeasure m(String() << "Constructed " << path << " as image");
 
-        // FIXME: Replace with IMG_LoadTexture_RW
         SDL_Surface* surface = IMG_Load_RW(ops, 1);
+        //SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
         if (!surface) {
             logFatal("SDL2", String() << "Invalid image: " << path);
             return 0;
@@ -75,31 +103,45 @@ load(StringView path) noexcept {
         width = surface->w;
         height = surface->h;
 
-        // Probably taken care of by SDL2 itself.
-        // if (surface->w >= 4096 || surface->h >= 4096) {
-        //     SDL_FreeSurace(surface);
-        //     logFatal("SDL2",
-        //              String() << "Image too large: " << path);
-        //     return 0;
-        // }
+        initAtlas();
 
+        // Rectangle packing algorithm:
+        //
+        // Copy surface into the atlas to the right of the previous image,
+        // or at the left edge, if there was no previous image.
         SDL_Renderer* renderer = SDL2GameWindow::renderer;
-        texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+        SDL_FreeSurface(surface);
+
         if (!texture) {
-            SDL_FreeSurface(surface);
             logFatal("SDL2",
                      String() << "Failed to create texture: " << path);
             return 0;
         }
+
+        // Copy this texture's data into the atlas texture.
+        SDL_Rect src = { 0, 0, width, height  };
+        SDL_Rect dst = { x, y, width, height  };
+
+        SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_NONE);
+
+        SDL_SetRenderTarget(renderer, atlas);
+        SDL_RenderCopy(renderer, texture, &src, &dst);
+        SDL_SetRenderTarget(renderer, 0);
+
+        // Done with this texture.
+        SDL_DestroyTexture(texture);
     }
 
     tiles.image = {
-        texture,
-        0,
-        0,
+        atlas,
+        static_cast<uint32_t>(x),
+        static_cast<uint32_t>(y),
         static_cast<uint32_t>(width),
         static_cast<uint32_t>(height),
     };
+
+    atlasUsed += static_cast<uint32_t>(width);
 
     return &tiles;
 }
@@ -126,12 +168,14 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     rvec2 translation = SDL2GameWindow::translation;
     rvec2 scaling = SDL2GameWindow::scaling;
 
+    SDL_Texture* texture = static_cast<SDL_Texture*>(image.texture);
     SDL_Rect src{image.x, image.y, image.width, image.height};
     SDL_Rect dst{static_cast<int>((x + translation.x) * scaling.x),
                  static_cast<int>((y + translation.y) * scaling.y),
                  static_cast<int>(image.width * scaling.x),
                  static_cast<int>(image.height * scaling.y)};
-    SDL_RenderCopy(renderer, static_cast<SDL_Texture*>(image.texture), &src, &dst);
+    SDL_SetRenderTarget(renderer, 0);
+    SDL_RenderCopy(renderer, texture, &src, &dst);
 }
 
 TiledImage

@@ -36,15 +36,16 @@ extern "C" {
 int SDL_Init(uint32_t) noexcept;
 uint32_t
 SDL_WasInit(uint32_t flags) noexcept;
-#define SDL_INIT_AUDIO 0x00000010
-#define SDL_INIT_VIDEO 0x00000020
+#define SDL_INIT_AUDIO 0x10
+#define SDL_INIT_VIDEO 0x20
 
 // SDL_audio.h
 #define AUDIO_S16LSB 0x8010
 
 // SDL_blendmode.h
 typedef enum {
-    SDL_BLENDMODE_BLEND = 0x00000001,
+    SDL_BLENDMODE_NONE,
+    SDL_BLENDMODE_BLEND,
 } SDL_BlendMode;
 
 // SDL_error.h
@@ -96,6 +97,11 @@ typedef union {
 int
 SDL_PollEvent(SDL_Event*) noexcept;
 
+// SDL_pixels.h
+#define SDL_PIXELFORMAT_RGBA8888 373694468
+#define SDL_PIXELFORMAT_ABGR8888 376840196
+#define SDL_PIXELFORMAT_RGBA32 SDL_PIXELFORMAT_ABGR8888  // When little endian
+
 // SDL_rect.h
 typedef struct {
     int x, y, w, h;
@@ -114,6 +120,8 @@ struct SDL_Surface {
 };
 void
 SDL_FreeSurface(SDL_Surface*) noexcept;
+SDL_Surface*
+SDL_LoadBMP_RW(SDL_RWops*, int) noexcept;
 
 // SDL_video.h
 typedef struct SDL_Window SDL_Window;
@@ -156,6 +164,8 @@ typedef struct SDL_RendererInfo {
 SDL_Renderer*
 SDL_CreateRenderer(SDL_Window*, int, uint32_t) noexcept;
 SDL_Texture*
+SDL_CreateTexture(SDL_Renderer*, uint32_t, int, int, int) noexcept;
+SDL_Texture*
 SDL_CreateTextureFromSurface(SDL_Renderer*, SDL_Surface*) noexcept;
 void
 SDL_DestroyTexture(SDL_Texture*) noexcept;
@@ -163,6 +173,10 @@ int
 SDL_GetRendererInfo(SDL_Renderer*, SDL_RendererInfo*) noexcept;
 int
 SDL_QueryTexture(SDL_Texture*, uint32_t*, int*, int*, int*) noexcept;
+int
+SDL_SetRenderTarget(SDL_Renderer*, SDL_Texture*) noexcept;
+int
+SDL_SetTextureBlendMode(SDL_Texture*, SDL_BlendMode) noexcept;
 int
 SDL_RenderClear(SDL_Renderer*) noexcept;
 int
@@ -182,8 +196,10 @@ SDL_SetRenderDrawColor(SDL_Renderer*,
                        uint8_t,
                        uint8_t,
                        uint8_t) noexcept;
-#define SDL_RENDERER_ACCELERATED 0x00000002
-#define SDL_RENDERER_PRESENTVSYNC 0x00000004
+#define SDL_RENDERER_ACCELERATED 2
+#define SDL_RENDERER_PRESENTVSYNC 4
+#define SDL_RENDERER_TARGETTEXTURE 8
+#define SDL_TEXTUREACCESS_TARGET 2
 
 // SDL_image library
 // SDL_image.h

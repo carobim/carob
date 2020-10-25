@@ -163,7 +163,7 @@ GameWindow::create() noexcept {
         int width = Conf::windowSize.x;
         int height = Conf::windowSize.y;
 
-        uint32_t flags = SDL_WINDOW_HIDDEN;
+        uint32_t flags = 0;
         if (Conf::fullscreen) {
             flags |= SDL_WINDOW_FULLSCREEN;
         }
@@ -186,7 +186,8 @@ GameWindow::create() noexcept {
         SDL2GameWindow::renderer = SDL_CreateRenderer(
                 window,
                 -1,
-                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |
+                    SDL_RENDERER_TARGETTEXTURE);
 
         if (SDL2GameWindow::renderer == nullptr) {
             sdlDie("SDL2GameWindow", "SDL_CreateRenderer");
@@ -243,9 +244,9 @@ GameWindow::mainLoop() noexcept {
     const Duration idealFrameTime = s_to_ns(1) / refreshRate;
 
     // Block until the start of a frame.
-    SDL_SetRenderDrawColor(SDL2GameWindow::renderer, 0, 0, 0, 0xFF);
-    SDL_RenderClear(SDL2GameWindow::renderer);
-    SDL_RenderPresent(SDL2GameWindow::renderer);
+    //SDL_SetRenderDrawColor(SDL2GameWindow::renderer, 0, 0, 0, 0xFF);
+    //SDL_RenderClear(SDL2GameWindow::renderer);
+    //SDL_RenderPresent(SDL2GameWindow::renderer);
 
     TimePoint frameStart = SteadyClock::now();
     TimePoint previousFrameStart =
@@ -267,6 +268,8 @@ GameWindow::mainLoop() noexcept {
             World::tick(dt);
         }
         else {
+            // FIXME: Why does this happen and what should be done when it
+            //        occurrs?
             // logInfo("SDL2GameWindow", "dt == 0");
         }
 
@@ -276,7 +279,7 @@ GameWindow::mainLoop() noexcept {
 
             World::draw(&display);
 
-            SDL_SetRenderDrawColor(SDL2GameWindow::renderer, 0, 0, 0, 0xFF);
+            SDL_SetRenderDrawColor(SDL2GameWindow::renderer, 0, 0, 0, 255);
             SDL_RenderClear(SDL2GameWindow::renderer);
             displayListPresent(&display);
             SDL_RenderPresent(SDL2GameWindow::renderer);

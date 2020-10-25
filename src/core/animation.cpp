@@ -57,7 +57,7 @@ struct AnimationData {
 static Pool<AnimationData> pool;
 
 static bool
-isSingleFrame(AnimationID self) {
+isSingleFrame(AnimationID self) noexcept {
     assert_(self != INVALID_ID);
 
     return pool[self].frameTime == 0;
