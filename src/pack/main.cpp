@@ -188,12 +188,10 @@ extractArchive(StringView archivePath) noexcept {
     Unique<PackReader> pack = PackReader::fromFile(archivePath);
 
     if (pack) {
-        Vector<PackReader::BlobIndex> blobIndicies;
+        Vector<void*> blobDatas;
         for (PackReader::BlobIndex i = 0; i < pack->size(); i++) {
-            blobIndicies.push_back(i);
+            blobDatas.push_back(pack->getBlobData(i));
         }
-
-        Vector<void*> blobDatas = pack->getBlobDatas(blobIndicies);
 
         for (PackReader::BlobIndex i = 0; i < pack->size(); i++) {
             StringView blobPath = pack->getBlobPath(i);

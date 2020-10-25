@@ -77,9 +77,6 @@ class PackReaderImpl : public PackReader {
     void*
     getBlobData(BlobIndex index) noexcept;
 
-    Vector<void*>
-    getBlobDatas(Vector<BlobIndex> indicies) noexcept;
-
  public:
     void
     constructLookups() noexcept;
@@ -180,17 +177,6 @@ PackReaderImpl::getBlobSize(PackReader::BlobIndex index) noexcept {
 void*
 PackReaderImpl::getBlobData(PackReader::BlobIndex index) noexcept {
     return file.at<void*>(dataOffsets[index]);
-}
-
-Vector<void*>
-PackReaderImpl::getBlobDatas(Vector<BlobIndex> indicies) noexcept {
-    Vector<void*> datas;
-
-    for (BlobIndex i : indicies) {
-        datas.push_back(file.at<void*>(dataOffsets[i]));
-    }
-
-    return datas;
 }
 
 void

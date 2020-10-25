@@ -31,7 +31,6 @@
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/unique.h"
-#include "util/vector.h"
 
 class PackReader {
  public:
@@ -56,9 +55,6 @@ class PackReader {
     getBlobSize(BlobIndex index) noexcept = 0;
     virtual void*
     getBlobData(BlobIndex index) noexcept = 0;
-
-    virtual Vector<void*>
-    getBlobDatas(Vector<BlobIndex> indicies) noexcept = 0;
 };
 
 #endif  // SRC_PACK_PACK_READER_H_
