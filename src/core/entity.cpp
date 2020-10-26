@@ -232,6 +232,7 @@ parsePhase(Entity* e,
         // logErr(descriptor,
         //        "<phase> frames attribute not an int or int ranges");
         // return false;
+        assert_(false);
     }
 
     if (name == "stance") {

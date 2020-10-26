@@ -118,6 +118,8 @@ struct SDL_Surface {
     uint32_t foo1;
     void* foo2;
     int w, h;
+    int foo3;
+    void* pixels;
 };
 void
 SDL_FreeSurface(SDL_Surface*) noexcept;
