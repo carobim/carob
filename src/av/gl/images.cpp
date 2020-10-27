@@ -32,6 +32,7 @@
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/resources.h"
+#include "core/window.h"
 #include "util/hashvector.h"
 #include "util/int.h"
 #include "util/noexcept.h"
@@ -357,21 +358,27 @@ makeProgram(const char* vertexSource, const char* fragmentSource) noexcept {
 
 static const char*
 vertexSource =
-    "attribute vec2 aPosition;\n"
+    "#version 110\n"
+    "\n"
+    "attribute vec3 aPosition;\n"
     "varying vec2 vTexCoord;\n"
     "\n"
     "void main() {\n"
-    "    vTexCoord = (aPosition + 1.0) / 2.0;\n"
-    "    gl_Position = vec4(aPosition, 0.0, 1.0);\n"
+    //"    vTexCoord = (aPosition + 1.0) / 2.0;\n"
+    "    vTexCoord = vec2(0, 0);\n"
+    "    gl_Position = vec4(aPosition, 1.0);\n"
     "}\n";
 
 static const char*
 fragmentSource =
+    "#version 110\n"
+    "\n"
     "varying vec2 vTexCoord;\n"
     "uniform sampler2D tAtlas;\n"
     "\n"
     "void main() {\n"
     "    gl_FragColor = texture2D(tAtlas, vTexCoord);\n"
+    "    gl_FragColor = vec4(1, 1, 1, 1);\n"
     "}\n";
 
 #define ATLAS_WIDTH 2048
@@ -384,7 +391,7 @@ static Attribute aPosition;
 //static Attribute aTexCoord;
 //static Uniform uResolution;
 static Uniform uAtlas;
-static VertexBuffer vbPosition;
+static VertexBuffer vbPosition = 1;
 //static VertexBuffer vbTexCoord;
 static Texture tAtlas;
 
@@ -449,43 +456,48 @@ imageInit() noexcept {
 
     Program program = makeProgram(vertexSource, fragmentSource);
     glUseProgram_(program);
+
     aPosition = glGetAttribLocation_(program, "aPosition");
     uAtlas = glGetUniformLocation_(program, "tAtlas");
 
-    /*
     float width = static_cast<float>(windowWidth());
     float height = static_cast<float>(windowHeight());
 
     float positions[] = {
-        0, 0,
-        width, 0,
-        0, height,
+        0, 0, 0,
+        0.5, 0, 0,
+        0, height, 0,
 
-        0, height,
-        width, 0,
-        width, height,
+        0, height, 0,
+        0.5, 0, 0,
+        0.5, height, 0,
+    };
+
+    /*
+    float positions[] = {
+        0, 0, 0,
+        1, 0, 0,
+        0, 1, 0,
+
+        0, 1, 0,
+        1, 0, 0,
+        1, 1, 0,
     };
     */
-    float positions[] = {
-        0, 0,
-        1, 0,
-        0, 1,
 
-        0, 1,
-        1, 0,
-        1, 1,
-    };
-    glGenBuffers_(1, &vbPosition);
-    glEnableVertexAttribArray_(vbPosition);
     glBindBuffer_(GL_ARRAY_BUFFER, vbPosition);
-    glVertexAttribPointer_(vbPosition, 2, GL_FLOAT, false, 0, 0);
     glBufferData_(GL_ARRAY_BUFFER, sizeof(positions), positions,
                   GL_STATIC_DRAW);
+
+    glVertexAttribPointer_(aPosition, 3, GL_FLOAT, false, 0, 0);
+    glEnableVertexAttribArray_(aPosition);
+
+    glUniform1i_(uAtlas, 0);
 
     //glUniform2f_(uResolution, width, height);
     //glViewport_(0, 0, windowWidth(), windowHeight());
 
-    glViewport_(0, 0, 1, 1);
+    //glViewport_(0, 0, 1, 1);
 
     glGenTextures_(1, &tAtlas);
     glActiveTexture_(GL_TEXTURE0);
@@ -495,8 +507,11 @@ imageInit() noexcept {
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D_(GL_TEXTURE_2D, 0, GL_RGBA, ATLAS_WIDTH, ATLAS_HEIGHT, 0,
-                  GL_RGBA, GL_FLOAT, 0);
-    glUniform1i_(uAtlas, 0);
+                  GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+    const uint8_t data[] = { 255, 255, 255, 255 };
+    glTexImage2D_(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0,
+                  GL_RGBA, GL_UNSIGNED_BYTE, &data);
 }
 
 static TiledImage*
@@ -539,6 +554,7 @@ load(StringView path) noexcept {
         //
         // Copy surface into the atlas to the right of the previous image,
         // or at the left edge, if there was no previous image.
+        /*
         glTexSubImage2D_(
             GL_TEXTURE_2D,  // target
             0,  // level
@@ -550,6 +566,20 @@ load(StringView path) noexcept {
             GL_UNSIGNED_BYTE,  // type
             surface->pixels  // data
         );
+        */
+        /*
+        glTexImage2D_(
+            GL_TEXTURE_2D,
+            0,
+            GL_RGBA,
+            width,
+            height,
+            0,
+            GL_RGBA,
+            GL_UNSIGNED_BYTE,
+            surface->pixels
+        );
+        */
 
         SDL_FreeSurface(surface);
     }
@@ -636,7 +666,7 @@ imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept {
 
 void
 imageStartFrame() noexcept {
-    glClearColor_(1, 0, 0, 1);
+    glClearColor_(0, 0, 0, 1);
     glClear_(GL_COLOR_BUFFER_BIT);
 }
 
