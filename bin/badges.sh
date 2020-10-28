@@ -21,11 +21,18 @@ else
     echo err https://circleci.com/gh/TsunagariEngine/Tsunagari
 fi
 
-printf 'FreeBSD '
-if [ "$(curl -s https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd.yml.svg | shasum --algorithm 1)" = '01d9def108b260716a2a9d77fd70617f1e0065b2  -' ]; then
+printf 'FreeBSD 11 '
+if [ "$(curl -s https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-11.yml.svg | shasum --algorithm 1)" = '01d9def108b260716a2a9d77fd70617f1e0065b2  -' ]; then
     echo ok
 else
-    echo err https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd.yml
+    echo err https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-11.yml
+fi
+
+printf 'FreeBSD 12 '
+if [ "$(curl -s https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-12.yml.svg | shasum --algorithm 1)" = '01d9def108b260716a2a9d77fd70617f1e0065b2  -' ]; then
+    echo ok
+else
+    echo err https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-12.yml
 fi
 
 printf 'SLoC '
