@@ -50,14 +50,14 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.16, GCC 9, Ninja 1.10
-  ubuntu_20_04_focal:
+  # Has CMake 3.16, GCC 10, Ninja 1.10
+  ubuntu_20_10_groovy:
     docker:
-      - image: ubuntu:20.04
+      - image: ubuntu:20.10
     steps:
       - run: |
           apt-get update &&
-          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends cmake g++ ninja-build
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
@@ -173,7 +173,7 @@ workflows:
       - debian_8_jessie
       - debian_10_buster
       - ubuntu_17_10_artful
-      - ubuntu_20_04_focal
+      - ubuntu_20_10_groovy
       - fedora_24
       - fedora_32
       - arch_latest
