@@ -1,5 +1,5 @@
 # Sourcehut manifest.
-image: freebsd/latest
+image: freebsd/11.x
 packages:
 - cmake
 - ninja

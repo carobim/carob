@@ -1,0 +1,17 @@
+# Sourcehut manifest.
+image: freebsd/12.x
+packages:
+- cmake
+- ninja
+sources:
+- https://github.com/TsunagariEngine/Tsunagari.git
+tasks:
+- cmake: |
+    cd Tsunagari
+    mkdir build
+    cd build
+    cmake .. -G Ninja
+- ninja: |
+    cd Tsunagari
+    cd build
+    ninja
