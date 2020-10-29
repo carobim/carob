@@ -118,8 +118,6 @@ makeSound(StringView path) noexcept {
         return SDL2Sound();
     }
 
-    assert_(r.size < UINT32_MAX);
-
     SDL_RWops* ops =
             SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
                           static_cast<int>(r.size));

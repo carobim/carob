@@ -79,7 +79,7 @@ Resources::load(StringView path, StringView& data) noexcept {
     uint32_t blobSize = pack->getBlobSize(index);
 
     // Will it fit in memory?
-    if (blobSize > UINT32_MAX) {
+    if (blobSize > INT32_MAX) {
         logErr("PackResources",
                String() << getFullPath(path) << ": file too large");
         return false;

@@ -144,9 +144,6 @@ load(StringView path) noexcept {
         return 0;
     }
 
-    // FIXME: Do this at the resource level.
-    //assert_(r.size < INT32_MAX);
-
     SDL_RWops* ops =
             SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
                           static_cast<int>(r.size));

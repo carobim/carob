@@ -181,7 +181,7 @@ PackReaderImpl::getBlobSize(PackReader::BlobIndex index) noexcept {
 
 void*
 PackReaderImpl::getBlobData(PackReader::BlobIndex index) noexcept {
-    return dataOffsets + dataOffsets[index];
+    return file.data + dataOffsets[index];
 }
 
 void
