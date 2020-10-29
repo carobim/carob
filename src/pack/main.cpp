@@ -43,13 +43,12 @@ static bool verbose = false;
 
 static void
 usage() noexcept {
+    const char* me = exe.null();
     fprintf(stderr,
-            "usage: %s create [-v] <output-archive> [input-file]...\n",
-            exe.null());
-    fprintf(stderr, "       %s list <input-archive>\n", exe.null());
-    fprintf(stderr,
+            "usage: %s create [-v] <output-archive> [input-file]...\n"
+            "       %s list <input-archive>\n"
             "       %s extract [-v] <input-archive>\n",
-            exe.null());
+            me, me, me);
 }
 
 struct CreateArchiveContext {
