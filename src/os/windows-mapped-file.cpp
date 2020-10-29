@@ -111,13 +111,13 @@ makeMappedFile(StringView path, MappedFile& map) noexcept {
 
 void
 destroyMappedFile(MappedFile map) noexcept {
-    if (data) {
+    if (map.data) {
         UnmapViewOfFile(static_cast<void*>(map.data));
     }
-    if (mapping) {
+    if (map.mapping) {
         CloseHandle(map.mapping);
     }
-    if (file != INVALID_HANDLE_VALUE) {
+    if (map.file != INVALID_HANDLE_VALUE) {
         CloseHandle(map.file);
     }
 }
