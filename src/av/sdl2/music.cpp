@@ -126,7 +126,7 @@ MusicWorker::play(StringView path_) noexcept {
     if (currentMusic && !Mix_PausedMusic()) {
         Mix_HaltMusic();
     }
-    currentMusic = path.size() ? songs.lifetimeRequest(path) : Rc<SDL2Song>();
+    currentMusic = path.size ? songs.lifetimeRequest(path) : Rc<SDL2Song>();
     if (currentMusic) {
         Mix_PlayMusic(currentMusic->mix, -1);
     }

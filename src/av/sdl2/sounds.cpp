@@ -143,9 +143,9 @@ SoundID
 Sounds::load(StringView path) noexcept {
     init();
 
-    Optional<SoundID*> cachedId = soundIDs.tryAt(path);
+    SoundID* cachedId = soundIDs.tryAt(path);
     if (cachedId) {
-        int sid = ***cachedId;
+        int sid = **cachedId;
         SDL2Sound& sound = soundPool[sid];
         sound.numUsers += 1;
         return SoundID(sid);
