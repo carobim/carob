@@ -148,10 +148,10 @@ AreaJSON::allocateMapLayer(TileGrid::LayerType type) noexcept {
 
 bool
 AreaJSON::processDescriptor() noexcept {
-    Optional<JsonDocument> doc = loadJson(descriptor);
-    CHECK(doc);
+    JsonDocument doc = loadJson(descriptor);
+    CHECK(doc.ok);
 
-    JsonValue root = doc->root;
+    JsonValue root = doc.root;
 
     JsonValue widthValue = root["width"];
     JsonValue heightValue = root["height"];
@@ -285,13 +285,13 @@ AreaJSON::processTileSet(JsonValue obj) noexcept {
 
     // We don't handle embeded tilesets, only references to an external JSON
     // files.
-    Optional<JsonDocument> doc = loadJson(source);
-    if (!doc) {
+    JsonDocument doc = loadJson(source);
+    if (!doc.ok) {
         logErr(descriptor, String() << source << ": failed to load JSON file");
         return false;
     }
 
-    if (!processTileSetFile(doc->root, source, firstGid)) {
+    if (!processTileSetFile(doc.root, source, firstGid)) {
         logErr(descriptor,
                String() << source << ": failed to parse JSON tileset file");
         return false;

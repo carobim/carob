@@ -31,7 +31,6 @@
 #include "core/entity.h"
 #include "core/vec.h"
 #include "util/int.h"
-#include "util/optional.h"
 
 class Area;
 struct Exit;

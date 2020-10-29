@@ -83,7 +83,7 @@ union JsonValue {
 
     inline JsonValue(double x) noexcept : fval(x) {}
     inline JsonValue(JsonTag tag = JSON_NULL,
-                     void* payload = nullptr) noexcept {
+                     void* payload = 0) noexcept {
         // assert_(reinterpret_cast<size_t>(payload) <=
         // JSON_VALUE_PAYLOAD_MASK);
         ival = JSON_VALUE_NAN_MASK |
@@ -219,13 +219,13 @@ begin(JsonValue object) noexcept {
 
 inline JsonIterator
 end(JsonValue) noexcept {
-    return JsonIterator(nullptr);
+    return JsonIterator(0);
 }
 
 struct JsonAllocator {
-    inline JsonAllocator() noexcept : head(nullptr) {}
+    inline JsonAllocator() noexcept : head(0) {}
     inline JsonAllocator(JsonAllocator&& other) noexcept : head(other.head) {
-        other.head = nullptr;
+        other.head = 0;
     }
     inline ~JsonAllocator() noexcept { deallocate(); }
 

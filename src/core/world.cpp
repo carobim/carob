@@ -50,7 +50,7 @@
 
 static Hashmap<String, Area*> areas;
 static Area* worldArea = 0;
-static Player* player = new Player;
+static Player player;
 
 /**
  * Last time engine state was updated. See worldUpdate().
@@ -76,7 +76,7 @@ worldInit() noexcept {
 
     Conf::moveMode = DataWorld::moveMode;
 
-    if (!player->init(DataWorld::playerFile, DataWorld::playerStartPhase)) {
+    if (!player.init(DataWorld::playerFile, DataWorld::playerStartPhase)) {
         logFatal("World", "failed to load player");
         return false;
     }
@@ -87,7 +87,7 @@ worldInit() noexcept {
     }
 
     Viewport::setSize(DataWorld::viewportResolution);
-    Viewport::trackEntity(player);
+    Viewport::trackEntity(&player);
 
     return true;
 }
@@ -182,7 +182,7 @@ worldFocusArea(StringView filename, vicoord playerPos) noexcept {
         return true;
     }
 
-    Area* newArea = makeAreaFromJSON(player, filename);
+    Area* newArea = makeAreaFromJSON(&player, filename);
     if (!newArea) {
         return false;
     }
@@ -209,7 +209,7 @@ worldFocusArea(StringView filename, vicoord playerPos) noexcept {
 void
 worldFocusArea(Area* area_, vicoord playerPos) noexcept {
     worldArea = area_;
-    player->setArea(worldArea, playerPos);
+    player.setArea(worldArea, playerPos);
     Viewport::setArea(worldArea);
     worldArea->focus();
 }

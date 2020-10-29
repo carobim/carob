@@ -34,22 +34,15 @@
 #include "util/string-view.h"
 #include "util/string.h"
 
-Optional<JsonDocument>
+JsonDocument
 loadJson(StringView path) noexcept {
     Optional<StringView> r = Resources::load(path);
     if (!r) {
-        return none;
+        return JsonDocument();
     }
 
     TimeMeasure m(String() << "Constructed " << path << " as json");
 
-    // Make a copy.
-    String json = *r;
-
-    JsonDocument document = JsonDocument(move_(json));
-    if (!document.ok) {
-        return none;
-    }
-
-    return Optional<JsonDocument>(move_(document));
+    // Make a copy of the string, because it will be overwritten.
+    return JsonDocument(*r);
 }

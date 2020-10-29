@@ -81,12 +81,12 @@ parseScript(Entity* e, StringView name, StringView path) noexcept;
 
 static bool
 parseDescriptor(Entity* e) noexcept {
-    Optional<JsonDocument> document = loadJson(e->descriptor);
-    if (!document) {
+    JsonDocument document = loadJson(e->descriptor);
+    if (!document.ok) {
         return false;
     }
 
-    JsonValue root = document->root;
+    JsonValue root = document.root;
     CHECK(root.isObject());
 
     JsonValue speedValue = root["speed"];
