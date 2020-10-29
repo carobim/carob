@@ -126,12 +126,6 @@ if(AV_SDL2 OR AV_EM)
 endif()
 
 target_sources(tsunagari
-    PUBLIC ${HERE}/src/cache/rc-cache-impl.h
-    PUBLIC ${HERE}/src/cache/rc-cache.h
-    PUBLIC ${HERE}/src/cache/rc-reader-cache.h
-)
-
-target_sources(tsunagari
     PUBLIC  ${HERE}/src/core/algorithm.h
     PRIVATE ${HERE}/src/core/animation.cpp
     PUBLIC  ${HERE}/src/core/animation.h
