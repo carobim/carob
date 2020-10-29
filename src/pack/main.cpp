@@ -51,7 +51,7 @@ usage() noexcept {
 }
 
 struct CreateArchiveContext {
-    Unique<PackWriter> pack;
+    PackWriter* pack;
     Mutex packMutex;
 };
 
@@ -87,8 +87,8 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
     }
 
     LockGuard guard(ctx.packMutex);
-    ctx.pack->addBlob(
-            move_(path), static_cast<uint32_t>(data.size), data.data);
+    packWriterAddBlob(ctx.pack, path, static_cast<uint32_t>(data.size),
+                      data.data);
 
     data.reset();  // Don't delete data pointer.
 }
@@ -96,7 +96,7 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
 static bool
 createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
     CreateArchiveContext ctx;
-    ctx.pack = PackWriter::make();
+    ctx.pack = makePackWriter();
 
     walk(move_(paths), [&](StringView path) noexcept { addFile(ctx, path); });
 
@@ -104,7 +104,10 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
         printf("%s", (String() << "Writing to " << archivePath << "\n").null());
     }
 
-    return ctx.pack->writeToFile(archivePath);
+    bool ok = packWriterWriteToFile(ctx.pack, archivePath);
+
+    destroyPackWriter(ctx.pack);
+    return ok;
 }
 
 static bool

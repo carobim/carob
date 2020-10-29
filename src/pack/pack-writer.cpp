@@ -31,7 +31,6 @@
 #include "pack/pack-reader.h"
 #include "util/int.h"
 #include "util/move.h"
-#include "util/new.h"
 #include "util/noexcept.h"
 #include "util/sort.h"
 #include "util/string.h"
@@ -54,19 +53,19 @@ struct HeaderBlock {
     uint32_t dataOffsetsBlockOffset;
 };
 
+typedef uint32_t BlobSize;
 typedef uint32_t PathOffset;
-
 enum BlobCompressionType { BLOB_COMPRESSION_NONE };
 
 struct BlobMetadata {
-    PackReader::BlobSize uncompressedSize;
-    PackReader::BlobSize compressedSize;
+    BlobSize uncompressedSize;
+    BlobSize compressedSize;
     BlobCompressionType compressionType;
 };
 
 struct Blob {
     String path;
-    PackWriter::BlobSize size;
+    BlobSize size;
     const void* data;
 };
 
@@ -86,41 +85,38 @@ operator<(const Blob& a, const Blob& b) noexcept {
 }
 
 
-class PackWriterImpl : public PackWriter {
- public:
-    bool
-    writeToFile(StringView path) noexcept;
-
-    void
-    addBlob(String path, BlobSize size, const void* data) noexcept;
-
- private:
+struct PackWriter {
     Vector<Blob> blobs;
-    bool sorted = true;
 };
 
-Unique<PackWriter>
-PackWriter::make() noexcept {
-    void* buf = malloc(sizeof(PackWriterImpl));
-    new (buf) PackWriterImpl;
-    PackWriterImpl* writer = reinterpret_cast<PackWriterImpl*>(buf);
+PackWriter*
+makePackWriter() noexcept {
+    PackWriter* writer = new PackWriter();
+    return writer;
+}
 
-    return Unique<PackWriter>(writer);
+void
+destroyPackWriter(PackWriter* writer) noexcept {
+    writer->~PackWriter();
+}
+
+void
+packWriterAddBlob(PackWriter* writer, StringView path, BlobSize size,
+        const void* data) noexcept {
+    writer->blobs.push_back({String(path), size, data});
 }
 
 bool
-PackWriterImpl::writeToFile(StringView path) noexcept {
+packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
+    Vector<Blob>& blobs = writer->blobs;
+
     uint32_t blobCount = static_cast<uint32_t>(blobs.size);
 
     // Sort blobs by size (smallest first).
-    if (!sorted) {
-        sorted = true;
-
-        Blob* data = blobs.data;
+    Blob* data = blobs.data;
 #define LESS(i, j) data[i] < data[j]
 #define SWAP(i, j) swap_(data[i], data[j])
-        QSORT(blobs.size, LESS, SWAP);
-    }
+    QSORT(blobs.size, LESS, SWAP);
 
     // Determine block offsets.
     uint32_t pathOffsetsBlockSize = (blobCount + 1) * sizeof(PathOffset);
@@ -227,10 +223,4 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
                         static_cast<uint32_t>(writeLengths.size),
                         writeLengths.data,
                         writeDatas.data);
-}
-
-void
-PackWriterImpl::addBlob(String path, BlobSize size, const void* data) noexcept {
-    blobs.push_back({static_cast<String&&>(path), size, data});
-    sorted = false;
 }

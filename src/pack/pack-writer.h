@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack-writer.h                    **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -30,22 +30,20 @@
 #include "util/int.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
-#include "util/string.h"
-#include "util/unique.h"
 
-class PackWriter {
- public:
-    typedef uint32_t BlobSize;
+typedef struct PackWriter PackWriter;
 
-    static Unique<PackWriter>
-    make() noexcept;
-    virtual ~PackWriter() = default;
+PackWriter*
+makePackWriter() noexcept;
 
-    virtual bool
-    writeToFile(StringView path) noexcept = 0;
+void
+destroyPackWriter(PackWriter* writer) noexcept;
 
-    virtual void
-    addBlob(String path, BlobSize size, const void* data) noexcept = 0;
-};
+void
+packWriterAddBlob(PackWriter* writer, StringView path, uint32_t size,
+        const void* data) noexcept;
+
+bool
+packWriterWriteToFile(PackWriter* writer, StringView path) noexcept;
 
 #endif  // SRC_PACK_PACK_WRITER_H_

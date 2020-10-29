@@ -51,6 +51,8 @@
 #ifndef SRC_UTIL_SORT_H_
 #define SRC_UTIL_SORT_H_
 
+#include "util/int.h"
+
 /* Sort 3 elements. */
 #define Q_SORT3(q_a1, q_a2, q_a3, Q_LESS, Q_SWAP) \
     do {                                          \
@@ -76,10 +78,10 @@
 /* Partition [q_l,q_r] around a pivot.  After partitioning,
  * [q_l,q_j] are the elements that are less than or equal to the pivot,
  * while [q_i,q_r] are the elements greater than or equal to the pivot. */
-#define Q_PARTITION(q_l, q_r, q_i, q_j, Q_UINT, Q_LESS, Q_SWAP)          \
+#define Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP)                  \
     do {                                                                 \
         /* The middle element, not to be confused with the median. */    \
-        Q_UINT q_m = q_l + ((q_r - q_l) >> 1);                           \
+        size_t q_m = q_l + ((q_r - q_l) >> 1);                           \
         /* Reorder the second, the middle, and the last items.           \
          * As [Edelkamp Weiss 2016] explain, using the second element    \
          * instead of the first one helps avoid bad behaviour for        \
@@ -120,9 +122,9 @@
  * medians are already in their final positions and need not be rechecked.
  * Since I do not assume that comparisons are cheap, I also do not try
  * to eliminate the (q_j > q_l) boundary check. */
-#define Q_INSERTION_SORT(q_l, q_r, Q_UINT, Q_LESS, Q_SWAP)              \
+#define Q_INSERTION_SORT(q_l, q_r, Q_LESS, Q_SWAP)                      \
 do {                                                                    \
-    Q_UINT q_i, q_j;                                                    \
+    size_t q_i, q_j;                                                    \
     /* For each item starting with the second... */                     \
     for (q_i = q_l + 1; q_i <= q_r; q_i++)                              \
         /* move it down the array so that the first part is sorted. */  \
@@ -138,23 +140,23 @@ do {                                                                    \
 #define Q_THRESH 16
 
 /* The main loop. */
-#define Q_LOOP(Q_UINT, Q_N, Q_LESS, Q_SWAP)                           \
+#define Q_LOOP(Q_N, Q_LESS, Q_SWAP)                                   \
 do {                                                                  \
-    Q_UINT q_l = 0;                                                   \
-    Q_UINT q_r = (Q_N) - 1;                                           \
-    Q_UINT q_sp = 0; /* the number of frames pushed to the stack */   \
+    size_t q_l = 0;                                                   \
+    size_t q_r = (Q_N) - 1;                                           \
+    size_t q_sp = 0; /* the number of frames pushed to the stack */   \
     struct {                                                          \
-        Q_UINT q_l, q_r;                                              \
+        size_t q_l, q_r;                                              \
     }                                                                 \
     /* On 32-bit platforms, to sort a "char[3GB+]" array,             \
      * it may take full 32 stack frames.  On 64-bit CPUs,             \
      * though, the address space is limited to 48 bits.               \
      * The usage is further reduced if Q_N has a 32-bit type. */      \
-    q_st[sizeof(Q_UINT) > 4 && sizeof(Q_N) > 4 ? 48 : 32];            \
+    q_st[sizeof(size_t) > 4 && sizeof(Q_N) > 4 ? 48 : 32];            \
     while (1) {                                                       \
         if (q_r - q_l + 1 >= Q_THRESH) {                              \
-            Q_UINT q_i, q_j;                                          \
-            Q_PARTITION(q_l, q_r, q_i, q_j, Q_UINT, Q_LESS, Q_SWAP);  \
+            size_t q_i, q_j;                                          \
+            Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP);          \
             /* Now have two subfiles: [q_l,q_j] and [q_i,q_r].        \
              * Dealing with them depends on which one is bigger. */   \
             if (q_j - q_l >= q_r - q_i) {                             \
@@ -165,7 +167,7 @@ do {                                                                  \
             }                                                         \
         }                                                             \
         else {                                                        \
-            Q_INSERTION_SORT(q_l, q_r, Q_UINT, Q_LESS, Q_SWAP);       \
+            Q_INSERTION_SORT(q_l, q_r, Q_LESS, Q_SWAP);               \
             /* Pop subfiles from the stack, until it gets empty. */   \
             if (q_sp == 0) {                                          \
                 break;                                                \
@@ -205,9 +207,7 @@ do {                                                                 \
 #define QSORT(Q_N, Q_LESS, Q_SWAP)                                      \
 do {                                                                    \
     if ((Q_N) > 1) {                                                    \
-        /* We could check sizeof(Q_N) and use "unsigned", but at least  \
-         * on x86_64, this has the performance penalty of up to 5%. */  \
-        Q_LOOP(unsigned long, Q_N, Q_LESS, Q_SWAP);                     \
+        Q_LOOP(Q_N, Q_LESS, Q_SWAP);                                    \
     }                                                                   \
 } while (0)
 
