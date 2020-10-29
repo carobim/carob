@@ -33,7 +33,6 @@
 #include "util/int.h"
 #include "util/move.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/unique.h"
@@ -149,25 +148,26 @@ listArchive(StringView archivePath) noexcept {
     }
 }
 
-static Optional<StringView>
-getParentPath(StringView path) noexcept {
+static bool
+getParentPath(StringView path, StringView& parent) noexcept {
     StringPosition sep = path.rfind(dirSeparator);
     if (sep == SV_NOT_FOUND) {
-        return none;
+        return false;
     }
     else {
-        return Optional<StringView>(path.substr(0, sep));
+        parent = path.substr(0, sep);
+        return true;
     }
 }
 
 static void
 createDirs(StringView path) noexcept {
-    Optional<StringView> parentPath = getParentPath(path);
-    if (parentPath) {
+    StringView parentPath;
+    if (getParentPath(path, parentPath)) {
         // Make sure parentPath's parent exists.
-        createDirs(*parentPath);
+        createDirs(parentPath);
 
-        makeDirectory(*parentPath);
+        makeDirectory(parentPath);
     }
 }
 
