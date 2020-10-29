@@ -364,13 +364,21 @@ target_sources(pack-tool
     PRIVATE ${HERE}/src/util/vector.h
 )
 
-target_sources(tsunagari
-    PRIVATE $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
-)
-
-target_sources(pack-tool
-    PRIVATE $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
-)
+if(MSVC)  # MSVC 2017 and below cannot vary source files by configuration.
+    target_sources(tsunagari
+        PRIVATE ${HERE}/src/util/assert.cpp
+    )
+    target_sources(pack-tool
+        PRIVATE ${HERE}/src/util/assert.cpp
+    )
+else()
+    target_sources(tsunagari
+        PRIVATE $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
+    )
+    target_sources(pack-tool
+        PRIVATE $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
+    )
+endif()
 
 
 #
