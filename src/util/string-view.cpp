@@ -27,8 +27,27 @@
 #include "util/string-view.h"
 
 #include "os/c.h"
+#include "util/assert.h"
 #include "util/fnv.h"
 #include "util/noexcept.h"
+
+StringView::StringView() noexcept
+            : data(nullptr), size(0){};
+StringView::StringView(const char* data) noexcept
+        : data(data), size(strlen(data)) {}
+StringView::StringView(const char* data, size_t size) noexcept
+        : data(data), size(size){};
+StringView::StringView(const StringView& s) noexcept
+        : data(s.data), size(s.size){};
+
+const char*
+StringView::begin() const noexcept {
+    return data;
+}
+const char*
+StringView::end() const noexcept {
+    return data + size;
+}
 
 StringPosition
 StringView::find(char needle) const noexcept {
@@ -76,6 +95,66 @@ StringView::rfind(char needle) const noexcept {
     } while (i > 0);
 
     return SV_NOT_FOUND;
+}
+
+StringView
+StringView::substr(const size_t from) const noexcept {
+    assert_(from <= this->size);
+    return StringView(data + from, size - from);
+}
+StringView
+StringView::substr(const size_t from, const size_t span) const noexcept {
+    assert_(from <= size);
+    assert_(from + span <= size);
+    return StringView(data + from, span);
+}
+
+bool
+operator==(const StringView& a, const StringView& b) noexcept {
+    return (a.size == b.size) && memcmp(a.data, b.data, a.size) == 0;
+}
+
+bool
+operator!=(const StringView& a, const StringView& b) noexcept {
+    return !(a == b);
+}
+
+bool
+operator>(const StringView& a, const StringView& b) noexcept {
+    size_t s = a.size < b.size ? a.size : b.size;
+    const char* ad = a.data;
+    const char* bd = b.data;
+
+    while (s--) {
+        if (*ad != *bd) {
+            return *ad > *bd;
+        }
+        ad++;
+        bd++;
+    }
+    if (a.size != b.size) {
+        return a.size > b.size;
+    }
+    return false;
+}
+
+bool
+operator<(const StringView& a, const StringView& b) noexcept {
+    size_t s = a.size < b.size ? a.size : b.size;
+    const char* ad = a.data;
+    const char* bd = b.data;
+
+    while (s--) {
+        if (*ad != *bd) {
+            return *ad < *bd;
+        }
+        ad++;
+        bd++;
+    }
+    if (a.size != b.size) {
+        return a.size < b.size;
+    }
+    return false;
 }
 
 size_t

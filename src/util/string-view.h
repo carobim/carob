@@ -27,9 +27,6 @@
 #ifndef SRC_UTIL_STRING_VIEW_H_
 #define SRC_UTIL_STRING_VIEW_H_
 
-#include "os/c.h"
-#include "util/assert.h"
-#include "util/constexpr.h"
 #include "util/int.h"
 #include "util/noexcept.h"
 
@@ -39,33 +36,21 @@ typedef size_t StringPosition;
 
 class StringView {
  public:
-    inline CONSTEXPR11
-    StringView() noexcept
-            : data(nullptr), size(0){};
-    inline StringView(const char* data) noexcept
-            : data(data), size(strlen(data)) {}
+    StringView() noexcept;
+    StringView(const char* data) noexcept;
     template<size_t N>
-    inline CONSTEXPR11
     StringView(const char (&data)[N]) noexcept
             : data(data), size(N){};
-    inline CONSTEXPR11
-    StringView(const char* data, size_t size) noexcept
-            : data(data), size(size){};
-    inline CONSTEXPR11
-    StringView(const StringView& s) noexcept
-            : data(s.data), size(s.size){};
+    StringView(const char* data, size_t size) noexcept;
+    StringView(const StringView& s) noexcept;
 
     StringView&
     operator=(const StringView& s) = default;
 
-    inline CONSTEXPR11 const char*
-    begin() const noexcept {
-        return data;
-    }
-    inline CONSTEXPR11 const char*
-    end() const noexcept {
-        return data + size;
-    }
+    const char*
+    begin() const noexcept;
+    const char*
+    end() const noexcept;
 
     StringPosition
     find(char needle) const noexcept;
@@ -76,70 +61,24 @@ class StringView {
     StringPosition
     rfind(char needle) const noexcept;
 
-    CONSTEXPR14 StringView
-    substr(const size_t from) const noexcept {
-        assert_(from <= this->size);
-        return StringView(data + from, size - from);
-    }
-    CONSTEXPR14 StringView
-    substr(const size_t from, const size_t span) const noexcept {
-        assert_(from <= size);
-        assert_(from + span <= size);
-        return StringView(data + from, span);
-    }
+    StringView
+    substr(const size_t from) const noexcept;
+    StringView
+    substr(const size_t from, const size_t span) const noexcept;
 
  public:
     const char* data;
     size_t size;
 };
 
-inline CONSTEXPR11 bool
-operator==(const StringView& a, const StringView& b) noexcept {
-    return (a.size == b.size) && memcmp(a.data, b.data, a.size) == 0;
-}
-
-inline CONSTEXPR11 bool
-operator!=(const StringView& a, const StringView& b) noexcept {
-    return !(a == b);
-}
-
-inline CONSTEXPR14 bool
-operator>(const StringView& a, const StringView& b) noexcept {
-    size_t s = a.size < b.size ? a.size : b.size;
-    const char* ad = a.data;
-    const char* bd = b.data;
-
-    while (s--) {
-        if (*ad != *bd) {
-            return *ad > *bd;
-        }
-        ad++;
-        bd++;
-    }
-    if (a.size != b.size) {
-        return a.size > b.size;
-    }
-    return false;
-}
-
-inline CONSTEXPR14 bool
-operator<(const StringView& a, const StringView& b) noexcept {
-    size_t s = a.size < b.size ? a.size : b.size;
-    const char* ad = a.data;
-    const char* bd = b.data;
-
-    while (s--) {
-        if (*ad != *bd) {
-            return *ad < *bd;
-        }
-        ad++;
-        bd++;
-    }
-    if (a.size != b.size) {
-        return a.size < b.size;
-    }
-    return false;
-}
+bool
+operator==(const StringView& a, const StringView& b) noexcept;
+bool
+operator!=(const StringView& a, const StringView& b) noexcept;
+bool
+operator>(const StringView& a, const StringView& b) noexcept;
+bool
+operator<(const StringView& a, const StringView& b) noexcept;
 
 size_t
 hash_(StringView s) noexcept;

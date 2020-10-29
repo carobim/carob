@@ -27,8 +27,9 @@
 #if defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) || \
         defined(__NetBSD__)
 
+#include "util/new.h"
+
 #include "os/c.h"
-#include "os/os.h"
 #include "util/int.h"
 #include "util/noexcept.h"
 
