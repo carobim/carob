@@ -91,19 +91,6 @@ SteadyClock::nowMS() noexcept {
     return ns_to_ms(now());
 }
 
-/*
-void SleepFor(Duration d) noexcept {
-    if (d <= 0) {
-        return;
-    }
-    long long s = ns_to_s(d);
-    timespec ts;
-    ts.tv_sec = static_cast<time_t>(s);
-    ts.tv_nsec = static_cast<long>(d - s_to_ns(s));
-    while (nanosleep(&ts, &ts) == -1 && errno == EINTR);
-}
-*/
-
 void
 SleepFor(Duration d) noexcept {
     if (d <= 0) {
