@@ -26,64 +26,62 @@
 
 #include "av/sdl2/error.h"
 #include "av/sdl2/sdl2.h"
-#include "cache/rc-cache-impl.h"
-#include "cache/rc-reader-cache.h"
+#include "core/log.h"
 #include "core/measure.h"
 #include "core/music-worker.h"
 #include "core/resources.h"
+#include "util/assert.h"
+#include "util/hashvector.h"
 #include "util/int.h"
 #include "util/noexcept.h"
-#include "util/rc.h"
 #include "util/string-view.h"
+#include "util/string.h"
 
-struct SDL2Song {
-    ~SDL2Song() noexcept;
-
+struct Song {
     // The Mix_Music needs the music data to be kept around for its lifetime.
-    StringView resource;
+    StringView fileContent;
 
     Mix_Music* mix;
 };
 
-namespace {
-    Rc<SDL2Song>
-    genSong(StringView name) noexcept {
-        StringView r;
-        if (!Resources::load(name, r)) {
-            // Error logged.
-            return Rc<SDL2Song>();
-        }
-
-        assert_(r.size < UINT32_MAX);
-
-        SDL_RWops* ops =
-                SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
-                              static_cast<int>(r.size));
-
-        TimeMeasure m(String() << "Constructed " << name << " as music");
-        Mix_Music* music = Mix_LoadMUS_RW(ops, 1);
-
-        // We need to keep the memory (the resource) around, so put it in a
-        // struct.
-        SDL2Song* song = new SDL2Song;
-        song->resource = r;
-        song->mix = music;
-
-        return Rc<SDL2Song>(song);
-    }
-}  // namespace
-
 static bool initalized = false;
-static String path;
 static int paused = 0;
-static Rc<SDL2Song> currentMusic;
-static RcReaderCache<Rc<SDL2Song>, genSong> songs;
+static HashVector<Song> songs;
+static uint32_t songHash = 0;
+static Song* song = 0;
 
+static Song*
+load(StringView path) noexcept {
+    Song& newSong = songs.allocate(hash_(path));
+    newSong.mix = 0;
 
-SDL2Song::~SDL2Song() noexcept {
-    Mix_FreeMusic(mix);
+    StringView r;
+    if (!Resources::load(path, r)) {
+        // Error logged.
+        return 0;
+    }
+
+    // FIXME: Do this at the resource level.
+    //assert_(r.size < INT32_MAX);
+
+    SDL_RWops* ops =
+            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                          static_cast<int>(r.size));
+
+    TimeMeasure m(String() << "Constructed " << path << " as music");
+    Mix_Music* mix = Mix_LoadMUS_RW(ops, 1);
+
+    if (!mix) {
+        sdlDie("SDL2", String() << "Failed to load music: " << path);
+        return 0;
+    }
+
+    // We need to keep the memory around, so put it in a struct.
+    newSong.fileContent = r;
+    newSong.mix = mix;
+
+    return &newSong;
 }
-
 
 static void
 init() noexcept {
@@ -111,24 +109,42 @@ init() noexcept {
 }
 
 void
-MusicWorker::play(StringView path_) noexcept {
+MusicWorker::play(StringView path) noexcept {
     init();
 
-    if (path == path_) {
+    uint32_t pathHash = hash_(path);
+
+    if (songHash == pathHash) {
         return;
     }
 
     paused = 0;
-    path = path_;
 
-    TimeMeasure m(String() << "Playing " << path);
-    if (currentMusic && !Mix_PausedMusic()) {
+    if (song && !Mix_PausedMusic()) {
         Mix_HaltMusic();
     }
-    currentMusic = path.size ? songs.lifetimeRequest(path) : Rc<SDL2Song>();
-    if (currentMusic) {
-        Mix_PlayMusic(currentMusic->mix, -1);
+
+    if (path.size == 0) {
+        songHash = 0;
+        song = 0;
+        return;
     }
+
+    song = songs.find(hash_(path));
+    if (!song) {
+        song = load(path);
+    }
+    if (!song || !song->mix) {
+        songHash = 0;
+        song = 0;
+        return;
+    }
+
+    songHash = pathHash;
+    song = song;
+
+    TimeMeasure m(String() << "Playing " << path);
+    Mix_PlayMusic(song->mix, -1);
 }
 
 void
@@ -136,19 +152,19 @@ MusicWorker::stop() noexcept {
     init();
 
     paused = 0;
-    path = "";
 
-    if (currentMusic) {
+    if (song) {
+        songHash = 0;
+        song = 0;
         Mix_HaltMusic();
     }
-    currentMusic = Rc<SDL2Song>();
 }
 
 void
 MusicWorker::pause() noexcept {
     init();
 
-    if (paused == 0 && currentMusic) {
+    if (paused == 0 && song) {
         Mix_PauseMusic();
     }
 
@@ -159,16 +175,16 @@ void
 MusicWorker::resume() noexcept {
     init();
 
+    if (!paused) {
+        return;
+    }
+
     paused--;
 
-    assert_(paused >= 0);
-
-    if (paused == 0 && currentMusic) {
+    if (paused == 0 && song) {
         Mix_ResumeMusic();
     }
 }
 
 void
-MusicWorker::garbageCollect() noexcept {
-    songs.garbageCollect();
-}
+MusicWorker::garbageCollect() noexcept {}
