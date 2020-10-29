@@ -30,7 +30,6 @@
 #include "config.h"
 #include "os/os.h"
 #include "util/json.h"
-#include "util/move.h"
 #include "util/string.h"
 #include "util/string2.h"
 #include "util/vector.h"
@@ -54,14 +53,15 @@ int Conf::persistCons = 0;
 // missing options.
 bool
 Conf::parse(StringView filename) noexcept {
-    Optional<String> file = readFile(filename);
+    String file;
+    bool ok = readFile(filename, file);
 
-    if (!file) {
+    if (!ok) {
         logFatal(filename, String() << "Could not find " << filename);
         return false;
     }
 
-    JsonDocument doc = JsonDocument(move_(*file));
+    JsonDocument doc = JsonDocument(static_cast<String&&>(file));
     if (!doc.ok) {
         logErr(filename, String() << "Could not parse " << filename);
         return false;

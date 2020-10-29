@@ -184,36 +184,33 @@ noexcept { int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666); if
 }
 */
 
-Optional<String>
-readFile(String& path) noexcept {
+bool
+readFile(StringView path, String& data) noexcept {
     Filesize size = getFileSize(path);
     if (size == FS_ERROR) {
-        return Optional<String>();
+        return false;
     }
 
-    FILE* f = fopen(path.null(), "r");
+    String path_;
+    path_.reserve(path.size + 1);
+    path_ << path;
+
+    FILE* f = fopen(path_.null(), "r");
     if (!f) {
-        return Optional<String>();
+        return false;
     }
 
-    String contents;
-    contents.resize(size);
+    data.resize(size);
 
-    ssize_t read = fread(contents.data, size, 1, f);
+    ssize_t read = fread(data.data, size, 1, f);
     if (read != 1) {
         fclose(f);
-        return Optional<String>();
+        return false;
     }
 
     fclose(f);
 
-    return Optional<String>(move_(contents));
-}
-
-Optional<String>
-readFile(StringView s) noexcept {
-    String s_(s);
-    return readFile(s_);
+    return true;
 }
 
 static bool

@@ -59,19 +59,18 @@ struct CreateArchiveContext {
 
 static void
 addFile(CreateArchiveContext& ctx, StringView path) noexcept {
-    Optional<String> data = readFile(path);
+    String data;
+    bool ok = readFile(path, data);
 
-    if (!data) {
+    if (!ok) {
         if (verbose) {
             printf("%s", (String() << "Skipped " << path << ": file not found\n\0").null());
         }
         return;
     }
 
-    String data_ = move_(*data);
-
     if (verbose) {
-        printf("%s", (String() << "Added " << path << ": " << data_.size << " bytes\n").null());
+        printf("%s", (String() << "Added " << path << ": " << data.size << " bytes\n").null());
     }
 
     // Write the file path to the pack file with '/' instead of '\\' on Windows.
@@ -91,9 +90,9 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
 
     LockGuard guard(ctx.packMutex);
     ctx.pack->addBlob(
-            move_(path), static_cast<uint32_t>(data_.size), data_.data);
+            move_(path), static_cast<uint32_t>(data.size), data.data);
 
-    data_.reset();  // Don't delete data pointer.
+    data.reset();  // Don't delete data pointer.
 }
 
 static bool

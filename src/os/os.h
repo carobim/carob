@@ -29,7 +29,6 @@
 
 #include "util/int.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/vector.h"
@@ -55,8 +54,8 @@ void
 makeDirectory(StringView path) noexcept;
 Vector<String>
 listDir(StringView path) noexcept;
-Optional<String>
-readFile(StringView path) noexcept;
+bool
+readFile(StringView path, String& data) noexcept;
 
 enum TermColor {
     TC_RESET,

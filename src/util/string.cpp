@@ -248,7 +248,7 @@ String::operator<<(float f) noexcept {
 
 void
 String::reserve(size_t n) noexcept {
-    assert_(n > capacity);
+    assert_(capacity < n);
     char* newData = static_cast<char*>(malloc(n));
     memmove(newData, data, size);
     data = newData;
