@@ -87,8 +87,8 @@ main() noexcept {
 
     {
         TimeMeasure m("Constructed world");
-        if (!World::init()) {
-            logFatal("Main", "World::init");
+        if (!worldInit()) {
+            logFatal("Main", "worldInit");
             return 1;
         }
     }

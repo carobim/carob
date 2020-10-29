@@ -42,89 +42,87 @@ struct DisplayList;
  * sound effects, music, and scripts. From the perspective from a player, each
  * world should be a separate game. Tsunagari is an engine that powers worlds.
  */
-class World {
- public:
-    /**
-     * Initialize the world for use.
-     */
-    static bool
-    init() noexcept;
 
-    /**
-     * Syncronized time value used throughout the engine.
-     */
-    static time_t
-    time() noexcept;
+/**
+ * Initialize the world for use.
+ */
+bool
+worldInit() noexcept;
 
-    /**
-     * Process key presses.
-     */
-    static void
-    buttonDown(Key btn) noexcept;
-    static void
-    buttonUp(Key btn) noexcept;
+/**
+ * Syncronized time value used throughout the engine.
+ */
+time_t
+worldTime() noexcept;
 
-    /**
-     * Draw game state to the screen.
-     */
-    static void
-    draw(DisplayList* display) noexcept;
+/**
+ * Process key presses.
+ */
+void
+worldButtonDown(Key btn) noexcept;
+void
+worldButtonUp(Key btn) noexcept;
 
-    /**
-     * Do we need to redraw the screen?
-     */
-    static bool
-    needsRedraw() noexcept;
+/**
+ * Draw game state to the screen.
+ */
+void
+worldDraw(DisplayList* display) noexcept;
 
-    /**
-     * Updates the game state within this World as if dt milliseconds had
-     * passed since the last call.
-     *
-     *                       MOVE MODE
-     *                 TURN     TILE     NOTILE
-     * Area            yes      yes      yes
-     * Character       no       yes      yes
-     * Overlay         yes      yes      yes
-     */
-    static void
-    tick(time_t dt) noexcept;
+/**
+ * Do we need to redraw the screen?
+ */
+bool
+worldNeedsRedraw() noexcept;
 
-    /**
-     * Update the game world when the turn is over (Player moves).
-     *
-     *                       MOVE MODE
-     *                 TURN     TILE     NOTILE
-     * Area            yes      no       no
-     * Character       yes      no       no
-     * Overlay         yes      no       no
-     */
-    static void
-    turn() noexcept;
+/**
+ * Updates the game state within this World as if dt milliseconds had
+ * passed since the last call.
+ *
+ *                       MOVE MODE
+ *                 TURN     TILE     NOTILE
+ * Area            yes      yes      yes
+ * Character       no       yes      yes
+ * Overlay         yes      yes      yes
+ */
+void
+worldTick(time_t dt) noexcept;
 
-    /**
-     * Switch the game to a new Area, moving the player to the specified
-     * position in the Area.
-     */
-    static bool
-    focusArea(StringView filename, vicoord playerPos) noexcept;
-    static void
-    focusArea(Area* area, vicoord playerPos) noexcept;
+/**
+ * Update the game world when the turn is over (Player moves).
+ *
+ *                       MOVE MODE
+ *                 TURN     TILE     NOTILE
+ * Area            yes      no       no
+ * Character       yes      no       no
+ * Overlay         yes      no       no
+ */
+void
+worldTurn() noexcept;
 
-    static void
-    setPaused(bool b) noexcept;
+/**
+ * Switch the game to a new Area, moving the player to the specified
+ * position in the Area.
+ */
+bool
+worldFocusArea(StringView filename, vicoord playerPos) noexcept;
+void
+worldFocusArea(Area* area, vicoord playerPos) noexcept;
 
-    static void
-    storeKeys() noexcept;
-    static void
-    restoreKeys() noexcept;
+void
+worldSetPaused(bool b) noexcept;
 
-    static void
-    runAreaLoadScript(Area* area) noexcept;
+void
+worldStoreKeys() noexcept;
+void
+worldRestoreKeys() noexcept;
 
-    //! Expunge old resources cached in memory. Decisions on which are
-    //! removed and which are kept are based on the global Conf struct.
-    static void
-    garbageCollect() noexcept;
-};
+void
+worldRunAreaLoadScript(Area* area) noexcept;
+
+//! Expunge old resources cached in memory. Decisions on which are
+//! removed and which are kept are based on the global Conf struct.
+void
+worldGarbageCollect() noexcept;
 
 #endif  // SRC_CORE_WORLD_H_

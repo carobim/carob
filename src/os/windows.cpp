@@ -34,7 +34,6 @@
 #include "os/os.h"
 #include "util/move.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/vector.h"
@@ -247,15 +246,15 @@ listDir(StringView path) noexcept {
     return files;
 }
 
-Optional<String>
-readFile(StringView path) noexcept {
+bool
+readFile(StringView path, String& data) noexcept {
     Filesize size_ = getFileSize(path);
     if (size_ == FS_ERROR) {
-        return none;
+        return false;
     }
 
     if (size_ > UINT32_MAX) {
-        return none;
+        return false;
     }
 
     DWORD size = static_cast<DWORD>(size_);
@@ -268,22 +267,21 @@ readFile(StringView path) noexcept {
                              0,
                              nullptr);
     if (file == INVALID_HANDLE_VALUE) {
-        return none;
+        return false;
     }
 
-    String data;
     data.resize(size);
 
     DWORD read;
-    BOOL ok = ReadFile(file, data.data(), size, &read, nullptr);
+    BOOL ok = ReadFile(file, data.data, size, &read, 0);
     if (!ok) {
-        return none;
+        return false;
     }
     if (read != size) {
-        return none;
+        return false;
     }
 
-    return Optional<String>(move_(data));
+    return true;
 }
 
 void
@@ -325,10 +323,10 @@ wFixConsole() noexcept {
 
 void
 wMessageBox(StringView title, StringView text) noexcept {
-    // World::instance().setPaused(true);
+    // worldSetPaused(true);
     // FIXME: Try to get the window's native handle instead of passing nullptr.
-    MessageBox(nullptr, String(text).null(), String(title).null(), MB_OK);
-    // World::instance().setPaused(false);
+    MessageBox(0, String(text).null(), String(title).null(), MB_OK);
+    // worldSetPaused(false);
 }
 
 void

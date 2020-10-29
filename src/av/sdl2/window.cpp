@@ -224,7 +224,7 @@ windowMainLoop() noexcept {
         assert_(dt >= 0);
 
         if (dt > 0) {
-            World::tick(dt);
+            worldTick(dt);
         }
         else {
             // FIXME: Why does this happen and what should be done when it
@@ -233,10 +233,10 @@ windowMainLoop() noexcept {
         }
 
         bool drew = false;
-        if (World::needsRedraw()) {
+        if (worldNeedsRedraw()) {
             drew = true;
 
-            World::draw(&display);
+            worldDraw(&display);
 
             imageStartFrame();
             displayListPresent(&display);

@@ -168,7 +168,7 @@ Area::needsRedraw() {
         checked = false;
     }
 
-    time_t now = World::time();
+    time_t now = worldTime();
 
     for (int z = tiles.z1; z < tiles.z2; z++) {
         if (grid.layerTypes[z] != TileGrid::LayerType::TILE_LAYER) {
@@ -350,7 +350,7 @@ Area::runScript(TileGrid::ScriptType type,
 
 void
 Area::drawTiles(DisplayList* display, icube& tiles, int z) {
-    time_t now = World::time();
+    time_t now = worldTime();
 
     if (tileGraphics.size > tilesAnimated.size) {
         tilesAnimated.resize(tileGraphics.size);

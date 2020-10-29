@@ -53,7 +53,7 @@ static Area* worldArea = 0;
 static Player* player = new Player;
 
 /**
- * Last time engine state was updated. See World::update().
+ * Last time engine state was updated. See worldUpdate().
  */
 static time_t lastTime = 0;
 
@@ -71,7 +71,7 @@ static Keys keyStates[10];
 static size_t numKeyStates = 0;
 
 bool
-World::init() noexcept {
+worldInit() noexcept {
     alive = true;
 
     Conf::moveMode = DataWorld::moveMode;
@@ -81,7 +81,7 @@ World::init() noexcept {
         return false;
     }
 
-    if (!focusArea(DataWorld::startArea, DataWorld::startCoords)) {
+    if (!worldFocusArea(DataWorld::startArea, DataWorld::startCoords)) {
         logFatal("World", "failed to load initial Area");
         return false;
     }
@@ -93,16 +93,16 @@ World::init() noexcept {
 }
 
 time_t
-World::time() noexcept {
+worldTime() noexcept {
     assert_(total >= 0);
     return total;
 }
 
 void
-World::buttonDown(Key key) noexcept {
+worldButtonDown(Key key) noexcept {
     switch (key) {
     case KEY_ESCAPE:
-        setPaused(!paused);
+        worldSetPaused(!paused);
         redraw = true;
         break;
     default:
@@ -116,7 +116,7 @@ World::buttonDown(Key key) noexcept {
 }
 
 void
-World::buttonUp(Key key) noexcept {
+worldButtonUp(Key key) noexcept {
     switch (key) {
     case KEY_ESCAPE:
         break;
@@ -131,7 +131,7 @@ World::buttonUp(Key key) noexcept {
 }
 
 void
-World::draw(DisplayList* display) noexcept {
+worldDraw(DisplayList* display) noexcept {
     // TimeMeasure m("Drew world");
 
     redraw = false;
@@ -151,12 +151,12 @@ World::draw(DisplayList* display) noexcept {
 }
 
 bool
-World::needsRedraw() noexcept {
+worldNeedsRedraw() noexcept {
     return redraw || (!paused && worldArea->needsRedraw());
 }
 
 void
-World::tick(time_t dt) noexcept {
+worldTick(time_t dt) noexcept {
     if (paused) {
         return;
     }
@@ -167,18 +167,18 @@ World::tick(time_t dt) noexcept {
 }
 
 void
-World::turn() noexcept {
+worldTurn() noexcept {
     if (Conf::moveMode == Conf::TURN) {
         worldArea->turn();
     }
 }
 
 bool
-World::focusArea(StringView filename, vicoord playerPos) noexcept {
+worldFocusArea(StringView filename, vicoord playerPos) noexcept {
     Area** cachedArea = areas.tryAt(filename);
     if (cachedArea) {
         Area* area = *cachedArea;
-        focusArea(area, playerPos);
+        worldFocusArea(area, playerPos);
         return true;
     }
 
@@ -201,13 +201,13 @@ World::focusArea(StringView filename, vicoord playerPos) noexcept {
                                // pointer.
     areas[filename] = newArea;
 
-    focusArea(newArea, playerPos);
+    worldFocusArea(newArea, playerPos);
 
     return true;
 }
 
 void
-World::focusArea(Area* area_, vicoord playerPos) noexcept {
+worldFocusArea(Area* area_, vicoord playerPos) noexcept {
     worldArea = area_;
     player->setArea(worldArea, playerPos);
     Viewport::setArea(worldArea);
@@ -215,7 +215,7 @@ World::focusArea(Area* area_, vicoord playerPos) noexcept {
 }
 
 void
-World::setPaused(bool b) noexcept {
+worldSetPaused(bool b) noexcept {
     if (!alive) {
         return;
     }
@@ -227,7 +227,7 @@ World::setPaused(bool b) noexcept {
 
     // If just pausing.
     if (!paused) {
-        storeKeys();
+        worldStoreKeys();
     }
 
     paused += b ? 1 : -1;
@@ -241,17 +241,17 @@ World::setPaused(bool b) noexcept {
 
     // If finally unpausing.
     if (!paused) {
-        restoreKeys();
+        worldRestoreKeys();
     }
 }
 
 void
-World::storeKeys() noexcept {
+worldStoreKeys() noexcept {
     keyStates[numKeyStates++] = windowKeysDown;
 }
 
 void
-World::restoreKeys() noexcept {
+worldRestoreKeys() noexcept {
     Keys now = windowKeysDown;
     Keys then = keyStates[numKeyStates - 1];
 
@@ -261,17 +261,17 @@ World::restoreKeys() noexcept {
         Key key = (now ^ then) & (i << 1);
         if (key) {
             if (now & key) {
-                buttonDown(key);
+                worldButtonDown(key);
             }
             else {
-                buttonUp(key);
+                worldButtonUp(key);
             }
         }
     }
 }
 
 void
-World::garbageCollect() noexcept {
+worldGarbageCollect() noexcept {
     time_t latestPermissibleUse = total - Conf::cacheTTL * 1000;
 
     imagesPrune(latestPermissibleUse);

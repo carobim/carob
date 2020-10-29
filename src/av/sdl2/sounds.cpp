@@ -206,7 +206,7 @@ Sound::release(SoundID sid) noexcept {
     assert_(sound.numUsers >= 0);
 
     if (sound.numUsers == 0) {
-        sound.lastUse = World::time();
+        sound.lastUse = worldTime();
     }
 }
 

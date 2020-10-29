@@ -47,7 +47,7 @@ RcCache<T>::momentaryRequest(StringView name) noexcept {
         CacheEntry& entry = it.value();
         // Set lastUsed to now because it won't be used
         // by the time garbageCollect() gets to it.
-        entry.lastUsed = World::time();
+        entry.lastUsed = worldTime();
         return entry.data;
     }
     logInfo("RcCache", String() << name << ": requested");
@@ -73,7 +73,7 @@ void
 RcCache<T>::momentaryPut(StringView name, T data) noexcept {
     CacheEntry entry;
     entry.data = data;
-    time_t now = World::time();
+    time_t now = worldTime();
     entry.lastUsed = now;
     map[name] = entry;
 }
@@ -90,7 +90,7 @@ RcCache<T>::lifetimePut(StringView name, T data) noexcept {
 template<typename T>
 void
 RcCache<T>::garbageCollect() noexcept {
-    time_t now = World::time();
+    time_t now = worldTime();
     Vector<String> dead;
     for (auto it = map.begin(); it != map.end(); ++it) {
         StringView name = it.key();

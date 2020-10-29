@@ -131,7 +131,7 @@ void macSetWorkingDirectory() noexcept {
 }
 
 void macMessageBox(StringView title, StringView msg) noexcept {
-    World::setPaused(true);
+    worldSetPaused(true);
 
     NSString *nsTitle = [[NSString alloc] initWithBytesNoCopy:title.data
                                                        length:title.size
@@ -153,5 +153,5 @@ void macMessageBox(StringView title, StringView msg) noexcept {
     [nsTitle release];
     [nsMsg release];
 
-    World::setPaused(false);
+    worldSetPaused(false);
 }

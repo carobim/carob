@@ -383,7 +383,7 @@ Entity::draw(DisplayList* display) noexcept {
         return;
     }
 
-    time_t now = World::time();
+    time_t now = worldTime();
 
     // TODO: Don't add to DisplayList if not on-screen.
 
@@ -408,7 +408,7 @@ Entity::needsRedraw(icube& visiblePixels) noexcept {
 
     if (!redraw) {
         // Entity has not moved and has not changed phase.
-        time_t now = World::time();
+        time_t now = worldTime();
         if (!phase->needsRedraw(now)) {
             // Entity's animation does not need an update.
             return false;
@@ -594,7 +594,7 @@ Entity::_setPhase(StringView name) noexcept {
     }
 
     if (phase != newPhase) {
-        time_t now = World::time();
+        time_t now = worldTime();
         phase = newPhase;
         phase->restart(now);
         phaseName = name;

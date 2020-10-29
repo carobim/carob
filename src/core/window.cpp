@@ -46,7 +46,7 @@ windowEmitKeyDown(Key key) noexcept {
     }
 
     if (!wasDown) {
-        World::buttonDown(key);
+        worldButtonDown(key);
     }
 }
 
@@ -57,6 +57,6 @@ windowEmitKeyUp(Key key) noexcept {
     windowKeysDown &= ~key;
 
     if (wasDown) {
-        World::buttonUp(key);
+        worldButtonUp(key);
     }
 }

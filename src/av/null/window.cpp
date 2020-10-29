@@ -91,10 +91,10 @@ windowMainLoop() noexcept {
         //
         time_t dt = ns_to_ms(frameStart - previousFrameStart);
 
-        World::tick(dt);
+        worldTick(dt);
 
-        if (World::needsRedraw()) {
-            World::draw(&dl);
+        if (worldNeedsRedraw()) {
+            worldDraw(&dl);
 
             // Do nothing with the filled DisplayList because this is the null
             // audio/video backend.
