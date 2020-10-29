@@ -44,7 +44,6 @@
 #include "core/window.h"
 #include "data/data-world.h"
 #include "util/hashtable.h"
-#include "util/unique.h"
 #include "util/vector.h"
 
 // ScriptRef keydownScript, keyupScript;
@@ -88,7 +87,7 @@ World::init() noexcept {
     }
 
     Viewport::setSize(DataWorld::viewportResolution);
-    Viewport::trackEntity(player.get());
+    Viewport::trackEntity(player);
 
     return true;
 }
@@ -183,7 +182,7 @@ World::focusArea(StringView filename, vicoord playerPos) noexcept {
         return true;
     }
 
-    Area* newArea = makeAreaFromJSON(player.get(), filename);
+    Area* newArea = makeAreaFromJSON(player, filename);
     if (!newArea) {
         return false;
     }
