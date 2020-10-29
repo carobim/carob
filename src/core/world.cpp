@@ -47,14 +47,11 @@
 #include "util/unique.h"
 #include "util/vector.h"
 
-class Image;
-class Player;
-
 // ScriptRef keydownScript, keyupScript;
 
 static Hashmap<String, Area*> areas;
-static Area* worldArea = nullptr;
-static Unique<Player> player = new Player;
+static Area* worldArea = 0;
+static Player* player = new Player;
 
 /**
  * Last time engine state was updated. See World::update().

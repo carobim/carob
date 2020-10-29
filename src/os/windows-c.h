@@ -128,6 +128,8 @@ __pragma(pack(pop));
 extern "C" {
 void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
+void*
+memmove(void*, const void*, size_t) noexcept;
 }
 
 int __CRTDECL

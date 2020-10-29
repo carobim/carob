@@ -166,7 +166,7 @@ class Vector {
     }
     void resize(size_t n) noexcept {
         reserve(n);
-        for (int i = size; i < n; i++) {
+        for (size_t i = size; i < n; i++) {
             new (data + i) X();
         }
         size = n;
