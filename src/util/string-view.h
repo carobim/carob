@@ -36,6 +36,10 @@ typedef size_t StringPosition;
 
 class StringView {
  public:
+    const char* data;
+    size_t size;
+
+ public:
     StringView() noexcept;
     StringView(const char* data) noexcept;
     template<size_t N>
@@ -65,10 +69,6 @@ class StringView {
     substr(const size_t from) const noexcept;
     StringView
     substr(const size_t from, const size_t span) const noexcept;
-
- public:
-    const char* data;
-    size_t size;
 };
 
 bool

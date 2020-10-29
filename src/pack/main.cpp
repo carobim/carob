@@ -136,8 +136,7 @@ listArchive(StringView archivePath) noexcept {
                 blobPath = standardizedPath;
             }
 
-            output.append(blobPath.size, blobPath.data);
-            output << ": " << blobSize << " bytes\n";
+            output << blobPath << ": " << blobSize << " bytes\n";
         }
 
         printf("%s", output.null());

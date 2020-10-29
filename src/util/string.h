@@ -29,54 +29,66 @@
 
 #include "util/noexcept.h"
 #include "util/string-view.h"
-#include "util/vector.h"
 
-class String : public Vector<char> {
+class String {
  public:
-    String() = default;
-    String(const char* value) noexcept;
-    String(StringView value) noexcept;
-    String(const String& other) = default;
-    String(String&& other) noexcept;
-    ~String() = default;
+     char* data;
+     size_t size;
+     size_t capacity;
+
+ public:
+    String() noexcept;
+    String(const char* s) noexcept;
+    String(StringView s) noexcept;
+    String(const String& s) noexcept;
+    String(String&& s) noexcept;
+    ~String() noexcept;
+
+    void
+    operator=(const char* s) noexcept;
+    void
+    operator=(StringView s) noexcept;
+
+    void
+    operator=(const String& s) noexcept;
+    void
+    operator=(String&& s) noexcept;
+
+    char&
+    operator[](size_t i) noexcept;
 
     String&
-    operator=(const char* other) noexcept;
+    operator<<(char c) noexcept;
     String&
-    operator=(StringView other) noexcept;
+    operator<<(const char* s) noexcept;
+    String&
+    operator<<(StringView s) noexcept;
 
     String&
-    operator=(const String& other) noexcept;
+    operator<<(bool b) noexcept;
     String&
-    operator=(String&& other) noexcept;
-    bool
-    operator<(const String& other) const noexcept;
-    bool
-    operator>(const String& other) const noexcept;
+    operator<<(int i) noexcept;
+    String&
+    operator<<(unsigned int u) noexcept;
+    String&
+    operator<<(long l) noexcept;
+    String&
+    operator<<(unsigned long ul) noexcept;
+    String&
+    operator<<(long long ll) noexcept;
+    String&
+    operator<<(unsigned long long ull) noexcept;
+    String&
+    operator<<(float f) noexcept;
 
-    String&
-    operator<<(char value) noexcept;
-    String&
-    operator<<(const char* value) noexcept;
-    String&
-    operator<<(StringView value) noexcept;
-
-    String&
-    operator<<(bool value) noexcept;
-    String&
-    operator<<(int value) noexcept;
-    String&
-    operator<<(unsigned int value) noexcept;
-    String&
-    operator<<(long value) noexcept;
-    String&
-    operator<<(unsigned long value) noexcept;
-    String&
-    operator<<(long long value) noexcept;
-    String&
-    operator<<(unsigned long long value) noexcept;
-    String&
-    operator<<(float value) noexcept;
+    void
+    resize(size_t n) noexcept;
+    void
+    reserve(size_t n) noexcept;
+    void
+    clear() noexcept;
+    void
+    reset() noexcept;
 
     operator StringView() const noexcept;
     StringView
@@ -85,6 +97,11 @@ class String : public Vector<char> {
     const char*
     null() noexcept;
 };
+
+bool
+operator<(const String& a, const String& b) noexcept;
+bool
+operator>(const String& a, const String& b) noexcept;
 
 size_t
 hash_(const String& s) noexcept;

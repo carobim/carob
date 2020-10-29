@@ -27,134 +27,244 @@
 #include "util/string.h"
 
 #include "os/c.h"
+#include "util/assert.h"
 #include "util/fnv.h"
 #include "util/noexcept.h"
 
-String::String(const char* value) noexcept {
-    *this << value;
+static size_t
+grow1(size_t current) {
+    return current == 0 ? 4 : current * 2;
 }
 
-String::String(StringView value) noexcept {
-    *this << value;
+static size_t
+growN(size_t current, size_t addition) {
+    size_t newSize = current == 0 ? 4 : current * 2;
+    while (newSize < addition) {
+        newSize *= 2;
+    }
+    return newSize;
 }
 
-String::String(String&& other) noexcept {
-    data = other.data;
-    size = other.size;
-    capacity = other.capacity;
-    other.data = 0;
-    other.size = other.capacity = 0;
+String::String() noexcept : data(0), size(0), capacity(0) {}
+
+String::String(const char* s) noexcept {
+    if (s == 0) {
+        data = 0;
+        size = capacity = 0;
+    }
+    else {
+        size_t len = strlen(s);
+        // FIXME: Choose better size.
+        data = static_cast<char*>(malloc(len));
+        size = capacity = len;
+        memcpy(data, s, len);
+    }
 }
 
-String&
-String::operator=(const char* other) noexcept {
-    clear();
-    return *this << other;
+String::String(StringView s) noexcept {
+    if (s.size == 0) {
+        data = 0;
+        size = capacity = 0;
+    }
+    else {
+        // FIXME: Choose better size.
+        data = static_cast<char*>(malloc(s.size));
+        size = capacity = s.size;
+        memcpy(data, s.data, s.size);
+    }
 }
 
-String&
-String::operator=(StringView other) noexcept {
-    clear();
-    return *this << other;
+String::String(const String& s) noexcept {
+    if (s.capacity == 0) {
+        data = 0;
+        size = capacity = 0;
+    }
+    else {
+        data = static_cast<char*>(malloc(s.capacity));
+        size = s.size;
+        capacity = s.capacity;
+        memcpy(data, s.data, size);
+    }
 }
 
-String&
-String::operator=(const String& other) noexcept {
-    clear();
-    return *this << StringView(other);
+String::String(String&& s) noexcept {
+    data = s.data;
+    size = s.size;
+    capacity = s.capacity;
+    s.data = 0;
+    s.size = s.capacity = 0;
 }
 
-String&
-String::operator=(String&& other) noexcept {
+String::~String() noexcept {
     free(data);
-    data = other.data;
-    size = other.size;
-    capacity = other.capacity;
-    other.data = 0;
-    other.size = other.capacity = 0;
+}
+
+void
+String::operator=(const char* s) noexcept {
+    free(data);
+    if (s == 0) {
+        data = 0;
+        size = capacity = 0;
+    }
+    else {
+        size_t len = strlen(s);
+        // FIXME: Choose better size.
+        data = static_cast<char*>(malloc(len));
+        size = capacity = len;
+        memcpy(data, s, len);
+    }
+}
+
+void
+String::operator=(StringView s) noexcept {
+    free(data);
+    if (s.size == 0) {
+        data = 0;
+        size = capacity = 0;
+    }
+    else {
+        // FIXME: Choose better size.
+        data = static_cast<char*>(malloc(s.size));
+        size = capacity = s.size;
+        memcpy(data, s.data, s.size);
+    }
+}
+
+void
+String::operator=(const String& s) noexcept {
+    free(data);
+    if (s.capacity == 0) {
+        data = 0;
+        size = capacity = 0;
+    }
+    else {
+        data = static_cast<char*>(malloc(s.capacity));
+        size = s.size;
+        capacity = s.capacity;
+        memcpy(data, s.data, size);
+    }
+}
+
+void
+String::operator=(String&& s) noexcept {
+    free(data);
+    data = s.data;
+    size = s.size;
+    capacity = s.capacity;
+    s.data = 0;
+    s.size = s.capacity = 0;
+}
+
+char&
+String::operator[](size_t i) noexcept {
+    assert_(i < size);
+    return data[i];
+}
+
+String&
+String::operator<<(char c) noexcept {
+    if (size == capacity) {
+        reserve(grow1(size));
+    }
+    data[size++] = c;
     return *this;
 }
 
-bool
-String::operator<(const String& other) const noexcept {
-    return view() < other.view();
-}
-
-bool
-String::operator>(const String& other) const noexcept {
-    return view() > other.view();
-}
-
 String&
-String::operator<<(char value) noexcept {
-    push_back(value);
+String::operator<<(const char* s) noexcept {
+    size_t len = strlen(s);
+    reserve(growN(size, len));
+    memcpy(data, s, len);
+    size += len;
     return *this;
 }
 
 String&
-String::operator<<(const char* value) noexcept {
-    append(strlen(value), value);
+String::operator<<(StringView s) noexcept {
+    reserve(growN(size, s.size));
+    memcpy(data, s.data, s.size);
+    size += s.size;
     return *this;
 }
 
 String&
-String::operator<<(StringView value) noexcept {
-    append(value.size, value.data);
-    return *this;
+String::operator<<(bool b) noexcept {
+    return *this << (b ? "true" : "false");
 }
 
 String&
-String::operator<<(bool value) noexcept {
-    return *this << (value ? "true" : "false");
-}
-
-String&
-String::operator<<(int value) noexcept {
+String::operator<<(int i) noexcept {
     char buf[64];
-    sprintf(buf, "%d", value);
+    sprintf(buf, "%d", i);
     return *this << buf;
 }
 
 String&
-String::operator<<(unsigned int value) noexcept {
+String::operator<<(unsigned int u) noexcept {
     char buf[64];
-    sprintf(buf, "%u", value);
+    sprintf(buf, "%u", u);
     return *this << buf;
 }
 
 String&
-String::operator<<(long value) noexcept {
+String::operator<<(long l) noexcept {
     char buf[64];
-    sprintf(buf, "%ld", value);
+    sprintf(buf, "%ld", l);
     return *this << buf;
 }
 
 String&
-String::operator<<(unsigned long value) noexcept {
+String::operator<<(unsigned long ul) noexcept {
     char buf[64];
-    sprintf(buf, "%lu", value);
+    sprintf(buf, "%lu", ul);
     return *this << buf;
 }
 
 String&
-String::operator<<(long long value) noexcept {
+String::operator<<(long long ll) noexcept {
     char buf[64];
-    sprintf(buf, "%lld", value);
+    sprintf(buf, "%lld", ll);
     return *this << buf;
 }
 
 String&
-String::operator<<(unsigned long long value) noexcept {
+String::operator<<(unsigned long long ull) noexcept {
     char buf[64];
-    sprintf(buf, "%llu", value);
+    sprintf(buf, "%llu", ull);
     return *this << buf;
 }
 
 String&
-String::operator<<(float value) noexcept {
+String::operator<<(float f) noexcept {
     char buf[64];
-    sprintf(buf, "%f", value);
+    sprintf(buf, "%f", f);
     return *this << buf;
+}
+
+void
+String::reserve(size_t n) noexcept {
+    assert_(n > capacity);
+    char* newData = static_cast<char*>(malloc(n));
+    memmove(newData, data, size);
+    data = newData;
+    capacity = n;
+}
+
+void
+String::resize(size_t n) noexcept {
+    reserve(n);
+    size = n;
+}
+
+void
+String::clear() noexcept {
+    size = 0;
+}
+
+void
+String::reset() noexcept {
+    data = 0;
+    size = capacity = 0;
 }
 
 String::operator StringView() const noexcept {
@@ -169,10 +279,20 @@ String::view() const noexcept {
 const char*
 String::null() noexcept {
     if (size == capacity) {
-        reserve(size + 1);
+        reserve(grow1(size));
     }
     data[size] = 0;
     return data;
+}
+
+bool
+operator<(const String& a, const String& b) noexcept {
+    return a.view() < b.view();
+}
+
+bool
+operator>(const String& a, const String& b) noexcept {
+    return a.view() > b.view();
 }
 
 size_t
