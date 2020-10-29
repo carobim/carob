@@ -53,7 +53,7 @@ DataArea::tick(time_t dt) noexcept {
     for (auto& inProgress : inProgresses) {
         inProgress->tick(dt);
     }
-    erase_if(inProgresses, [](Unique<InProgress>& ip) { return ip->isOver(); });
+    erase_if(inProgresses, [](InProgress* ip) { return ip->isOver(); });
     onTick(dt);
 }
 
@@ -72,6 +72,6 @@ DataArea::playSoundEffect(StringView sound) noexcept {
 }
 
 void
-DataArea::add(Unique<InProgress> inProgress) noexcept {
-    inProgresses.push_back(move_(inProgress));
+DataArea::add(InProgress* inProgress) noexcept {
+    inProgresses.push_back(inProgress);
 }

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** data-area.h                        **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -33,7 +33,6 @@
 #include "util/hashtable.h"
 #include "util/int.h"
 #include "util/string-view.h"
-#include "util/unique.h"
 #include "util/vector.h"
 
 class Area;
@@ -47,7 +46,7 @@ class DataArea {
     DataArea() = default;
     virtual ~DataArea() = default;
 
-    Area* area = nullptr;  // borrowed reference
+    Area* area = 0;  // borrowed reference
 
     virtual void
     onLoad() noexcept;
@@ -65,7 +64,7 @@ class DataArea {
     playSoundEffect(StringView sound) noexcept;
 
     void
-    add(Unique<InProgress> inProgress) noexcept;
+    add(InProgress* inProgress) noexcept;
 
     // For engine
     void
@@ -80,7 +79,7 @@ class DataArea {
     DataArea&
     operator=(const DataArea&) = delete;
 
-    Vector<Unique<InProgress>> inProgresses;
+    Vector<InProgress*> inProgresses;
 };
 
 #endif  // SRC_DATA_DATA_AREA_H_

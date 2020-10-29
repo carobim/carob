@@ -47,7 +47,6 @@
 #include "util/move.h"
 #include "util/optional.h"
 #include "util/string2.h"
-#include "util/unique.h"
 #include "util/vector.h"
 
 #define CHECK(x)      \

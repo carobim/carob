@@ -26,7 +26,6 @@
 
 #include "data/data-area.h"
 #include "data/data-world.h"
-#include "util/unique.h"
 
 static DataArea nullArea;
 

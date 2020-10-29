@@ -30,7 +30,6 @@
 #include "util/jobs.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
-#include "util/unique.h"
 
 struct WalkContext {
     Function<void(StringView)> op;

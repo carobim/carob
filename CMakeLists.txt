@@ -325,7 +325,6 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/util/string2.h
     PRIVATE ${HERE}/src/util/transform.cpp
     PUBLIC  ${HERE}/src/util/transform.h
-    PUBLIC  ${HERE}/src/util/unique.h
     PUBLIC  ${HERE}/src/util/vector.h
 )
 
