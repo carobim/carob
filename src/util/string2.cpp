@@ -213,7 +213,7 @@ parseUInt(String& s) noexcept {
     char* end;
     unsigned long ul = strtoul(s.null(), &end, 10);
 
-    if (end != s.data() + s.size()) {
+    if (end != s.data + s.size) {
         return none;
     }
 
@@ -242,7 +242,7 @@ parseInt(String& s) noexcept {
     char* end;
     long l = strtol(s.null(), &end, 10);
 
-    if (end != s.data() + s.size()) {
+    if (end != s.data + s.size) {
         return none;
     }
 
@@ -271,7 +271,7 @@ parseFloat(String& s) noexcept {
     char* end;
     float d = static_cast<float>(strtod(s.null(), &end));
 
-    if (end != s.data() + s.size()) {
+    if (end != s.data + s.size) {
         return none;
     }
 

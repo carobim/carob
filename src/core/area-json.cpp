@@ -142,7 +142,7 @@ AreaJSON::allocateMapLayer(TileGrid::LayerType type) noexcept {
 
     grid.layerTypes.push_back(type);
 
-    grid.graphics.resize(grid.graphics.size() + dim.x * dim.y);
+    grid.graphics.resize(grid.graphics.size + dim.x * dim.y);
     grid.dim.z++;
 }
 
@@ -490,8 +490,8 @@ AreaJSON::processTileType(JsonValue obj,
         frameLen = (int)(1000.0 / *hertz);
     }
 
-    if (framesvec.size() || frameLen) {
-        if (framesvec.empty() || !frameLen) {
+    if (framesvec.size || frameLen) {
+        if (framesvec.size == 0 || !frameLen) {
             logErr(descriptor,
                    "Tile type must either have both frames and speed or none");
             return false;
@@ -591,7 +591,7 @@ AreaJSON::processLayerData(JsonValue arr) noexcept {
 
         unsigned gid = node.value.toInt();
 
-        if (gid >= tileGraphics.size()) {
+        if (gid >= tileGraphics.size) {
             logErr(descriptor, "Invalid tile gid");
             return false;
         }
@@ -602,7 +602,7 @@ AreaJSON::processLayerData(JsonValue arr) noexcept {
         // position on this layer.
         grid.graphics[idx] = gid;
 
-        if (++x == (size_t)grid.dim.x) {
+        if (++x == static_cast<size_t>(grid.dim.x)) {
             x = 0;
             y++;
         }
@@ -941,7 +941,7 @@ AreaJSON::parseExit(StringView dest,
 
     Vector<StringView> strs = splitStr(dest, ",");
 
-    if (strs.size() != 4) {
+    if (strs.size != 4) {
         logErr(descriptor, "exit: Invalid format");
         return false;
     }
@@ -985,7 +985,7 @@ AreaJSON::parseARGB(StringView str,
 
     Vector<StringView> strs = splitStr(str, ",");
 
-    if (strs.size() != 4) {
+    if (strs.size != 4) {
         logErr(descriptor, "invalid ARGB format");
         return false;
     }

@@ -62,12 +62,12 @@ work() noexcept {
         {
             LockGuard lock(jobsMutex);
 
-            while (jobs.empty()) {
+            while (jobs.size == 0) {
                 jobAvailable.wait(lock);
             }
 
-            job = move_(jobs.front());
-            jobs.erase(jobs.begin());
+            job = move_(jobs[0]);
+            jobs.erase(0);
 
             jobsRunning += 1;
         }
@@ -81,7 +81,7 @@ work() noexcept {
 
             jobsRunning -= 1;
 
-            if (jobsRunning == 0 && jobs.empty()) {
+            if (jobsRunning == 0 && jobs.size == 0) {
                 jobsDone.notifyOne();
             }
         }
@@ -100,7 +100,7 @@ JobsEnqueue(Job job) noexcept {
         workerLimit = Thread::hardware_concurrency();
     }
 
-    if (workers.size() < workerLimit) {
+    if (workers.size < workerLimit) {
         workers.push_back(Thread(Job(work)));
     }
 
@@ -116,7 +116,7 @@ JobsFlush() noexcept {
         Mutex m;
         LockGuard lock(m);
 
-        while (jobsRunning > 0 || jobs.size() > 0) {
+        while (jobsRunning > 0 || jobs.size > 0) {
             jobsDone.wait(lock);
         }
     }
@@ -125,10 +125,8 @@ JobsFlush() noexcept {
     {
         LockGuard lock(jobsMutex);
 
-        for (size_t i = 0; i < workers.size(); i++) {
-            // Send over empty jobs.
-            jobs.emplace_back();
-        }
+        // Send over empty jobs.
+        jobs.resize(jobs.size + workers.size);
 
         tearingDown = true;
     }

@@ -71,7 +71,7 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
     String data_ = move_(*data);
 
     if (verbose) {
-        printf("%s", (String() << "Added " << path << ": " << data_.size() << " bytes\n").null().get());
+        printf("%s", (String() << "Added " << path << ": " << data_.size << " bytes\n").null().get());
     }
 
     // Write the file path to the pack file with '/' instead of '\\' on Windows.
@@ -91,9 +91,9 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
 
     LockGuard guard(ctx.packMutex);
     ctx.pack->addBlob(
-            move_(path), static_cast<uint32_t>(data_.size()), data_.data());
+            move_(path), static_cast<uint32_t>(data_.size), data_.data);
 
-    data_.reset_lose_memory();  // Don't delete data pointer.
+    data_.reset();  // Don't delete data pointer.
 }
 
 static bool
@@ -136,7 +136,7 @@ listArchive(StringView archivePath) noexcept {
                 blobPath = standardizedPath;
             }
 
-            output.append(blobPath.data, blobPath.size);
+            output.append(blobPath.size, blobPath.data);
             output << ": " << blobSize << " bytes\n";
         }
 
@@ -258,26 +258,26 @@ main(int argc, char* argv[]) noexcept {
     int exitCode;
 
     if (command == "create") {
-        if (args.size() > 0 && args[0] == "-v") {
+        if (args.size > 0 && args[0] == "-v") {
             verbose = true;
-            args.erase(args.begin());
+            args.erase(0);
         }
 
-        if (args.size() < 2) {
+        if (args.size < 2) {
             usage();
             return 1;
         }
 
         // The first argument is the archive, the rest are files to add to it.
         StringView archivePath = args[0];
-        args.erase(args.begin());
+        args.erase(0);
 
         return createArchive(archivePath, move_(args)) ? 0 : 1;
     }
     else if (command == "list") {
         verbose = true;
 
-        if (args.size() != 1) {
+        if (args.size != 1) {
             usage();
             return 1;
         }
@@ -285,12 +285,12 @@ main(int argc, char* argv[]) noexcept {
         exitCode = listArchive(args[0]) ? 0 : 1;
     }
     else if (command == "extract") {
-        if (args.size() > 0 && args[0] == "-v") {
+        if (args.size > 0 && args[0] == "-v") {
             verbose = true;
-            args.erase(args.begin());
+            args.erase(0);
         }
 
-        if (args.size() != 1) {
+        if (args.size != 1) {
             usage();
             return 1;
         }

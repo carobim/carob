@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine            **
 ** algorithm.h                      **
 ** Copyright 2014 Michael Reiley    **
-** Copyright 2014-2019 Paul Merrill **
+** Copyright 2014-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -31,12 +31,13 @@
 template<class Container, class Predicate>
 void
 erase_if(Container& container, Predicate pred) noexcept {
-    for (auto it = container.begin(); it != container.end();) {
-        if (pred(*it)) {
-            it = container.erase(it);
+    size_t i = 0;
+    while (i < container.size) {
+        if (pred(container[i])) {
+            container.erase(i);
         }
         else {
-            ++it;
+            i++;
         }
     }
 }

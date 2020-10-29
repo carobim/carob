@@ -109,16 +109,16 @@ PackWriter::make() noexcept {
 
 bool
 PackWriterImpl::writeToFile(StringView path) noexcept {
-    uint32_t blobCount = static_cast<uint32_t>(blobs.size());
+    uint32_t blobCount = static_cast<uint32_t>(blobs.size);
 
     // Sort blobs by size (smallest first).
     if (!sorted) {
         sorted = true;
 
-        Blob* data = blobs.data();
+        Blob* data = blobs.data;
 #define LESS(i, j) data[i] < data[j]
 #define SWAP(i, j) swap_(data[i], data[j])
-        QSORT(blobs.size(), LESS, SWAP);
+        QSORT(blobs.size, LESS, SWAP);
     }
 
     // Determine block offsets.
@@ -128,7 +128,7 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
     uint32_t dataOffsetsBlockSize = blobCount * sizeof(uint32_t);
 
     for (auto& blob : blobs) {
-        pathsBlockSize += static_cast<uint32_t>(blob.path.size());
+        pathsBlockSize += static_cast<uint32_t>(blob.path.size);
     }
 
     // Construct blocks.
@@ -176,7 +176,7 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
     PathOffset pathOffset = 0;
     for (auto& blob : blobs) {
         pathOffsetsBlock.push_back(pathOffset);
-        pathOffset += static_cast<uint32_t>(blob.path.size());
+        pathOffset += static_cast<uint32_t>(blob.path.size);
     }
     pathOffsetsBlock.push_back(pathOffset);
 
@@ -211,10 +211,10 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
     writeLengths.push_back(dataOffsetsBlockSize);
 
     writeDatas.push_back(&headerBlock);
-    writeDatas.push_back(pathOffsetsBlock.data());
-    writeDatas.push_back(const_cast<char*>(pathsBlock.data()));
-    writeDatas.push_back(metadatasBlock.data());
-    writeDatas.push_back(dataOffsetsBlock.data());
+    writeDatas.push_back(pathOffsetsBlock.data);
+    writeDatas.push_back(const_cast<char*>(pathsBlock.data));
+    writeDatas.push_back(metadatasBlock.data);
+    writeDatas.push_back(dataOffsetsBlock.data);
 
     for (auto& blob : blobs) {
         writeLengths.push_back(blob.size);
@@ -223,9 +223,9 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
 
     // Write file.
     return writeFileVec(path,
-                        static_cast<uint32_t>(writeLengths.size()),
-                        writeLengths.data(),
-                        writeDatas.data());
+                        static_cast<uint32_t>(writeLengths.size),
+                        writeLengths.data,
+                        writeDatas.data);
 }
 
 void

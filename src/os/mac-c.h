@@ -295,6 +295,8 @@ void*
 memcpy(void*, const void*, size_t) noexcept;
 void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
+void*
+memmove(void*, const void*, size_t) noexcept;
 size_t
 strlen(char const*) noexcept;
 }

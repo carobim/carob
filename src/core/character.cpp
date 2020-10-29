@@ -157,7 +157,7 @@ Character::moveByTile(ivec2 delta) noexcept {
     leaveTile(from);
     enterTile(dest);
 
-    if (soundPathStep.size()) {
+    if (soundPathStep.size) {
         SoundID sid = Sounds::load(soundPathStep);
         PlayingSoundID psid = Sound::play(sid);
         PlayingSound::release(psid);

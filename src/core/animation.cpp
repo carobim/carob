@@ -127,7 +127,7 @@ Animation::Animation(Vector<Image> frames, time_t frameTime) noexcept {
     new (&data.frames) Vector<Image>();
     data.frames = move_(frames);
     data.frameTime = frameTime;
-    data.cycleTime = frameTime * static_cast<time_t>(data.frames.size());
+    data.cycleTime = frameTime * static_cast<time_t>(data.frames.size);
     data.offset = 0;
     data.currentIndex = 0;
     data.currentImage = data.frames[0];

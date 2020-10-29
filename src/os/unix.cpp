@@ -146,7 +146,7 @@ writeFileVec(String& path,
         ios.push_back({datas[i], lengths[i]});
     }
 
-    ssize_t written = writev(fd, ios.data(), static_cast<int>(ios.size()));
+    ssize_t written = writev(fd, ios.data, static_cast<int>(ios.size));
     if (written != total) {
         close(fd);
         return false;
@@ -199,7 +199,7 @@ readFile(String& path) noexcept {
     String contents;
     contents.resize(size);
 
-    ssize_t read = fread(contents.data(), size, 1, f);
+    ssize_t read = fread(contents.data, size, 1, f);
     if (read != 1) {
         fclose(f);
         return Optional<String>();

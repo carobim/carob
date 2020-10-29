@@ -78,11 +78,11 @@ JsonAllocator::allocate(size_t size) noexcept {
     size_t allocSize = sizeof(Zone) + size;
     Zone* zone = static_cast<Zone*>(
             malloc(allocSize <= JSON_ZONE_SIZE ? JSON_ZONE_SIZE : allocSize));
-    if (zone == nullptr) {
-        return nullptr;
+    if (zone == 0) {
+        return 0;
     }
     zone->used = allocSize;
-    if (allocSize <= JSON_ZONE_SIZE || head == nullptr) {
+    if (allocSize <= JSON_ZONE_SIZE || head == 0) {
         zone->next = head;
         head = zone;
     }
@@ -197,10 +197,10 @@ static inline JsonValue
 listToValue(JsonTag tag, JsonNode* tail) noexcept {
     if (tail) {
         auto head = tail->next;
-        tail->next = nullptr;
+        tail->next = 0;
         return JsonValue(tag, head);
     }
-    return JsonValue(tag, nullptr);
+    return JsonValue(tag, 0);
 }
 
 static bool
@@ -353,7 +353,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
             if (tags[pos] != JSON_OBJECT) {
                 return false;
             }
-            if (keys[pos] != nullptr) {
+            if (keys[pos] != 0) {
                 return false;
             }
             o = listToValue(JSON_OBJECT, tails[pos--]);
@@ -362,28 +362,28 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
             if (++pos == JSON_STACK_SIZE) {
                 return false;
             }
-            tails[pos] = nullptr;
+            tails[pos] = 0;
             tags[pos] = JSON_ARRAY;
-            keys[pos] = nullptr;
+            keys[pos] = 0;
             separator = true;
             continue;
         case '{':
             if (++pos == JSON_STACK_SIZE) {
                 return false;
             }
-            tails[pos] = nullptr;
+            tails[pos] = 0;
             tags[pos] = JSON_OBJECT;
-            keys[pos] = nullptr;
+            keys[pos] = 0;
             separator = true;
             continue;
         case ':':
-            if (separator || keys[pos] == nullptr) {
+            if (separator || keys[pos] == 0) {
                 return false;
             }
             separator = true;
             continue;
         case ',':
-            if (separator || keys[pos] != nullptr) {
+            if (separator || keys[pos] != 0) {
                 return false;
             }
             separator = true;
@@ -411,16 +411,16 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
                 continue;
             }
             if ((node = reinterpret_cast<JsonNode*>(
-                         allocator.allocate(sizeof(JsonNode)))) == nullptr) {
+                         allocator.allocate(sizeof(JsonNode)))) == 0) {
                 return false;
             }
             tails[pos] = insertAfter(tails[pos], node);
             tails[pos]->key = keys[pos];
-            keys[pos] = nullptr;
+            keys[pos] = 0;
         }
         else {
             if ((node = reinterpret_cast<JsonNode*>(allocator.allocate(
-                         sizeof(JsonNode) - sizeof(char*)))) == nullptr) {
+                         sizeof(JsonNode) - sizeof(char*)))) == 0) {
                 return false;
             }
             tails[pos] = insertAfter(tails[pos], node);
@@ -443,22 +443,23 @@ JsonValue JsonValue::operator[](StringView key) noexcept {
 void
 JsonAllocator::operator=(JsonAllocator&& other) noexcept {
     head = other.head;
-    other.head = nullptr;
+    other.head = 0;
 }
 
-JsonDocument::JsonDocument(String text) noexcept : text(move_(text)) {
+JsonDocument::JsonDocument(String text) noexcept
+        : text(static_cast<String&&>(text)) {
     this->text << StringView("", 1);  // Add a null byte.
-    ok = parse(this->text.data(), &root, allocator);
+    ok = parse(this->text.data, &root, allocator);
 }
 
 JsonDocument::JsonDocument(JsonDocument&& other) noexcept {
     root = other.root;
     ok = other.ok;
-    text = move_(other.text);
+    text = static_cast<String&&>(other.text);
     allocator.head = other.allocator.head;
 
     other.ok = false;
-    other.allocator.head = nullptr;
+    other.allocator.head = 0;
 }
 
 JsonDocument::~JsonDocument() noexcept {

@@ -137,7 +137,7 @@ class Hashmap {
 
         void
         advancePastEmpty() noexcept {
-            while (idx < hm->buckets.size() &&
+            while (idx < hm->buckets.size &&
                    hm->buckets[idx].first == E::value()) {
                 ++idx;
             }
@@ -176,7 +176,7 @@ class Hashmap {
     }
     iterator
     end() noexcept {
-        return iterator(this, buckets.size());
+        return iterator(this, buckets.size);
     }
 
     // Capacity
@@ -254,7 +254,7 @@ class Hashmap {
     // Utility
     void
     reserve(size_t count) noexcept {
-        if (count * 2 > buckets.size()) {
+        if (count * 2 > buckets.size) {
             rehash(count * 2);
         }
     }
@@ -372,20 +372,20 @@ class Hashmap {
     template<typename K>
     size_t
     keyToIdx(const K& key) noexcept {
-        const size_t mask = buckets.size() - 1;
+        const size_t mask = buckets.size - 1;
         return hash_(key) & mask;
     }
 
     size_t
     probeNext(size_t idx) noexcept {
-        const size_t mask = buckets.size() - 1;
+        const size_t mask = buckets.size - 1;
         return (idx + 1) & mask;
     }
 
     size_t
     diff(size_t a, size_t b) noexcept {
-        const size_t mask = buckets.size() - 1;
-        return (buckets.size() + (a - b)) & mask;
+        const size_t mask = buckets.size - 1;
+        return (buckets.size + a - b) & mask;
     }
 
  private:

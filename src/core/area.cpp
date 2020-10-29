@@ -161,7 +161,7 @@ Area::needsRedraw() {
     }
 
     // Do any on-screen tile types need to update their animations?
-    checkedForAnimation.resize(static_cast<size_t>(tileGraphics.size()));
+    checkedForAnimation.resize(tileGraphics.size);
     for (bool& checked : checkedForAnimation) {
         checked = false;
     }
@@ -350,13 +350,17 @@ void
 Area::drawTiles(DisplayList* display, icube& tiles, int z) {
     time_t now = World::time();
 
-    tilesAnimated.resize(static_cast<size_t>(tileGraphics.size()));
+    tilesAnimated.resize(tileGraphics.size);
     for (bool& animated : tilesAnimated) {
         animated = false;
     }
 
-    display->items.reserve(display->items.size() +
-                           (tiles.y2 - tiles.y1) * (tiles.x2 - tiles.x1));
+    auto& items = display->items;
+    size_t maxTiles = (tiles.y2 - tiles.y1) * (tiles.x2 - tiles.x1);
+    if (maxTiles > items.size) {
+        items.resize(maxTiles);
+    }
+    size_t itemCount = 0;
 
     // float depth = grid.idx2depth[(size_t)z];
 
@@ -388,9 +392,11 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
             rvec2 drawPos{float(x * width), float(y * height)};
             // drawPos.z = depth + drawPos.y / tileDimY *
             // ISOMETRIC_ZOFF_PER_TILE;
-            display->items.push_back_nogrow(DisplayItem{img, drawPos});
+            display->items[itemCount++] = DisplayItem{img, drawPos};
         }
     }
+
+    items.size = itemCount;
 }
 
 void

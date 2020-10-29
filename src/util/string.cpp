@@ -1,8 +1,8 @@
-/*********************************
- ** Tsunagari Tile Engine       **
- ** string.cpp                  **
- ** Copyright 2019 Paul Merrill **
- *********************************/
+/**************************************
+ ** Tsunagari Tile Engine            **
+ ** string.cpp                       **
+ ** Copyright 2019-2020 Paul Merrill **
+ **************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,11 +40,11 @@ NullTerminatedString::~NullTerminatedString() noexcept {
 
 const char*
 NullTerminatedString::get() noexcept {
-    return s.data();
+    return s.data;
 }
 
 NullTerminatedString::operator const char*() noexcept {
-    return s.data();
+    return s.data;
 }
 
 String::String(const char* value) noexcept {
@@ -56,7 +56,11 @@ String::String(StringView value) noexcept {
 }
 
 String::String(String&& other) noexcept {
-    swap(other);
+    data = other.data;
+    size = other.size;
+    capacity = other.capacity;
+    other.data = 0;
+    other.size = other.capacity = 0;
 }
 
 String&
@@ -79,7 +83,12 @@ String::operator=(const String& other) noexcept {
 
 String&
 String::operator=(String&& other) noexcept {
-    swap(other);
+    free(data);
+    data = other.data;
+    size = other.size;
+    capacity = other.capacity;
+    other.data = 0;
+    other.size = other.capacity = 0;
     return *this;
 }
 
@@ -101,13 +110,13 @@ String::operator<<(char value) noexcept {
 
 String&
 String::operator<<(const char* value) noexcept {
-    append(value, strlen(value));
+    append(strlen(value), value);
     return *this;
 }
 
 String&
 String::operator<<(StringView value) noexcept {
-    append(value.data, value.size);
+    append(value.size, value.data);
     return *this;
 }
 
@@ -166,12 +175,12 @@ String::operator<<(float value) noexcept {
 }
 
 String::operator StringView() const noexcept {
-    return StringView(data(), size());
+    return StringView(data, size);
 }
 
 StringView
 String::view() const noexcept {
-    return StringView(data(), size());
+    return StringView(data, size);
 }
 
 NullTerminatedString
@@ -181,5 +190,5 @@ String::null() noexcept {
 
 size_t
 hash_(const String& s) noexcept {
-    return fnvHash(s.data(), s.size());
+    return fnvHash(s.data, s.size);
 }

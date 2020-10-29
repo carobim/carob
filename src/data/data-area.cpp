@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** data-area.cpp                      **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -50,8 +50,7 @@ DataArea::tick(time_t dt) noexcept {
     // beginning of the loop.  Also, iterate by index instead of by
     // iterator because iterators are invalidated if the vector is
     // pushed_back.
-    for (size_t i = 0, len = inProgresses.size(); i < len; i++) {
-        auto& inProgress = inProgresses[i];
+    for (auto& inProgress : inProgresses) {
         inProgress->tick(dt);
     }
     erase_if(inProgresses, [](Unique<InProgress>& ip) { return ip->isOver(); });
