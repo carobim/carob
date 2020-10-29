@@ -32,7 +32,6 @@
 #include "util/assert.h"
 #include "util/function.h"
 #include "util/int.h"
-#include "util/move.h"
 
 static void*
 run(void* f) noexcept {
@@ -44,7 +43,8 @@ run(void* f) noexcept {
 class Thread {
  public:
     inline explicit Thread(Function<void()> f) noexcept {
-        Function<void()>* fun = new Function<void()>(move_(f));
+        Function<void()>* fun =
+            new Function<void()>(static_cast<Function<void()>&&>(f));
 
         int err = pthread_create(&t, nullptr, run, static_cast<void*>(fun));
         (void)err;

@@ -29,7 +29,6 @@
 
 #include "util/assert.h"
 #include "util/constexpr.h"
-#include "util/move.h"
 #include "util/noexcept.h"
 
 struct M {};
@@ -47,7 +46,7 @@ class Markable {
             : x(MarkedValue) {}
     explicit CONSTEXPR11
     Markable(T&& x) noexcept
-            : x(move_(x)) {}
+            : x(static_cast<T&&>(x)) {}
     explicit CONSTEXPR11
     Markable(const T& x) noexcept
             : x(x) {}
@@ -60,7 +59,7 @@ class Markable {
 
     inline void
     operator=(T&& x_) noexcept {
-        x = move_(x_);
+        x = static_cast<T&&>(x_);
     }
     inline void
     operator=(const T& x_) noexcept {
@@ -68,7 +67,7 @@ class Markable {
     }
     inline void
     operator=(This&& other) noexcept {
-        x = move_(other.x);
+        x = static_cast<T&&>(other.x);
     }
     inline void
     operator=(const This& other) noexcept {

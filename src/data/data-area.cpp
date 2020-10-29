@@ -29,7 +29,6 @@
 
 #include "core/algorithm.h"
 #include "core/sounds.h"
-#include "util/move.h"
 #include "util/random.h"
 
 void

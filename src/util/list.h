@@ -29,7 +29,6 @@
 
 #include "util/constexpr.h"
 #include "util/int.h"
-#include "util/move.h"
 #include "util/noexcept.h"
 
 template<typename T>

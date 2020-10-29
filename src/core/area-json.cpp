@@ -44,7 +44,6 @@
 #include "util/assert.h"
 #include "util/int.h"
 #include "util/math2.h"
-#include "util/move.h"
 #include "util/optional.h"
 #include "util/string2.h"
 #include "util/vector.h"
@@ -497,7 +496,7 @@ AreaJSON::processTileType(JsonValue obj,
         }
         // Add 'now' to Animation constructor??
         time_t now = worldTime();
-        graphic = Animation(move_(framesvec), *frameLen);
+        graphic = Animation(static_cast<Vector<Image>&&>(framesvec), *frameLen);
         graphic.restart(now);
     }
 
@@ -848,7 +847,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
                     if (hwide[i]) {
                         exit[i]->coords.y += dy;
                     }
-                    grid.exits[i][tile] = move_(*exit[i]);
+                    grid.exits[i][tile] = static_cast<Exit&&>(*exit[i]);
                 }
             }
             for (size_t i = 0; i < EXITS_LENGTH; i++) {

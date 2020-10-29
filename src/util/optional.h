@@ -30,7 +30,6 @@
 #include "util/align.h"
 #include "util/assert.h"
 #include "util/constexpr.h"
-#include "util/move.h"
 #include "util/new.h"
 #include "util/noexcept.h"
 #include "util/none.h"
@@ -47,7 +46,7 @@ class Optional {
     explicit CONSTEXPR14
     Optional(T&& x_) noexcept
             : exists(true) {
-        new (&storage) T(move_(x_));
+        new (&storage) T(static_cast<T&&>(x_));
     }
     explicit CONSTEXPR14
     Optional(const T& x_) noexcept
@@ -60,7 +59,7 @@ class Optional {
     CONSTEXPR14
     Optional(Optional<T>&& other) noexcept : storage(), exists(other.exists) {
         if (other.exists) {
-            new (&storage) T(move_(other.x()));
+            new (&storage) T(static_cast<T&&>(other.x()));
             other.x().~T();
             other.exists = false;
         }
@@ -81,10 +80,10 @@ class Optional {
     inline Optional&
     operator=(T&& x_) noexcept {
         if (exists) {
-            x() = move_(x_);
+            x() = static_cast<T&&>(x_);
         }
         else {
-            new (&storage) T(move_(x_));
+            new (&storage) T(static_cast<T&&>(x_));
             exists = true;
         }
         return *this;
@@ -105,7 +104,7 @@ class Optional {
     operator=(Optional<T>&& other) noexcept {
         if (exists) {
             if (other.exists) {
-                x() = move_(other.x());
+                x() = static_cast<T&&>(other.x());
             }
             else {
                 x().~T();
@@ -113,7 +112,7 @@ class Optional {
         }
         else {
             if (other.exists) {
-                new (&storage) T(move_(other.x()));
+                new (&storage) T(static_cast<T&&>(other.x()));
             }
         }
         exists = other.exists;
@@ -148,13 +147,6 @@ class Optional {
     inline CONSTEXPR14 T& operator*() noexcept {
         assert_(exists);
         return x();
-    }
-
-    inline CONSTEXPR14 T&&
-    move() noexcept {
-        assert_(exists);
-        exists = false;
-        return x;
     }
 
     inline CONSTEXPR11 bool

@@ -347,5 +347,5 @@ parseRanges(StringView format) noexcept {
             }
         }
     }
-    return Optional<Vector<int>>(move_(ints));
+    return Optional<Vector<int>>(static_cast<Vector<int>&&>(ints));
 }

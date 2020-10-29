@@ -31,7 +31,6 @@
 #include "pack/pack-writer.h"
 #include "pack/walker.h"
 #include "util/int.h"
-#include "util/move.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
@@ -97,7 +96,8 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
     CreateArchiveContext ctx;
     ctx.pack = makePackWriter();
 
-    walk(move_(paths), [&](StringView path) noexcept { addFile(ctx, path); });
+    walk(static_cast<Vector<StringView>&&>(paths),
+         [&](StringView path) noexcept { addFile(ctx, path); });
 
     if (verbose) {
         printf("%s", (String() << "Writing to " << archivePath << "\n").null());
@@ -277,7 +277,8 @@ main(int argc, char* argv[]) noexcept {
         StringView archivePath = args[0];
         args.erase(0);
 
-        return createArchive(archivePath, move_(args)) ? 0 : 1;
+        return createArchive(archivePath,
+                             static_cast<Vector<StringView>&&>(args)) ? 0 : 1;
     }
     else if (command == "list") {
         verbose = true;

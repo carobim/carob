@@ -32,7 +32,6 @@
 
 #include "os/c.h"
 #include "os/os.h"
-#include "util/move.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"

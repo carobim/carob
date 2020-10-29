@@ -38,7 +38,6 @@
 #include "os/c.h"
 #include "util/assert.h"
 #include "util/math2.h"
-#include "util/move.h"
 #include "util/string2.h"
 
 #define CHECK(x)      \
@@ -229,7 +228,7 @@ parsePhase(Entity* e,
         assert_(images.size > 0);
 
         time_t frameTime = static_cast<time_t>(1000.0 / fps);
-        animation = Animation(move_(images), frameTime);
+        animation = Animation(static_cast<Vector<Image>&&>(images), frameTime);
     }
     else {
         // Cannot get to this point because of CHECKs above.

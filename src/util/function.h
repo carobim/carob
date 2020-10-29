@@ -247,11 +247,11 @@ Function<R(ArgTypes...) noexcept>::set(
         F& something,
         EnableIf<!(sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
                    sizeof(buf))>) noexcept {
-    // f = new function::func<F, R(ArgTypes...)>(move_(something));
+    // f = new function::func<F, R(ArgTypes...)>(static_cast<F&&>(something));
     using T = function::func<F, R(ArgTypes...)>;
 
     void* buf = malloc(sizeof(T));
-    new (buf) T(move_(something));
+    new (buf) T(static_cast<F&&>(something));
     f = reinterpret_cast<T*>(buf);
 }
 

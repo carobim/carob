@@ -141,7 +141,7 @@ TileGrid::depthIndex(float depth) noexcept {
         logFatal("TileGrid",
                  String() << "Attempt to access invalid layer: " << depth);
     }
-    return it.value();
+    return it->value;
 }
 
 float

@@ -32,7 +32,6 @@
 #include "util/assert.h"
 #include "util/function.h"
 #include "util/int.h"
-#include "util/move.h"
 #include "util/vector.h"
 
 static size_t workerLimit = 0;
@@ -66,7 +65,7 @@ work() noexcept {
                 jobAvailable.wait(lock);
             }
 
-            job = move_(jobs[0]);
+            job = static_cast<Job&&>(jobs[0]);
             jobs.erase(0);
 
             jobsRunning += 1;

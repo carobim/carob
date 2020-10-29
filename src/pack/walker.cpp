@@ -57,7 +57,7 @@ walkPath(WalkContext& ctx, StringView path) noexcept {
 void
 walk(Vector<StringView> paths, Function<void(StringView)> op) noexcept {
     WalkContext ctx;
-    ctx.op = move_(op);
+    ctx.op = static_cast<Function<void(StringView)>&&>(op);
 
     for (auto& path : paths) {
         JobsEnqueue([&]() noexcept { walkPath(ctx, path); });

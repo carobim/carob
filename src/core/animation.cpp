@@ -28,7 +28,6 @@
 #include "core/animation.h"
 
 #include "util/assert.h"
-#include "util/move.h"
 #include "util/pool.h"
 
 struct AnimationData {
@@ -123,7 +122,7 @@ Animation::Animation(Vector<Image> frames, time_t frameTime) noexcept {
     AnimationData& data = pool[id];
 
     new (&data.frames) Vector<Image>();
-    data.frames = move_(frames);
+    data.frames = static_cast<Vector<Image>&&>(frames);
     data.frameTime = frameTime;
     data.cycleTime = frameTime * static_cast<time_t>(data.frames.size);
     data.offset = 0;

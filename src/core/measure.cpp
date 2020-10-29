@@ -27,7 +27,6 @@
 #include "core/measure.h"
 
 #include "core/log.h"
-#include "util/move.h"
 #include "util/noexcept.h"
 
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
@@ -58,14 +57,14 @@ getSignpost(String description) noexcept {
     else {
         logInfo("Measure",
                 String() << description << " is signpost " << nextSignpost);
-        signposts[move_(description)] = nextSignpost;
+        signposts[static_cast<String&&>(description)] = nextSignpost;
         return nextSignpost++;
     }
 }
 #endif  // defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
 
 TimeMeasure::TimeMeasure(String description) noexcept {
-    this->description = move_(description);
+    this->description = static_cast<String&&>(description);
     start = SteadyClock::now();
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
     signpost = getSignpost(this->description);

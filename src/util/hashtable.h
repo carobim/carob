@@ -117,15 +117,6 @@ class Hashmap {
         Entry& operator*() const noexcept { return hm->buckets[idx]; }
         Entry* operator->() const noexcept { return &hm->buckets[idx]; }
 
-        Key&
-        key() noexcept {
-            return hm->buckets[idx].key;
-        }
-        Value&
-        value() noexcept {
-            return hm->buckets[idx].value;
-        }
-
      private:
         explicit iterator(Hashmap* hm) noexcept : hm(hm) { advancePastEmpty(); }
         explicit iterator(Hashmap* hm, size_t idx) noexcept

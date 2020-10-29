@@ -29,7 +29,6 @@
 #include "os/c.h"
 #include "util/assert.h"
 #include "util/int.h"
-#include "util/move.h"
 #include "util/new.h"
 
 // mach/thread_act.h
@@ -63,7 +62,7 @@ Thread::Thread(Function<void() noexcept> f) noexcept {
     using F = Function<void() noexcept>;
 
     void* fun = malloc(sizeof(F));
-    new (fun) F(move_(f));
+    new (fun) F(static_cast<F&&>(f));
 
     int err =
             pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, fun);

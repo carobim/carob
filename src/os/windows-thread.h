@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** windows-thread.h            **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** windows-thread.h                 **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -82,13 +82,13 @@ beginthreadex_thunk(void* data) noexcept {
 class Thread {
  public:
     inline explicit Thread(Function<void()> f) noexcept {
-        auto data = new Function<void()>(move_(f));
-        id = reinterpret_cast<HANDLE>(_beginthreadex(nullptr,
+        auto data = new Function<void()>(static_cast<Function<void()>&&>(f));
+        id = reinterpret_cast<HANDLE>(_beginthreadex(0,
                                                      0,
                                                      beginthreadex_thunk,
                                                      static_cast<void*>(data),
                                                      0,
-                                                     nullptr));
+                                                     0));
         assert_(id);
     }
     Thread(Thread&& other) noexcept : id(other.id) { other.id = 0; }

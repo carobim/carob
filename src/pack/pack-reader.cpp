@@ -163,7 +163,7 @@ PackReaderImpl::findIndex(StringView path) noexcept {
         return BLOB_NOT_FOUND;
     }
     else {
-        return it.value();
+        return it->value;
     }
 }
 
