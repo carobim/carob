@@ -31,15 +31,6 @@
 #include "util/noexcept.h"
 #include "util/none.h"
 
-//
-// Pointers
-//   unique.h
-//     class Unique      Unique pointer
-//   rc.h
-//     class Rc          Reference counted pointer
-//     class CompactRc   Half the size and half the number of allocations
-//
-
 // Unique pointers delete their object when destroyed.
 template<typename T>
 class Unique {

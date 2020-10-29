@@ -292,7 +292,6 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/util/algorithm.h
     PUBLIC  ${HERE}/src/util/align.h
     PUBLIC  ${HERE}/src/util/assert.h
-    PUBLIC  ${HERE}/src/util/arc.h
     PUBLIC  ${HERE}/src/util/constexpr.h
     PRIVATE ${HERE}/src/util/fnv.cpp
     PUBLIC  ${HERE}/src/util/fnv.h
@@ -318,7 +317,6 @@ target_sources(tsunagari
     PUBLIC  ${HERE}/src/util/pool.h
     PRIVATE ${HERE}/src/util/random.cpp
     PUBLIC  ${HERE}/src/util/random.h
-    PUBLIC  ${HERE}/src/util/rc.h
     PRIVATE ${HERE}/src/util/string-view.cpp
     PUBLIC  ${HERE}/src/util/string-view.h
     PRIVATE ${HERE}/src/util/string.cpp
