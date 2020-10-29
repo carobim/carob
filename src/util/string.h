@@ -31,21 +31,6 @@
 #include "util/string-view.h"
 #include "util/vector.h"
 
-class String;
-
-class NullTerminatedString {
- public:
-    explicit NullTerminatedString(String& s) noexcept;
-    ~NullTerminatedString() noexcept;
-
-    const char*
-    get() noexcept;
-    operator const char*() noexcept;
-
- public:
-    String& s;
-};
-
 class String : public Vector<char> {
  public:
     String() = default;
@@ -97,7 +82,7 @@ class String : public Vector<char> {
     StringView
     view() const noexcept;
 
-    NullTerminatedString
+    const char*
     null() noexcept;
 };
 

@@ -97,17 +97,17 @@ logInfo(StringView domain, StringView msg) noexcept {
         LockGuard lock(stdoutMutex);
 
         setTermColor(TC_GREEN, Stdout);
-        printf("%s ", makeTimestamp().null().get());
+        printf("%s ", makeTimestamp().null());
 
         setTermColor(TC_YELLOW, Stdout);
         String s;
         s << "Info [" << domain << "]";
-        printf("%s", s.null().get());
+        printf("%s", s.null());
 
         setTermColor(TC_RESET, Stdout);
         s.clear();
         s << " - " << chomp(msg) << "\n";
-        printf("%s", s.null().get());
+        printf("%s", s.null());
     }
 }
 
@@ -118,17 +118,17 @@ logErr(StringView domain, StringView msg) noexcept {
             LockGuard lock(stdoutMutex);
 
             setTermColor(TC_GREEN, Stderr);
-            fprintf(stderr, "%s ", makeTimestamp().null().get());
+            fprintf(stderr, "%s ", makeTimestamp().null());
 
             setTermColor(TC_RED, Stderr);
             String s;
             s << "Error [" << domain << "]";
-            fprintf(stderr, "%s", s.null().get());
+            fprintf(stderr, "%s", s.null());
 
             setTermColor(TC_RESET, Stderr);
             s.clear();
             s << " - " << chomp(msg) << "\n";
-            fprintf(stderr, "%s", s.null().get());
+            fprintf(stderr, "%s", s.null());
         }
 
         String s;
@@ -156,17 +156,17 @@ logFatal(StringView domain, StringView msg) noexcept {
         LockGuard lock(stdoutMutex);
 
         setTermColor(TC_GREEN, Stderr);
-        fprintf(stderr, "%s ", makeTimestamp().null().get());
+        fprintf(stderr, "%s ", makeTimestamp().null());
 
         setTermColor(TC_RED, Stderr);
         String s;
         s << "Fatal [" << domain << "]";
-        fprintf(stderr, "%s", s.null().get());
+        fprintf(stderr, "%s", s.null());
 
         setTermColor(TC_RESET, Stderr);
         s.clear();
         s << " - " << chomp(msg) << "\n";
-        fprintf(stderr, "%s", s.null().get());
+        fprintf(stderr, "%s", s.null());
     }
 
     String s;
@@ -204,10 +204,10 @@ logReportVerbosityOnStartup() noexcept {
     }
 
     setTermColor(TC_GREEN, Stdout);
-    printf("%s ", makeTimestamp().null().get());
+    printf("%s ", makeTimestamp().null());
 
     setTermColor(TC_RESET, Stdout);
     String s;
     s << "Reporting engine messages in " << verbString << " mode.\n";
-    printf("%s", s.null().get());
+    printf("%s", s.null());
 }

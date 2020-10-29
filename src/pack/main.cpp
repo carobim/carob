@@ -45,11 +45,11 @@ static void
 usage() noexcept {
     fprintf(stderr,
             "usage: %s create [-v] <output-archive> [input-file]...\n",
-            exe.null().get());
-    fprintf(stderr, "       %s list <input-archive>\n", exe.null().get());
+            exe.null());
+    fprintf(stderr, "       %s list <input-archive>\n", exe.null());
     fprintf(stderr,
             "       %s extract [-v] <input-archive>\n",
-            exe.null().get());
+            exe.null());
 }
 
 struct CreateArchiveContext {
@@ -63,7 +63,7 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
 
     if (!data) {
         if (verbose) {
-            printf("%s", (String() << "Skipped " << path << ": file not found\n\0").null().get());
+            printf("%s", (String() << "Skipped " << path << ": file not found\n\0").null());
         }
         return;
     }
@@ -71,7 +71,7 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
     String data_ = move_(*data);
 
     if (verbose) {
-        printf("%s", (String() << "Added " << path << ": " << data_.size << " bytes\n").null().get());
+        printf("%s", (String() << "Added " << path << ": " << data_.size << " bytes\n").null());
     }
 
     // Write the file path to the pack file with '/' instead of '\\' on Windows.
@@ -104,7 +104,7 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
     walk(move_(paths), [&](StringView path) noexcept { addFile(ctx, path); });
 
     if (verbose) {
-        printf("%s", (String() << "Writing to " << archivePath << "\n").null().get());
+        printf("%s", (String() << "Writing to " << archivePath << "\n").null());
     }
 
     return ctx.pack->writeToFile(archivePath);
@@ -140,15 +140,14 @@ listArchive(StringView archivePath) noexcept {
             output << ": " << blobSize << " bytes\n";
         }
 
-        printf("%s", output.null().get());
+        printf("%s", output.null());
         return true;
     }
     else {
         fprintf(stderr,
                 "%s",
                 (String() << exe << ": " << archivePath << ": not found\n")
-                        .null()
-                        .get());
+                        .null());
         return false;
     }
 }
@@ -214,7 +213,7 @@ extractArchive(StringView archivePath) noexcept {
             }
 
             if (verbose) {
-                printf("%s", (String() << "Extracting " << blobPath << ": " << blobSize << " bytes\n").null().get());
+                printf("%s", (String() << "Extracting " << blobPath << ": " << blobSize << " bytes\n").null());
             }
 
             putFile(blobPath, blobSize, blobData);
@@ -225,8 +224,8 @@ extractArchive(StringView archivePath) noexcept {
     else {
         fprintf(stderr,
                 "%s: %s: not found\n",
-                exe.null().get(),
-                String(archivePath).null().get());
+                exe.null(),
+                String(archivePath).null());
         return false;
     }
 }

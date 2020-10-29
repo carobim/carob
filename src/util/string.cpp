@@ -30,23 +30,6 @@
 #include "util/fnv.h"
 #include "util/noexcept.h"
 
-NullTerminatedString::NullTerminatedString(String& s) noexcept : s(s) {
-    s.push_back('\0');
-}
-
-NullTerminatedString::~NullTerminatedString() noexcept {
-    s.pop_back();
-}
-
-const char*
-NullTerminatedString::get() noexcept {
-    return s.data;
-}
-
-NullTerminatedString::operator const char*() noexcept {
-    return s.data;
-}
-
 String::String(const char* value) noexcept {
     *this << value;
 }
@@ -183,9 +166,13 @@ String::view() const noexcept {
     return StringView(data, size);
 }
 
-NullTerminatedString
+const char*
 String::null() noexcept {
-    return NullTerminatedString(*this);
+    if (size == capacity) {
+        reserve(size + 1);
+    }
+    data[size] = 0;
+    return data;
 }
 
 size_t
