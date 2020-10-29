@@ -58,7 +58,6 @@
 #include "util/int.h"
 #include "util/move.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/vector.h"
 
 /*
@@ -241,7 +240,7 @@ class Hashmap {
         return atImpl(x);
     }
     template<typename K>
-    Optional<Value*>
+    Value*
     tryAt(const K& key) noexcept {
         return tryAtImpl(key);
     }
@@ -337,14 +336,14 @@ class Hashmap {
     }
 
     template<typename K>
-    Optional<Value*>
+    Value*
     tryAtImpl(const K& key) noexcept {
         iterator it = findImpl(key);
         if (it == end()) {
-            return none;
+            return 0;
         }
         else {
-            return Optional<Value*>(&it->second);
+            return &it->second;
         }
     }
 

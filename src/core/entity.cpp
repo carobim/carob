@@ -226,7 +226,7 @@ parsePhase(Entity* e,
             }
             images.push_back(tileAt(tiles, frame));
         }
-        assert_(images.size() > 0);
+        assert_(images.size > 0);
 
         time_t frameTime = static_cast<time_t>(1000.0 / fps);
         animation = Animation(move_(images), frameTime);

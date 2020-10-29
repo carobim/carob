@@ -33,14 +33,14 @@
 #include "util/noexcept.h"
 
 static size_t
-grow1(size_t current) {
+grow1(size_t current) noexcept {
     return current == 0 ? 4 : current * 2;
 }
 
 static size_t
-growN(size_t current, size_t addition) {
+growN(size_t current, size_t addition) noexcept {
     size_t newSize = current == 0 ? 4 : current * 2;
-    while (newSize < addition) {
+    while (newSize < current + addition) {
         newSize *= 2;
     }
     return newSize;
@@ -174,16 +174,20 @@ String::operator<<(char c) noexcept {
 String&
 String::operator<<(const char* s) noexcept {
     size_t len = strlen(s);
-    reserve(growN(size, len));
-    memcpy(data, s, len);
+    if (capacity < size + len) {
+        reserve(growN(size, len));
+    }
+    memcpy(data + size, s, len);
     size += len;
     return *this;
 }
 
 String&
 String::operator<<(StringView s) noexcept {
-    reserve(growN(size, s.size));
-    memcpy(data, s.data, s.size);
+    if (capacity < size + s.size) {
+        reserve(growN(size, s.size));
+    }
+    memcpy(data + size, s.data, s.size);
     size += s.size;
     return *this;
 }
@@ -253,7 +257,9 @@ String::reserve(size_t n) noexcept {
 
 void
 String::resize(size_t n) noexcept {
-    reserve(n);
+    if (capacity < n) {
+        reserve(n);
+    }
     size = n;
 }
 

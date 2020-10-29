@@ -154,21 +154,21 @@ icoord
 TileGrid::moveDest(icoord from, ivec2 facing) noexcept {
     icoord dest = from + icoord{facing.x, facing.y, 0};
 
-    Optional<float*> layermod = layermodAt(from, facing);
+    float* layermod = layermodAt(from, facing);
     if (layermod) {
-        dest = virt2phys(vicoord{dest.x, dest.y, **layermod});
+        dest = virt2phys(vicoord{dest.x, dest.y, *layermod});
     }
     return dest;
 }
 
-Optional<Exit*>
+Exit*
 TileGrid::exitAt(icoord from, ivec2 facing) noexcept {
     int idx = ivec2_to_dir(facing);
-    return idx == -1 ? none : exits[idx].tryAt(from);
+    return idx == -1 ? 0 : exits[idx].tryAt(from);
 }
 
-Optional<float*>
+float*
 TileGrid::layermodAt(icoord from, ivec2 facing) noexcept {
     int idx = ivec2_to_dir(facing);
-    return idx == -1 ? none : layermods[idx].tryAt(from);
+    return idx == -1 ? 0 : layermods[idx].tryAt(from);
 }

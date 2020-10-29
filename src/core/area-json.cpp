@@ -81,7 +81,7 @@ class AreaJSON : public Area {
     processTileSetFile(JsonValue obj, StringView source, int firstGid) noexcept;
     bool
     processTileType(JsonValue obj,
-                    Optional<Animation>& graphic,
+                    Animation& graphic,
                     TiledImage img,
                     int id) noexcept;
     bool
@@ -322,7 +322,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
      }
     */
 
-    assert_(firstGid == tileGraphics.size());
+    assert_(firstGid == tileGraphics.size);
 
     unsigned tilex, tiley;
     unsigned pixelw, pixelh;
@@ -371,12 +371,12 @@ AreaJSON::processTileSetFile(JsonValue obj,
     }
 
     int nTiles = images.numTiles;
-    tileGraphics.reserve(nTiles);
+    tileGraphics.reserve(tileGraphics.size + nTiles);
 
     // Initialize "vanilla" tile type array.
     for (int i = 0; i < nTiles; i++) {
         Image image = tileAt(images, i);
-        tileGraphics.push_back(Optional<Animation>(Animation(image)));
+        tileGraphics.push_back(Animation(image));
     }
 
     if (!tilespropertiesNode.isObject()) {
@@ -408,7 +408,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
         // "gid" is the global area-wide id of the tile.
         int gid = id__ + firstGid;
 
-        Optional<Animation>& graphic = tileGraphics[gid];
+        Animation& graphic = tileGraphics[gid];
         if (!processTileType(tilepropertiesNode.value,
                              graphic,
                              images,
@@ -422,7 +422,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
 
 bool
 AreaJSON::processTileType(JsonValue obj,
-                          Optional<Animation>& graphic,
+                          Animation& graphic,
                           TiledImage images,
                           int id) noexcept {
     /*
@@ -499,7 +499,7 @@ AreaJSON::processTileType(JsonValue obj,
         // Add 'now' to Animation constructor??
         time_t now = World::time();
         graphic = Animation(move_(framesvec), *frameLen);
-        graphic->restart(now);
+        graphic.restart(now);
     }
 
     return true;

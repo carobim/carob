@@ -31,8 +31,6 @@
 #include "core/vec.h"
 #include "data/data-area.h"
 #include "util/hashtable.h"
-#include "util/markable.h"
-#include "util/optional.h"
 #include "util/string.h"
 #include "util/vector.h"
 
@@ -164,9 +162,11 @@ class TileGrid {
     icoord
     moveDest(icoord from, ivec2 facing) noexcept;
 
-    Optional<Exit*>
+    // nullptr means not found
+    Exit*
     exitAt(icoord from, ivec2 facing) noexcept;
-    Optional<float*>
+    // nullptr means not found
+    float*
     layermodAt(icoord from, ivec2 facing) noexcept;
 
  public:

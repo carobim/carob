@@ -137,7 +137,7 @@ class Vector {
         size++;
     }
     void append(size_t n, const X* xs) noexcept {
-        assert_(i <= size);
+        assert_(n <= size);
         reserve(size + n);  // FIXME: Choose better size.
         for (size_t i = 0; i < n; i++) {
             new (data + size + i) X(xs[i]);

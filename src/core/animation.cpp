@@ -31,8 +31,6 @@
 #include "util/move.h"
 #include "util/pool.h"
 
-#define INVALID_ID UINT32_MAX
-
 struct AnimationData {
     /** List of images in animation. */
     Vector<Image> frames;
@@ -58,14 +56,14 @@ static Pool<AnimationData> pool;
 
 static bool
 isSingleFrame(AnimationID self) noexcept {
-    assert_(self != INVALID_ID);
+    assert_(self != NO_ANIMATION);
 
     return pool[self].frameTime == 0;
 }
 
 static void
 destroy(AnimationID self) noexcept {
-    if (self == INVALID_ID) {
+    if (self == NO_ANIMATION) {
         return;
     }
 
@@ -80,14 +78,14 @@ destroy(AnimationID self) noexcept {
 
 static void
 incRef(AnimationID self) noexcept {
-    if (self != INVALID_ID) {
+    if (self != NO_ANIMATION) {
         ++pool[self].refCnt;
     }
 }
 
 static void
 decRef(AnimationID self) noexcept {
-    if (self != INVALID_ID && --pool[self].refCnt == 0) {
+    if (self != NO_ANIMATION && --pool[self].refCnt == 0) {
         destroy(self);
     }
 }
@@ -100,7 +98,7 @@ assign(AnimationID& self, AnimationID& other) noexcept {
 }
 
 Animation::Animation() noexcept {
-    id = INVALID_ID;
+    id = NO_ANIMATION;
 }
 
 Animation::Animation(Image frame) noexcept {
@@ -115,7 +113,7 @@ Animation::Animation(Image frame) noexcept {
 }
 
 Animation::Animation(Vector<Image> frames, time_t frameTime) noexcept {
-    assert_(frames.size() > 0);
+    assert_(frames.size > 0);
     assert_(frameTime > 0);
     for (Image frame : frames) {
         assert_(IMAGE_VALID(frame));
@@ -160,7 +158,7 @@ Animation::operator=(Animation&& other) noexcept {
 
 void
 Animation::restart(time_t now) noexcept {
-    assert_(id != INVALID_ID);
+    assert_(id != NO_ANIMATION);
 
     if (isSingleFrame(id)) {
         return;
@@ -175,7 +173,7 @@ Animation::restart(time_t now) noexcept {
 
 bool
 Animation::needsRedraw(time_t now) noexcept {
-    assert_(id != INVALID_ID);
+    assert_(id != NO_ANIMATION);
 
     if (isSingleFrame(id)) {
         return false;
@@ -191,7 +189,7 @@ Animation::needsRedraw(time_t now) noexcept {
 
 Image
 Animation::setFrame(time_t now) noexcept {
-    assert_(id != INVALID_ID);
+    assert_(id != NO_ANIMATION);
 
     AnimationData& data = pool[id];
 
@@ -210,7 +208,7 @@ Animation::setFrame(time_t now) noexcept {
 
 Image
 Animation::getFrame() noexcept {
-    assert_(id != INVALID_ID);
+    assert_(id != NO_ANIMATION);
 
     return pool[id].currentImage;
 }

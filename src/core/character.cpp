@@ -225,8 +225,8 @@ Character::canMove(icoord dest) noexcept {
 bool
 Character::nowalked(icoord phys) noexcept {
     unsigned flags = nowalkFlags & ~nowalkExempt;
-    Optional<unsigned*> tileFlags = area->grid.flags.tryAt(phys);
-    return tileFlags && (**tileFlags & flags) != 0;
+    unsigned* tileFlags = area->grid.flags.tryAt(phys);
+    return tileFlags && (*tileFlags & flags) != 0;
 }
 
 void
@@ -237,10 +237,9 @@ Character::arrived() noexcept {
     bool inBounds = area->grid.inBounds(dest);
 
     if (inBounds) {
-        Optional<float*> layermod =
-                area->grid.layermods[EXIT_NORMAL].tryAt(dest);
+        float* layermod = area->grid.layermods[EXIT_NORMAL].tryAt(dest);
         if (layermod) {
-            r.z = **layermod;
+            r.z = *layermod;
         }
 
         // Process triggers.

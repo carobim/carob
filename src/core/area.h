@@ -34,7 +34,6 @@
 #include "core/vec.h"
 #include "core/window.h"
 #include "util/hashtable.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/unique.h"
@@ -147,7 +146,7 @@ class Area {
  protected:
     Hashmap<String, TileSet> tileSets;
 
-    Vector<Optional<Animation>> tileGraphics;
+    Vector<Animation> tileGraphics;
     Vector<bool> checkedForAnimation;
     Vector<bool> tilesAnimated;
 
@@ -167,7 +166,7 @@ class Area {
 
     String name;
     String author;
-    Optional<String> musicPath;
+    String musicPath;
 
     friend AreaJSON;
 };

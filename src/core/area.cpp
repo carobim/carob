@@ -56,8 +56,8 @@ Area::focus() {
         }
     }
 
-    if (musicPath) {
-        Music::play(*musicPath);
+    if (musicPath.size) {
+        Music::play(musicPath);
     }
 
     if (dataArea) {
@@ -161,7 +161,9 @@ Area::needsRedraw() {
     }
 
     // Do any on-screen tile types need to update their animations?
-    checkedForAnimation.resize(tileGraphics.size);
+    if (tileGraphics.size > checkedForAnimation.size) {
+        checkedForAnimation.resize(tileGraphics.size);
+    }
     for (bool& checked : checkedForAnimation) {
         checked = false;
     }
@@ -185,7 +187,7 @@ Area::needsRedraw() {
                 }
                 checkedForAnimation[type] = true;
 
-                if (tileGraphics[type]->needsRedraw(now)) {
+                if (tileGraphics[type].needsRedraw(now)) {
                     return true;
                 }
             }
@@ -339,9 +341,9 @@ void
 Area::runScript(TileGrid::ScriptType type,
                 icoord tile,
                 Entity* triggeredBy) noexcept {
-    Optional<DataArea::TileScript*> script = grid.scripts[type].tryAt(tile);
+    DataArea::TileScript* script = grid.scripts[type].tryAt(tile);
     if (script) {
-        (dataArea->*(**script))(*triggeredBy, tile);
+        (dataArea->*(*script))(*triggeredBy, tile);
     }
 }
 
@@ -350,7 +352,9 @@ void
 Area::drawTiles(DisplayList* display, icube& tiles, int z) {
     time_t now = World::time();
 
-    tilesAnimated.resize(tileGraphics.size);
+    if (tileGraphics.size > tilesAnimated.size) {
+        tilesAnimated.resize(tileGraphics.size);
+    }
     for (bool& animated : tilesAnimated) {
         animated = false;
     }
@@ -376,18 +380,18 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
                 continue;
             }
 
-            if (!tileGraphics[type]) {
+            if (tileGraphics[type].id == NO_ANIMATION) {
                 continue;
             }
 
             if (!tilesAnimated[type]) {
                 tilesAnimated[type] = true;
-                tileGraphics[type]->setFrame(now);
+                tileGraphics[type].setFrame(now);
             }
 
             // Image guaranteed to exist because Animation won't hold a null
             // ImageID.
-            Image img = tileGraphics[type]->getFrame();
+            Image img = tileGraphics[type].getFrame();
 
             rvec2 drawPos{float(x * width), float(y * height)};
             // drawPos.z = depth + drawPos.y / tileDimY *

@@ -197,7 +197,7 @@ readFile(String& path) noexcept {
     }
 
     String contents;
-    contents.reserve(size);
+    contents.resize(size);
 
     ssize_t read = fread(contents.data, size, 1, f);
     if (read != 1) {

@@ -179,9 +179,9 @@ World::turn() noexcept {
 
 bool
 World::focusArea(StringView filename, vicoord playerPos) noexcept {
-    Optional<Area**> cachedArea = areas.tryAt(filename);
+    Area** cachedArea = areas.tryAt(filename);
     if (cachedArea) {
-        Area* area = **cachedArea;
+        Area* area = *cachedArea;
         focusArea(area, playerPos);
         return true;
     }

@@ -100,8 +100,7 @@ logInfo(StringView domain, StringView msg) noexcept {
         printf("%s ", makeTimestamp().null());
 
         setTermColor(TC_YELLOW, Stdout);
-        String s;
-        s << "Info [" << domain << "]";
+        String s = String() << "Info [" << domain << "]";
         printf("%s", s.null());
 
         setTermColor(TC_RESET, Stdout);
@@ -121,8 +120,7 @@ logErr(StringView domain, StringView msg) noexcept {
             fprintf(stderr, "%s ", makeTimestamp().null());
 
             setTermColor(TC_RED, Stderr);
-            String s;
-            s << "Error [" << domain << "]";
+            String s = String() << "Error [" << domain << "]";
             fprintf(stderr, "%s", s.null());
 
             setTermColor(TC_RESET, Stderr);
@@ -131,8 +129,7 @@ logErr(StringView domain, StringView msg) noexcept {
             fprintf(stderr, "%s", s.null());
         }
 
-        String s;
-        s << "Error [" << domain << "] - " << chomp(msg);
+        String s = String() << "Error [" << domain << "] - " << chomp(msg);
 
 #ifdef _WIN32
         wMessageBox("Tsunagari - Error", s);
@@ -169,8 +166,7 @@ logFatal(StringView domain, StringView msg) noexcept {
         fprintf(stderr, "%s", s.null());
     }
 
-    String s;
-    s << "Fatal [" << domain << "] - " << chomp(msg);
+    String s = String() << "Fatal [" << domain << "] - " << chomp(msg);
 
 #ifdef _WIN32
     wMessageBox("Tsunagari - Fatal", s);
@@ -178,8 +174,7 @@ logFatal(StringView domain, StringView msg) noexcept {
     if (IsDebuggerPresent()) {
         __debugbreak();
     }
-#endif
-#ifdef __APPLE__
+#elif __APPLE__
     macMessageBox(StringView("Tsunagari - Fatal"), s);
 #endif
 

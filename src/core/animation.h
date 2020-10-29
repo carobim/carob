@@ -34,6 +34,9 @@
 
 typedef uint32_t AnimationID;
 
+// Value of .id when default constructed. Do not use these objects.
+#define NO_ANIMATION UINT32_MAX
+
 /**
  * An Animation is a sequence of bitmap images (called frames) used to creates
  * the illusion of motion. Frames are cycled over with an even amount of time
@@ -110,7 +113,7 @@ class Animation {
     Image
     getFrame() noexcept;
 
- private:
+ public:
     AnimationID id;
 };
 
