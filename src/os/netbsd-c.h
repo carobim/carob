@@ -304,6 +304,8 @@ strtoul(const char*, char**, int) noexcept;
 extern "C" {
 void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
+void*
+memmove(void*, const void*, size_t) noexcept;
 size_t
 strlen(char const*) noexcept;
 #define memchr __builtin_memchr
