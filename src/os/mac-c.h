@@ -169,11 +169,6 @@ opendir(const char*) noexcept __asm("_opendir$INODE64");
 struct dirent*
 readdir(DIR*) noexcept __asm("_readdir$INODE64");
 
-// malloc/_malloc.h
-void
-free(void*) noexcept;
-void* malloc(size_t) noexcept;
-
 // math.h
 double
 atan2(double, double) noexcept;

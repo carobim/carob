@@ -29,6 +29,7 @@
 #include "os/c.h"
 #include "util/assert.h"
 #include "util/fnv.h"
+#include "util/new.h"
 #include "util/noexcept.h"
 
 static size_t

@@ -57,8 +57,8 @@
 
 #include "util/json.h"
 
-#include "os/c.h"
 #include "util/int.h"
+#include "util/new.h"
 #include "util/string-view.h"
 #include "util/string.h"
 

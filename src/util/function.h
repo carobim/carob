@@ -27,11 +27,11 @@
 #ifndef SRC_UTIL_FUNCTION_H_
 #define SRC_UTIL_FUNCTION_H_
 
-#include "os/c.h"
 #include "util/align.h"
 #include "util/assert.h"
 #include "util/meta.h"
 #include "util/move.h"
+#include "util/new.h"
 #include "util/noexcept.h"
 
 #pragma warning(push)
@@ -94,7 +94,7 @@ namespace function {
         F f;
 
      public:
-        explicit func(F&& f) noexcept : f(move_(f)) {}
+        explicit func(F&& f) noexcept : f(static_cast<F&&>(f)) {}
         explicit func(const F& f) noexcept : f(f) {}
 
         base<R(ArgTypes...) noexcept>*
@@ -159,7 +159,7 @@ class Function<R(ArgTypes...) noexcept> {
     base* f;
 
  public:
-    inline Function() noexcept : f(nullptr) {}
+    inline Function() noexcept : f(0) {}
     Function(const Function&) noexcept;
     Function(Function&&) noexcept;
     template<class F>
@@ -188,7 +188,7 @@ class Function<R(ArgTypes...) noexcept> {
     void
     swap(Function&) noexcept;
 
-    inline explicit operator bool() const noexcept { return f != nullptr; }
+    inline explicit operator bool() const noexcept { return f != 0; }
 
     R
     operator()(ArgTypes...) const noexcept;
@@ -196,8 +196,8 @@ class Function<R(ArgTypes...) noexcept> {
 
 template<class R, class... ArgTypes>
 Function<R(ArgTypes...) noexcept>::Function(const Function& other) noexcept {
-    if (other.f == nullptr) {
-        f = nullptr;
+    if (other.f == 0) {
+        f = 0;
     }
     else if ((void*)other.f == &other.buf) {
         f = asBase(&buf);
@@ -210,8 +210,8 @@ Function<R(ArgTypes...) noexcept>::Function(const Function& other) noexcept {
 
 template<class R, class... ArgTypes>
 Function<R(ArgTypes...) noexcept>::Function(Function&& other) noexcept {
-    if (other.f == nullptr) {
-        f = nullptr;
+    if (other.f == 0) {
+        f = 0;
     }
     else if ((void*)other.f == &other.buf) {
         f = asBase(&buf);
@@ -219,13 +219,13 @@ Function<R(ArgTypes...) noexcept>::Function(Function&& other) noexcept {
     }
     else {
         f = other.f;
-        other.f = nullptr;
+        other.f = 0;
     }
 }
 
 template<class R, class... ArgTypes>
 template<class F>
-Function<R(ArgTypes...) noexcept>::Function(F something) noexcept : f(nullptr) {
+Function<R(ArgTypes...) noexcept>::Function(F something) noexcept : f(0) {
     set(something);
 }
 
@@ -237,7 +237,7 @@ Function<R(ArgTypes...) noexcept>::set(
         EnableIf<sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
                  sizeof(buf)>) noexcept {
     f = new ((void*)&buf)
-            function::func<F, R(ArgTypes...) noexcept>(move_(something));
+            function::func<F, R(ArgTypes...) noexcept>(static_cast<F&&>(something));
 }
 
 template<class R, class... ArgTypes>
@@ -266,8 +266,8 @@ template<class R, class... ArgTypes>
 Function<R(ArgTypes...) noexcept>&
 Function<R(ArgTypes...) noexcept>::operator=(Function&& other) noexcept {
     this->~Function();
-    if (other.f == nullptr) {
-        f = nullptr;
+    if (other.f == 0) {
+        f = 0;
     }
     else if ((void*)other.f == &other.buf) {
         f = asBase(&buf);
@@ -275,7 +275,7 @@ Function<R(ArgTypes...) noexcept>::operator=(Function&& other) noexcept {
     }
     else {
         f = other.f;
-        other.f = nullptr;
+        other.f = 0;
     }
     return *this;
 }
@@ -310,10 +310,10 @@ Function<R(ArgTypes...) noexcept>::swap(Function& other) noexcept {
         base* t = asBase(&tempbuf);
         f->clone(t);
         f->destroy();
-        f = nullptr;
+        f = 0;
         other.f->clone(asBase(&buf));
         other.f->destroy();
-        other.f = nullptr;
+        other.f = 0;
         f = asBase(&buf);
         t->clone(asBase(&other.buf));
         t->destroy();
@@ -339,7 +339,7 @@ Function<R(ArgTypes...) noexcept>::swap(Function& other) noexcept {
 template<class R, class... ArgTypes>
 R
 Function<R(ArgTypes...) noexcept>::operator()(ArgTypes... args) const noexcept {
-    assert_(f != nullptr);
+    assert_(f != 0);
     return (*f)(forward_<ArgTypes>(args)...);
 }
 

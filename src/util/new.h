@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** new.h                       **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** new.h                            **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,6 +29,18 @@
 
 #include "util/int.h"
 #include "util/noexcept.h"
+
+extern "C" {
+#ifdef _WIN32
+__declspec(dllimport) void free(void*) noexcept;
+__declspec(dllimport) __declspec(restrict) void* malloc(size_t) noexcept;
+#else
+void*
+malloc(size_t) noexcept;
+void
+free(void*) noexcept;
+#endif
+}
 
 inline void*
 operator new(size_t, void* p) noexcept {

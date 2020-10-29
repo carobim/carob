@@ -248,9 +248,6 @@ int
 atoi(const char*) noexcept;
 void
 exit(int) noexcept;
-void
-free(void*) noexcept;
-void* malloc(size_t) noexcept;
 int
 rand() noexcept;
 void

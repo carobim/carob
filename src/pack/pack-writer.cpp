@@ -30,7 +30,7 @@
 #include "pack/file-type.h"
 #include "pack/pack-reader.h"
 #include "util/int.h"
-#include "util/move.h"
+#include "util/new.h"
 #include "util/noexcept.h"
 #include "util/sort.h"
 #include "util/string.h"
@@ -230,6 +230,6 @@ PackWriterImpl::writeToFile(StringView path) noexcept {
 
 void
 PackWriterImpl::addBlob(String path, BlobSize size, const void* data) noexcept {
-    blobs.push_back({move_(path), size, data});
+    blobs.push_back({static_cast<String&&>(path), size, data});
     sorted = false;
 }

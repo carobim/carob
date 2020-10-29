@@ -56,7 +56,7 @@ run(void* f) noexcept {
     Function<void() noexcept>* fun =
             reinterpret_cast<Function<void() noexcept>*>(f);
     (*fun)();
-    return nullptr;
+    return 0;
 }
 
 Thread::Thread(Function<void() noexcept> f) noexcept {
@@ -66,28 +66,28 @@ Thread::Thread(Function<void() noexcept> f) noexcept {
     new (fun) F(move_(f));
 
     int err =
-            pthread_create(reinterpret_cast<pthread_t*>(&t), nullptr, run, fun);
+            pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, fun);
     (void)err;
     assert_(err == 0);
 }
 
 Thread::Thread(Thread&& other) noexcept : t(other.t) {
-    other.t = nullptr;
+    other.t = 0;
 }
 
 Thread::~Thread() noexcept {
-    assert_(t == nullptr);
+    assert_(t == 0);
 }
 
 void
 Thread::join() noexcept {
-    assert_(t != nullptr);
+    assert_(t != 0);
 
     int err = pthread_join(static_cast<pthread_t>(t), 0);
     (void)err;
     assert_(err == 0);
 
-    t = nullptr;
+    t = 0;
 }
 
 void
@@ -98,7 +98,7 @@ Thread::disableTimerCoalescing() noexcept {
 
     thread_policy_set(mach_thread_self(),
                       THREAD_EXTENDED_POLICY,
-                      (uint32_t*)&policyInfo,
+                      reinterpret_cast<uint32_t*>(&policyInfo),
                       THREAD_EXTENDED_POLICY_COUNT);
 }
 

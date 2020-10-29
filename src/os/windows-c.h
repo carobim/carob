@@ -91,8 +91,6 @@ typedef __int64 __time64_t;
 
 _ACRTIMP __time64_t __cdecl _time64(__time64_t*) noexcept;
 _ACRTIMP __declspec(noreturn) void __cdecl exit(int) noexcept;
-_ACRTIMP void __cdecl free(void*) noexcept;
-_ACRTIMP _CRTRESTRICT void* __cdecl malloc(size_t) noexcept;
 _ACRTIMP int __cdecl rand() noexcept;
 _ACRTIMP void __cdecl srand(unsigned int) noexcept;
 
