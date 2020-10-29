@@ -51,12 +51,9 @@
 #ifndef SRC_UTIL_HASHTABLE_H_
 #define SRC_UTIL_HASHTABLE_H_
 
-#include "util/algorithm.h"
 #include "util/assert.h"
-#include "util/constexpr.h"
 #include "util/hash.h"
 #include "util/int.h"
-#include "util/move.h"
 #include "util/noexcept.h"
 #include "util/vector.h"
 
@@ -84,7 +81,7 @@
 // correctly) or where having a default value as a key is necessary.
 template<typename T>
 struct Empty {
-    static CONSTEXPR11 T
+    static T
     value() noexcept {
         return T();
     }
@@ -94,8 +91,8 @@ template<typename Key, typename Value, typename E = Empty<Key>>
 class Hashmap {
  public:
     struct Entry {
-        Key first;
-        Value second;
+        Key key;
+        Value value;
     };
 
     struct iterator {
@@ -122,11 +119,11 @@ class Hashmap {
 
         Key&
         key() noexcept {
-            return hm->buckets[idx].first;
+            return hm->buckets[idx].key;
         }
         Value&
         value() noexcept {
-            return hm->buckets[idx].second;
+            return hm->buckets[idx].value;
         }
 
      private:
@@ -137,7 +134,7 @@ class Hashmap {
         void
         advancePastEmpty() noexcept {
             while (idx < hm->buckets.size &&
-                   hm->buckets[idx].first == E::value()) {
+                   hm->buckets[idx].key == E::value()) {
                 ++idx;
             }
         }
@@ -191,63 +188,98 @@ class Hashmap {
 
     // Write
     void
-    insert(const Entry& value) noexcept {
-        emplaceImpl(value.first, value.second);
-    }
-    void
-    insert(Entry&& value) noexcept {
-        emplaceImpl(move_(value.first), move_(value.second));
-    }
-
-    void
     erase(iterator it) noexcept {
-        eraseImpl(it);
+        size_t bucket = it.idx;
+        for (size_t idx = probeNext(bucket);; idx = probeNext(idx)) {
+            if (buckets[idx].key == E::value()) {
+                buckets[bucket].key = E::value();
+                count--;
+                return;
+            }
+            size_t ideal = keyToIdx(buckets[idx].key);
+            if (diff(bucket, ideal) < diff(idx, ideal)) {
+                // Swap. Bucket is closer to ideal than idx.
+                buckets[bucket] = buckets[idx];
+                bucket = idx;
+            }
+        }
     }
-    size_t
+    void
     erase(const Key& x) noexcept {
-        return eraseImpl(x);
-    }
-
-    void
-    clear() noexcept {
-        Hashmap other(buckets.size());
-        swap(other);
-    }
-
-    void
-    swap(Hashmap& other) noexcept {
-        swap_(buckets, other.buckets);
-        swap_(count, other.count);
+        auto it = find(x);
+        if (it != end()) {
+            erase(it);
+        }
     }
 
     // Read
     Value& operator[](const Key& key) noexcept {
-        return emplaceImpl(key)->second;
+        assert_(key != E::value());  // Empty key shouldn't be used.
+        reserve(count + 1);
+        for (size_t idx = keyToIdx(key);; idx = probeNext(idx)) {
+            if (buckets[idx].key == E::value()) {
+                buckets[idx].value = Value();
+                buckets[idx].key = key;
+                count++;
+                return buckets[idx].value;
+            }
+            else if (buckets[idx].key == key) {
+                return buckets[idx].value;
+            }
+        }
     }
     Value& operator[](Key&& key) noexcept {
-        return emplaceImpl(move_(key))->second;
+        assert_(key != E::value());  // Empty key shouldn't be used.
+        reserve(count + 1);
+        for (size_t idx = keyToIdx(key);; idx = probeNext(idx)) {
+            if (buckets[idx].key == E::value()) {
+                buckets[idx].value = Value();
+                buckets[idx].key = static_cast<Key&&>(key);
+                count++;
+                return buckets[idx].value;
+            }
+            else if (buckets[idx].key == key) {
+                return buckets[idx].value;
+            }
+        }
     }
 
     template<typename K>
     iterator
     find(const K& x) noexcept {
-        return findImpl(x);
+        assert_(x != E::value());  // Empty key shouldn't be used.
+        for (size_t idx = keyToIdx(x);; idx = probeNext(idx)) {
+            if (buckets[idx].key == E::value()) {
+                return end();
+            }
+            if (buckets[idx].key == x) {
+                return iterator(this, idx);
+            }
+        }
     }
 
     template<typename K>
     Value&
     at(const Key& x) noexcept {
-        return atImpl(x);
+        iterator it = find(x);
+        assert_(it != end());
+        return it->value;
     }
     template<typename K>
     Value*
     tryAt(const K& key) noexcept {
-        return tryAtImpl(key);
+        iterator it = find(key);
+        if (it == end()) {
+            return 0;
+        }
+        else {
+            return &it->value;
+        }
     }
     template<typename K>
     bool
     contains(const K& x) noexcept {
-        return containsImpl(x);
+        return find(x) != end();
     }
 
     // Utility
@@ -261,106 +293,22 @@ class Hashmap {
  private:
     Hashmap(Hashmap& other, size_t bucket_count) noexcept
             : Hashmap(bucket_count) {
-        for (auto it = other.begin(); it != other.end(); ++it) {
-            insert(*it);
+        for (iterator it = other.begin(); it != other.end(); ++it) {
+            operator[](it->key) = it->value;
         }
-    }
-
-    template<typename K, typename... Args>
-    iterator
-    emplaceImpl(K&& key, Args&&... args) noexcept {
-        assert_(key != E::value());  // Empty key shouldn't be used.
-        reserve(count + 1);
-        for (size_t idx = keyToIdx(key);; idx = probeNext(idx)) {
-            if (buckets[idx].first == E::value()) {
-                buckets[idx].second = Value(forward_<Args>(args)...);
-                buckets[idx].first = forward_<K>(key);
-                count++;
-                return iterator(this, idx);
-            }
-            else if (buckets[idx].first == key) {
-                return iterator(this, idx);
-            }
-        }
-    }
-
-    void
-    eraseImpl(iterator it) noexcept {
-        size_t bucket = it.idx;
-        for (size_t idx = probeNext(bucket);; idx = probeNext(idx)) {
-            if (buckets[idx].first == E::value()) {
-                buckets[bucket].first = E::value();
-                count--;
-                return;
-            }
-            size_t ideal = keyToIdx(buckets[idx].first);
-            if (diff(bucket, ideal) < diff(idx, ideal)) {
-                // Swap. Bucket is closer to ideal than idx.
-                buckets[bucket] = buckets[idx];
-                bucket = idx;
-            }
-        }
-    }
-
-    template<typename K>
-    size_t
-    eraseImpl(const K& key) noexcept {
-        auto it = findImpl(key);
-        if (it != end()) {
-            eraseImpl(it);
-            return 1;
-        }
-        return 0;
-    }
-
-    template<typename K>
-    iterator
-    findImpl(const K& key) noexcept {
-        assert_(key != E::value());  // Empty key shouldn't be used.
-        for (size_t idx = keyToIdx(key);; idx = probeNext(idx)) {
-            if (buckets[idx].first == E::value()) {
-                return end();
-            }
-            if (buckets[idx].first == key) {
-                return iterator(this, idx);
-            }
-        }
-    }
-
-    template<typename K>
-    Value&
-    atImpl(const K& key) noexcept {
-        iterator it = findImpl(key);
-        assert_(it != end());
-        return it->second;
-    }
-
-    template<typename K>
-    Value*
-    tryAtImpl(const K& key) noexcept {
-        iterator it = findImpl(key);
-        if (it == end()) {
-            return 0;
-        }
-        else {
-            return &it->second;
-        }
-    }
-
-    template<typename K>
-    bool
-    containsImpl(const K& key) noexcept {
-        return findImpl(key) != end();
     }
 
     // Hash policy
     void
     rehash(size_t count) noexcept {
-        count = max_(count, size() * 2);
-        Hashmap other(*this, count);
-        swap(other);
+        // FIXME: Support count = 0.
+        Hashmap other(*this, count * 2);
+
+        buckets = static_cast<Vector<Entry>&&>(other.buckets);
+        count = other.count;
 
         // TODO: Use move constructors, not copy constructors.
+        // FIXME: Do not use a Vector as backing.
         /*
         for (auto it = other.begin(); it != other.end(); ++it) {
             insert(*it);
@@ -388,6 +336,7 @@ class Hashmap {
     }
 
  private:
+    // FIXME: Only need three fields, not four. Replace Vector.
     Vector<Entry> buckets;
     size_t count = 0;
 };
