@@ -33,7 +33,6 @@
 #include "core/resources.h"
 #include "util/int.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/rc.h"
 #include "util/string-view.h"
 
@@ -49,17 +48,17 @@ struct SDL2Song {
 namespace {
     Rc<SDL2Song>
     genSong(StringView name) noexcept {
-        Optional<StringView> r = Resources::load(name);
-        if (!r) {
+        StringView r;
+        if (!Resources::load(name, r)) {
             // Error logged.
             return Rc<SDL2Song>();
         }
 
-        assert_(r->size < UINT32_MAX);
+        assert_(r.size < UINT32_MAX);
 
         SDL_RWops* ops =
-                SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r->data)),
-                              static_cast<int>(r->size));
+                SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                              static_cast<int>(r.size));
 
         TimeMeasure m(String() << "Constructed " << name << " as music");
         Mix_Music* music = Mix_LoadMUS_RW(ops, 1);
@@ -67,7 +66,7 @@ namespace {
         // We need to keep the memory (the resource) around, so put it in a
         // struct.
         SDL2Song* song = new SDL2Song;
-        song->resource = *r;
+        song->resource = r;
         song->mix = music;
 
         return Rc<SDL2Song>(song);

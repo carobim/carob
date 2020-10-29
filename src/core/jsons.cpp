@@ -26,23 +26,20 @@
 
 #include "core/jsons.h"
 
-#include "core/log.h"
 #include "core/measure.h"
 #include "core/resources.h"
-#include "util/move.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
 JsonDocument
 loadJson(StringView path) noexcept {
-    Optional<StringView> r = Resources::load(path);
-    if (!r) {
+    StringView data;
+    if (!Resources::load(path, data)) {
         return JsonDocument();
     }
 
     TimeMeasure m(String() << "Constructed " << path << " as json");
 
     // Make a copy of the string, because it will be overwritten.
-    return JsonDocument(*r);
+    return JsonDocument(data);
 }

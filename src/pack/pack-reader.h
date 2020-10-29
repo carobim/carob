@@ -30,7 +30,6 @@
 #include "util/int.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
-#include "util/unique.h"
 
 class PackReader {
  public:
@@ -39,7 +38,7 @@ class PackReader {
 
     static constexpr BlobIndex BLOB_NOT_FOUND = UINT32_MAX;
 
-    static Unique<PackReader>
+    static PackReader*
     fromFile(StringView path) noexcept;
     virtual ~PackReader() = default;
 

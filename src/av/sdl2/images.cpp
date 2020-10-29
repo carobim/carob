@@ -32,11 +32,11 @@
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/resources.h"
+#include "util/assert.h"
 #include "util/hash.h"
 #include "util/hashvector.h"
 #include "util/int.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
@@ -138,18 +138,18 @@ load(StringView path) noexcept {
     TiledImage& tiles = images.allocate(hash_(path));
     tiles = {};
 
-    Optional<StringView> r = Resources::load(path);
-    if (!r) {
+    StringView r;
+    if (!Resources::load(path, r)) {
         // Error logged.
         return 0;
     }
 
     // FIXME: Do this at the resource level.
-    //assert_(r->size < INT32_MAX);
+    //assert_(r.size < INT32_MAX);
 
     SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r->data)),
-                          static_cast<int>(r->size));
+            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                          static_cast<int>(r.size));
 
     int x = atlasUsed;
     int y = 0;

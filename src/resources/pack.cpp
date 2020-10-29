@@ -31,10 +31,9 @@
 #include "os/mutex.h"
 #include "pack/pack-reader.h"
 #include "util/int.h"
-#include "util/unique.h"
 
 static Mutex mutex;
-static Unique<PackReader> pack;
+static PackReader* pack = 0;
 
 static bool
 openPackFile() noexcept {
@@ -61,12 +60,12 @@ getFullPath(StringView path) noexcept {
     return String() << DataWorld::datafile << "/" << path;
 }
 
-Optional<StringView>
-Resources::load(StringView path) noexcept {
+bool
+Resources::load(StringView path, StringView& data) noexcept {
     LockGuard lock(mutex);
 
     if (!openPackFile()) {
-        return none;
+        return false;
     }
 
     PackReader::BlobIndex index = pack->findIndex(path);
@@ -74,7 +73,7 @@ Resources::load(StringView path) noexcept {
     if (index == PackReader::BLOB_NOT_FOUND) {
         logErr("PackResources",
                String() << getFullPath(path) << ": file missing");
-        return none;
+        return false;
     }
 
     uint32_t blobSize = pack->getBlobSize(index);
@@ -83,10 +82,12 @@ Resources::load(StringView path) noexcept {
     if (blobSize > UINT32_MAX) {
         logErr("PackResources",
                String() << getFullPath(path) << ": file too large");
-        return none;
+        return false;
     }
 
-    void* data = pack->getBlobData(index);
+    void* blob = pack->getBlobData(index);
 
-    return Optional<StringView>(StringView(static_cast<char*>(data), blobSize));
+    data.data = static_cast<char*>(blob);
+    data.size = blobSize;
+    return true;
 }

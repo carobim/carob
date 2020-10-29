@@ -29,7 +29,6 @@
 #define SRC_CORE_RESOURCES_H_
 
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 
 // Provides data and resource extraction for a World.
@@ -37,8 +36,8 @@
 class Resources {
  public:
     // Load a resource from the file at the given path.
-    static Optional<StringView>
-    load(StringView path) noexcept;
+    static bool
+    load(StringView path, StringView& data) noexcept;
 };
 
 #endif  // SRC_CORE_RESOURCES_H_

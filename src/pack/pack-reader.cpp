@@ -29,7 +29,6 @@
 #include "os/mapped-file.h"
 #include "util/hashtable.h"
 #include "util/int.h"
-#include "util/move.h"
 #include "util/new.h"
 #include "util/noexcept.h"
 #include "util/optional.h"
@@ -94,14 +93,14 @@ class PackReaderImpl : public PackReader {
     Hashmap<StringView, BlobIndex> lookups;
 };
 
-Unique<PackReader>
+PackReader*
 PackReader::fromFile(StringView path) noexcept {
     Optional<MappedFile> maybeFile = MappedFile::fromPath(path);
     if (!maybeFile) {
-        return Unique<PackReader>();
+        return 0;
     }
 
-    MappedFile file = move_(*maybeFile);
+    MappedFile file = static_cast<MappedFile&&>(*maybeFile);
 
     size_t offset = 0;
 
@@ -109,18 +108,18 @@ PackReader::fromFile(StringView path) noexcept {
     offset += sizeof(*header);
 
     if (memcmp(header->magic, PACK_MAGIC, sizeof(header->magic)) != 0) {
-        return Unique<PackReader>();
+        return 0;
     }
 
     if (header->version != PACK_VERSION) {
-        return Unique<PackReader>();
+        return 0;
     }
 
     PackReaderImpl* reader =
             static_cast<PackReaderImpl*>(malloc(sizeof(PackReaderImpl)));
     new (reader) PackReaderImpl;
 
-    reader->file = move_(file);
+    reader->file = static_cast<MappedFile&&>(file);
     reader->header = header;
 
     BlobIndex blobCount = header->blobCount;
@@ -137,7 +136,7 @@ PackReader::fromFile(StringView path) noexcept {
     reader->dataOffsets = reader->file.at<uint32_t*>(offset);
     // offset += blobCount * sizeof(uint64_t);
 
-    return Unique<PackReader>(reader);
+    return reader;
 }
 
 PackReader::BlobIndex

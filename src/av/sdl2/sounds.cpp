@@ -112,17 +112,17 @@ init() noexcept {
 
 static SDL2Sound
 makeSound(StringView path) noexcept {
-    Optional<StringView> r = Resources::load(path);
-    if (!r) {
+    StringView r;
+    if (!Resources::load(path, r)) {
         // Error logged.
         return SDL2Sound();
     }
 
-    assert_(r->size < UINT32_MAX);
+    assert_(r.size < UINT32_MAX);
 
     SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r->data)),
-                          static_cast<int>(r->size));
+            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                          static_cast<int>(r.size));
 
     Mix_Chunk* chunk;
 
@@ -131,12 +131,12 @@ makeSound(StringView path) noexcept {
         chunk = Mix_LoadWAV_RW(ops, true);
     }
 
-    if (chunk == nullptr) {
+    if (chunk == 0) {
         sdlError("Sounds", String() << "Mix_LoadWAV(" << path << ")");
         return SDL2Sound();
     }
 
-    return SDL2Sound{1, 0, *r, chunk};
+    return SDL2Sound{1, 0, r, chunk};
 }
 
 SoundID

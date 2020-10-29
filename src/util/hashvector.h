@@ -29,6 +29,7 @@
 
 #include "os/c.h"
 #include "util/int.h"
+#include "util/new.h"
 #include "util/noexcept.h"
 
 // HashVector
