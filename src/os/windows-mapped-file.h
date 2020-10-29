@@ -29,32 +29,17 @@
 
 #include "os/c.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 
-class MappedFile {
- public:
-    static Optional<MappedFile>
-    fromPath(StringView path) noexcept;
-
-    MappedFile() noexcept;
-    MappedFile(MappedFile&& other) noexcept;
-    MappedFile(const MappedFile& other) = delete;
-    ~MappedFile() noexcept;
-
-    MappedFile&
-    operator=(MappedFile&& other) noexcept;
-
-    template<typename T>
-    const T
-    at(size_t offset) const noexcept {
-        return reinterpret_cast<T>(data + offset);
-    }
-
- private:
-    HANDLE file;
-    HANDLE mapping;
+struct MappedFile {
     char* data;
+    HANDLE mapping;
+    HANDLE file;
 };
+
+bool
+makeMappedFile(StringView path, MappedFile& file) noexcept;
+void
+destroyMappedFile(MappedFile file) noexcept;
 
 #endif  // SRC_OS_WINDOWS_MAPPED_FILE_H_

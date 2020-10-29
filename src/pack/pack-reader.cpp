@@ -31,7 +31,6 @@
 #include "util/int.h"
 #include "util/new.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 
 //                                       "T   s    u    n    a   g    a   r"
 static constexpr uint8_t PACK_MAGIC[8] = {84, 115, 117, 110, 97, 103, 97, 114};
@@ -62,6 +61,8 @@ struct BlobMetadata {
 
 class PackReaderImpl : public PackReader {
  public:
+    ~PackReaderImpl();
+
     BlobIndex
     size() noexcept;
 
@@ -95,23 +96,25 @@ class PackReaderImpl : public PackReader {
 
 PackReader*
 PackReader::fromFile(StringView path) noexcept {
-    Optional<MappedFile> maybeFile = MappedFile::fromPath(path);
-    if (!maybeFile) {
+    MappedFile file;
+    if (!makeMappedFile(path, file)) {
         return 0;
     }
-
-    MappedFile file = static_cast<MappedFile&&>(*maybeFile);
+    char* data = file.data;
 
     size_t offset = 0;
 
-    HeaderBlock* header = file.at<HeaderBlock*>(offset);
+    HeaderBlock* header = reinterpret_cast<HeaderBlock*>(data + offset);
+
     offset += sizeof(*header);
 
     if (memcmp(header->magic, PACK_MAGIC, sizeof(header->magic)) != 0) {
+        destroyMappedFile(file);
         return 0;
     }
 
     if (header->version != PACK_VERSION) {
+        destroyMappedFile(file);
         return 0;
     }
 
@@ -119,24 +122,28 @@ PackReader::fromFile(StringView path) noexcept {
             static_cast<PackReaderImpl*>(malloc(sizeof(PackReaderImpl)));
     new (reader) PackReaderImpl;
 
-    reader->file = static_cast<MappedFile&&>(file);
+    reader->file = file;
     reader->header = header;
 
     BlobIndex blobCount = header->blobCount;
 
-    reader->pathOffsets = reader->file.at<PathOffset*>(offset);
+    reader->pathOffsets = reinterpret_cast<PathOffset*>(data + offset);
     offset += (blobCount + 1) * sizeof(PathOffset);
 
-    reader->paths = reader->file.at<char*>(offset);
+    reader->paths = reinterpret_cast<char*>(data + offset);
     offset += header->pathsBlockSize;
 
-    reader->metadatas = reader->file.at<BlobMetadata*>(offset);
+    reader->metadatas = reinterpret_cast<BlobMetadata*>(data + offset);
     offset += blobCount * sizeof(BlobMetadata);
 
-    reader->dataOffsets = reader->file.at<uint32_t*>(offset);
+    reader->dataOffsets = reinterpret_cast<uint32_t*>(data + offset);
     // offset += blobCount * sizeof(uint64_t);
 
     return reader;
+}
+
+PackReaderImpl::~PackReaderImpl() {
+    destroyMappedFile(file);
 }
 
 PackReader::BlobIndex
@@ -174,7 +181,7 @@ PackReaderImpl::getBlobSize(PackReader::BlobIndex index) noexcept {
 
 void*
 PackReaderImpl::getBlobData(PackReader::BlobIndex index) noexcept {
-    return file.at<void*>(dataOffsets[index]);
+    return dataOffsets + dataOffsets[index];
 }
 
 void

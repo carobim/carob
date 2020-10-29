@@ -28,6 +28,7 @@
 
 #include "os/c.h"
 #include "util/noexcept.h"
+#include "util/string-view.h"
 #include "util/string.h"
 
 extern "C" {
@@ -75,67 +76,48 @@ UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;
 #define SECTION_MAP_READ 0x0004
 }
 
-Optional<MappedFile>
-MappedFile::fromPath(StringView path) noexcept {
+bool
+makeMappedFile(StringView path, MappedFile& map) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              GENERIC_READ,
                              0,
-                             nullptr,
+                             0,
                              OPEN_EXISTING,
                              FILE_ATTRIBUTE_NORMAL,
-                             nullptr);
+                             0);
     if (file == INVALID_HANDLE_VALUE) {
-        return none;
+        return false;
     }
 
     HANDLE mapping =
-            CreateFileMapping(file, nullptr, PAGE_READONLY, 0, 0, nullptr);
-    if (mapping == nullptr) {
+            CreateFileMapping(file, 0, PAGE_READONLY, 0, 0, 0);
+    if (mapping == 0) {
         CloseHandle(file);
-        return none;
+        return false;
     }
 
     void* data = MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, 0);
-    if (data == nullptr) {
+    if (data == 0) {
         CloseHandle(mapping);
         CloseHandle(file);
-        return none;
+        return false;
     }
 
-    MappedFile m;
-    m.file = file;
-    m.mapping = mapping;
-    m.data = static_cast<char*>(data);
-    return Optional<MappedFile>(move_(m));
+    map.data = static_cast<char*>(data);
+    map.mapping = mapping;
+    map.file = file;
+    return true;
 }
 
-MappedFile::MappedFile() noexcept
-        : file(INVALID_HANDLE_VALUE), mapping(nullptr), data(nullptr) {}
-
-MappedFile::MappedFile(MappedFile&& other) noexcept
-        : file(INVALID_HANDLE_VALUE), mapping(nullptr), data(nullptr) {
-    *this = move_(other);
-}
-
-MappedFile::~MappedFile() noexcept {
+void
+destroyMappedFile(MappedFile map) {
     if (data) {
-        UnmapViewOfFile(static_cast<void*>(data));
+        UnmapViewOfFile(static_cast<void*>(map.data));
     }
     if (mapping) {
-        CloseHandle(mapping);
+        CloseHandle(map.mapping);
     }
     if (file != INVALID_HANDLE_VALUE) {
-        CloseHandle(file);
+        CloseHandle(map.file);
     }
-}
-
-MappedFile&
-MappedFile::operator=(MappedFile&& other) noexcept {
-    file = other.file;
-    mapping = other.mapping;
-    data = other.data;
-    other.file = INVALID_HANDLE_VALUE;
-    other.mapping = nullptr;
-    other.data = nullptr;
-    return *this;
 }

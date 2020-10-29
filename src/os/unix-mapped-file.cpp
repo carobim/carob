@@ -27,68 +27,46 @@
 #include "os/unix-mapped-file.h"
 
 #include "os/c.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
-Optional<MappedFile>
-MappedFile::fromPath(String& path) noexcept {
-    int fd = open(path.null(), O_RDONLY);
+bool
+makeMappedFile(StringView& path, MappedFile& file) noexcept {
+    int fd = open(String(path).null(), O_RDONLY);
     if (fd == -1) {
-        return Optional<MappedFile>();
+        return false;
     }
 
     struct stat st;
-    fstat(fd, &st);
+    if (fstat(fd, &st)) {
+        close(fd);
+        return false;
+    }
 
     if (st.st_size == 0) {
         close(fd);
-        return Optional<MappedFile>();
+        return false;
     }
 
-    char* map = reinterpret_cast<char*>(mmap(nullptr,
-                                             static_cast<size_t>(st.st_size),
-                                             PROT_READ,
-                                             MAP_SHARED,
-                                             fd,
-                                             0));
-    size_t len = static_cast<size_t>(st.st_size);
+    size_t size = static_cast<size_t>(st.st_size);
+    void* data = mmap(0, size, PROT_READ, MAP_SHARED, fd, 0);
 
-    if (map == MAP_FAILED) {
+    if (data == MAP_FAILED) {
         close(fd);
-        return Optional<MappedFile>();
+        return false;
     }
 
     // FIXME: Close the fd now or at destruction?
-    return Optional<MappedFile>(MappedFile(map, len));
+    file.data = static_cast<char*>(data);
+    file.size = size;
+    file.fd = fd;
+    return true;
 }
 
-Optional<MappedFile>
-MappedFile::fromPath(StringView path) noexcept {
-    String path_(path);
-    return MappedFile::fromPath(path_);
-}
-
-MappedFile::MappedFile() noexcept
-        : map(reinterpret_cast<char*>(MAP_FAILED)), len(0) {}
-
-MappedFile::MappedFile(MappedFile&& other) noexcept {
-    *this = move_(other);
-}
-
-MappedFile::MappedFile(char* map, size_t len) noexcept : map(map), len(len) {}
-
-MappedFile::~MappedFile() noexcept {
-    if (map != MAP_FAILED) {
-        munmap(map, len);
+void
+destroyMappedFile(MappedFile file) noexcept {
+    if (file.data != MAP_FAILED) {
+        munmap(file.data, file.size);
+        close(file.fd);
     }
-}
-
-MappedFile&
-MappedFile::operator=(MappedFile&& other) noexcept {
-    map = other.map;
-    len = other.len;
-    other.map = reinterpret_cast<char*>(MAP_FAILED);
-    other.len = 0;
-    return *this;
 }
