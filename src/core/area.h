@@ -36,7 +36,6 @@
 #include "util/hashtable.h"
 #include "util/string-view.h"
 #include "util/string.h"
-#include "util/unique.h"
 #include "util/vector.h"
 
 #define ISOMETRIC_ZOFF_PER_TILE 0.001
@@ -150,8 +149,8 @@ class Area {
     Vector<bool> checkedForAnimation;
     Vector<bool> tilesAnimated;
 
-    Vector<Unique<Character>> characters;
-    Vector<Unique<Overlay>> overlays;
+    Vector<Character*> characters;
+    Vector<Overlay*> overlays;
 
     bool beenFocused = false;
     bool redraw = true;

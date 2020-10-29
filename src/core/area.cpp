@@ -210,7 +210,7 @@ Area::tick(time_t dt) {
     for (auto& overlay : overlays) {
         overlay->tick(dt);
     }
-    erase_if(overlays, [](Unique<Overlay>& o) { return o->isDead(); });
+    erase_if(overlays, [](Overlay* o) { return o->isDead(); });
 
     if (Conf::moveMode != Conf::TURN) {
         player->tick(dt);
@@ -218,10 +218,10 @@ Area::tick(time_t dt) {
         for (auto& character : characters) {
             character->tick(dt);
         }
-        erase_if(characters, [](Unique<Character>& c) {
+        erase_if(characters, [](Character* c) {
             bool dead = c->isDead();
             if (dead) {
-                c->setArea(nullptr, {0, 0, 0.0});
+                c->setArea(0, {0, 0, 0.0});
             }
             return dead;
         });
@@ -241,10 +241,10 @@ Area::turn() {
     for (auto& character : characters) {
         character->turn();
     }
-    erase_if(characters, [](Unique<Character>& c) {
+    erase_if(characters, [](Character* c) {
         bool dead = c->isDead();
         if (dead) {
-            c->setArea(nullptr, {0, 0, 0.0});
+            c->setArea(0, {0, 0, 0.0});
         }
         return dead;
     });
@@ -270,7 +270,7 @@ TileSet*
 Area::getTileSet(StringView imagePath) {
     if (!tileSets.contains(imagePath)) {
         logErr("Area", String() << "tileset " << imagePath << " not found");
-        return nullptr;
+        return 0;
     }
     return &tileSets[imagePath];
 }
@@ -310,10 +310,10 @@ Area::spawnNPC(StringView descriptor, vicoord coord, StringView phase) {
     if (!c->init(descriptor, phase)) {
         logErr("Area", String() << "Failed to load entity " << descriptor);
         delete c;
-        return nullptr;
+        return 0;
     }
     c->setArea(this, coord);
-    characters.push_back(Unique<Character>(c));
+    characters.push_back(c);
     return c;
 }
 
@@ -323,11 +323,11 @@ Area::spawnOverlay(StringView descriptor, vicoord coord, StringView phase) {
     if (!o->init(descriptor, phase)) {
         logErr("Area", String() << "Failed to load entity " << descriptor);
         delete o;
-        return nullptr;
+        return 0;
     }
     o->setArea(this);
     o->teleport(coord);
-    overlays.push_back(Unique<Overlay>(o));
+    overlays.push_back(o);
     return o;
 }
 
