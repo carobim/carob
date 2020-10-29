@@ -35,7 +35,6 @@
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
-#include "util/unique.h"
 
 static String exe;
 static bool verbose = false;
@@ -112,7 +111,7 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
 
 static bool
 listArchive(StringView archivePath) noexcept {
-    Unique<PackReader> pack = PackReader::fromFile(archivePath);
+    PackReader* pack = PackReader::fromFile(archivePath);
 
     if (pack) {
         String output;
@@ -140,6 +139,8 @@ listArchive(StringView archivePath) noexcept {
         }
 
         printf("%s", output.null());
+
+        delete pack;
         return true;
     }
     else {
@@ -147,6 +148,8 @@ listArchive(StringView archivePath) noexcept {
                 "%s",
                 (String() << exe << ": " << archivePath << ": not found\n")
                         .null());
+
+        delete pack;
         return false;
     }
 }
@@ -184,7 +187,7 @@ putFile(StringView path, uint32_t size, void* data) noexcept {
 
 static bool
 extractArchive(StringView archivePath) noexcept {
-    Unique<PackReader> pack = PackReader::fromFile(archivePath);
+    PackReader* pack = PackReader::fromFile(archivePath);
 
     if (pack) {
         Vector<void*> blobDatas;
@@ -219,6 +222,7 @@ extractArchive(StringView archivePath) noexcept {
             putFile(blobPath, blobSize, blobData);
         }
 
+        delete pack;
         return true;
     }
     else {
@@ -226,6 +230,8 @@ extractArchive(StringView archivePath) noexcept {
                 "%s: %s: not found\n",
                 exe.null(),
                 String(archivePath).null());
+
+        delete pack;
         return false;
     }
 }
