@@ -4,6 +4,13 @@
 language: cpp
 os: osx
 
+_null_cmake: &null_cmake
+  script:
+  - curl -sL https://github.com/Kitware/CMake/releases/download/v3.8.0/cmake-3.8.0-Darwin-x86_64.tar.gz | tar xz
+  - mkdir build && cd build
+  - ../cmake-3.8.0-Darwin-x86_64/CMake.app/Contents/bin/cmake ..
+  - make
+
 _null: &null
   script:
   - mkdir build && cd build
@@ -29,7 +36,7 @@ jobs:
   include:
   - name: 10.11 null
     osx_image: xcode7.3
-    <<: *null
+    <<: *null_cmake
   - name: 10.15 null
     osx_image: xcode12.2
     <<: *null
