@@ -28,7 +28,6 @@
 #include "os/chrono.h"
 #include "util/assert.h"
 #include "util/int.h"
-#include "util/optional.h"
 
 extern "C" {
 WINBASEAPI
@@ -41,42 +40,39 @@ WINBASEAPI
 VOID WINAPI Sleep(DWORD);
 }
 
-static Optional<LARGE_INTEGER> freq;
+static bool haveFreq = false;
+static LARGE_INTEGER freq;
 
 TimePoint
 SteadyClock::now() noexcept {
-    if (!freq) {
-        LARGE_INTEGER _freq;
+    if (!haveFreq) {
+        haveFreq = true;
 
-        BOOL ok = QueryPerformanceFrequency(&_freq);
+        BOOL ok = QueryPerformanceFrequency(&freq);
         (void)ok;
         assert_(ok);
-
-        freq = _freq;
     }
 
     LARGE_INTEGER counter;
     QueryPerformanceCounter(&counter);
 
-    return TimePoint(s_to_ns(counter.QuadPart) / freq->QuadPart);
+    return TimePoint(s_to_ns(counter.QuadPart) / freq.QuadPart);
 }
 
 TimePoint
 SteadyClock::nowMS() noexcept {
-    if (!freq) {
-        LARGE_INTEGER _freq;
+    if (!haveFreq) {
+        haveFreq = true;
 
-        BOOL ok = QueryPerformanceFrequency(&_freq);
+        BOOL ok = QueryPerformanceFrequency(&freq);
         (void)ok;
         assert_(ok);
-
-        freq = _freq;
     }
 
     LARGE_INTEGER counter;
     QueryPerformanceCounter(&counter);
 
-    return TimePoint(s_to_ms(counter.QuadPart) / freq->QuadPart);
+    return TimePoint(s_to_ms(counter.QuadPart) / freq.QuadPart);
 }
 
 void
