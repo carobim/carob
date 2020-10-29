@@ -110,7 +110,7 @@ makeMappedFile(StringView path, MappedFile& map) noexcept {
 }
 
 void
-destroyMappedFile(MappedFile map) {
+destroyMappedFile(MappedFile map) noexcept {
     if (data) {
         UnmapViewOfFile(static_cast<void*>(map.data));
     }
