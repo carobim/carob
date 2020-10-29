@@ -36,7 +36,7 @@ Character::Character() noexcept
         : nowalkFlags(TILE_NOWALK | TILE_NOWALK_NPC),
           nowalkExempt(0),
           fromCoord({0.0, 0.0, 0.0}),
-          destExit(nullptr) {
+          destExit(0) {
     enterTile();
 }
 
@@ -130,7 +130,7 @@ Character::moveByTile(ivec2 delta) noexcept {
     icoord from = getTileCoords_i();
     setDestinationCoordinate(area->grid.phys2virt_r(dest));
 
-    destExit = none;
+    destExit = 0;
     if (area->grid.inBounds(from)) {
         destExit = area->grid.exitAt(from, delta);
     }
@@ -196,7 +196,7 @@ Character::moveDest(ivec2 facing) noexcept {
 
 bool
 Character::canMove(icoord dest) noexcept {
-    if (destExit && *destExit) {
+    if (destExit) {
         // We can always take exits as long as we can take exits.
         // (Even if they would cause us to be out of bounds.)
         if (nowalkExempt & TILE_NOWALK_EXIT) {

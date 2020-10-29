@@ -156,8 +156,8 @@ void
 Player::arrived() noexcept {
     Character::arrived();
 
-    if (destExit && *destExit) {
-        takeExit(*(*destExit));
+    if (destExit) {
+        takeExit(*destExit);
     }
 
     // If we have a velocity, keep moving.

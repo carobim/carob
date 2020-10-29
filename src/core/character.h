@@ -107,7 +107,7 @@ class Character : public Entity {
     unsigned nowalkExempt;
 
     rcoord fromCoord;
-    Optional<Exit*> destExit;
+    Exit* destExit;
 };
 
 #endif  // SRC_CORE_CHARACTER_H_
