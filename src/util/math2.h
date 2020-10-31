@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** math2.h                            **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2019 Paul Merrill   **
+** Copyright 2014-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -25,9 +25,24 @@
 // IN THE SOFTWARE.
 // **********
 
+// pow2()
+//
+// Original source downloaded from:
+//   https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
+
+/*
+ * Individually, the code snippets here are in the public domain (unless
+ * otherwise noted)--feel free to use them however you please. The aggregate
+ * collection and descriptions are (c) 1997-2005 Sean Eron Anderson. The code
+ * and descriptions are distributed in the hope that they will be useful, but
+ * WITHOUT ANY WARRANTY and without even the implied warranty of
+ * merchantability or fitness for a particular purpose.
+ */
+
 #ifndef SRC_UTIL_MATH2_H_
 #define SRC_UTIL_MATH2_H_
 
+#include "util/int.h"
 #include "util/noexcept.h"
 
 template<typename T>
@@ -63,6 +78,31 @@ wrap(T min, T value, T max) noexcept {
         value += max;
     }
     return value % max;
+}
+
+// Rounds a number up to the nearest power of 2, or to 0, whichever is lower.
+static uint32_t
+pow2(uint32_t i) noexcept {
+    i--;
+    i |= i >> 1;
+    i |= i >> 2;
+    i |= i >> 4;
+    i |= i >> 8;
+    i |= i >> 16;
+    i++;
+    return i;
+}
+static uint64_t
+pow2(uint64_t i) noexcept {
+    i--;
+    i |= i >> 1;
+    i |= i >> 2;
+    i |= i >> 4;
+    i |= i >> 8;
+    i |= i >> 16;
+    i |= i >> 32;
+    i++;
+    return i;
 }
 
 #endif  // SRC_UTIL_MATH2_H_

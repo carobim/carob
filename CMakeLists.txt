@@ -289,7 +289,6 @@ target_sources(tsunagari
 )
 
 target_sources(tsunagari
-    PUBLIC  ${HERE}/src/util/algorithm.h
     PUBLIC  ${HERE}/src/util/align.h
     PUBLIC  ${HERE}/src/util/assert.h
     PUBLIC  ${HERE}/src/util/constexpr.h
@@ -329,7 +328,6 @@ target_sources(tsunagari
 )
 
 target_sources(pack-tool
-    PRIVATE ${HERE}/src/util/algorithm.h
     PRIVATE ${HERE}/src/util/align.h
     PUBLIC  ${HERE}/src/util/assert.h
     PRIVATE ${HERE}/src/util/constexpr.h

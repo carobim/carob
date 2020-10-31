@@ -54,8 +54,8 @@
 #include "util/assert.h"
 #include "util/hash.h"
 #include "util/int.h"
+#include "util/math2.h"
 #include "util/noexcept.h"
-#include "util/vector.h"
 
 /*
  * HashMap
@@ -91,70 +91,66 @@ template<typename Key, typename Value, typename E = Empty<Key>>
 class Hashmap {
  public:
     struct Entry {
+        Entry() : key(E::value()), value() {}
+
         Key key;
         Value value;
     };
 
     struct iterator {
-        iterator(const iterator& other) noexcept
-                : hm(other.hm), idx(other.idx) {}
+        iterator(const iterator& other) noexcept : h(other.h), i(other.i) {}
 
         bool
-        operator==(const iterator& other) const noexcept {
-            return other.hm == hm && other.idx == idx;
+        operator==(iterator other) noexcept {
+            assert_(h == other.h);
+            return i == other.i;
         }
         bool
-        operator!=(const iterator& other) const noexcept {
-            return !(other == *this);
+        operator!=(iterator other) noexcept {
+            assert_(h == other.h);
+            return i != other.i;
         }
 
         void
         operator++() noexcept {
-            ++idx;
-            advancePastEmpty();
+            i++;
+            skipEmpties();
         }
 
-        Entry& operator*() const noexcept { return hm->buckets[idx]; }
-        Entry* operator->() const noexcept { return &hm->buckets[idx]; }
+        Entry& operator*() noexcept { return h->data[i]; }
+        Entry* operator->() noexcept { return &h->data[i]; }
 
      private:
-        explicit iterator(Hashmap* hm) noexcept : hm(hm) { advancePastEmpty(); }
-        explicit iterator(Hashmap* hm, size_t idx) noexcept
-                : hm(hm), idx(idx) {}
+        explicit iterator(Hashmap* h) noexcept : h(h), i(0) { skipEmpties(); }
+        explicit iterator(Hashmap* h, size_t i) noexcept : h(h), i(i) {}
 
         void
-        advancePastEmpty() noexcept {
-            while (idx < hm->buckets.size &&
-                   hm->buckets[idx].key == E::value()) {
-                ++idx;
+        skipEmpties() noexcept {
+            while (i < h->capacity &&
+                   h->data[i].key == E::value()) {
+                i++;
             }
         }
 
-        Hashmap* hm = nullptr;
-        size_t idx = 0;
+        Hashmap* h;
+        size_t i;
         friend Hashmap;
     };
 
  public:
-    // FIXME: Starting size should be 0.
-    //        Make reserve() check for 0.
-    Hashmap(size_t bucket_count = 8) noexcept {
-        size_t pow2 = 1;
-        while (pow2 < bucket_count) {
-            pow2 <<= 1;
-        }
+    Hashmap(size_t bucketCount = 0) noexcept {
+        size = 0;
+        capacity = 0;
 
-        // buckets.resize(pow2);
-        // FIXME: Can this be made more efficient?
-        buckets.reserve(pow2);
-        for (size_t i = 0; i < pow2; i++) {
-            buckets.push_back(Entry{E::value(), Value()});
+        if (bucketCount) {
+            capacity = pow2(bucketCount);
+            data = new Entry[capacity];
         }
     }
 
-    // Operators
-    void
-    operator=(const Hashmap& other) = delete;
+    ~Hashmap() noexcept {
+        delete[] data;
+    }
 
     // Iterators
     iterator
@@ -163,98 +159,79 @@ class Hashmap {
     }
     iterator
     end() noexcept {
-        return iterator(this, buckets.size);
+        return iterator(this, capacity);
     }
 
-    // Capacity
-    bool
-    empty() noexcept {
-        return size() == 0;
-    }
-
-    size_t
-    size() noexcept {
-        return count;
-    }
-
-    // Write
-    void
-    erase(iterator it) noexcept {
-        size_t bucket = it.idx;
-        for (size_t idx = probeNext(bucket);; idx = probeNext(idx)) {
-            if (buckets[idx].key == E::value()) {
-                buckets[bucket].key = E::value();
-                count--;
-                return;
-            }
-            size_t ideal = keyToIdx(buckets[idx].key);
-            if (diff(bucket, ideal) < diff(idx, ideal)) {
-                // Swap. Bucket is closer to ideal than idx.
-                buckets[bucket] = buckets[idx];
-                bucket = idx;
-            }
-        }
-    }
-    void
-    erase(const Key& x) noexcept {
-        auto it = find(x);
-        if (it != end()) {
-            erase(it);
-        }
-    }
-
-    // Read
+    // Read/write
     Value& operator[](const Key& key) noexcept {
         assert_(key != E::value());  // Empty key shouldn't be used.
-        reserve(count + 1);
-        for (size_t idx = keyToIdx(key);; idx = probeNext(idx)) {
-            if (buckets[idx].key == E::value()) {
-                buckets[idx].value = Value();
-                buckets[idx].key = key;
-                count++;
-                return buckets[idx].value;
+        reserve(size + 1);
+        for (size_t idx = keyToIdx(key);; idx = probe(idx)) {
+            if (data[idx].key == E::value()) {
+                data[idx].value = Value();
+                data[idx].key = key;
+                size++;
+                return data[idx].value;
             }
-            else if (buckets[idx].key == key) {
-                return buckets[idx].value;
+            else if (data[idx].key == key) {
+                return data[idx].value;
             }
         }
     }
     Value& operator[](Key&& key) noexcept {
         assert_(key != E::value());  // Empty key shouldn't be used.
-        reserve(count + 1);
-        for (size_t idx = keyToIdx(key);; idx = probeNext(idx)) {
-            if (buckets[idx].key == E::value()) {
-                buckets[idx].value = Value();
-                buckets[idx].key = static_cast<Key&&>(key);
-                count++;
-                return buckets[idx].value;
+        reserve(size + 1);
+        for (size_t idx = keyToIdx(key);; idx = probe(idx)) {
+            if (data[idx].key == E::value()) {
+                data[idx].value = Value();
+                data[idx].key = static_cast<Key&&>(key);
+                size++;
+                return data[idx].value;
             }
-            else if (buckets[idx].key == key) {
-                return buckets[idx].value;
+            else if (data[idx].key == key) {
+                return data[idx].value;
             }
         }
     }
 
+    // Write
+    void
+    erase(iterator it) noexcept {
+        size_t bucket = it.i;
+        for (size_t idx = probe(bucket);; idx = probe(idx)) {
+            if (data[idx].key == E::value()) {
+                data[bucket].key = E::value();
+                size--;
+                return;
+            }
+            size_t ideal = keyToIdx(data[idx].key);
+            if (diff(bucket, ideal) < diff(idx, ideal)) {
+                // Swap. Bucket is closer to ideal than idx.
+                data[bucket] = data[idx];
+                bucket = idx;
+            }
+        }
+    }
+    void
+    erase(const Key& k) noexcept {
+        iterator it = find(k);
+        assert_(it != end());
+        erase(it);
+    }
+
+    // Read
     template<typename K>
     iterator
-    find(const K& x) noexcept {
-        assert_(x != E::value());  // Empty key shouldn't be used.
-        for (size_t idx = keyToIdx(x);; idx = probeNext(idx)) {
-            if (buckets[idx].key == E::value()) {
+    find(const K& k) noexcept {
+        assert_(k != E::value());  // Empty key shouldn't be used.
+        for (size_t idx = keyToIdx(k);; idx = probe(idx)) {
+            if (data[idx].key == E::value()) {
                 return end();
             }
-            if (buckets[idx].key == x) {
+            if (data[idx].key == k) {
                 return iterator(this, idx);
             }
         }
-    }
-
-    template<typename K>
-    Value&
-    at(const Key& x) noexcept {
-        iterator it = find(x);
-        assert_(it != end());
-        return it->value;
     }
     template<typename K>
     Value*
@@ -269,67 +246,80 @@ class Hashmap {
     }
     template<typename K>
     bool
-    contains(const K& x) noexcept {
-        return find(x) != end();
+    contains(const K& k) noexcept {
+        return find(k) != end();
     }
 
     // Utility
     void
-    reserve(size_t count) noexcept {
-        if (count * 2 > buckets.size) {
-            rehash(count * 2);
+    reserve(size_t size) noexcept {
+        // Only allow a 50% load limit.
+        if (size * 2 > capacity) {
+            size_t pow = pow2(size * 2);
+            rehash(pow > 8 ? pow : 8);
         }
     }
 
  private:
-    Hashmap(Hashmap& other, size_t bucket_count) noexcept
-            : Hashmap(bucket_count) {
-        for (iterator it = other.begin(); it != other.end(); ++it) {
-            operator[](it->key) = it->value;
-        }
-    }
-
-    // Hash policy
     void
-    rehash(size_t count) noexcept {
-        // FIXME: Support count = 0.
-        Hashmap other(*this, count * 2);
+    operator=(const Hashmap& other);
 
-        buckets = static_cast<Vector<Entry>&&>(other.buckets);
-        count = other.count;
+    void
+    rehash(size_t newCapacity) noexcept {
+        // Must be power of 2.
+        assert_((newCapacity & (newCapacity - 1)) == 0);
 
-        // TODO: Use move constructors, not copy constructors.
-        // FIXME: Do not use a Vector as backing.
-        /*
-        for (auto it = other.begin(); it != other.end(); ++it) {
-            insert(*it);
+        size_t oldSize = size;
+        size_t oldCapacity = capacity;
+        Entry* oldData = data;
+
+        size = 0;
+        capacity = newCapacity;
+        data = new Entry[capacity];
+
+        for (size_t i = 0; i < capacity; i++) {
+            new (data + i) Entry();
         }
-        */
+
+        for (size_t i = 0; i < oldCapacity; i++) {
+            Key& key = oldData[i].key;
+            Value& value = oldData[i].value;
+
+            if (key != E::value()) {
+                operator[](static_cast<Key&&>(key)) =
+                    static_cast<Value&&>(value);
+            }
+
+            key.~Key();
+            value.~Value();
+        }
+
+        delete[] oldData;
     }
 
     template<typename K>
     size_t
     keyToIdx(const K& key) noexcept {
-        const size_t mask = buckets.size - 1;
+        size_t mask = capacity - 1;
         return hash_(key) & mask;
     }
 
     size_t
-    probeNext(size_t idx) noexcept {
-        const size_t mask = buckets.size - 1;
+    probe(size_t idx) noexcept {
+        size_t mask = capacity - 1;
         return (idx + 1) & mask;
     }
 
     size_t
     diff(size_t a, size_t b) noexcept {
-        const size_t mask = buckets.size - 1;
-        return (buckets.size + a - b) & mask;
+        size_t mask = capacity - 1;
+        return (capacity + a - b) & mask;
     }
 
  private:
-    // FIXME: Only need three fields, not four. Replace Vector.
-    Vector<Entry> buckets;
-    size_t count = 0;
+    size_t size;
+    size_t capacity;
+    Entry* data;
 };
 
 #endif  // SRC_UTIL_HASHTABLE_H_

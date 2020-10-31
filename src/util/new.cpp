@@ -59,6 +59,11 @@ operator delete(void* ptr, size_t) noexcept {
     free(ptr);
 }
 
+void
+operator delete[](void* ptr, size_t) noexcept {
+    free(ptr);
+}
+
 void* __cxa_pure_virtual = 0;
 
 #endif  // defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) ||

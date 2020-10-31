@@ -32,7 +32,7 @@
 #include "os/c.h"
 #include "os/mutex.h"
 #include "os/os.h"
-#include "util/algorithm.h"
+#include "util/math2.h"
 
 #ifdef _WIN32
 #include "os/windows.h"
@@ -72,7 +72,7 @@ makeTimestamp() noexcept {
 
     StringPosition dot = v.find('.');
     if (dot != SV_NOT_FOUND) {
-        v = v.substr(0, min_(v.size, dot + 4));
+        v = v.substr(0, min(v.size, dot + 4));
     }
 
     String s2;
