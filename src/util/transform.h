@@ -31,18 +31,19 @@
 
 // An affine transformation.
 struct Transform {
-    static Transform
-    identity() noexcept;
-    static Transform
-    scale(float factor) noexcept;
-    static Transform
-    translate(float x, float y) noexcept;
-
-    Transform operator*(Transform& other) noexcept;
-
-    float& operator[](int i) noexcept;
-
-    float matrix[16];
+    float m[16];
 };
+
+static Transform transformIdentity =
+    {{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+
+Transform
+transformScale(float factor) noexcept;
+
+Transform
+transformTranslate(float x, float y) noexcept;
+
+Transform
+operator*(Transform a, Transform b) noexcept;
 
 #endif

@@ -45,7 +45,7 @@ rvec2 sdl2Scaling = {0.0, 0.0};
 
 static Nanoseconds start = 0;
 
-static Transform transformStack[10] = { Transform::identity() };
+static Transform transformStack[10] = { transformIdentity };
 static size_t transformCount = 1;
 
 static int
@@ -300,7 +300,7 @@ windowPushScale(float x, float y) noexcept {
     float factor = static_cast<float>(x);
     Transform transform = transformStack[transformCount - 1];
 
-    transformStack[transformCount++] = Transform::scale(factor) * transform;
+    transformStack[transformCount++] = transformScale(factor) * transform;
     updateTransform();
 }
 
@@ -314,7 +314,7 @@ void
 windowPushTranslate(float x, float y) noexcept {
     Transform transform = transformStack[transformCount - 1];
     transformStack[transformCount++] =
-            Transform::translate(static_cast<float>(x), static_cast<float>(y)) *
+            TransformTranslate(static_cast<float>(x), static_cast<float>(y)) *
             transform;
     updateTransform();
 }

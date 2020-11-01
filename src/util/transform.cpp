@@ -29,34 +29,23 @@
 #include "util/noexcept.h"
 
 Transform
-Transform::identity() noexcept {
-    return Transform{{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+transformScale(float factor) noexcept {
+    return {{factor, 0, 0, 0, 0, factor, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
 }
 
 Transform
-Transform::scale(float factor) noexcept {
-    return Transform{
-            {factor, 0, 0, 0, 0, factor, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+transformTranslate(float x, float y) noexcept {
+    return {{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1}};
 }
 
 Transform
-Transform::translate(float x, float y) noexcept {
-    return Transform{{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1}};
-}
-
-float& Transform::operator[](int i) noexcept {
-    return matrix[i];
-}
-
-Transform Transform::operator*(Transform& right) noexcept {
-    Transform& left = *this;
-
+operator*(Transform a, Transform b) noexcept {
     Transform result;
     for (int i = 0; i < 16; i++) {
-        result[i] = left[i / 4 * 4 + 0] * right[i % 4 + 0 * 4] +
-                    left[i / 4 * 4 + 1] * right[i % 4 + 1 * 4] +
-                    left[i / 4 * 4 + 2] * right[i % 4 + 2 * 4] +
-                    left[i / 4 * 4 + 3] * right[i % 4 + 3 * 4];
+        result.m[i] = a.m[i / 4 * 4 + 0] * b.m[i % 4 + 0 * 4] +
+                      a.m[i / 4 * 4 + 1] * b.m[i % 4 + 1 * 4] +
+                      a.m[i / 4 * 4 + 2] * b.m[i % 4 + 2 * 4] +
+                      a.m[i / 4 * 4 + 3] * b.m[i % 4 + 3 * 4];
     }
     return result;
 }
