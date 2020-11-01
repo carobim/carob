@@ -661,3 +661,14 @@ if(AV_SDL2)
                ${SDL2_mixer_LIBRARIES}
     )
 endif()
+
+
+#
+# Policies
+#
+
+# Do not turn on -rdynamic. Also solved with CMP0065 in CMake 3.4
+# FIXME: Apply it only to local targets, or possibly just try to
+#        remove -rdynamic from these.
+set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
