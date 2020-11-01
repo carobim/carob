@@ -32,13 +32,11 @@ jobs:
           ninja
 
   # Has CMake 2.8.12, GCC 4.9, Ninja 1.3
-  ubuntu_14_10_utopic:
+  ubuntu_14_04_trusty:
     docker:
-      - image: ubuntu:14.10
+      - image: ubuntu:14.04
     steps:
       - run: |
-          echo 'deb http://old-releases.ubuntu.com/ubuntu/ utopic main universe' > /etc/apt/sources.list &&
-          echo 'deb http://old-releases.ubuntu.com/ubuntu/ utopic-updates main' >> /etc/apt/sources.list &&
           apt-get update &&
           apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
@@ -63,10 +61,10 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.0, GCC 4.9, Ninja 1.5
-  fedora_21:
+  # Has CMake 2.8.12, GCC 4.8, Ninja 1.4
+  fedora_20:
     docker:
-      - image: fedora:21
+      - image: fedora:20
     steps:
       - run: |
           yum install -y cmake gcc-c++ ninja-build
@@ -170,9 +168,9 @@ workflows:
     jobs:
       - debian_8_jessie
       - debian_10_buster
-      - ubuntu_14_10_utopic
+      - ubuntu_14_04_trusty
       - ubuntu_20_10_groovy
-      - fedora_21
+      - fedora_20
       - fedora_33
       - arch_latest
       - void
