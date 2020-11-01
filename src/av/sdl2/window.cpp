@@ -145,13 +145,10 @@ updateTransform() noexcept {
 
 time_t
 windowTime() noexcept {
-    if (start) {
-        start = SteadyClock::nowMS();
-        return 0;
+    if (start == 0) {
+        start = SteadyClock::now();
     }
-    else {
-        return SteadyClock::nowMS() - start;
-    }
+    return ns_to_ms(SteadyClock::now() - start);
 }
 
 void

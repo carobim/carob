@@ -40,11 +40,6 @@ SteadyClock::now() noexcept {
     return TimePoint(s_to_ns(tp.tv_sec) + tp.tv_nsec);
 }
 
-TimePoint
-SteadyClock::nowMS() noexcept {
-    return ns_to_ms(now());
-}
-
 void
 SleepFor(Duration d) noexcept {
     if (d <= 0) {

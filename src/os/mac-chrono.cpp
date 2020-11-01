@@ -39,16 +39,6 @@ TimePoint SteadyClock::now() noexcept {
 
     return TimePoint(s_to_ns(tp.tv_sec) + tp.tv_nsec);
 }
-
-TimePoint SteadyClock::nowMS() noexcept {
-    struct timespec tp;
-
-    int err = clock_gettime(CLOCK_UPTIME_RAW, &tp);
-    (void)err;
-    assert_(err == 0);
-
-    return TimePoint(s_to_ms(tp.tv_sec) + ns_to_ms(tp.tv_nsec));
-}
 */
 
 typedef int kern_return_t;
@@ -84,11 +74,6 @@ SteadyClock::now() noexcept {
     uint64_t ns = machTime * timebase.numer / timebase.denom;
 
     return TimePoint(ns);
-}
-
-TimePoint
-SteadyClock::nowMS() noexcept {
-    return ns_to_ms(now());
 }
 
 void

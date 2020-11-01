@@ -59,22 +59,6 @@ SteadyClock::now() noexcept {
     return TimePoint(s_to_ns(counter.QuadPart) / freq.QuadPart);
 }
 
-TimePoint
-SteadyClock::nowMS() noexcept {
-    if (!haveFreq) {
-        haveFreq = true;
-
-        BOOL ok = QueryPerformanceFrequency(&freq);
-        (void)ok;
-        assert_(ok);
-    }
-
-    LARGE_INTEGER counter;
-    QueryPerformanceCounter(&counter);
-
-    return TimePoint(s_to_ms(counter.QuadPart) / freq.QuadPart);
-}
-
 void
 SleepFor(Duration d) noexcept {
     if (d <= 0) {

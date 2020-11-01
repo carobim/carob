@@ -58,9 +58,7 @@ ns_to_s_d(Duration d) noexcept {
 class SteadyClock {
  public:
     static TimePoint
-    now() noexcept;
-    static TimePoint
-    nowMS() noexcept;  // In milliseconds, not nanoseconds.
+    now() noexcept;  // In nanoseconds.
 };
 
 void
