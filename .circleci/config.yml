@@ -31,16 +31,15 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.9, GCC 7, Ninja 1.7
-  ubuntu_17_10_artful:
+  # Has CMake 3.0, GCC 4.9, Ninja 1.3
+  ubuntu_15_04_vivid:
     docker:
-      - image: ubuntu:17.10
+      - image: ubuntu:15.04
     steps:
       - run: |
           echo 'deb http://old-releases.ubuntu.com/ubuntu/ artful main universe' > /etc/apt/sources.list &&
-          echo 'deb http://old-releases.ubuntu.com/ubuntu/ artful-updates main' >> /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends cmake gcc g++ ninja-build
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
@@ -170,7 +169,7 @@ workflows:
     jobs:
       - debian_8_jessie
       - debian_10_buster
-      - ubuntu_17_10_artful
+      - ubuntu_15_04_vivid
       - ubuntu_20_10_groovy
       - fedora_21
       - fedora_33
