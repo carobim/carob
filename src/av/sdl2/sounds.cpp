@@ -37,6 +37,7 @@
 #include "util/markable.h"
 #include "util/noexcept.h"
 #include "util/pool.h"
+#include "util/vector.h"
 
 struct SDL2Sound {
     int numUsers;
