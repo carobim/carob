@@ -43,7 +43,7 @@ SDL_Window* sdl2Window = 0;
 rvec2 sdl2Translation = {0.0, 0.0};
 rvec2 sdl2Scaling = {0.0, 0.0};
 
-static TimePoint start = SteadyClock::nowMS();
+static TimePoint start = 0;
 
 static Transform transformStack[10] = { Transform::identity() };
 static size_t transformCount = 1;
@@ -145,7 +145,13 @@ updateTransform() noexcept {
 
 time_t
 windowTime() noexcept {
-    return SteadyClock::nowMS() - start;
+    if (start) {
+        start = SteadyClock::nowMS();
+        return 0;
+    }
+    else {
+        return SteadyClock::nowMS() - start;
+    }
 }
 
 void
