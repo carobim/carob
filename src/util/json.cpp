@@ -196,7 +196,7 @@ insertAfter(JsonNode* tail, JsonNode* node) noexcept {
 static inline JsonValue
 listToValue(JsonTag tag, JsonNode* tail) noexcept {
     if (tail) {
-        auto head = tail->next;
+        JsonNode* head = tail->next;
         tail->next = 0;
         return JsonValue(tag, head);
     }

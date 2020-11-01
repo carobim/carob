@@ -49,7 +49,7 @@ DataArea::tick(time_t dt) noexcept {
     // beginning of the loop.  Also, iterate by index instead of by
     // iterator because iterators are invalidated if the vector is
     // pushed_back.
-    for (auto& inProgress : inProgresses) {
+    for (InProgress* inProgress : inProgresses) {
         inProgress->tick(dt);
     }
     erase_if(inProgresses, [](InProgress* ip) { return ip->isOver(); });

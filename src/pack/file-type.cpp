@@ -40,12 +40,12 @@ determineFileType(StringView path) noexcept {
         return FT_UNKNOWN;
     }
     StringView extension = path.substr(dot);
-    for (auto& textExtension : textExtensions) {
+    for (StringView textExtension : textExtensions) {
         if (extension == textExtension) {
             return FT_TEXT;
         }
     }
-    for (auto& mediaExtension : mediaExtensions) {
+    for (StringView mediaExtension : mediaExtensions) {
         if (extension == mediaExtension) {
             return FT_MEDIA;
         }

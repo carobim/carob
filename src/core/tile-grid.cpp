@@ -133,15 +133,10 @@ TileGrid::virt2virt(rcoord virt) noexcept {
                    virt.z};
 }
 
-
 int
 TileGrid::depthIndex(float depth) noexcept {
-    auto it = depth2idx.find(depth);
-    if (it == depth2idx.end()) {
-        logFatal("TileGrid",
-                 String() << "Attempt to access invalid layer: " << depth);
-    }
-    return it->value;
+    assert_(depth2idx.contains(depth) || "Attempt to access invalid layer");
+    return depth2idx[depth];
 }
 
 float

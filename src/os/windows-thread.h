@@ -73,7 +73,7 @@ constexpr DWORD WAIT_FAILED = 0xFFFFFFFF;
 
 static unsigned WINAPI
 beginthreadex_thunk(void* data) noexcept {
-    auto f = static_cast<Function<void()>*>(data);
+    Function<void()>* f = static_cast<Function<void()>*>(data);
     (*f)();
     delete f;
     return 0;
@@ -82,7 +82,8 @@ beginthreadex_thunk(void* data) noexcept {
 class Thread {
  public:
     inline explicit Thread(Function<void()> f) noexcept {
-        auto data = new Function<void()>(static_cast<Function<void()>&&>(f));
+        Function<void()>* data =
+            new Function<void()>(static_cast<Function<void()>&&>(f));
         id = reinterpret_cast<HANDLE>(_beginthreadex(0,
                                                      0,
                                                      beginthreadex_thunk,

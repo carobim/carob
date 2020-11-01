@@ -149,12 +149,12 @@ Area::needsRedraw() {
     if (player->needsRedraw(pixels)) {
         return true;
     }
-    for (auto& character : characters) {
+    for (Character* character : characters) {
         if (character->needsRedraw(pixels)) {
             return true;
         }
     }
-    for (auto& overlay : overlays) {
+    for (Overlay* overlay : overlays) {
         if (overlay->needsRedraw(pixels)) {
             return true;
         }
@@ -207,7 +207,7 @@ Area::tick(time_t dt) {
         dataArea->tick(dt);
     }
 
-    for (auto& overlay : overlays) {
+    for (Overlay* overlay : overlays) {
         overlay->tick(dt);
     }
     erase_if(overlays, [](Overlay* o) { return o->isDead(); });
@@ -215,7 +215,7 @@ Area::tick(time_t dt) {
     if (Conf::moveMode != Conf::TURN) {
         player->tick(dt);
 
-        for (auto& character : characters) {
+        for (Character* character : characters) {
             character->tick(dt);
         }
         erase_if(characters, [](Character* c) {
@@ -238,7 +238,7 @@ Area::turn() {
 
     player->turn();
 
-    for (auto& character : characters) {
+    for (Character* character : characters) {
         character->turn();
     }
     erase_if(characters, [](Character* c) {
@@ -350,6 +350,8 @@ Area::runScript(TileGrid::ScriptType type,
 
 void
 Area::drawTiles(DisplayList* display, icube& tiles, int z) {
+    Vector<DisplayItem>& items = display->items;
+
     time_t now = worldTime();
 
     if (tileGraphics.size > tilesAnimated.size) {
@@ -359,7 +361,6 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
         animated = false;
     }
 
-    auto& items = display->items;
     size_t maxTiles = (tiles.y2 - tiles.y1) * (tiles.x2 - tiles.x1);
     if (maxTiles > items.size) {
         items.resize(maxTiles);
@@ -396,7 +397,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
             rvec2 drawPos{float(x * width), float(y * height)};
             // drawPos.z = depth + drawPos.y / tileDimY *
             // ISOMETRIC_ZOFF_PER_TILE;
-            display->items[itemCount++] = DisplayItem{img, drawPos};
+            items[itemCount++] = DisplayItem{img, drawPos};
         }
     }
 
@@ -407,13 +408,13 @@ void
 Area::drawEntities(DisplayList* display, icube& tiles, int z) {
     float depth = grid.idx2depth[(size_t)z];
 
-    for (auto& character : characters) {
+    for (Character* character : characters) {
         if (character->getTileCoords_i().z == z) {
             character->draw(display);
         }
     }
 
-    for (auto& overlay : overlays) {
+    for (Overlay* overlay : overlays) {
         if (overlay->getPixelCoord().z == depth) {
             overlay->draw(display);
         }

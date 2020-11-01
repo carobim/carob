@@ -443,14 +443,14 @@ Entity::isDead() noexcept {
 
 void
 Entity::tick(time_t dt) noexcept {
-    for (auto& fn : onTickFns) {
+    for (OnTickFn& fn : onTickFns) {
         fn(dt);
     }
 }
 
 void
 Entity::turn() noexcept {
-    for (auto& fn : onTurnFns) {
+    for (OnTurnFn& fn : onTurnFns) {
         fn();
     }
 }
@@ -650,6 +650,6 @@ Entity::moveTowardDestination(time_t dt) noexcept {
 
 void
 Entity::arrived() noexcept {
-    // for (auto& fn : onArrivedFns)
+    // for (OnArrivedFn& fn : onArrivedFns)
     //     fn();
 }

@@ -873,7 +873,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
 
 bool
 AreaJSON::splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept {
-    for (auto str : splitStr(strOfFlags, ",")) {
+    for (StringView str : splitStr(strOfFlags, ",")) {
         if (str == "nowalk") {
             *flags |= TILE_NOWALK;
         }

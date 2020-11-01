@@ -41,7 +41,7 @@ walkPath(WalkContext& ctx, StringView path) noexcept {
     //       save a stat(), as readdir() returns a file's type already.
     if (isDir(path)) {
         Vector<String> names = listDir(path);
-        for (auto& name : names) {
+        for (String& name : names) {
             String child;
             child << path << dirSeparator << name;
             JobsEnqueue([&ctx, child /* = move_(child) */]() noexcept {
@@ -59,7 +59,7 @@ walk(Vector<StringView> paths, Function<void(StringView)> op) noexcept {
     WalkContext ctx;
     ctx.op = static_cast<Function<void(StringView)>&&>(op);
 
-    for (auto& path : paths) {
+    for (StringView& path : paths) {
         JobsEnqueue([&]() noexcept { walkPath(ctx, path); });
     }
 

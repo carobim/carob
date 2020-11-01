@@ -159,7 +159,7 @@ PackReaderImpl::findIndex(StringView path) noexcept {
         constructLookups();
     }
 
-    auto it = lookups.find(path);
+    Hashmap<StringView, BlobIndex>::iterator it = lookups.find(path);
     if (it == lookups.end()) {
         return BLOB_NOT_FOUND;
     }

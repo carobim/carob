@@ -133,7 +133,7 @@ JobsFlush() noexcept {
     jobAvailable.notifyAll();
 
     // Wait for workers to quit.
-    for (auto& worker : workers) {
+    for (Thread& worker : workers) {
         worker.join();
     }
 

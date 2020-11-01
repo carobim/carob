@@ -124,7 +124,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     uint32_t metadataBlockSize = blobCount * sizeof(BlobMetadata);
     uint32_t dataOffsetsBlockSize = blobCount * sizeof(uint32_t);
 
-    for (auto& blob : blobs) {
+    for (Blob& blob : blobs) {
         pathsBlockSize += static_cast<uint32_t>(blob.path.size);
     }
 
@@ -171,17 +171,17 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     metadatasBlock.reserve(blobCount);
 
     PathOffset pathOffset = 0;
-    for (auto& blob : blobs) {
+    for (Blob& blob : blobs) {
         pathOffsetsBlock.push_back(pathOffset);
         pathOffset += static_cast<uint32_t>(blob.path.size);
     }
     pathOffsetsBlock.push_back(pathOffset);
 
-    for (auto& blob : blobs) {
+    for (Blob& blob : blobs) {
         pathsBlock << blob.path;
     }
 
-    for (auto& blob : blobs) {
+    for (Blob& blob : blobs) {
         BlobMetadata metadata = {blob.size, blob.size, BLOB_COMPRESSION_NONE};
         metadatasBlock.push_back(metadata);
     }
@@ -189,7 +189,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     // Blob data starts immediately after the data offset block.
     uint32_t dataOffset =
             headerBlock.dataOffsetsBlockOffset + dataOffsetsBlockSize;
-    for (auto& blob : blobs) {
+    for (Blob& blob : blobs) {
         dataOffsetsBlock.push_back(dataOffset);
         dataOffset += blob.size;
     }
@@ -213,7 +213,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     writeDatas.push_back(metadatasBlock.data);
     writeDatas.push_back(dataOffsetsBlock.data);
 
-    for (auto& blob : blobs) {
+    for (Blob& blob : blobs) {
         writeLengths.push_back(blob.size);
         writeDatas.push_back(const_cast<void*>(blob.data));
     }
