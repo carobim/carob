@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.6)
 project(TsunagariEngine LANGUAGES C CXX)
 
 
@@ -374,26 +374,25 @@ endif()
 # Source groups for IDEs
 #
 
-get_target_property(TSUNAGARI_SOURCES tsunagari SOURCES)
-get_target_property(NULL_WORLD_SOURCES null-world SOURCES)
-get_target_property(PACK_TOOL_SOURCES pack-tool SOURCES)
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
-    FILES ${TSUNAGARI_SOURCES}
-          ${NULL_WORLD_SOURCES}
-          ${PACK_TOOL_SOURCES}
-)
+if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8.0)
+    get_target_property(TSUNAGARI_SOURCES tsunagari SOURCES)
+    get_target_property(NULL_WORLD_SOURCES null-world SOURCES)
+    get_target_property(PACK_TOOL_SOURCES pack-tool SOURCES)
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES ${TSUNAGARI_SOURCES}
+              ${NULL_WORLD_SOURCES}
+              ${PACK_TOOL_SOURCES}
+    )
+endif()
 
 
 #
 # Compilation options
 #
 
-target_compile_features(tsunagari PUBLIC cxx_std_11)
-target_compile_features(null-world PUBLIC cxx_std_11)
-target_compile_features(pack-tool PUBLIC cxx_std_11)
-set_target_properties(tsunagari PROPERTIES CXX_EXTENSIONS OFF)
-set_target_properties(null-world PROPERTIES CXX_EXTENSIONS OFF)
-set_target_properties(pack-tool PROPERTIES CXX_EXTENSIONS OFF)
+if(CLANG OR GCC)
+    string(APPEND CMAKE_CXX_FLAGS " -std=c++11")
+endif()
 
 # Disable C++ exceptions
 if(CLANG OR GCC)
