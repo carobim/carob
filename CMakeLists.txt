@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.12)
+cmake_minimum_required(VERSION 2.8.9)
 project(TsunagariEngine C CXX)
 
 
@@ -375,9 +375,7 @@ add_executable(pack-tool ${PACK_TOOL_SOURCES})
 
 target_link_libraries(null-world tsunagari)
 
-target_include_directories(tsunagari PUBLIC src)
-target_include_directories(null-world PUBLIC src)
-target_include_directories(pack-tool PRIVATE src)
+include_directories(src)
 
 
 #
@@ -454,12 +452,14 @@ if(CLANG OR GCC)
         "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -flto")
 endif()
 
-target_compile_definitions(tsunagari
-    PUBLIC $<$<NOT:${IS_DEBUG}>:NDEBUG>
-)
-target_compile_definitions(pack-tool
-    PRIVATE $<$<NOT:${IS_DEBUG}>:NDEBUG>
-)
+# Enable NDEBUG anything not a debug build.
+if(${CMAKE_VERSION} VERSION_LESS 2.8.10)
+    set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -DNDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG")
+elseif()
+    target_compile_definitions(tsunagari PUBLIC $<$<NOT:${IS_DEBUG}>:NDEBUG>)
+    target_compile_definitions(pack-tool PRIVATE $<$<NOT:${IS_DEBUG}>:NDEBUG>)
+endif()
 
 # Emscripten configuration
 if(AV_EM)
@@ -593,12 +593,12 @@ if(LINUX AND NOT AV_EM)
     endif()
 
     if("${GLIBC_VERSION}" VERSION_LESS "2.17")
-        target_link_libraries(tsunagari PUBLIC rt)
+        target_link_libraries(tsunagari rt)
     endif()
 
     if(GLIBC_VERSION)
-        target_link_libraries(tsunagari PUBLIC  m pthread)
-        target_link_libraries(pack-tool PRIVATE pthread)
+        target_link_libraries(tsunagari m pthread)
+        target_link_libraries(pack-tool pthread)
     endif()
 endif()
 
