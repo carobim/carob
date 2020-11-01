@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.0)
 project(TsunagariEngine LANGUAGES C CXX)
 
 
@@ -74,300 +74,310 @@ set(IS_RELEASE
 
 
 #
-# Targets
+# Sources
 #
 
 set(HERE ${CMAKE_CURRENT_LIST_DIR})
-
-add_library(tsunagari ${HERE}/src/main.cpp)
-add_executable(null-world ${HERE}/src/null-world.cpp)
-add_executable(pack-tool ${HERE}/src/pack/main.cpp)
-
-target_link_libraries(null-world tsunagari)
-
-
-#
-# Sources in deps
-#
 
 
 #
 # Sources in src
 #
 
-target_include_directories(tsunagari PUBLIC src)
-target_include_directories(null-world PUBLIC src)
-target_include_directories(pack-tool PRIVATE src)
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/main.cpp
+    ${HERE}/src/config.h
+)
 
-target_sources(tsunagari
-    PUBLIC  ${HERE}/src/config.h
+set(NULL_WORLD_SOURCES ${NULL_WORLD_SOURCES}
+    ${HERE}/src/null-world.cpp
+)
+set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+    ${HERE}/src/pack/main.cpp
 )
 
 if(AV_NULL)
-    target_sources(tsunagari
-        PRIVATE ${HERE}/src/av/null/images.cpp
-                ${HERE}/src/av/null/music.cpp
-                ${HERE}/src/av/null/sounds.cpp
-                ${HERE}/src/av/null/window.cpp
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/av/null/images.cpp
+        ${HERE}/src/av/null/music.cpp
+        ${HERE}/src/av/null/sounds.cpp
+        ${HERE}/src/av/null/window.cpp
     )
 endif()
 
 if(AV_SDL2 OR AV_EM)
-    target_sources(tsunagari
-        PRIVATE ${HERE}/src/av/sdl2/error.cpp
-                ${HERE}/src/av/sdl2/error.h
-                ${HERE}/src/av/sdl2/images.cpp
-                #${HERE}/src/av/gl/images.cpp
-                ${HERE}/src/av/sdl2/music.cpp
-                ${HERE}/src/av/sdl2/sounds.cpp
-                ${HERE}/src/av/sdl2/window.cpp
-                ${HERE}/src/av/sdl2/window.h
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/av/sdl2/error.cpp
+        ${HERE}/src/av/sdl2/error.h
+        ${HERE}/src/av/sdl2/images.cpp
+        #${HERE}/src/av/gl/images.cpp
+        ${HERE}/src/av/sdl2/music.cpp
+        ${HERE}/src/av/sdl2/sounds.cpp
+        ${HERE}/src/av/sdl2/window.cpp
+        ${HERE}/src/av/sdl2/window.h
     )
 endif()
 
-target_sources(tsunagari
-    PUBLIC  ${HERE}/src/core/algorithm.h
-    PRIVATE ${HERE}/src/core/animation.cpp
-    PUBLIC  ${HERE}/src/core/animation.h
-    PRIVATE ${HERE}/src/core/area.cpp
-    PUBLIC  ${HERE}/src/core/area.h
-    PRIVATE ${HERE}/src/core/area-json.cpp
-    PUBLIC  ${HERE}/src/core/area-json.h
-    PRIVATE ${HERE}/src/core/character.cpp
-    PUBLIC  ${HERE}/src/core/character.h
-    PRIVATE ${HERE}/src/core/client-conf.cpp
-    PUBLIC  ${HERE}/src/core/client-conf.h
-    PRIVATE ${HERE}/src/core/cooldown.cpp
-    PUBLIC  ${HERE}/src/core/cooldown.h
-    PRIVATE ${HERE}/src/core/display-list.cpp
-    PRIVATE ${HERE}/src/core/display-list.h
-    PRIVATE ${HERE}/src/core/entity.cpp
-    PUBLIC  ${HERE}/src/core/entity.h
-    PUBLIC  ${HERE}/src/core/images.h
-    PRIVATE ${HERE}/src/core/jsons.cpp
-    PUBLIC  ${HERE}/src/core/jsons.h
-    PRIVATE ${HERE}/src/core/log.cpp
-    PUBLIC  ${HERE}/src/core/log.h
-    PRIVATE ${HERE}/src/core/measure.cpp
-    PUBLIC  ${HERE}/src/core/measure.h
-    PRIVATE ${HERE}/src/core/music.cpp
-    PUBLIC  ${HERE}/src/core/music-worker.h
-    PUBLIC  ${HERE}/src/core/music.h
-    PRIVATE ${HERE}/src/core/npc.cpp
-    PUBLIC  ${HERE}/src/core/npc.h
-    PRIVATE ${HERE}/src/core/overlay.cpp
-    PUBLIC  ${HERE}/src/core/overlay.h
-    PRIVATE ${HERE}/src/core/player.cpp
-    PUBLIC  ${HERE}/src/core/player.h
-    PUBLIC  ${HERE}/src/core/resources.h
-    PUBLIC  ${HERE}/src/core/sounds.h
-    PRIVATE ${HERE}/src/core/tile.cpp
-    PUBLIC  ${HERE}/src/core/tile.h
-    PRIVATE ${HERE}/src/core/tile-grid.cpp
-    PUBLIC  ${HERE}/src/core/tile-grid.h
-    PRIVATE ${HERE}/src/core/viewport.cpp
-    PUBLIC  ${HERE}/src/core/viewport.h
-    PRIVATE ${HERE}/src/core/window.cpp
-    PUBLIC  ${HERE}/src/core/window.h
-    PRIVATE ${HERE}/src/core/world.cpp
-    PUBLIC  ${HERE}/src/core/world.h
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/core/algorithm.h
+    ${HERE}/src/core/animation.cpp
+    ${HERE}/src/core/animation.h
+    ${HERE}/src/core/area.cpp
+    ${HERE}/src/core/area.h
+    ${HERE}/src/core/area-json.cpp
+    ${HERE}/src/core/area-json.h
+    ${HERE}/src/core/character.cpp
+    ${HERE}/src/core/character.h
+    ${HERE}/src/core/client-conf.cpp
+    ${HERE}/src/core/client-conf.h
+    ${HERE}/src/core/cooldown.cpp
+    ${HERE}/src/core/cooldown.h
+    ${HERE}/src/core/display-list.cpp
+    ${HERE}/src/core/display-list.h
+    ${HERE}/src/core/entity.cpp
+    ${HERE}/src/core/entity.h
+    ${HERE}/src/core/images.h
+    ${HERE}/src/core/jsons.cpp
+    ${HERE}/src/core/jsons.h
+    ${HERE}/src/core/log.cpp
+    ${HERE}/src/core/log.h
+    ${HERE}/src/core/measure.cpp
+    ${HERE}/src/core/measure.h
+    ${HERE}/src/core/music.cpp
+    ${HERE}/src/core/music-worker.h
+    ${HERE}/src/core/music.h
+    ${HERE}/src/core/npc.cpp
+    ${HERE}/src/core/npc.h
+    ${HERE}/src/core/overlay.cpp
+    ${HERE}/src/core/overlay.h
+    ${HERE}/src/core/player.cpp
+    ${HERE}/src/core/player.h
+    ${HERE}/src/core/resources.h
+    ${HERE}/src/core/sounds.h
+    ${HERE}/src/core/tile.cpp
+    ${HERE}/src/core/tile.h
+    ${HERE}/src/core/tile-grid.cpp
+    ${HERE}/src/core/tile-grid.h
+    ${HERE}/src/core/viewport.cpp
+    ${HERE}/src/core/viewport.h
+    ${HERE}/src/core/window.cpp
+    ${HERE}/src/core/window.h
+    ${HERE}/src/core/world.cpp
+    ${HERE}/src/core/world.h
 )
 
-target_sources(tsunagari
-    PRIVATE ${HERE}/src/data/data-area.cpp
-    PUBLIC  ${HERE}/src/data/data-area.h
-    PUBLIC  ${HERE}/src/data/data-world.h
-    PRIVATE ${HERE}/src/data/inprogress.cpp
-    PUBLIC  ${HERE}/src/data/inprogress.h
-    PUBLIC  ${HERE}/src/data/inprogress-sound.h
-    PUBLIC  ${HERE}/src/data/inprogress-timer.h
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/data/data-area.cpp
+    ${HERE}/src/data/data-area.h
+    ${HERE}/src/data/data-world.h
+    ${HERE}/src/data/inprogress.cpp
+    ${HERE}/src/data/inprogress.h
+    ${HERE}/src/data/inprogress-sound.h
+    ${HERE}/src/data/inprogress-timer.h
 )
 
-target_sources(tsunagari
-    PUBLIC ${HERE}/src/os/c.h
-    PUBLIC ${HERE}/src/os/chrono.h
-    PUBLIC ${HERE}/src/os/mapped-file.h
-    PUBLIC ${HERE}/src/os/mutex.h
-    PUBLIC ${HERE}/src/os/thread.h
-    PUBLIC ${HERE}/src/os/os.h
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/os/c.h
+    ${HERE}/src/os/chrono.h
+    ${HERE}/src/os/mapped-file.h
+    ${HERE}/src/os/mutex.h
+    ${HERE}/src/os/thread.h
+    ${HERE}/src/os/os.h
 )
-target_sources(pack-tool
-    PRIVATE ${HERE}/src/os/c.h
-    PRIVATE ${HERE}/src/os/condition-variable.h
-    PRIVATE ${HERE}/src/os/mapped-file.h
-    PRIVATE ${HERE}/src/os/mutex.h
-    PRIVATE ${HERE}/src/os/os.h
-    PRIVATE ${HERE}/src/os/thread.h
+set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+    ${HERE}/src/os/c.h
+    ${HERE}/src/os/condition-variable.h
+    ${HERE}/src/os/mapped-file.h
+    ${HERE}/src/os/mutex.h
+    ${HERE}/src/os/os.h
+    ${HERE}/src/os/thread.h
 )
 
 if (WIN32)
-    target_sources(tsunagari
-        PRIVATE ${HERE}/src/os/memmove.cpp
-        PRIVATE ${HERE}/src/os/windows-c.cpp
-        PUBLIC  ${HERE}/src/os/windows-c.h
-        PRIVATE ${HERE}/src/os/windows-chrono.cpp
-        PRIVATE ${HERE}/src/os/windows-mapped-file.cpp
-        PUBLIC  ${HERE}/src/os/windows-mapped-file.h
-        PRIVATE ${HERE}/src/os/windows.cpp
-        PUBLIC  ${HERE}/src/os/windows.h
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/os/memmove.cpp
+        ${HERE}/src/os/windows-c.cpp
+        ${HERE}/src/os/windows-c.h
+        ${HERE}/src/os/windows-chrono.cpp
+        ${HERE}/src/os/windows-mapped-file.cpp
+        ${HERE}/src/os/windows-mapped-file.h
+        ${HERE}/src/os/windows.cpp
+        ${HERE}/src/os/windows.h
     )
-    target_sources(pack-tool
-        PRIVATE ${HERE}/src/os/memmove.cpp
-        PRIVATE ${HERE}/src/os/windows-c.cpp
-        PRIVATE ${HERE}/src/os/windows-c.h
-        PRIVATE ${HERE}/src/os/windows-condition-variable.h
-        PRIVATE ${HERE}/src/os/windows-mapped-file.cpp
-        PRIVATE ${HERE}/src/os/windows-mapped-file.h
-        PRIVATE ${HERE}/src/os/windows-mutex.h
-        PRIVATE ${HERE}/src/os/windows-thread.h
-        PRIVATE ${HERE}/src/os/windows.cpp
-        PRIVATE ${HERE}/src/os/windows.h
+    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+        ${HERE}/src/os/memmove.cpp
+        ${HERE}/src/os/windows-c.cpp
+        ${HERE}/src/os/windows-c.h
+        ${HERE}/src/os/windows-condition-variable.h
+        ${HERE}/src/os/windows-mapped-file.cpp
+        ${HERE}/src/os/windows-mapped-file.h
+        ${HERE}/src/os/windows-mutex.h
+        ${HERE}/src/os/windows-thread.h
+        ${HERE}/src/os/windows.cpp
+        ${HERE}/src/os/windows.h
     )
 elseif(APPLE)
-    target_sources(tsunagari
-        PUBLIC  ${HERE}/src/os/mac-c.h
-        PRIVATE ${HERE}/src/os/mac-chrono.cpp
-        PRIVATE ${HERE}/src/os/mac-gui.mm
-        PUBLIC  ${HERE}/src/os/mac-gui.h
-        PRIVATE ${HERE}/src/os/mac-thread.cpp
-        PUBLIC  ${HERE}/src/os/mac-thread.h
-        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
-        PUBLIC  ${HERE}/src/os/unix-mapped-file.h
-        PUBLIC  ${HERE}/src/os/unix-mutex.h
-        PRIVATE ${HERE}/src/os/unix.cpp
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/os/mac-c.h
+        ${HERE}/src/os/mac-chrono.cpp
+        ${HERE}/src/os/mac-gui.mm
+        ${HERE}/src/os/mac-gui.h
+        ${HERE}/src/os/mac-thread.cpp
+        ${HERE}/src/os/mac-thread.h
+        ${HERE}/src/os/unix-mapped-file.cpp
+        ${HERE}/src/os/unix-mapped-file.h
+        ${HERE}/src/os/unix-mutex.h
+        ${HERE}/src/os/unix.cpp
     )
-    target_sources(pack-tool
-        PRIVATE ${HERE}/src/os/mac-c.h
-        PRIVATE ${HERE}/src/os/mac-thread.cpp
-        PRIVATE ${HERE}/src/os/mac-thread.h
-        PRIVATE ${HERE}/src/os/unix-condition-variable.h
-        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
-        PRIVATE ${HERE}/src/os/unix-mapped-file.h
-        PRIVATE ${HERE}/src/os/unix-mutex.h
-        PRIVATE ${HERE}/src/os/unix.cpp
+    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+        ${HERE}/src/os/mac-c.h
+        ${HERE}/src/os/mac-thread.cpp
+        ${HERE}/src/os/mac-thread.h
+        ${HERE}/src/os/unix-condition-variable.h
+        ${HERE}/src/os/unix-mapped-file.cpp
+        ${HERE}/src/os/unix-mapped-file.h
+        ${HERE}/src/os/unix-mutex.h
+        ${HERE}/src/os/unix.cpp
     )
 else()
-    target_sources(tsunagari
-        PUBLIC  ${HERE}/src/os/linux-c.h
-        PRIVATE ${HERE}/src/os/unix-chrono.cpp
-        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
-        PUBLIC  ${HERE}/src/os/unix-mutex.h
-        PUBLIC  ${HERE}/src/os/unix-thread.h
-        PRIVATE ${HERE}/src/os/unix.cpp
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/unix-chrono.cpp
+        ${HERE}/src/os/unix-mapped-file.cpp
+        ${HERE}/src/os/unix-mutex.h
+        ${HERE}/src/os/unix-thread.h
+        ${HERE}/src/os/unix.cpp
     )
-    target_sources(pack-tool
-        PRIVATE ${HERE}/src/os/linux-c.h
-        PRIVATE ${HERE}/src/os/unix-condition-variable.h
-        PRIVATE ${HERE}/src/os/unix-mapped-file.cpp
-        PRIVATE ${HERE}/src/os/unix-mapped-file.h
-        PRIVATE ${HERE}/src/os/unix-mutex.h
-        PRIVATE ${HERE}/src/os/unix-thread.h
-        PRIVATE ${HERE}/src/os/unix.cpp
+    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+        ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/unix-condition-variable.h
+        ${HERE}/src/os/unix-mapped-file.cpp
+        ${HERE}/src/os/unix-mapped-file.h
+        ${HERE}/src/os/unix-mutex.h
+        ${HERE}/src/os/unix-thread.h
+        ${HERE}/src/os/unix.cpp
     )
 endif()
 
-target_sources(tsunagari
-    PRIVATE ${HERE}/src/pack/file-type.cpp
-    PUBLIC  ${HERE}/src/pack/file-type.h
-    PRIVATE ${HERE}/src/pack/pack-reader.cpp
-    PUBLIC  ${HERE}/src/pack/pack-reader.h
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/pack/file-type.cpp
+    ${HERE}/src/pack/file-type.h
+    ${HERE}/src/pack/pack-reader.cpp
+    ${HERE}/src/pack/pack-reader.h
 )
 
-target_sources(pack-tool
-    PRIVATE ${HERE}/src/pack/file-type.cpp
-    PRIVATE ${HERE}/src/pack/file-type.h
-    PRIVATE ${HERE}/src/pack/pack-reader.cpp
-    PRIVATE ${HERE}/src/pack/pack-reader.h
-    PRIVATE ${HERE}/src/pack/pack-writer.cpp
-    PRIVATE ${HERE}/src/pack/pack-writer.h
-    PRIVATE ${HERE}/src/pack/walker.cpp
-    PRIVATE ${HERE}/src/pack/walker.h
+set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+    ${HERE}/src/pack/file-type.cpp
+    ${HERE}/src/pack/file-type.h
+    ${HERE}/src/pack/pack-reader.cpp
+    ${HERE}/src/pack/pack-reader.h
+    ${HERE}/src/pack/pack-writer.cpp
+    ${HERE}/src/pack/pack-writer.h
+    ${HERE}/src/pack/walker.cpp
+    ${HERE}/src/pack/walker.h
 )
 
-target_sources(tsunagari
-    PRIVATE ${HERE}/src/resources/pack.cpp
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/resources/pack.cpp
 )
 
-target_sources(tsunagari
-    PUBLIC  ${HERE}/src/util/align.h
-    PUBLIC  ${HERE}/src/util/assert.h
-    PUBLIC  ${HERE}/src/util/constexpr.h
-    PRIVATE ${HERE}/src/util/fnv.cpp
-    PUBLIC  ${HERE}/src/util/fnv.h
-    PUBLIC  ${HERE}/src/util/function.h
-    PRIVATE ${HERE}/src/util/hash.cpp
-    PUBLIC  ${HERE}/src/util/hash.h
-    PUBLIC  ${HERE}/src/util/hashtable.h
-    PUBLIC  ${HERE}/src/util/int.h
-    PRIVATE ${HERE}/src/util/jobs.cpp
-    PUBLIC  ${HERE}/src/util/jobs.h
-    PRIVATE ${HERE}/src/util/json.cpp
-    PUBLIC  ${HERE}/src/util/json.h
-    PUBLIC  ${HERE}/src/util/likely.h
-    PUBLIC  ${HERE}/src/util/list.h
-    PUBLIC  ${HERE}/src/util/markable.h
-    PUBLIC  ${HERE}/src/util/math2.h
-    PUBLIC  ${HERE}/src/util/meta.h
-    PUBLIC  ${HERE}/src/util/move.h
-    PRIVATE ${HERE}/src/util/new.cpp
-    PUBLIC  ${HERE}/src/util/new.h
-    PUBLIC  ${HERE}/src/util/noexcept.h
-    PUBLIC  ${HERE}/src/util/optional.h
-    PUBLIC  ${HERE}/src/util/pool.h
-    PRIVATE ${HERE}/src/util/random.cpp
-    PUBLIC  ${HERE}/src/util/random.h
-    PRIVATE ${HERE}/src/util/string-view.cpp
-    PUBLIC  ${HERE}/src/util/string-view.h
-    PRIVATE ${HERE}/src/util/string.cpp
-    PUBLIC  ${HERE}/src/util/string.h
-    PRIVATE ${HERE}/src/util/string2.cpp
-    PUBLIC  ${HERE}/src/util/string2.h
-    PRIVATE ${HERE}/src/util/transform.cpp
-    PUBLIC  ${HERE}/src/util/transform.h
-    PUBLIC  ${HERE}/src/util/vector.h
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/util/align.h
+    ${HERE}/src/util/assert.h
+    ${HERE}/src/util/constexpr.h
+    ${HERE}/src/util/fnv.cpp
+    ${HERE}/src/util/fnv.h
+    ${HERE}/src/util/function.h
+    ${HERE}/src/util/hash.cpp
+    ${HERE}/src/util/hash.h
+    ${HERE}/src/util/hashtable.h
+    ${HERE}/src/util/int.h
+    ${HERE}/src/util/jobs.cpp
+    ${HERE}/src/util/jobs.h
+    ${HERE}/src/util/json.cpp
+    ${HERE}/src/util/json.h
+    ${HERE}/src/util/likely.h
+    ${HERE}/src/util/list.h
+    ${HERE}/src/util/markable.h
+    ${HERE}/src/util/math2.h
+    ${HERE}/src/util/meta.h
+    ${HERE}/src/util/move.h
+    ${HERE}/src/util/new.cpp
+    ${HERE}/src/util/new.h
+    ${HERE}/src/util/noexcept.h
+    ${HERE}/src/util/optional.h
+    ${HERE}/src/util/pool.h
+    ${HERE}/src/util/random.cpp
+    ${HERE}/src/util/random.h
+    ${HERE}/src/util/string-view.cpp
+    ${HERE}/src/util/string-view.h
+    ${HERE}/src/util/string.cpp
+    ${HERE}/src/util/string.h
+    ${HERE}/src/util/string2.cpp
+    ${HERE}/src/util/string2.h
+    ${HERE}/src/util/transform.cpp
+    ${HERE}/src/util/transform.h
+    ${HERE}/src/util/vector.h
 )
 
-target_sources(pack-tool
-    PRIVATE ${HERE}/src/util/align.h
-    PUBLIC  ${HERE}/src/util/assert.h
-    PRIVATE ${HERE}/src/util/constexpr.h
-    PRIVATE ${HERE}/src/util/fnv.cpp
-    PRIVATE ${HERE}/src/util/fnv.h
-    PRIVATE ${HERE}/src/util/function.h
-    PRIVATE ${HERE}/src/util/hashtable.h
-    PRIVATE ${HERE}/src/util/int.h
-    PRIVATE ${HERE}/src/util/jobs.cpp
-    PRIVATE ${HERE}/src/util/jobs.h
-    PRIVATE ${HERE}/src/util/list.h
-    PRIVATE ${HERE}/src/util/meta.h
-    PRIVATE ${HERE}/src/util/move.h
-    PRIVATE ${HERE}/src/util/new.cpp
-    PRIVATE ${HERE}/src/util/new.h
-    PRIVATE ${HERE}/src/util/noexcept.h
-    PRIVATE ${HERE}/src/util/optional.h
-    PRIVATE ${HERE}/src/util/sort.h
-    PRIVATE ${HERE}/src/util/string-view.cpp
-    PRIVATE ${HERE}/src/util/string-view.h
-    PRIVATE ${HERE}/src/util/string.cpp
-    PRIVATE ${HERE}/src/util/string.h
-    PRIVATE ${HERE}/src/util/vector.h
+set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+    ${HERE}/src/util/align.h
+    ${HERE}/src/util/assert.h
+    ${HERE}/src/util/constexpr.h
+    ${HERE}/src/util/fnv.cpp
+    ${HERE}/src/util/fnv.h
+    ${HERE}/src/util/function.h
+    ${HERE}/src/util/hashtable.h
+    ${HERE}/src/util/int.h
+    ${HERE}/src/util/jobs.cpp
+    ${HERE}/src/util/jobs.h
+    ${HERE}/src/util/list.h
+    ${HERE}/src/util/meta.h
+    ${HERE}/src/util/move.h
+    ${HERE}/src/util/new.cpp
+    ${HERE}/src/util/new.h
+    ${HERE}/src/util/noexcept.h
+    ${HERE}/src/util/optional.h
+    ${HERE}/src/util/sort.h
+    ${HERE}/src/util/string-view.cpp
+    ${HERE}/src/util/string-view.h
+    ${HERE}/src/util/string.cpp
+    ${HERE}/src/util/string.h
+    ${HERE}/src/util/vector.h
 )
 
-if(MSVC)  # MSVC 2017 and below cannot vary source files by configuration.
-    target_sources(tsunagari
-        PRIVATE ${HERE}/src/util/assert.cpp
+if(MSVC OR ${CMAKE_VERSION} VERSION_LESS 3.1)
+    # MSVC 2017 and below, and CMake 3.0 and below cannot vary source files by
+    # configuration.
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/util/assert.cpp
     )
-    target_sources(pack-tool
-        PRIVATE ${HERE}/src/util/assert.cpp
+    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+        ${HERE}/src/util/assert.cpp
     )
 else()
-    target_sources(tsunagari
-        PRIVATE $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
-    target_sources(pack-tool
-        PRIVATE $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
+    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+        $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
 endif()
+
+
+#
+# Targets
+#
+
+add_library(tsunagari ${TSUNAGARI_SOURCES})
+add_executable(null-world ${NULL_WORLD_SOURCES})
+add_executable(pack-tool ${PACK_TOOL_SOURCES})
+
+target_link_libraries(null-world tsunagari)
+
+target_include_directories(tsunagari PUBLIC src)
+target_include_directories(null-world PUBLIC src)
+target_include_directories(pack-tool PRIVATE src)
 
 
 #

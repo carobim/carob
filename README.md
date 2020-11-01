@@ -36,16 +36,14 @@ Current features include:
 * Event scripting interface in C++.
 
 Tsunagari works on many common PC operating systems. It requires Clang 3.8+,
-GCC 4.8+, or MSVC 2015+, CMake 3.3, and SDL2, SDL2\_image, and SDL2\_mixer. It
-has support for Windows 10 1809+, Mac OS X 10.11+, Alpine 3.3+, Arch Linux,
-Debian 9+, Fedora 24+, Ubuntu 18.04+, and Void Linux, FreeBSD 11+ and NetBSD
-5+, and the Raspberry Pi 1.
-
-Debian 8 works if you install CMake from outside of apt.
+GCC 4.8+, or MSVC 2015+, CMake 3.0, and SDL2, SDL2\_image, and SDL2\_mixer. It
+has support for Windows 10 1809+, Mac OS X 10.11+, Alpine Linux 3.1+, Arch
+Linux, Debian 8+, Fedora 24+, Ubuntu 18.04+, and Void Linux, FreeBSD 11+ and
+NetBSD 5+, and the Raspberry Pi 1.
 
 Specifically for GNU Linux, it has first class support for x86\_64, and
 best-effort support for i386 and armelhf architectures with glibc 2.13+ or musl
-1.1.12+, and binutils 2.22+. musl 1.2 i386 is not supported.
+1.1.5+, and binutils 2.22+. musl 1.2 i386 is not supported.
 
 Requirements:
 
