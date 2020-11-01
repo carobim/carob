@@ -31,13 +31,14 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.0, GCC 4.9, Ninja 1.3
-  ubuntu_15_04_vivid:
+  # Has CMake 2.8.12, GCC 4.9, Ninja 1.3
+  ubuntu_14_10_utopic:
     docker:
-      - image: ubuntu:15.04
+      - image: ubuntu:14.10
     steps:
       - run: |
-          echo 'deb http://old-releases.ubuntu.com/ubuntu/ artful main universe' > /etc/apt/sources.list &&
+          echo 'deb http://old-releases.ubuntu.com/ubuntu/ utopic main universe' > /etc/apt/sources.list &&
+          echo 'deb http://old-releases.ubuntu.com/ubuntu/ utopic-updates main' >> /etc/apt/sources.list &&
           apt-get update &&
           apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
@@ -169,7 +170,7 @@ workflows:
     jobs:
       - debian_8_jessie
       - debian_10_buster
-      - ubuntu_15_04_vivid
+      - ubuntu_14_10_utopic
       - ubuntu_20_10_groovy
       - fedora_21
       - fedora_33
