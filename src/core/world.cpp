@@ -86,8 +86,8 @@ worldInit() noexcept {
         return false;
     }
 
-    Viewport::setSize(DataWorld::viewportResolution);
-    Viewport::trackEntity(&player);
+    viewportSetSize(DataWorld::viewportResolution);
+    viewportTrackEntity(&player);
 
     return true;
 }
@@ -139,10 +139,10 @@ worldDraw(DisplayList* display) noexcept {
     display->loopX = worldArea->grid.loopX;
     display->loopY = worldArea->grid.loopY;
 
-    display->padding = Viewport::getLetterboxOffset();
-    display->scale = Viewport::getScale();
-    display->scroll = Viewport::getMapOffset();
-    display->size = Viewport::getPhysRes();
+    display->padding = viewportGetLetterboxOffset();
+    display->scale = viewportGetScale();
+    display->scroll = viewportGetMapOffset();
+    display->size = viewportGetPhysRes();
 
     display->colorOverlayARGB = worldArea->getColorOverlay();
     display->paused = paused > 0;
@@ -210,7 +210,7 @@ void
 worldFocusArea(Area* area_, vicoord playerPos) noexcept {
     worldArea = area_;
     player.setArea(worldArea, playerPos);
-    Viewport::setArea(worldArea);
+    viewportSetArea(worldArea);
     worldArea->focus();
 }
 

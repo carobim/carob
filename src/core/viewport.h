@@ -35,53 +35,48 @@ class Area;
 class Entity;
 
 //! General control over where and how the map is rendered.
-/*!
 
- */
-class Viewport {
- public:
-    static void
-    setSize(rvec2 virtRes) noexcept;
+void
+viewportSetSize(rvec2 virtRes) noexcept;
 
-    static void
-    tick(time_t dt) noexcept;
-    static void
-    turn() noexcept;
+void
+viewportTick(time_t dt) noexcept;
+void
+viewportTurn() noexcept;
 
-    //! How far the map is scrolled in pixels, counting from the upper-left.
-    static rvec2
-    getMapOffset() noexcept;
+//! How far the map is scrolled in pixels, counting from the upper-left.
+rvec2
+viewportGetMapOffset() noexcept;
 
-    //! Size of the letterbox matte bars in pixels.
-    static rvec2
-    getLetterboxOffset() noexcept;
+//! Size of the letterbox matte bars in pixels.
+rvec2
+viewportGetLetterboxOffset() noexcept;
 
-    //! Multiplier in X and Y dimensions to get from virtRes to physRes.
-    static rvec2
-    getScale() noexcept;
+//! Multiplier in X and Y dimensions to get from virtRes to physRes.
+rvec2
+viewportGetScale() noexcept;
 
-    //! The resolution our game is actually being drawn at.
-    static rvec2
-    getPhysRes() noexcept;
+//! The resolution our game is actually being drawn at.
+rvec2
+viewportGetPhysRes() noexcept;
 
-    //! The resolution our game thinks it is being drawn at. Chosen by a
-    //! world's creator. This allows graphics to look the same on any
-    //! setups of any resolution.
-    static rvec2
-    getVirtRes() noexcept;
+//! The resolution our game thinks it is being drawn at. Chosen by a
+//! world's creator. This allows graphics to look the same on any
+//! setups of any resolution.
+rvec2
+viewportGetVirtRes() noexcept;
 
-    // Immediatly center render offset. Stop any tracking.
-    static void
-    jumpToPt(rvec2 pt) noexcept;
-    static void
-    jumpToEntity(Entity* e) noexcept;
+// Immediatly center render offset. Stop any tracking.
+void
+viewportJumpToPt(rvec2 pt) noexcept;
+void
+viewportJumpToEntity(Entity* e) noexcept;
 
-    // Continuously follow.
-    static void
-    trackEntity(Entity* e) noexcept;
+// Continuously follow.
+void
+viewportTrackEntity(Entity* e) noexcept;
 
-    static void
-    setArea(Area* a) noexcept;
-};
+void
+viewportSetArea(Area* a) noexcept;
 
 #endif  // SRC_CORE_VIEWPORT_H_

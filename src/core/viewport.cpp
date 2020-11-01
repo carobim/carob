@@ -97,7 +97,7 @@ _jumpToEntity(Entity* e) noexcept {
 //! as the correcting aspect ratio.
 static rvec2
 getLetterbox() noexcept {
-    rvec2 physRes = Viewport::getPhysRes();
+    rvec2 physRes = viewportGetPhysRes();
     float physAspect = physRes.x / physRes.y;
     float virtAspect = virtRes.x / virtRes.y;
 
@@ -115,7 +115,7 @@ getLetterbox() noexcept {
 
 static rvec2
 addLetterboxOffset(rvec2 pt) noexcept {
-    rvec2 physRes = Viewport::getPhysRes();
+    rvec2 physRes = viewportGetPhysRes();
     rvec2 letterbox = getLetterbox();
     return pt - letterbox * physRes / 2;
 }
@@ -133,7 +133,7 @@ update() noexcept {
 }
 
 void
-Viewport::setSize(rvec2 virtRes_) noexcept {
+viewportSetSize(rvec2 virtRes_) noexcept {
     virtRes = virtRes_;
 
     // Calculate or recalculate the aspect ratio.
@@ -143,27 +143,27 @@ Viewport::setSize(rvec2 virtRes_) noexcept {
 }
 
 void
-Viewport::tick(time_t) noexcept {
+viewportTick(time_t) noexcept {
     update();
 }
 
 void
-Viewport::turn() noexcept {
+viewportTurn() noexcept {
     update();
 }
 
 rvec2
-Viewport::getMapOffset() noexcept {
+viewportGetMapOffset() noexcept {
     return off;
 }
 
 rvec2
-Viewport::getLetterboxOffset() noexcept {
+viewportGetLetterboxOffset() noexcept {
     return addLetterboxOffset(rvec2{0.0, 0.0});
 }
 
 rvec2
-Viewport::getScale() noexcept {
+viewportGetScale() noexcept {
     rvec2 letterbox = getLetterbox();
     rvec2 physRes = {
         static_cast<float>(windowWidth()),
@@ -177,7 +177,7 @@ Viewport::getScale() noexcept {
 }
 
 rvec2
-Viewport::getPhysRes() noexcept {
+viewportGetPhysRes() noexcept {
     return {
         static_cast<float>(windowWidth()),
         static_cast<float>(windowHeight())
@@ -185,19 +185,19 @@ Viewport::getPhysRes() noexcept {
 }
 
 rvec2
-Viewport::getVirtRes() noexcept {
+viewportGetVirtRes() noexcept {
     return virtRes;
 }
 
 // Immediatly center render offset. Stop any tracking.
 void
-Viewport::jumpToPt(rvec2 pt) noexcept {
+viewportJumpToPt(rvec2 pt) noexcept {
     mode = TM_MANUAL;
     off = offsetForPt(pt);
 }
 
 void
-Viewport::jumpToEntity(Entity* e) noexcept {
+viewportJumpToEntity(Entity* e) noexcept {
     mode = TM_MANUAL;  // API implies mode change.
     _jumpToEntity(e);
 }
@@ -205,7 +205,7 @@ Viewport::jumpToEntity(Entity* e) noexcept {
 
 // Continuously follow.
 void
-Viewport::trackEntity(Entity* e) noexcept {
+viewportTrackEntity(Entity* e) noexcept {
     mode = TM_FOLLOW_ENTITY;
     targete = e;
     update();
@@ -213,6 +213,6 @@ Viewport::trackEntity(Entity* e) noexcept {
 
 
 void
-Viewport::setArea(Area* a) noexcept {
+viewportSetArea(Area* a) noexcept {
     viewportArea = a;
 }

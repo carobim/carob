@@ -227,7 +227,7 @@ Area::tick(time_t dt) {
         });
     }
 
-    Viewport::tick(dt);
+    viewportTick(dt);
 }
 
 void
@@ -249,7 +249,7 @@ Area::turn() {
         return dead;
     });
 
-    Viewport::turn();
+    viewportTurn();
 }
 
 
@@ -278,8 +278,8 @@ Area::getTileSet(StringView imagePath) {
 
 icube
 Area::visibleTiles() {
-    rvec2 screen = Viewport::getVirtRes();
-    rvec2 off = Viewport::getMapOffset();
+    rvec2 screen = viewportGetVirtRes();
+    rvec2 off = viewportGetMapOffset();
 
     int x1 = static_cast<int>(floor(off.x / grid.tileDim.x));
     int y1 = static_cast<int>(floor(off.y / grid.tileDim.y));
