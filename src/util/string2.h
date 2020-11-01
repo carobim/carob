@@ -29,7 +29,6 @@
 #define SRC_UTIL_STRING2_H_
 
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/vector.h"
 
@@ -53,21 +52,21 @@ bool
 iequals(StringView a, StringView b) noexcept;
 
 //! Return a bool from a "true"/"false" string.
-Optional<bool>
-parseBool(StringView s) noexcept;
+bool
+parseBool(bool& out, StringView s) noexcept;
 
-Optional<int>
-parseInt(String& s) noexcept;
-Optional<int>
-parseInt(StringView s) noexcept;
-Optional<unsigned>
-parseUInt(String& s) noexcept;
-Optional<unsigned>
-parseUInt(StringView s) noexcept;
-Optional<float>
-parseFloat(String& s) noexcept;
-Optional<float>
-parseFloat(StringView s) noexcept;
+bool
+parseInt(int& out, String& s) noexcept;
+bool
+parseInt(int& out, StringView s) noexcept;
+bool
+parseUInt(unsigned& out, String& s) noexcept;
+bool
+parseUInt(unsigned& out, StringView s) noexcept;
+bool
+parseFloat(float& out, String& s) noexcept;
+bool
+parseFloat(float& out, StringView s) noexcept;
 
 int
 parseInt100(char* s) noexcept;
@@ -80,7 +79,7 @@ splitStr(StringView str, StringView delimiter) noexcept;
  * Parse ranges of integers separated by commas.
  * Can take things such as "5-7,2,12-18".
  */
-Optional<Vector<int>>
-parseRanges(StringView format) noexcept;
+bool
+parseRanges(Vector<int>& out, StringView format) noexcept;
 
 #endif  // SRC_UTIL_STRING2_H_

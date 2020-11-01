@@ -193,100 +193,104 @@ static const StringView false_ = "false";
 static const StringView no = "no";
 static const StringView off = "off";
 
-Optional<bool>
-parseBool(StringView s) noexcept {
+bool
+parseBool(bool& out, StringView s) noexcept {
     if (iequals(s, true_) || iequals(s, yes) || iequals(s, on) || s == "1") {
-        return Optional<bool>(true);
+        out = true;
+        return true;
     }
 
     if (iequals(s, false_) || iequals(s, no) || iequals(s, off) || s == "0") {
-        return Optional<bool>(false);
+        out = false;
+        return true;
     }
 
-    return none;
+    return false;
 }
 
-Optional<unsigned>
-parseUInt(String& s) noexcept {
+bool
+parseUInt(unsigned& out, String& s) noexcept {
     errno = 0;
 
     char* end;
     unsigned long ul = strtoul(s.null(), &end, 10);
 
     if (end != s.data + s.size) {
-        return none;
+        return false;
     }
 
     if (errno != 0) {
         // Overflow.
-        return none;
+        return false;
     }
     if (ul > UINT32_MAX) {
         // Overflow.
-        return none;
+        return false;
     }
 
-    return Optional<unsigned>(static_cast<unsigned>(ul));
+    out = static_cast<unsigned>(ul);
+    return true;
 }
 
-Optional<unsigned>
-parseUInt(StringView s) noexcept {
+bool
+parseUInt(unsigned& out, StringView s) noexcept {
     String s_(s);
-    return parseUInt(s_);
+    return parseUInt(out, s_);
 }
 
-Optional<int>
-parseInt(String& s) noexcept {
+bool
+parseInt(int& out, String& s) noexcept {
     errno = 0;
 
     char* end;
     long l = strtol(s.null(), &end, 10);
 
     if (end != s.data + s.size) {
-        return none;
+        return false;
     }
 
     if (errno != 0) {
         // Overflow.
-        return none;
+        return false;
     }
     if (l > UINT32_MAX) {
         // Overflow.
-        return none;
+        return false;
     }
 
-    return Optional<int>(static_cast<int>(l));
+    out = static_cast<int>(l);
+    return true;
 }
 
-Optional<int>
-parseInt(StringView s) noexcept {
+bool
+parseInt(int& out, StringView s) noexcept {
     String s_(s);
-    return parseInt(s_);
+    return parseInt(out, s_);
 }
 
-Optional<float>
-parseFloat(String& s) noexcept {
+bool
+parseFloat(float& out, String& s) noexcept {
     errno = 0;
 
     char* end;
-    float d = static_cast<float>(strtod(s.null(), &end));
+    out = static_cast<float>(strtod(s.null(), &end));
 
     if (end != s.data + s.size) {
-        return none;
+        return false;
     }
 
     if (errno != 0) {
         // Overflow.
-        return none;
+        return false;
     }
 
-    return Optional<float>(d);
+    return true;
 }
 
-Optional<float>
-parseFloat(StringView s) noexcept {
+bool
+parseFloat(float& out, StringView s) noexcept {
     String s_(s);
-    return parseFloat(s_);
+    return parseFloat(out, s_);
 }
 
 int
@@ -312,40 +316,37 @@ splitStr(StringView input, StringView delimiter) noexcept {
     return strlist;
 }
 
-Optional<Vector<int>>
-parseRanges(StringView format) noexcept {
-    Vector<int> ints;
+bool
+parseRanges(Vector<int>& out, StringView format) noexcept {
     for (StringView range : splitStr(format, ",")) {
         StringPosition dash = range.find('-');
 
         if (dash == SV_NOT_FOUND) {
-            Optional<int> i = parseInt(range);
-            if (!i) {
-                return none;
+            int i;
+            if (!parseInt(i, range)) {
+                return false;
             }
 
-            ints.push_back(i);
+            out.push_back(i);
         }
         else {
-            StringView rngbeg = range.substr(0, dash);
+            StringView rngstart = range.substr(0, dash);
             StringView rngend = range.substr(dash + 1);
 
-            Optional<int> beg = parseInt(rngbeg);
-            Optional<int> end = parseInt(rngend);
-            if (!beg || !end) {
-                return none;
+            int start, end;
+            if (!parseInt(start, rngstart) || !parseInt(end, rngend)) {
+                return false;
             }
 
-            int beg_ = *beg;
-            int end_ = *end;
-            if (beg_ > end_) {
-                return none;
+            if (start > end) {
+                return false;
             }
 
-            for (int i = beg_; i <= end_; i++) {
-                ints.push_back(i);
+            for (int i = start; i <= end; i++) {
+                out.push_back(i);
             }
         }
     }
-    return Optional<Vector<int>>(static_cast<Vector<int>&&>(ints));
+
+    return true;
 }

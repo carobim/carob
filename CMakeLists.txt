@@ -305,7 +305,6 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h
     ${HERE}/src/util/noexcept.h
-    ${HERE}/src/util/optional.h
     ${HERE}/src/util/pool.h
     ${HERE}/src/util/random.cpp
     ${HERE}/src/util/random.h
@@ -337,7 +336,6 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h
     ${HERE}/src/util/noexcept.h
-    ${HERE}/src/util/optional.h
     ${HERE}/src/util/sort.h
     ${HERE}/src/util/string-view.cpp
     ${HERE}/src/util/string-view.h

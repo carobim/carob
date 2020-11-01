@@ -37,7 +37,6 @@
 #include "os/chrono.h"
 #include "os/os.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/transform.h"
 
 SDL_Window* sdl2Window = 0;

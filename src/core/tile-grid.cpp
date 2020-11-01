@@ -135,7 +135,7 @@ TileGrid::virt2virt(rcoord virt) noexcept {
 
 int
 TileGrid::depthIndex(float depth) noexcept {
-    assert_(depth2idx.contains(depth) || "Attempt to access invalid layer");
+    assert_(depth2idx.contains(depth) && "Attempt to access invalid layer");
     return depth2idx[depth];
 }
 
