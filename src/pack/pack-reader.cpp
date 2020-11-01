@@ -143,7 +143,7 @@ PackReader::fromFile(StringView path) noexcept {
     return reader;
 }
 
-PackReaderImpl::~PackReaderImpl() {
+PackReaderImpl::~PackReaderImpl() noexcept {
     destroyMappedFile(file);
 }
 
