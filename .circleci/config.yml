@@ -63,21 +63,21 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  # Has CMake 3.9, GCC 6, Ninja 1.7
-  fedora_24:
+  # Has CMake 3.0, GCC 4.9, Ninja 1.5
+  fedora_21:
     docker:
-      - image: fedora:24
+      - image: fedora:21
     steps:
       - run: |
-          dnf install -y git cmake gcc-c++ ninja-build
+          yum install -y git cmake gcc-c++ ninja-build
       - checkout
       - run: |
           mkdir build &&
           cd build &&
           cmake .. -G Ninja &&
-          ninja
+          ninja-build
 
-  # Has CMake 3.17, GCC 10
+  # Has CMake 3.17, GCC 10, Ninja 1.10
   fedora_32:
     docker:
       - image: fedora:32
@@ -172,7 +172,7 @@ workflows:
       - debian_10_buster
       - ubuntu_17_10_artful
       - ubuntu_20_10_groovy
-      - fedora_24
+      - fedora_21
       - fedora_32
       - arch_latest
       - void
