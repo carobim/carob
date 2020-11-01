@@ -105,4 +105,12 @@ pow2(uint64_t i) noexcept {
     return i;
 }
 
+// FIXME: Why does Apple need this?
+#if defined(__APPLE__)
+static size_t
+pow2(size_t i) noexcept {
+    return pow2(static_cast<uint64_t>(i));
+}
+#endif
+
 #endif  // SRC_UTIL_MATH2_H_
