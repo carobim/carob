@@ -147,7 +147,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. &&
-          make `grep processor /proc/cpuinfo | wc -l`
+          make -j `grep processor /proc/cpuinfo | wc -l`
 
   # Has CMake 3.17, GCC 9, Samurai 1.1
   alpine_3_12:
