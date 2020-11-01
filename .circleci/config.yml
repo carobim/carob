@@ -61,6 +61,34 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
+  # Has CMake 2.8.12, GCC 4.8
+  centos_7:
+    docker:
+      - image: centos:7
+    steps:
+      - run: |
+          yum install -y cmake gcc-c++ make
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. &&
+          make -j `grep processor /proc/cpuinfo | wc -l`
+
+  # Has CMake 3.11, GCC 8
+  centos_8:
+    docker:
+      - image: centos:8
+    steps:
+      - run: |
+          dnf install -y cmake gcc-c++ make
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. &&
+          make -j `grep processor /proc/cpuinfo | wc -l`
+
   # Has CMake 2.8.12, GCC 4.8, Ninja 1.4
   fedora_20:
     docker:
@@ -170,6 +198,8 @@ workflows:
       - debian_10_buster
       - ubuntu_14_04_trusty
       - ubuntu_20_10_groovy
+      - centos_7
+      - centos_8
       - fedora_20
       - fedora_33
       - arch_latest
