@@ -136,10 +136,10 @@ jobs:
           cmake .. -G Ninja &&
           samu
 
-  # Has CMake 3.5, GCC 5, Ninja 1.6
-  alpine_3_4:
+  # Has CMake 3.3, GCC 5, Ninja 1.6
+  alpine_3_3:
     docker:
-      - image: alpine:3.4
+      - image: alpine:3.3
     steps:
       - run: |
           apk update &&
@@ -179,5 +179,5 @@ workflows:
       - arch_latest
       - void
       - void_musl
-      - alpine_3_4
+      - alpine_3_3
       - alpine_3_12

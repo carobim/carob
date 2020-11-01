@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.3)
 project(TsunagariEngine LANGUAGES C CXX)
 
 
@@ -391,54 +391,57 @@ endif()
 #
 
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS " -std=c++11")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
 # Disable C++ exceptions
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS " -fno-exceptions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
 elseif(MSVC)
     string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif()
 
 # Disable C++ run-time type information
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS " -fno-rtti")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
 elseif(MSVC)
     string(REPLACE "/GR" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-    string(APPEND CMAKE_CXX_FLAGS " /GR-")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GR-")
 endif()
 
 # Hide most symbols
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS_RELEASE " -fvisibility=hidden")
-    string(APPEND CMAKE_CXX_FLAGS_MINSIZEREL " -fvisibility=hidden")
+    set(CMAKE_CXX_FLAGS_RELEASE
+        "${CMAKE_CXX_FLAGS_RELEASE} -fvisibility=hidden")
+    set(CMAKE_CXX_FLAGS_MINSIZEREL
+        "${CMAKE_CXX_FLAGS_MINSIZEREL} -fvisibility=hidden")
 endif()
 
 # Reduce code size
 if(CLANG)
-    string(APPEND CMAKE_CXX_FLAGS_MINSIZEREL " -Oz")
+    set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -Oz")
 endif()
 
 # Enable floating point optimizations
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS " -ffast-math")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
 elseif(MSVC)
-    string(APPEND CMAKE_CXX_FLAGS " /fp:fast")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:fast")
 endif()
 
 # Disable stack canary
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS " -fno-stack-protector")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-stack-protector")
 elseif(MSVC)
-    string(APPEND CMAKE_CXX_FLAGS " /GS-")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GS-")
 endif()
 
 # Optimize at link time
 if(CLANG OR GCC)
-    string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto")
-    string(APPEND CMAKE_CXX_FLAGS_MINSIZEREL " -flto")
-    string(APPEND CMAKE_CXX_FLAGS_RELWITHDEBINFO " -flto")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto")
+    set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -flto")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
+        "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -flto")
 endif()
 
 target_compile_definitions(tsunagari
@@ -450,30 +453,30 @@ target_compile_definitions(pack-tool
 
 # Emscripten configuration
 if(AV_EM)
-    string(APPEND CMAKE_CXX_FLAGS " -s ALLOW_MEMORY_GROWTH=1")
-    #string(APPEND CMAKE_CXX_FLAGS " -s ASSERTIONS=0")
-    #string(APPEND CMAKE_CXX_FLAGS " -s DISABLE_EXCEPTION_THROWING=1")
-    string(APPEND CMAKE_CXX_FLAGS " -s ENVIRONMENT=web")
-    #string(APPEND CMAKE_CXX_FLAGS " -s HEADLESS=1")
-    #string(APPEND CMAKE_CXX_FLAGS " -s INITIAL_MEMORY=134217728")
-    #string(APPEND CMAKE_CXX_FLAGS " -s LLD_REPORT_UNDEFINED=1")
-    #string(APPEND CMAKE_CXX_FLAGS " -s PTHREADS_DEBUG=1")
-    string(APPEND CMAKE_CXX_FLAGS " -s SDL2_IMAGE_FORMATS=[bmp]")
-    #string(APPEND CMAKE_CXX_FLAGS " -s STRICT=1")
-    #string(APPEND CMAKE_CXX_FLAGS " -s SUPPORT_LONGJMP=0")
-    string(APPEND CMAKE_CXX_FLAGS " -s USE_SDL=2")
-    string(APPEND CMAKE_CXX_FLAGS " -s USE_SDL_IMAGE=2")
-    string(APPEND CMAKE_CXX_FLAGS " -s USE_SDL_MIXER=2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s ALLOW_MEMORY_GROWTH=1")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s ASSERTIONS=0")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s DISABLE_EXCEPTION_THROWING=1")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s ENVIRONMENT=web")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s HEADLESS=1")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s INITIAL_MEMORY=134217728")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s LLD_REPORT_UNDEFINED=1")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s PTHREADS_DEBUG=1")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s SDL2_IMAGE_FORMATS=[bmp]")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s STRICT=1")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s SUPPORT_LONGJMP=0")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL_IMAGE=2")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL_MIXER=2")
     set(CMAKE_EXECUTABLE_SUFFIX ".html")
 endif()
 
 # Enable color within compiler's output
 if(NOT DEFINED ENV{CI})
     if(NINJA AND CLANG)
-        string(APPEND CMAKE_CXX_FLAGS " -fcolor-diagnostics")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
     endif()
     if(NINJA AND GCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
-        string(APPEND CMAKE_CXX_FLAGS " -fdiagnostics-color=always")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
     endif()
 endif()
 
@@ -503,9 +506,12 @@ endif()
 
 # Optimize at link time
 if(CLANG OR GCC)
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE " -flto=full")
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_MINSIZEREL " -flto=full")
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO " -flto=thin")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE
+        "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -flto=full")
+    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+        "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -flto=full")
+    set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
+        "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} -flto=thin")
 endif()
 
 # Do not link to libstdc++ or libc++
@@ -517,12 +523,16 @@ endif()
 # Strip symbols
 if(LINUX OR FREEBSD OR NETBSD)
     # GNU binutils
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE " -Wl,--strip-all")
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_MINSIZEREL " -Wl,--strip-all")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE
+        "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -Wl,--strip-all")
+    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+        "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -Wl,--strip-all")
 elseif(APPLE)
     # macOS linker
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE " -Wl,-x -Wl,-dead_strip")
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_MINSIZEREL " -Wl,-x -Wl,-dead_strip")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE
+        "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -Wl,-x -Wl,-dead_strip")
+    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+        "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -Wl,-x -Wl,-dead_strip")
 endif()
 
 # Share variables with parent
@@ -550,8 +560,8 @@ if(APPLE)
                /System/Library/Frameworks/Foundation.framework
     )
 
-    string(APPEND CMAKE_EXE_LINKER_FLAGS
-                  " --no-standard-libraries -lSystem")
+    set(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} --no-standard-libraries -lSystem")
 endif()
 
 if(LINUX AND NOT AV_EM)
