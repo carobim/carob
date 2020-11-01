@@ -62,7 +62,7 @@ struct BlobMetadata {
 
 class PackReaderImpl : public PackReader {
  public:
-    ~PackReaderImpl();
+    ~PackReaderImpl() noexcept;
 
     BlobIndex
     size() noexcept;
