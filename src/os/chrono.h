@@ -27,41 +27,38 @@
 #ifndef SRC_OS_CHRONO_H_
 #define SRC_OS_CHRONO_H_
 
-typedef long long Duration;   // Nanoseconds.
-typedef long long TimePoint;  // Nanoseconds.
+#include "util/int.h"
 
-constexpr Duration
-ns_to_ms(Duration d) noexcept {
+typedef int64_t Seconds;
+typedef int64_t Milliseconds;
+typedef int64_t Nanoseconds;
+
+inline Milliseconds
+ns_to_ms(Nanoseconds d) noexcept {
     return d / 1000000;
 }
-constexpr Duration
-ns_to_s(Duration d) noexcept {
+inline Seconds
+ns_to_s(Nanoseconds d) noexcept {
     return d / 1000000000;
 }
-constexpr Duration
-s_to_ms(Duration d) noexcept {
-    return d * 1000;
-}
-constexpr Duration
-s_to_ns(Duration d) noexcept {
+inline Nanoseconds
+s_to_ns(Seconds d) noexcept {
     return d * 1000000000;
 }
-constexpr float
-ms_to_s_d(Duration d) noexcept {
-    return d / 1000.0f;
+
+inline float
+ms_to_s_d(Milliseconds ms) noexcept {
+    return ms / 1000.0f;
 }
-constexpr float
-ns_to_s_d(Duration d) noexcept {
-    return d / 1000000000.0f;
+inline float
+ns_to_s_d(Nanoseconds ns) noexcept {
+    return ns / 1000000000.0f;
 }
 
-class SteadyClock {
- public:
-    static TimePoint
-    now() noexcept;  // In nanoseconds.
-};
+Nanoseconds
+chronoNow() noexcept;
 
 void
-SleepFor(Duration d) noexcept;
+chronoSleep(Nanoseconds ns) noexcept;
 
 #endif  // SRC_OS_CHRONO_H_

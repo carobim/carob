@@ -43,8 +43,8 @@ VOID WINAPI Sleep(DWORD);
 static bool haveFreq = false;
 static LARGE_INTEGER freq;
 
-TimePoint
-SteadyClock::now() noexcept {
+Nanoseconds
+chronoNow() noexcept {
     if (!haveFreq) {
         haveFreq = true;
 
@@ -56,15 +56,15 @@ SteadyClock::now() noexcept {
     LARGE_INTEGER counter;
     QueryPerformanceCounter(&counter);
 
-    return TimePoint(s_to_ns(counter.QuadPart) / freq.QuadPart);
+    return static_cast<Nanoseconds>(s_to_ns(counter.QuadPart) / freq.QuadPart);
 }
 
 void
-SleepFor(Duration d) noexcept {
-    if (d <= 0) {
+chronoSleep(Nanoseconds ns) noexcept {
+    if (ns <= 0) {
         return;
     }
 
-    DWORD ms = static_cast<DWORD>((d + 999999) / 1000000);
+    DWORD ms = static_cast<DWORD>((ns + 999999) / 1000000);
     Sleep(ms);
 }

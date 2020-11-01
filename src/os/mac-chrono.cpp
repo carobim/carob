@@ -29,18 +29,6 @@
 #include "util/assert.h"
 #include "util/int.h"
 
-/*
-TimePoint SteadyClock::now() noexcept {
-    struct timespec tp;
-
-    int err = clock_gettime(CLOCK_UPTIME_RAW, &tp);
-    (void)err;
-    assert_(err == 0);
-
-    return TimePoint(s_to_ns(tp.tv_sec) + tp.tv_nsec);
-}
-*/
-
 typedef int kern_return_t;
 
 struct mach_timebase_info {
@@ -63,8 +51,8 @@ mach_wait_until(uint64_t deadline) noexcept;
 
 static struct mach_timebase_info timebase = {0, 0};
 
-TimePoint
-SteadyClock::now() noexcept {
+Nanoseconds
+chronoNow() noexcept {
     if (timebase.numer == 0 && timebase.denom == 0) {
         kern_return_t err = mach_timebase_info(&timebase);
         assert_(err == KERN_SUCCESS);
@@ -73,16 +61,16 @@ SteadyClock::now() noexcept {
     uint64_t machTime = mach_absolute_time();
     uint64_t ns = machTime * timebase.numer / timebase.denom;
 
-    return TimePoint(ns);
+    return static_cast<Nanoseconds>(ns);
 }
 
 void
-SleepFor(Duration d) noexcept {
-    if (d <= 0) {
+chronoSleep(Nanoseconds ns) noexcept {
+    if (ns <= 0) {
         return;
     }
 
-    uint64_t deadline = SteadyClock::now() + d;
+    uint64_t deadline = chronoNow() + ns;
 
     kern_return_t err;
 

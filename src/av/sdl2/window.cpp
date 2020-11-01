@@ -43,7 +43,7 @@ SDL_Window* sdl2Window = 0;
 rvec2 sdl2Translation = {0.0, 0.0};
 rvec2 sdl2Scaling = {0.0, 0.0};
 
-static TimePoint start = 0;
+static Nanoseconds start = 0;
 
 static Transform transformStack[10] = { Transform::identity() };
 static size_t transformCount = 1;
@@ -146,9 +146,9 @@ updateTransform() noexcept {
 time_t
 windowTime() noexcept {
     if (start == 0) {
-        start = SteadyClock::now();
+        start = chronoNow();
     }
-    return ns_to_ms(SteadyClock::now() - start);
+    return ns_to_ms(chronoNow() - start);
 }
 
 void
@@ -207,13 +207,13 @@ windowMainLoop() noexcept {
     DisplayList display = {};
 
     int refreshRate = getRefreshRate(sdl2Window);
-    const Duration idealFrameTime = s_to_ns(1) / refreshRate;
+    const Nanoseconds idealFrameTime = s_to_ns(1) / refreshRate;
 
-    TimePoint frameStart = SteadyClock::now();
-    TimePoint previousFrameStart =
-            frameStart - idealFrameTime;  // Bogus initial value.
+    Nanoseconds frameStart = chronoNow();
+    Nanoseconds previousFrameStart =
+        frameStart - idealFrameTime;  // Bogus initial value.
 
-    TimePoint nextFrameStart = frameStart + idealFrameTime;
+    Nanoseconds nextFrameStart = frameStart + idealFrameTime;
 
     while (sdl2Window != 0) {
         handleEvents();
@@ -247,13 +247,13 @@ windowMainLoop() noexcept {
             display.items.clear();
         }
 
-        TimePoint frameEnd = SteadyClock::now();
-        Duration timeTaken = frameEnd - frameStart;
+        Nanoseconds frameEnd = chronoNow();
+        Nanoseconds timeTaken = frameEnd - frameStart;
 
         //
         // Sleep until next frame.
         //
-        Duration sleepDuration = nextFrameStart - frameEnd;
+        Nanoseconds sleepDuration = nextFrameStart - frameEnd;
         if (sleepDuration < 0) {
             sleepDuration = 0;
         }
@@ -274,11 +274,11 @@ windowMainLoop() noexcept {
         // have vsync, but we are trying to limit frame rate.
         // if (!drew && sleepDuration) {
         if (sleepDuration) {
-            SleepFor(sleepDuration);
+            chronoSleep(sleepDuration);
         }
 
         previousFrameStart = frameStart;
-        frameStart = SteadyClock::now();
+        frameStart = chronoNow();
         nextFrameStart += idealFrameTime;
 
         if (frameStart > nextFrameStart) {

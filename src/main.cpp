@@ -59,7 +59,7 @@ main() noexcept {
     wFixConsole();
 #endif
 
-    srand(static_cast<unsigned>(SteadyClock::now()));
+    srand(static_cast<unsigned>(chronoNow()));
 
     if (!logInit()) {
         return 1;

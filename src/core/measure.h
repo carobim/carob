@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** measure.h                        **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2020 Paul Merrill **
 *************************************/
 
 // **********
@@ -43,7 +43,7 @@ class TimeMeasure {
 
  private:
     String description;
-    TimePoint start;
+    Nanoseconds start;
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
     uint32_t signpost;
 #endif

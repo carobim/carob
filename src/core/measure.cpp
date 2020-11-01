@@ -65,7 +65,7 @@ getSignpost(String description) noexcept {
 
 TimeMeasure::TimeMeasure(String description) noexcept {
     this->description = static_cast<String&&>(description);
-    start = SteadyClock::now();
+    start = chronoNow();
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
     signpost = getSignpost(this->description);
     kdebug_signpost_start(signpost, 0, 0, 0, 0);
@@ -77,9 +77,9 @@ TimeMeasure::~TimeMeasure() noexcept {
     kdebug_signpost_end(signpost, 0, 0, 0, 0);
 #endif
 
-    TimePoint end = SteadyClock::now();
+    Nanoseconds end = chronoNow();
 
-    Duration elapsed = end - start;
+    Nanoseconds elapsed = end - start;
     logInfo("Measure",
             description << " took " << ns_to_s_d(elapsed) << " seconds");
 }

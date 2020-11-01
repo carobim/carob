@@ -40,8 +40,7 @@ windowCreate() noexcept {}
 
 time_t
 windowTime() noexcept {
-    TimePoint now = SteadyClock::now();
-    return ns_to_ms(now);
+    return ns_to_ms(chronoNow());
 }
 
 int
@@ -61,11 +60,11 @@ void
 windowMainLoop() noexcept {
     DisplayList dl = {};
 
-    const Duration idealFrameTime = s_to_ns(1) / 60;
+    const Nanoseconds idealFrameTime = s_to_ns(1) / 60;
 
-    TimePoint frameStart = SteadyClock::now();
-    TimePoint previousFrameStart =
-            frameStart - idealFrameTime;  // Bogus initial value.
+    Nanoseconds frameStart = chronoNow();
+    Nanoseconds previousFrameStart =
+        frameStart - idealFrameTime;  // Bogus initial value.
 
     // FIXME: Should be set to right after a frame is uploaded and we can begin
     //        drawing the next frame.
@@ -79,7 +78,7 @@ windowMainLoop() noexcept {
     //        after that point?
     //
     // NOTE:  Not too important for the null av port, but for other ports yes.
-    TimePoint nextFrameStart = frameStart + idealFrameTime;
+    Nanoseconds nextFrameStart = frameStart + idealFrameTime;
 
 #ifdef __clang__
 #pragma clang diagnostic push
@@ -102,23 +101,23 @@ windowMainLoop() noexcept {
             dl.items.clear();
         }
 
-        TimePoint frameEnd = SteadyClock::now();
-        Duration timeTaken = frameEnd - frameStart;
+        Nanoseconds frameEnd = chronoNow();
+        Nanoseconds timeTaken = frameEnd - frameStart;
 
         //
         // Sleep until next frame.
         //
-        Duration sleepDuration = nextFrameStart - frameEnd;
+        Nanoseconds sleepDuration = nextFrameStart - frameEnd;
         if (sleepDuration < 0) {
             sleepDuration = 0;
         }
 
         if (sleepDuration) {
-            SleepFor(sleepDuration);
+            chronoSleep(sleepDuration);
         }
 
         previousFrameStart = frameStart;
-        frameStart = SteadyClock::now();
+        frameStart = chronoNow();
         nextFrameStart += idealFrameTime;
 
         if (frameStart > nextFrameStart) {
