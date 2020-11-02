@@ -314,7 +314,7 @@ void
 windowPushTranslate(float x, float y) noexcept {
     Transform transform = transformStack[transformCount - 1];
     transformStack[transformCount++] =
-            TransformTranslate(static_cast<float>(x), static_cast<float>(y)) *
+            transformTranslate(static_cast<float>(x), static_cast<float>(y)) *
             transform;
     updateTransform();
 }

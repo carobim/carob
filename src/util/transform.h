@@ -27,11 +27,14 @@
 #ifndef SRC_UTIL_TRANSFORM_H_
 #define SRC_UTIL_TRANSFORM_H_
 
+#include "util/int.h"
 #include "util/noexcept.h"
 
 // An affine transformation.
 struct Transform {
     float m[16];
+
+    inline float& operator[](size_t i) { return m[i]; }
 };
 
 static Transform transformIdentity =
