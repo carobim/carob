@@ -212,7 +212,7 @@ Area::tick(time_t dt) {
     }
     erase_if(overlays, [](Overlay* o) { return o->isDead(); });
 
-    if (Conf::moveMode != Conf::TURN) {
+    if (confMoveMode != MoveMode::TURN) {
         player->tick(dt);
 
         for (Character* character : characters) {

@@ -45,12 +45,12 @@ windowTime() noexcept {
 
 int
 windowWidth() noexcept {
-    return Conf::windowSize.x;
+    return confWindowSize.x;
 }
 
 int
 windowHeight() noexcept {
-    return Conf::windowSize.y;
+    return confWindowSize.y;
 }
 
 void

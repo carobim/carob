@@ -74,7 +74,7 @@ bool
 worldInit() noexcept {
     alive = true;
 
-    Conf::moveMode = dataWorldMoveMode;
+    confMoveMode = dataWorldMoveMode;
 
     if (!player.init(dataWorldPlayerFile, dataWorldPlayerStartPhase)) {
         logFatal("World", "failed to load player");
@@ -168,7 +168,7 @@ worldTick(time_t dt) noexcept {
 
 void
 worldTurn() noexcept {
-    if (Conf::moveMode == Conf::TURN) {
+    if (confMoveMode == MoveMode::TURN) {
         worldArea->turn();
     }
 }
@@ -272,7 +272,7 @@ worldRestoreKeys() noexcept {
 
 void
 worldGarbageCollect() noexcept {
-    time_t latestPermissibleUse = total - Conf::cacheTTL * 1000;
+    time_t latestPermissibleUse = total - confCacheTTL * 1000;
 
     imagesPrune(latestPermissibleUse);
     musicGarbageCollect();

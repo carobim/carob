@@ -39,20 +39,20 @@
         return false; \
     }
 
-LogVerbosity Conf::verbosity = LogVerbosity::VERBOSE;
-Conf::MovementMode Conf::moveMode;
-ivec2 Conf::windowSize = {640, 480};
-bool Conf::fullscreen = false;
-int Conf::musicVolume = 100;
-int Conf::soundVolume = 100;
-time_t Conf::cacheTTL = 300;
-int Conf::persistInit = 0;
-int Conf::persistCons = 0;
+LogVerbosity confVerbosity = LogVerbosity::VERBOSE;
+MoveMode confMoveMode;
+ivec2 confWindowSize = {640, 480};
+bool confFullscreen = false;
+int confMusicVolume = 100;
+int confSoundVolume = 100;
+time_t confCacheTTL = 300;
+int confPersistInit = 0;
+int confPersistCons = 0;
 
 // Parse and process the client config file, and set configuration defaults for
 // missing options.
 bool
-Conf::parse(StringView filename) noexcept {
+confParse(StringView filename) noexcept {
     String file;
     bool ok = readFile(filename, file);
 
@@ -87,13 +87,13 @@ Conf::parse(StringView filename) noexcept {
         if (verbosityValue.isString()) {
             StringView verbosity = verbosityValue.toString();
             if (verbosity == "quiet") {
-                Conf::verbosity = LogVerbosity::QUIET;
+                confVerbosity = LogVerbosity::QUIET;
             }
             else if (verbosity == "normal") {
-                Conf::verbosity = LogVerbosity::NORMAL;
+                confVerbosity = LogVerbosity::NORMAL;
             }
             else if (verbosity == "verbose") {
-                Conf::verbosity = LogVerbosity::VERBOSE;
+                confVerbosity = LogVerbosity::VERBOSE;
             }
             else {
                 logErr(filename,
@@ -112,13 +112,13 @@ Conf::parse(StringView filename) noexcept {
         CHECK(fullscreenValue.isBool() || fullscreenValue.isNull());
 
         if (widthValue.isNumber()) {
-            Conf::windowSize.x = widthValue.toInt();
+            confWindowSize.x = widthValue.toInt();
         }
         if (heightValue.isNumber()) {
-            Conf::windowSize.y = heightValue.toInt();
+            confWindowSize.y = heightValue.toInt();
         }
         if (fullscreenValue.isBool()) {
-            Conf::fullscreen = fullscreenValue.toBool();
+            confFullscreen = fullscreenValue.toBool();
         }
     }
 
@@ -130,10 +130,10 @@ Conf::parse(StringView filename) noexcept {
         CHECK(soundvolumeValue.isNumber() || soundvolumeValue.isNull());
 
         if (musicvolumeValue.isNumber()) {
-            Conf::musicVolume = musicvolumeValue.toInt();
+            confMusicVolume = musicvolumeValue.toInt();
         }
         if (soundvolumeValue.isNumber()) {
-            Conf::soundVolume = soundvolumeValue.toInt();
+            confSoundVolume = soundvolumeValue.toInt();
         }
     }
 
@@ -143,7 +143,7 @@ Conf::parse(StringView filename) noexcept {
         CHECK(ttlValue.isNumber() || ttlValue.isNull());
 
         if (ttlValue.isNumber()) {
-            Conf::cacheTTL = ttlValue.toInt();
+            confCacheTTL = ttlValue.toInt();
         }
     }
 

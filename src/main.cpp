@@ -71,9 +71,9 @@ main() noexcept {
 
     threadDisableTimerCoalescing();
 
-    Conf::parse(CLIENT_CONF_PATH);
+    confParse(CLIENT_CONF_PATH);
 
-    logSetVerbosity(Conf::verbosity);
+    logSetVerbosity(confVerbosity);
     logInfo("Main", String() << "Starting " << TSUNAGARI_RELEASE_VERSION);
     logReportVerbosityOnStartup();
 

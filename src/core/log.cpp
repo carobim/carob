@@ -186,7 +186,7 @@ logReportVerbosityOnStartup() noexcept {
     LockGuard lock(stdoutMutex);
 
     StringView verbString;
-    switch (Conf::verbosity) {
+    switch (confVerbosity) {
     case LogVerbosity::QUIET:
         verbString = "QUIET";
         break;

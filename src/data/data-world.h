@@ -46,7 +46,7 @@ extern StringView dataWorldName;
 extern StringView dataWorldAuthor;
 extern StringView dataWorldVersion;
 
-extern enum Conf::MovementMode dataWorldMoveMode;
+extern enum MoveMode dataWorldMoveMode;
 extern rvec2 dataWorldViewportResolution;
 extern int dataWorldInputPersistDelayInitial;
 extern int dataWorldInputPersistDelayConsecutive;

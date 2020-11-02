@@ -163,11 +163,11 @@ windowCreate() noexcept {
     {
         TimeMeasure m("Created SDL2 window");
 
-        int width = Conf::windowSize.x;
-        int height = Conf::windowSize.y;
+        int width = confWindowSize.x;
+        int height = confWindowSize.y;
 
         uint32_t flags = 0;
-        if (Conf::fullscreen) {
+        if (confFullscreen) {
             flags |= SDL_WINDOW_FULLSCREEN;
         }
 

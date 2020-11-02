@@ -38,7 +38,7 @@ StringView dataWorldName = "Null World";
 StringView dataWorldAuthor = "Paul Merrill";
 StringView dataWorldVersion = "1";
 
-enum Conf::MovementMode dataWorldMoveMode = Conf::TILE;
+enum MoveMode dataWorldMoveMode = MoveMode::TILE;
 rvec2 dataWorldViewportResolution = {240, 160};
 int dataWorldInputPersistDelayInitial = 300;
 int dataWorldInputPersistDelayConsecutive = 100;

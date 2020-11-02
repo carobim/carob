@@ -44,14 +44,14 @@ void
 Character::tick(time_t dt) noexcept {
     Entity::tick(dt);
 
-    switch (Conf::moveMode) {
-    case Conf::TURN:
+    switch (confMoveMode) {
+    case MoveMode::TURN:
         // Characters don't do anything on tick() for TURN mode.
         break;
-    case Conf::TILE:
+    case MoveMode::TILE:
         moveTowardDestination(dt);
         break;
-    case Conf::NOTILE:
+    case MoveMode::NOTILE:
         assert_(false && "not implemented");
         break;
     }
@@ -164,8 +164,8 @@ Character::moveByTile(ivec2 delta) noexcept {
         soundRelease(sid);
     }
 
-    switch (Conf::moveMode) {
-    case Conf::TURN:
+    switch (confMoveMode) {
+    case MoveMode::TURN:
         // Movement is instantaneous.
         redraw = true;
         r = destCoord;
@@ -173,8 +173,8 @@ Character::moveByTile(ivec2 delta) noexcept {
         setAnimationStanding();
         arrived();
         break;
-    case Conf::TILE:
-    case Conf::NOTILE:
+    case MoveMode::TILE:
+    case MoveMode::NOTILE:
         // Movement happens in Entity::moveTowardDestination() during
         // tick().
         break;
