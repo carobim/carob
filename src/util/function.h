@@ -71,8 +71,8 @@ namespace function {
         operator=(const base&) noexcept;
 
      public:
-        base() noexcept = default;
-        virtual ~base() noexcept = default;
+        base() noexcept {}
+        virtual ~base() noexcept {}
         virtual base*
         clone() const noexcept = 0;
         virtual void

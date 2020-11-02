@@ -33,7 +33,7 @@
 
 class ConditionVariable {
  public:
-    inline ConditionVariable() = default;
+    inline ConditionVariable() : cv(PTHREAD_COND_INITIALIZER) {}
 
     inline ~ConditionVariable() noexcept {
         int err = pthread_cond_destroy(&cv);
@@ -66,7 +66,7 @@ class ConditionVariable {
         assert_(err == 0);
     }
 
-    pthread_cond_t cv = PTHREAD_COND_INITIALIZER;
+    pthread_cond_t cv;
 };
 
 #endif  // SRC_OS_UNIX_CONDITION_VARIBLE_H_

@@ -57,7 +57,7 @@ SleepConditionVariableSRW(PCONDITION_VARIABLE ConditionVariable,
 
 class ConditionVariable {
  public:
-    inline ConditionVariable() noexcept = default;
+    inline ConditionVariable() noexcept : cv(CONDITION_VARIABLE_INIT) {}
 
     ConditionVariable(const ConditionVariable&) = delete;
     ConditionVariable&
@@ -79,7 +79,7 @@ class ConditionVariable {
         assert_(ok);  // GetLastError();
     }
 
-    CONDITION_VARIABLE cv = CONDITION_VARIABLE_INIT;
+    CONDITION_VARIABLE cv;
 };
 
 #endif  // SRC_OS_WINDOWS_CONDITION_VARIBLE_H_

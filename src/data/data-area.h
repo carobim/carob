@@ -43,8 +43,8 @@ class DataArea {
     typedef void (DataArea::*TileScript)(Entity& triggeredBy, icoord tile);
 
  public:
-    DataArea() = default;
-    virtual ~DataArea() = default;
+    DataArea() noexcept {}
+    virtual ~DataArea() noexcept {}
 
     Area* area = 0;  // borrowed reference
 

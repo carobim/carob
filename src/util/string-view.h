@@ -48,8 +48,11 @@ class StringView {
     StringView(const char* data, size_t size) noexcept;
     StringView(const StringView& s) noexcept;
 
-    StringView&
-    operator=(const StringView& s) = default;
+    void
+    operator=(const StringView& s) noexcept {
+        data = s.data;
+        size = s.size;
+    }
 
     const char*
     begin() const noexcept;

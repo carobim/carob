@@ -53,9 +53,9 @@ class Markable {
     CONSTEXPR11
     Markable(M) noexcept : x(MarkedValue) {}
     CONSTEXPR11
-    Markable(Markable&& other) noexcept = default;
+    Markable(Markable&& other) noexcept : x(static_cast<T&&>(other.x)) {}
     CONSTEXPR11
-    Markable(const Markable& other) noexcept = default;
+    Markable(const Markable& other) noexcept : x(other.x) {}
 
     inline void
     operator=(T&& x_) noexcept {

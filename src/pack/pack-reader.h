@@ -40,7 +40,7 @@ class PackReader {
  public:
     static PackReader*
     fromFile(StringView path) noexcept;
-    virtual ~PackReader() = default;
+    virtual ~PackReader() noexcept {}
 
     virtual BlobIndex
     size() noexcept = 0;
