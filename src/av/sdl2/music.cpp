@@ -106,7 +106,7 @@ init() noexcept {
 }
 
 void
-MusicWorker::play(StringView path) noexcept {
+musicWorkerPlay(StringView path) noexcept {
     init();
 
     uint32_t pathHash = hash_(path);
@@ -145,7 +145,7 @@ MusicWorker::play(StringView path) noexcept {
 }
 
 void
-MusicWorker::stop() noexcept {
+musicWorkerStop() noexcept {
     init();
 
     paused = 0;
@@ -158,7 +158,7 @@ MusicWorker::stop() noexcept {
 }
 
 void
-MusicWorker::pause() noexcept {
+musicWorkerPause() noexcept {
     init();
 
     if (paused == 0 && song) {
@@ -169,7 +169,7 @@ MusicWorker::pause() noexcept {
 }
 
 void
-MusicWorker::resume() noexcept {
+musicWorkerResume() noexcept {
     init();
 
     if (!paused) {
@@ -184,4 +184,4 @@ MusicWorker::resume() noexcept {
 }
 
 void
-MusicWorker::garbageCollect() noexcept {}
+musicWorkerGarbageCollect() noexcept {}

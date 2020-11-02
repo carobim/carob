@@ -30,21 +30,18 @@
 
 #include "util/string-view.h"
 
-class MusicWorker {
- public:
-    static void
-    play(StringView path) noexcept;
+void
+musicWorkerPlay(StringView path) noexcept;
 
-    static void
-    stop() noexcept;
+void
+musicWorkerStop() noexcept;
 
-    static void
-    pause() noexcept;
-    static void
-    resume() noexcept;
+void
+musicWorkerPause() noexcept;
+void
+musicWorkerResume() noexcept;
 
-    static void
-    garbageCollect() noexcept;
-};
+void
+musicWorkerGarbageCollect() noexcept;
 
 #endif  // SRC_CORE_MUSIC_WORKER_H_

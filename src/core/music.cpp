@@ -33,30 +33,30 @@
 void
 musicPlay(StringView name) noexcept {
     // String name_ = name;
-    // JobsEnqueue([name_]() { MusicWorker::play(name_); });
-    MusicWorker::play(name);
+    // JobsEnqueue([name_]() { musicWorkerPlay(name_); });
+    musicWorkerPlay(name);
 }
 
 void
 musicStop() noexcept {
-    // JobsEnqueue([]() { MusicWorker::stop(); });
-    MusicWorker::stop();
+    // JobsEnqueue([]() { musicWorkerStop(); });
+    musicWorkerStop();
 }
 
 void
 musicPause() noexcept {
-    // JobsEnqueue([]() { MusicWorker::pause(); });
-    MusicWorker::pause();
+    // JobsEnqueue([]() { musicWorkerPause(); });
+    musicWorkerPause();
 }
 
 void
 musicResume() noexcept {
-    // JobsEnqueue([]() { MusicWorker::resume(); });
-    MusicWorker::resume();
+    // JobsEnqueue([]() { musicWorkerResume(); });
+    musicWorkerResume();
 }
 
 void
 musicGarbageCollect() noexcept {
-    // JobsEnqueue([]() { MusicWorker::garbageCollect(); });
-    MusicWorker::garbageCollect();
+    // JobsEnqueue([]() { musicWorkerGarbageCollect(); });
+    musicWorkerGarbageCollect();
 }
