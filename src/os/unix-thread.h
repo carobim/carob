@@ -37,7 +37,7 @@ static void*
 run(void* f) noexcept {
     Function<void()>* fun = reinterpret_cast<Function<void()>*>(f);
     (*fun)();
-    return nullptr;
+    return 0;
 }
 
 class Thread {
@@ -46,7 +46,7 @@ class Thread {
         Function<void()>* fun =
             new Function<void()>(static_cast<Function<void()>&&>(f));
 
-        int err = pthread_create(&t, nullptr, run, static_cast<void*>(fun));
+        int err = pthread_create(&t, 0, run, static_cast<void*>(fun));
         (void)err;
         assert_(err == 0);
     }

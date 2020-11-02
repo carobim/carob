@@ -32,7 +32,7 @@
 #include "util/noexcept.h"
 
 StringView::StringView() noexcept
-            : data(nullptr), size(0){};
+            : data(0), size(0){};
 StringView::StringView(const char* data) noexcept
         : data(data), size(strlen(data)) {}
 StringView::StringView(const char* data, size_t size) noexcept
@@ -52,7 +52,7 @@ StringView::end() const noexcept {
 StringPosition
 StringView::find(char needle) const noexcept {
     char* result = static_cast<char*>(memchr(data, needle, size));
-    if (result == nullptr) {
+    if (result == 0) {
         return SV_NOT_FOUND;
     }
     return StringPosition(result - data);
@@ -62,7 +62,7 @@ StringPosition
 StringView::find(StringView needle) const noexcept {
     char* result =
             static_cast<char*>(memmem(data, size, needle.data, needle.size));
-    if (result == nullptr) {
+    if (result == 0) {
         return SV_NOT_FOUND;
     }
     return StringPosition(result - data);
@@ -74,7 +74,7 @@ StringView::find(StringView needle, size_t start) const noexcept {
 
     char* result = static_cast<char*>(
             memmem(data + start, size - start, needle.data, needle.size));
-    if (result == nullptr) {
+    if (result == 0) {
         return SV_NOT_FOUND;
     }
     return StringPosition(result - data);

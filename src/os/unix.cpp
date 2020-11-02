@@ -70,16 +70,16 @@ makeDirectory(StringView path) noexcept {
 
 Vector<String>
 listDir(String& path) noexcept {
-    DIR* dir = nullptr;
-    struct dirent* entry = nullptr;
+    DIR* dir = 0;
+    struct dirent* entry = 0;
     Vector<String> names;
 
-    if ((dir = opendir(path.null())) == nullptr) {
+    if ((dir = opendir(path.null())) == 0) {
         return names;
     }
 
     // FIXME: Replace with reentrant function calls.
-    while ((entry = readdir(dir)) != nullptr) {
+    while ((entry = readdir(dir)) != 0) {
         if (entry->d_ino == 0) {
             // Ignore unlinked files.
             continue;

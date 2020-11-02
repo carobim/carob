@@ -221,9 +221,8 @@ pthread_create(pthread_t*, const void*, void* (*)(void*), void*) noexcept;
 int
 pthread_join(pthread_t, void**) noexcept;
 #define PTHREAD_MUTEX_INITIALIZER \
-    { 0x33330003, 0, {0, 0, 0}, {0}, {0, 0, 0}, nullptr, nullptr, 0, nullptr }
-#define PTHREAD_COND_INITIALIZER \
-    { 0x55550005, 0, {nullptr, nullptr}, nullptr, nullptr }
+    { 0x33330003, 0, {0, 0, 0}, {0}, {0, 0, 0}, 0, 0, 0, 0 }
+#define PTHREAD_COND_INITIALIZER { 0x55550005, 0, {0, 0}, 0, 0 }
 #define pthread_mutex_destroy __libc_mutex_destroy
 #define pthread_mutex_lock __libc_mutex_lock
 #define pthread_mutex_unlock __libc_mutex_unlock

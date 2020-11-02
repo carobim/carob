@@ -173,7 +173,7 @@ class Entity {
     bool redraw = true;
 
     // Pointer to Area this Entity is located on.
-    Area* area = nullptr;
+    Area* area = 0;
     // Real x,y position: hold partial pixel transversal
     rcoord r = {0.0, 0.0, 0.0};
     // Drawing offset to center entity on tile.
@@ -193,7 +193,7 @@ class Entity {
     float angleToDest;
 
     ivec2 imgsz;
-    Animation* phase = nullptr;
+    Animation* phase = 0;
     String phaseName = "";
     ivec2 facing = {0, 0};
 

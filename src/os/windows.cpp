@@ -119,10 +119,10 @@ getFileSize(StringView path) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              FILE_READ_ATTRIBUTES,
                              0,
-                             nullptr,
+                             0,
                              OPEN_EXISTING,
                              0,
-                             nullptr);
+                             0);
     if (file == INVALID_HANDLE_VALUE) {
         return FS_ERROR;
     }
@@ -145,16 +145,16 @@ writeFile(StringView path, uint32_t length, void* data) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              FILE_WRITE_DATA,
                              0,
-                             nullptr,
+                             0,
                              CREATE_ALWAYS,
                              0,
-                             nullptr);
+                             0);
     if (file == INVALID_HANDLE_VALUE) {
         return false;
     }
 
     DWORD written;
-    BOOL ok = WriteFile(file, data, length, &written, nullptr);
+    BOOL ok = WriteFile(file, data, length, &written, 0);
     if (!ok) {
         CloseHandle(file);
         return false;
@@ -177,17 +177,17 @@ writeFileVec(StringView path,
     HANDLE file = CreateFile(String(path).null(),
                              FILE_WRITE_DATA,
                              0,
-                             nullptr,
+                             0,
                              CREATE_ALWAYS,
                              0,
-                             nullptr);
+                             0);
     if (file == INVALID_HANDLE_VALUE) {
         return false;
     }
 
     for (uint32_t i = 0; i < count; i++) {
         DWORD written;
-        BOOL ok = WriteFile(file, datas[i], lengths[i], &written, nullptr);
+        BOOL ok = WriteFile(file, datas[i], lengths[i], &written, 0);
         if (!ok) {
             CloseHandle(file);
             return false;
@@ -213,7 +213,7 @@ isDir(StringView path) noexcept {
 
 void
 makeDirectory(StringView path) noexcept {
-    BOOL ok = CreateDirectory(String(path).null(), nullptr);
+    BOOL ok = CreateDirectory(String(path).null(), 0);
     (void)ok;
 }
 
@@ -261,10 +261,10 @@ readFile(StringView path, String& data) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              FILE_READ_DATA,
                              0,
-                             nullptr,
+                             0,
                              OPEN_EXISTING,
                              0,
-                             nullptr);
+                             0);
     if (file == INVALID_HANDLE_VALUE) {
         return false;
     }

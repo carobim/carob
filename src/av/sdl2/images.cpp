@@ -59,7 +59,7 @@ imageInit() noexcept {
             SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |
                 SDL_RENDERER_TARGETTEXTURE);
 
-    if (renderer == nullptr) {
+    if (renderer == 0) {
         sdlDie("SDL2", "SDL_CreateRenderer");
     }
 

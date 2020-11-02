@@ -124,7 +124,7 @@ fprintf(FILE* const _Stream, char const* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
     __crt_va_start(_ArgList, _Format);
-    _Result = _vfprintf_l(_Stream, _Format, nullptr, _ArgList);
+    _Result = _vfprintf_l(_Stream, _Format, 0, _ArgList);
     __crt_va_end(_ArgList);
     return _Result;
 }
@@ -134,7 +134,7 @@ printf(char const* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
     __crt_va_start(_ArgList, _Format);
-    _Result = _vfprintf_l(stdout, _Format, nullptr, _ArgList);
+    _Result = _vfprintf_l(stdout, _Format, 0, _ArgList);
     __crt_va_end(_ArgList);
     return _Result;
 }
@@ -144,7 +144,7 @@ sprintf(char* const _Buffer, char const* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
     __crt_va_start(_ArgList, _Format);
-    _Result = _vsprintf_l(_Buffer, _Format, nullptr, _ArgList);
+    _Result = _vsprintf_l(_Buffer, _Format, 0, _ArgList);
     __crt_va_end(_ArgList);
     return _Result;
 }
