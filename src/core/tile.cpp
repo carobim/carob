@@ -27,10 +27,7 @@
 
 #include "core/tile.h"
 
-#include "core/area.h"
-#include "core/log.h"
-#include "core/world.h"
-#include "util/string.h"
+#include "util/assert.h"
 
 /*
  * TILESET
