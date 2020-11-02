@@ -34,7 +34,7 @@
 struct Transform {
     float m[16];
 
-    inline float& operator[](size_t i) { return m[i]; }
+    inline float& operator[](size_t i) noexcept { return m[i]; }
 };
 
 static Transform transformIdentity =
