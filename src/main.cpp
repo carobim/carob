@@ -80,20 +80,20 @@ main() noexcept {
     windowCreate();
     imageInit();
 
-    if (!DataWorld::init()) {
-        logFatal("Main", "DataWorld::init");
+    if (!dataWorldInit()) {
+        logFatal("Main", "Data World initialization");
         return 1;
     }
 
     {
         TimeMeasure m("Constructed world");
         if (!worldInit()) {
-            logFatal("Main", "worldInit");
+            logFatal("Main", "World initialization");
             return 1;
         }
     }
 
-    windowSetCaption(DataWorld::name);
+    windowSetCaption(dataWorldName);
 
     windowMainLoop();
 

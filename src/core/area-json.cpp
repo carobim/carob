@@ -118,7 +118,7 @@ makeAreaFromJSON(Player* player, StringView filename) noexcept {
 AreaJSON::AreaJSON(Player* player, StringView descriptor) noexcept {
     TimeMeasure m(String() << "Constructed " << descriptor << " as area-json");
 
-    dataArea = DataWorld::area(descriptor);
+    dataArea = dataWorldArea(descriptor);
     this->player = player;
     this->descriptor = descriptor;
 

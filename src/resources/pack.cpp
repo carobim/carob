@@ -41,7 +41,7 @@ openPackFile() noexcept {
         return true;
     }
 
-    StringView path = DataWorld::datafile;
+    StringView path = dataWorldDatafile;
 
     // TimeMeasure m("Opened " + path);
 
@@ -57,7 +57,7 @@ openPackFile() noexcept {
 
 static String
 getFullPath(StringView path) noexcept {
-    return String() << DataWorld::datafile << "/" << path;
+    return String() << dataWorldDatafile << "/" << path;
 }
 
 bool

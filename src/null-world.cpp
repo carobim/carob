@@ -30,26 +30,26 @@
 static DataArea nullArea;
 
 DataArea*
-DataWorld::area(StringView areaName) noexcept {
+dataWorldArea(StringView areaName) noexcept {
     return &nullArea;
 }
 
-StringView DataWorld::name = "Null World";
-StringView DataWorld::author = "Paul Merrill";
-StringView DataWorld::version = "1";
+StringView dataWorldName = "Null World";
+StringView dataWorldAuthor = "Paul Merrill";
+StringView dataWorldVersion = "1";
 
-enum Conf::MovementMode DataWorld::moveMode = Conf::TILE;
-rvec2 DataWorld::viewportResolution = {240, 160};
-int DataWorld::inputPersistDelayInitial = 300;
-int DataWorld::inputPersistDelayConsecutive = 100;
-StringView DataWorld::startArea = "null-area.json";
-StringView DataWorld::playerFile = "null-player.json";
-StringView DataWorld::playerStartPhase = "down";
-vicoord DataWorld::startCoords = {0, 0, 0};
+enum Conf::MovementMode dataWorldMoveMode = Conf::TILE;
+rvec2 dataWorldViewportResolution = {240, 160};
+int dataWorldInputPersistDelayInitial = 300;
+int dataWorldInputPersistDelayConsecutive = 100;
+StringView dataWorldStartArea = "null-area.json";
+StringView dataWorldPlayerFile = "null-player.json";
+StringView dataWorldPlayerStartPhase = "down";
+vicoord dataWorldStartCoords = {0, 0, 0};
 
-StringView DataWorld::datafile = "./null.world";
+StringView dataWorldDatafile = "./null.world";
 
 bool
-DataWorld::init() noexcept {
+dataWorldInit() noexcept {
     return true;
 }

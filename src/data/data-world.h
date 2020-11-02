@@ -34,31 +34,27 @@ class DataArea;
 #include "core/vec.h"
 #include "util/string-view.h"
 
-class DataWorld {
- public:
-    //! After the engine has booted, initialize the world.
-    static bool
-    init() noexcept;
+//! After the engine has booted, initialize the world.
+bool
+dataWorldInit() noexcept;
 
-    static DataArea*
-    area(StringView areaName) noexcept;
+DataArea*
+dataWorldArea(StringView areaName) noexcept;
 
-    // Engine parameters set by world's author.
-    static StringView name, author, version;
+// Engine parameters set by world's author.
+extern StringView dataWorldName;
+extern StringView dataWorldAuthor;
+extern StringView dataWorldVersion;
 
-    static enum Conf::MovementMode moveMode;
-    static rvec2 viewportResolution;
-    static int inputPersistDelayInitial;
-    static int inputPersistDelayConsecutive;
-    static StringView startArea;
-    static StringView playerFile, playerStartPhase;
-    static vicoord startCoords;
+extern enum Conf::MovementMode dataWorldMoveMode;
+extern rvec2 dataWorldViewportResolution;
+extern int dataWorldInputPersistDelayInitial;
+extern int dataWorldInputPersistDelayConsecutive;
+extern StringView dataWorldStartArea;
+extern StringView dataWorldPlayerFile;
+extern StringView dataWorldPlayerStartPhase;
+extern vicoord dataWorldStartCoords;
 
-    static StringView datafile;
-
- private:
-    DataWorld() = delete;
-    DataWorld(const DataWorld&) = delete;
-};
+extern StringView dataWorldDatafile;
 
 #endif  // SRC_DATA_DATA_WORLD_H_

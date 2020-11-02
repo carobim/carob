@@ -74,19 +74,19 @@ bool
 worldInit() noexcept {
     alive = true;
 
-    Conf::moveMode = DataWorld::moveMode;
+    Conf::moveMode = dataWorldMoveMode;
 
-    if (!player.init(DataWorld::playerFile, DataWorld::playerStartPhase)) {
+    if (!player.init(dataWorldPlayerFile, dataWorldPlayerStartPhase)) {
         logFatal("World", "failed to load player");
         return false;
     }
 
-    if (!worldFocusArea(DataWorld::startArea, DataWorld::startCoords)) {
+    if (!worldFocusArea(dataWorldStartArea, dataWorldStartCoords)) {
         logFatal("World", "failed to load initial Area");
         return false;
     }
 
-    viewportSetSize(DataWorld::viewportResolution);
+    viewportSetSize(dataWorldViewportResolution);
     viewportTrackEntity(&player);
 
     return true;
@@ -191,7 +191,7 @@ worldFocusArea(StringView filename, vicoord playerPos) noexcept {
         return false;
     }
 
-    DataArea* dataArea = DataWorld::area(filename);
+    DataArea* dataArea = dataWorldArea(filename);
     if (!dataArea) {
         return false;
     }
