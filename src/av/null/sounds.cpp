@@ -31,28 +31,28 @@
 #include "util/string-view.h"
 
 SoundID
-Sounds::load(StringView path) noexcept {
+soundLoad(StringView path) noexcept {
     return mark;
 }
 void
-Sounds::prune(time_t latestPermissibleUse) noexcept {}
+soundsPrune(time_t latestPermissibleUse) noexcept {}
 
 PlayingSoundID
-Sound::play(SoundID id) noexcept {
+soundPlay(SoundID id) noexcept {
     return mark;
 }
 void
-Sound::release(SoundID id) noexcept {}
+soundRelease(SoundID id) noexcept {}
 
 bool
-PlayingSound::isPlaying(PlayingSoundID id) noexcept {
+playingSoundIsPlaying(PlayingSoundID id) noexcept {
     return false;
 }
 void
-PlayingSound::stop(PlayingSoundID id) noexcept {}
+playingSoundStop(PlayingSoundID id) noexcept {}
 void
-PlayingSound::volume(PlayingSoundID id, float volume) noexcept {}
+playingSoundVolume(PlayingSoundID id, float volume) noexcept {}
 void
-PlayingSound::speed(PlayingSoundID id, float speed) noexcept {}
+playingSoundSpeed(PlayingSoundID id, float speed) noexcept {}
 void
-PlayingSound::release(PlayingSoundID id) noexcept {}
+playingSoundRelease(PlayingSoundID id) noexcept {}

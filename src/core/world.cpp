@@ -276,5 +276,5 @@ worldGarbageCollect() noexcept {
 
     imagesPrune(latestPermissibleUse);
     Music::garbageCollect();
-    Sounds::prune(latestPermissibleUse);
+    soundsPrune(latestPermissibleUse);
 }

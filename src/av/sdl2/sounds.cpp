@@ -139,7 +139,7 @@ makeSound(StringView path) noexcept {
 }
 
 SoundID
-Sounds::load(StringView path) noexcept {
+soundLoad(StringView path) noexcept {
     init();
 
     SoundID* cachedId = soundIDs.tryAt(path);
@@ -165,12 +165,12 @@ Sounds::load(StringView path) noexcept {
 }
 
 void
-Sounds::prune(time_t latestPermissibleUse) noexcept {
+soundsPrune(time_t latestPermissibleUse) noexcept {
     // Mix_FreeChunk(chunk);
 }
 
 PlayingSoundID
-Sound::play(SoundID sid) noexcept {
+soundPlay(SoundID sid) noexcept {
     if (!sid) {
         return mark;
     }
@@ -194,7 +194,7 @@ Sound::play(SoundID sid) noexcept {
 }
 
 void
-Sound::release(SoundID sid) noexcept {
+soundRelease(SoundID sid) noexcept {
     if (!sid) {
         return;
     }
@@ -210,7 +210,7 @@ Sound::release(SoundID sid) noexcept {
 }
 
 bool
-PlayingSound::isPlaying(PlayingSoundID psid) noexcept {
+playingSoundIsPlaying(PlayingSoundID psid) noexcept {
     if (!psid) {
         return false;
     }
@@ -222,7 +222,7 @@ PlayingSound::isPlaying(PlayingSoundID psid) noexcept {
 }
 
 void
-PlayingSound::stop(PlayingSoundID psid) noexcept {
+playingSoundStop(PlayingSoundID psid) noexcept {
     if (!psid) {
         return;
     }
@@ -238,7 +238,7 @@ PlayingSound::stop(PlayingSoundID psid) noexcept {
 }
 
 void
-PlayingSound::volume(PlayingSoundID psid, float volume) noexcept {
+playingSoundVolume(PlayingSoundID psid, float volume) noexcept {
     if (!psid) {
         return;
     }
@@ -251,12 +251,12 @@ PlayingSound::volume(PlayingSoundID psid, float volume) noexcept {
 }
 
 void
-PlayingSound::speed(PlayingSoundID psid, float speed) noexcept {
+playingSoundSpeed(PlayingSoundID psid, float speed) noexcept {
     // No-op. SDL2 doesn't support changing playback rate.
 }
 
 void
-PlayingSound::release(PlayingSoundID psid) noexcept {
+playingSoundRelease(PlayingSoundID psid) noexcept {
     if (!psid) {
         return;
     }

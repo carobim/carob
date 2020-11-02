@@ -40,9 +40,9 @@ InProgress::isOver() noexcept {
 
 InProgressSound::InProgressSound(StringView sound, ThenFn then) noexcept
         : then(then) {
-    SoundID sid = Sounds::load(sound);
-    this->sound = Sound::play(sid);
-    Sound::release(sid);
+    SoundID sid = soundLoad(sound);
+    this->sound = soundPlay(sid);
+    soundRelease(sid);
 
     if (!then) {
         logErr("InProgressSound", "invalid 'then'");
@@ -55,8 +55,8 @@ InProgressSound::tick(time_t) noexcept {
         return;
     }
 
-    if (!PlayingSound::isPlaying(sound)) {
-        PlayingSound::release(sound);
+    if (!playingSoundIsPlaying(sound)) {
+        playingSoundRelease(sound);
         over = true;
         then();
     }

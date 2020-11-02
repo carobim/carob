@@ -35,45 +35,48 @@
 typedef Markable<int, -1> SoundID;
 typedef Markable<int, -1> PlayingSoundID;
 
-class Sounds {
- public:
-    static SoundID
-    load(StringView path) noexcept;
+//
+// Sounds
+//
 
-    // Free destroyed Sounds that were not recently played.
-    static void
-    prune(time_t latestPermissibleUse) noexcept;
-};
+SoundID
+soundLoad(StringView path) noexcept;
 
-class Sound {
- public:
-    static PlayingSoundID
-    play(SoundID sid) noexcept;
+// Free destroyed Sounds that were not recently played.
+void
+soundsPrune(time_t latestPermissibleUse) noexcept;
 
-    static void
-    release(SoundID sid) noexcept;
-};
+//
+// Sound
+//
 
-class PlayingSound {
- public:
-    // Whether the sound is currently playing.
-    static bool
-    isPlaying(PlayingSoundID psid) noexcept;
-    // Stop playing the sound. SoundInstances cannot resume from stop().
-    // Create a new one to play again. Calls destroy().
-    static void
-    stop(PlayingSoundID psid) noexcept;
+PlayingSoundID
+soundPlay(SoundID sid) noexcept;
 
-    // Between 0.0 (silence) and 1.0 (full).
-    static void
-    volume(PlayingSoundID psid, float volume) noexcept;
-    // 1.0 is normal speed.
-    static void
-    speed(PlayingSoundID psid, float speed) noexcept;
+void
+soundRelease(SoundID sid) noexcept;
 
-    // Release the resources used by this PlayingSound.
-    static void
-    release(PlayingSoundID psid) noexcept;
-};
+//
+// PlayingSound
+//
+
+// Whether the sound is currently playing.
+bool
+playingSoundIsPlaying(PlayingSoundID psid) noexcept;
+// Stop playing the sound. SoundInstances cannot resume from stop().
+// Create a new one to play again. Calls destroy().
+void
+playingSoundStop(PlayingSoundID psid) noexcept;
+
+// Between 0.0 (silence) and 1.0 (full).
+void
+playingSoundVolume(PlayingSoundID psid, float volume) noexcept;
+// 1.0 is normal speed.
+void
+playingSoundSpeed(PlayingSoundID psid, float speed) noexcept;
+
+// Release the resources used by this PlayingSound.
+void
+playingSoundRelease(PlayingSoundID psid) noexcept;
 
 #endif  // SRC_CORE_SOUNDS_H_
