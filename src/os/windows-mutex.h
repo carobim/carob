@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** windows-mutex.h             **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** windows-mutex.h                  **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,6 +28,7 @@
 #define SRC_OS_WINDOWS_MUTEX_H_
 
 #include "os/c.h"
+#include "util/constexpr.h"
 #include "util/noexcept.h"
 
 extern "C" {

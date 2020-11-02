@@ -29,6 +29,7 @@
 #include "os/os.h"
 #include "pack/file-type.h"
 #include "pack/pack-reader.h"
+#include "util/constexpr.h"
 #include "util/int.h"
 #include "util/move.h"
 #include "util/noexcept.h"

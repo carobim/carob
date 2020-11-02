@@ -1,7 +1,6 @@
 /***************************************
 ** Tsunagari Tile Engine              **
 ** windows.cpp                        **
-** Copyright 2007 Julian Raschke      **
 ** Copyright 2011-2013 Michael Reiley **
 ** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
@@ -32,6 +31,7 @@
 
 #include "os/c.h"
 #include "os/os.h"
+#include "util/constexpr.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"

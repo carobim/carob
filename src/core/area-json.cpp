@@ -392,7 +392,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
             logErr(descriptor, "Tile type id is invalid");
             return false;
         }
-        if (id > INT32_MAX) {
+        if (id > static_cast<unsigned>(INT32_MAX)) {
             logErr(descriptor, "Tile type id is invalid");
             return false;
         }
@@ -468,7 +468,7 @@ AreaJSON::processTileType(JsonValue obj,
                    "couldn't parse frame index for animated tile");
             return false;
         }
-        if (idx_ > INT32_MAX) {
+        if (idx_ > static_cast<unsigned>(INT32_MAX)) {
             logErr(descriptor, "frame index out of bounds");
             return false;
         }

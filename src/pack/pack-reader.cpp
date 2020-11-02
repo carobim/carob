@@ -28,6 +28,7 @@
 
 #include "os/c.h"
 #include "os/mapped-file.h"
+#include "util/constexpr.h"
 #include "util/hashtable.h"
 #include "util/int.h"
 #include "util/new.h"

@@ -28,6 +28,7 @@
 #define SRC_PACK_PACK_READER_H_
 
 #include "util/int.h"
+#include "util/constexpr.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 

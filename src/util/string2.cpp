@@ -29,6 +29,7 @@
 
 #include "os/c.h"
 #include "os/os.h"
+#include "util/constexpr.h"
 #include "util/int.h"
 #include "util/math2.h"
 #include "util/noexcept.h"
