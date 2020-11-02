@@ -61,7 +61,7 @@ getFullPath(StringView path) noexcept {
 }
 
 bool
-Resources::load(StringView path, StringView& data) noexcept {
+resourceLoad(StringView path, StringView& data) noexcept {
     LockGuard lock(mutex);
 
     if (!openPackFile()) {

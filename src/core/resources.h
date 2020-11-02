@@ -33,11 +33,9 @@
 
 // Provides data and resource extraction for a World.
 // Each World comes bundled with associated data.
-class Resources {
- public:
-    // Load a resource from the file at the given path.
-    static bool
-    load(StringView path, StringView& data) noexcept;
-};
+
+// Load a resource from the file at the given path.
+bool
+resourceLoad(StringView path, StringView& data) noexcept;
 
 #endif  // SRC_CORE_RESOURCES_H_

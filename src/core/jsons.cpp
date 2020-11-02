@@ -34,7 +34,7 @@
 JsonDocument
 loadJson(StringView path) noexcept {
     StringView data;
-    if (!Resources::load(path, data)) {
+    if (!resourceLoad(path, data)) {
         return JsonDocument();
     }
 

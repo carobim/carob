@@ -139,7 +139,7 @@ load(StringView path) noexcept {
     tiles = {};
 
     StringView r;
-    if (!Resources::load(path, r)) {
+    if (!resourceLoad(path, r)) {
         // Error logged.
         return 0;
     }

@@ -114,7 +114,7 @@ init() noexcept {
 static SDL2Sound
 makeSound(StringView path) noexcept {
     StringView r;
-    if (!Resources::load(path, r)) {
+    if (!resourceLoad(path, r)) {
         // Error logged.
         return SDL2Sound();
     }

@@ -56,7 +56,7 @@ load(StringView path) noexcept {
     newSong.mix = 0;
 
     StringView r;
-    if (!Resources::load(path, r)) {
+    if (!resourceLoad(path, r)) {
         // Error logged.
         return 0;
     }
