@@ -68,7 +68,7 @@ _ACRTIMP uintptr_t __cdecl _beginthreadex(
         unsigned* thrdaddr) noexcept;
 
 #define INFINITE 0xFFFFFFFF  // Infinite timeout.
-constexpr DWORD WAIT_FAILED = 0xFFFFFFFF;
+#define WAIT_FAILED 0xFFFFFFFF
 }
 
 static unsigned WINAPI

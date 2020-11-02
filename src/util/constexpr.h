@@ -27,7 +27,8 @@
 #ifndef SRC_UTIL_CONSTEXPR_H_
 #define SRC_UTIL_CONSTEXPR_H_
 
-#if __cplusplus < 201103L
+#if __cplusplus < 201103L && \
+        _MSC_VER < 1900  // Visual Studio 2013 or lower
 #define constexpr
 #endif
 

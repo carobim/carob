@@ -28,6 +28,7 @@
 #define SRC_OS_CHRONO_H_
 
 #include "util/int.h"
+#include "util/noexcept.h"
 
 typedef int64_t Seconds;
 typedef int64_t Milliseconds;

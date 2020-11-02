@@ -41,26 +41,26 @@
  */
 bool
 isInteger(StringView s) noexcept {
-    constexpr int space = 0;
-    constexpr int sign = 1;
-    constexpr int digit = 2;
+#define SPACE 0
+#define SIGN 1
+#define DIGIT 2
 
-    int state = space;
+    int state = SPACE;
 
     for (size_t i = 0; i < s.size; i++) {
         char c = s.data[i];
-        if (state == space) {
+        if (state == SPACE) {
             if (c == ' ')
                 continue;
             else
                 state++;
         }
-        if (state == sign) {
+        if (state == SIGN) {
             state++;
             if (c == '-')
                 continue;
         }
-        if (state == digit) {
+        if (state == DIGIT) {
             if ('0' <= c && c <= '9')
                 continue;
             else
@@ -68,6 +68,10 @@ isInteger(StringView s) noexcept {
         }
     }
     return true;
+
+#undef SPACE
+#undef SIGN
+#undef DIGIT
 }
 
 /**
@@ -75,38 +79,38 @@ isInteger(StringView s) noexcept {
  */
 bool
 isDecimal(StringView s) noexcept {
-    constexpr int space = 0;
-    constexpr int sign = 1;
-    constexpr int digit = 2;
-    constexpr int dot = 3;
-    constexpr int digit2 = 4;
+#define SPACE 0
+#define SIGN 1
+#define DIGIT 2
+#define DOT 3
+#define DIGIT2 4
 
-    int state = space;
+    int state = SPACE;
 
     for (size_t i = 0; i < s.size; i++) {
         char c = s.data[i];
         switch (state) {
-        case space:
+        case SPACE:
             if (c == ' ')
                 continue;
             else
                 state++;
-        case sign:
+        case SIGN:
             state++;
             if (c == '-')
                 continue;
-        case digit:
+        case DIGIT:
             if ('0' <= c && c <= '9')
                 continue;
             else
                 state++;
-        case dot:
+        case DOT:
             state++;
             if (c == '.')
                 continue;
             else
                 return false;
-        case digit2:
+        case DIGIT2:
             if ('0' <= c && c <= '9')
                 continue;
             else
@@ -114,6 +118,12 @@ isDecimal(StringView s) noexcept {
         }
     }
     return true;
+
+#undef SPACE
+#undef SIGN
+#undef DIGIT
+#undef DOT
+#undef DIGIT2
 }
 
 /**
@@ -121,46 +131,51 @@ isDecimal(StringView s) noexcept {
  */
 bool
 isRanges(StringView s) noexcept {
-    constexpr int sign = 0;
-    constexpr int digit = 1;
-    constexpr int dash = 3;
-    constexpr int comma = 4;
+#define SIGN 0
+#define DIGIT 1
+#define DASH 3
+#define COMMA 4
 
     bool dashed = false;
 
-    int state = sign;
+    int state = SIGN;
 
     for (size_t i = 0; i < s.size; i++) {
         char c = s.data[i];
         switch (state) {
-        case sign:
+        case SIGN:
             state++;
             if (c == '-' || c == '+')
                 break;
-        case digit:
+        case DIGIT:
             if ('0' <= c && c <= '9')
                 break;
             state++;
-        case dash:
+        case DASH:
             state++;
             if (c == '-') {
                 if (dashed)
                     return false;
                 dashed = true;
-                state = sign;
+                state = SIGN;
                 break;
             }
-        case comma:
+        case COMMA:
             state++;
             if (c == ',') {
                 dashed = false;
-                state = sign;
+                state = SIGN;
                 break;
             }
             return false;
         }
     }
     return true;
+
+#undef SIGN
+#undef DIGIT
+#undef DASH
+#undef COMMA
 }
 
 static inline char
@@ -254,7 +269,7 @@ parseInt(int& out, String& s) noexcept {
         // Overflow.
         return false;
     }
-    if (l > UINT32_MAX) {
+    if (l > static_cast<long>(UINT32_MAX)) {
         // Overflow.
         return false;
     }

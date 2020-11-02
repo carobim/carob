@@ -116,7 +116,7 @@ listArchive(StringView archivePath) noexcept {
     if (pack) {
         String output;
 
-        for (PackReader::BlobIndex i = 0; i < pack->size(); i++) {
+        for (BlobIndex i = 0; i < pack->size(); i++) {
             StringView blobPath = pack->getBlobPath(i);
             uint64_t blobSize = pack->getBlobSize(i);
 
@@ -191,11 +191,11 @@ extractArchive(StringView archivePath) noexcept {
 
     if (pack) {
         Vector<void*> blobDatas;
-        for (PackReader::BlobIndex i = 0; i < pack->size(); i++) {
+        for (BlobIndex i = 0; i < pack->size(); i++) {
             blobDatas.push_back(pack->getBlobData(i));
         }
 
-        for (PackReader::BlobIndex i = 0; i < pack->size(); i++) {
+        for (BlobIndex i = 0; i < pack->size(); i++) {
             StringView blobPath = pack->getBlobPath(i);
             uint32_t blobSize = pack->getBlobSize(i);
             void* blobData = blobDatas[i];

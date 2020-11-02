@@ -56,6 +56,9 @@ ivec2_to_dir(ivec2 v) noexcept {
     }
 }
 
+TileGrid::TileGrid() noexcept
+    : dim({0, 0, 0}), tileDim({0, 0}), loopX(false), loopY(false) {}
+
 int
 TileGrid::getTileType(icoord phys) noexcept {
     int idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;

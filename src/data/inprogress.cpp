@@ -32,6 +32,10 @@
 #include "data/inprogress-sound.h"
 #include "data/inprogress-timer.h"
 
+InProgress::InProgress() noexcept : over(false) {
+}
+InProgress::~InProgress() noexcept {}
+
 bool
 InProgress::isOver() noexcept {
     return over;

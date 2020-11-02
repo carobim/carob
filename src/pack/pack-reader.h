@@ -28,17 +28,16 @@
 #define SRC_PACK_PACK_READER_H_
 
 #include "util/int.h"
-#include "util/constexpr.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 
+typedef uint32_t BlobIndex;
+typedef uint32_t BlobSize;
+
+static BlobIndex BLOB_NOT_FOUND = UINT32_MAX;
+
 class PackReader {
  public:
-    typedef uint32_t BlobIndex;
-    typedef uint32_t BlobSize;
-
-    static constexpr BlobIndex BLOB_NOT_FOUND = UINT32_MAX;
-
     static PackReader*
     fromFile(StringView path) noexcept;
     virtual ~PackReader() = default;

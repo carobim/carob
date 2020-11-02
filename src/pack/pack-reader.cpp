@@ -43,7 +43,7 @@ struct HeaderBlock {
     uint8_t magic[8];
     uint8_t version;
     uint8_t unused[7];
-    PackReader::BlobIndex blobCount;
+    BlobIndex blobCount;
     uint32_t pathOffsetsBlockOffset;
     uint32_t pathsBlockOffset;
     uint32_t pathsBlockSize;
@@ -56,8 +56,8 @@ typedef uint32_t PathOffset;
 enum BlobCompressionType { BLOB_COMPRESSION_NONE };
 
 struct BlobMetadata {
-    PackReader::BlobSize uncompressedSize;
-    PackReader::BlobSize compressedSize;
+    BlobSize uncompressedSize;
+    BlobSize compressedSize;
     BlobCompressionType compressionType;
 };
 
@@ -148,12 +148,12 @@ PackReaderImpl::~PackReaderImpl() noexcept {
     destroyMappedFile(file);
 }
 
-PackReader::BlobIndex
+BlobIndex
 PackReaderImpl::size() noexcept {
     return header->blobCount;
 }
 
-PackReader::BlobIndex
+BlobIndex
 PackReaderImpl::findIndex(StringView path) noexcept {
     if (!lookupsConstructed) {
         lookupsConstructed = true;
@@ -170,25 +170,25 @@ PackReaderImpl::findIndex(StringView path) noexcept {
 }
 
 StringView
-PackReaderImpl::getBlobPath(PackReader::BlobIndex index) noexcept {
+PackReaderImpl::getBlobPath(BlobIndex index) noexcept {
     uint32_t begin = pathOffsets[index];
     uint32_t end = pathOffsets[index + 1];
     return StringView(paths + begin, end - begin);
 }
 
-PackReader::BlobSize
-PackReaderImpl::getBlobSize(PackReader::BlobIndex index) noexcept {
+BlobSize
+PackReaderImpl::getBlobSize(BlobIndex index) noexcept {
     return metadatas[index].uncompressedSize;
 }
 
 void*
-PackReaderImpl::getBlobData(PackReader::BlobIndex index) noexcept {
+PackReaderImpl::getBlobData(BlobIndex index) noexcept {
     return file.data + dataOffsets[index];
 }
 
 void
 PackReaderImpl::constructLookups() noexcept {
-    for (PackReader::BlobIndex i = 0; i < header->blobCount; i++) {
+    for (BlobIndex i = 0; i < header->blobCount; i++) {
         uint32_t pathBegin = pathOffsets[i];
         uint32_t pathEnd = pathOffsets[i + 1];
         StringView blobPath(paths + pathBegin, pathEnd - pathBegin);

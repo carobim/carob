@@ -111,6 +111,8 @@ struct EmptyIcoord {
 
 class TileGrid {
  public:
+    TileGrid() noexcept;
+
     int
     getTileType(icoord phys) noexcept;
     int
@@ -180,11 +182,11 @@ class TileGrid {
     Vector<LayerType> layerTypes;
 
     // 3-dimensional length of map.
-    ivec3 dim = {0, 0, 0};
+    ivec3 dim;
 
     // Pixel size for each tile in area. All tiles in a TileGrid must be the
     // same size.
-    ivec2 tileDim = {0, 0};
+    ivec2 tileDim;
 
     // Maps virtual float-point depths to an index in our map array.
     Hashmap<float, int, EmptyFloat> depth2idx;
@@ -192,8 +194,8 @@ class TileGrid {
     // Maps an index in our map array to a virtual float-point depth.
     Vector<float> idx2depth;
 
-    bool loopX = false;
-    bool loopY = false;
+    bool loopX;
+    bool loopY;
 
     Hashmap<icoord, bool, EmptyIcoord> occupied;
 
@@ -211,6 +213,11 @@ class TileGrid {
 
     Hashmap<icoord, Exit, EmptyIcoord> exits[EXITS_LENGTH];
     Hashmap<icoord, float, EmptyIcoord> layermods[EXITS_LENGTH];
+
+ private:
+    TileGrid(const TileGrid&);
+    void
+    operator=(const TileGrid&);
 };
 
 #endif  // SRC_CORE_TILE_GRID_H_

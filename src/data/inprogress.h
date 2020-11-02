@@ -52,7 +52,7 @@
  */
 class InProgress {
  public:
-    virtual ~InProgress() = default;
+    virtual ~InProgress() noexcept;
 
     virtual void
     tick(time_t dt) noexcept = 0;
@@ -60,9 +60,9 @@ class InProgress {
     isOver() noexcept;
 
  protected:
-    InProgress() noexcept = default;
+    InProgress() noexcept;
 
-    bool over = false;
+    bool over;
 
  private:
     InProgress(const InProgress&) = delete;

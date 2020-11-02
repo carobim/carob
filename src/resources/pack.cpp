@@ -68,9 +68,9 @@ resourceLoad(StringView path, StringView& data) noexcept {
         return false;
     }
 
-    PackReader::BlobIndex index = pack->findIndex(path);
+    BlobIndex index = pack->findIndex(path);
 
-    if (index == PackReader::BLOB_NOT_FOUND) {
+    if (index == BLOB_NOT_FOUND) {
         logErr("PackResources",
                String() << getFullPath(path) << ": file missing");
         return false;
@@ -79,7 +79,7 @@ resourceLoad(StringView path, StringView& data) noexcept {
     uint32_t blobSize = pack->getBlobSize(index);
 
     // Will it fit in memory?
-    if (blobSize > INT32_MAX) {
+    if (blobSize > static_cast<uint32_t>(INT32_MAX)) {
         logErr("PackResources",
                String() << getFullPath(path) << ": file too large");
         return false;

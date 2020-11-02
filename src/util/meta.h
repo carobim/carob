@@ -27,8 +27,6 @@
 #ifndef SRC_UTIL_META_H_
 #define SRC_UTIL_META_H_
 
-#include "util/constexpr.h"
-
 //
 // template struct If
 //
@@ -62,19 +60,5 @@ struct EnableIf_<true> {
 
 template<bool Cond>
 using EnableIf = typename EnableIf_<Cond>::value;
-
-//
-// template bool IsUnit
-//
-struct Unit {};
-
-template<typename T>
-struct IsUnit {
-    static CONSTEXPR11 bool value = false;
-};
-template<>
-struct IsUnit<Unit> {
-    static CONSTEXPR11 bool value = true;
-};
 
 #endif  // SRC_UTIL_META_H_

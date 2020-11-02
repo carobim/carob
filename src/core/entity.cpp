@@ -359,6 +359,12 @@ setScript(Entity* e, StringView trigger, ScriptRef& script) noexcept {
  * PUBLIC ENTITY CODE BELOW
  */
 
+Entity::Entity() noexcept
+    : dead(false), redraw(true), area(0), r({0.0, 0.0, 0.0}), frozen(false),
+      moving(false), phase(0), facing({0, 0}) {}
+
+Entity::~Entity() noexcept {}
+
 bool
 Entity::init(StringView descriptor, StringView initialPhase) noexcept {
     this->descriptor = descriptor;
