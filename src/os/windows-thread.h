@@ -114,17 +114,17 @@ class Thread {
         id = 0;
     }
 
-    static inline unsigned
-    hardware_concurrency() noexcept {
-        SYSTEM_INFO info;
-        GetSystemInfo(&info);
-        return info.dwNumberOfProcessors;
-    }
-
-    static void
-    disableTimerCoalescing() noexcept {}
-
     HANDLE id = 0;
 };
+
+static inline unsigned
+threadHardwareConcurrency() noexcept {
+    SYSTEM_INFO info;
+    GetSystemInfo(&info);
+    return info.dwNumberOfProcessors;
+}
+
+static void
+threadDisableTimerCoalescing() noexcept {}
 
 #endif  // SRC_OS_WINDOWS_THREAD_H_

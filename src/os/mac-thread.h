@@ -43,13 +43,12 @@ class Thread {
     join() noexcept;
 
  public:
-    void* t = nullptr;
-
- public:
-    static void
-    disableTimerCoalescing() noexcept;
-    static unsigned
-    hardware_concurrency() noexcept;
+    void* t = 0;
 };
+
+void
+threadDisableTimerCoalescing() noexcept;
+unsigned
+threadHardwareConcurrency() noexcept;
 
 #endif  // SRC_OS_MAC_THREAD_H_

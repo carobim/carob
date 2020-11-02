@@ -96,7 +96,7 @@ JobsEnqueue(Job job) noexcept {
     jobs.push_back(job);
 
     if (workerLimit == 0) {
-        workerLimit = Thread::hardware_concurrency();
+        workerLimit = threadHardwareConcurrency();
     }
 
     if (workers.size < workerLimit) {

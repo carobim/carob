@@ -69,7 +69,7 @@ main() noexcept {
     macSetWorkingDirectory();
 #endif
 
-    Thread::disableTimerCoalescing();
+    threadDisableTimerCoalescing();
 
     Conf::parse(CLIENT_CONF_PATH);
 

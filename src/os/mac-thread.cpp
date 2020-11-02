@@ -90,7 +90,7 @@ Thread::join() noexcept {
 }
 
 void
-Thread::disableTimerCoalescing() noexcept {
+threadDisableTimerCoalescing() noexcept {
     thread_extended_policy policyInfo = {
             .timeshare = false,
     };
@@ -102,7 +102,7 @@ Thread::disableTimerCoalescing() noexcept {
 }
 
 unsigned
-Thread::hardware_concurrency() noexcept {
+threadHardwareConcurrency() noexcept {
     unsigned n;
     int mib[2] = {CTL_HW, HW_NCPU};
     size_t s = sizeof(n);

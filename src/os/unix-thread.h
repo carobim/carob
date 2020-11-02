@@ -69,19 +69,19 @@ class Thread {
         t = 0;
     }
 
-    static inline unsigned
-    hardware_concurrency() noexcept {
-        long result = sysconf(_SC_NPROCESSORS_ONLN);
-        if (result < 0) {
-            return 0;
-        }
-        return static_cast<unsigned>(result);
-    }
-
-    static void
-    disableTimerCoalescing() noexcept {}
-
     pthread_t t = 0;
 };
+
+static inline unsigned
+threadHardwareConcurrency() noexcept {
+    long result = sysconf(_SC_NPROCESSORS_ONLN);
+    if (result < 0) {
+        return 0;
+    }
+    return static_cast<unsigned>(result);
+}
+
+static void
+threadDisableTimerCoalescing() noexcept {}
 
 #endif  // SRC_OS_LINUX_THREAD_H_
