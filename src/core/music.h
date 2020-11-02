@@ -41,26 +41,24 @@
  * When a new music is played, the pause state of the previous music is
  * dropped.
  */
-class Music {
- public:
-    //! If the music path has changed, start playing it.
-    static void
-    play(StringView path) noexcept;
 
-    //! Stop playing music. To begin again, set a new intro or loop.
-    static void
-    stop() noexcept;
+//! If the music path has changed, start playing it.
+void
+musicPlay(StringView path) noexcept;
 
-    //! Pause playback of music.
-    static void
-    pause() noexcept;
-    //! Resume playback of music.
-    static void
-    resume() noexcept;
+//! Stop playing music. To begin again, set a new intro or loop.
+void
+musicStop() noexcept;
 
-    //! Free music not recently played.
-    static void
-    garbageCollect() noexcept;
-};
+//! Pause playback of music.
+void
+musicPause() noexcept;
+//! Resume playback of music.
+void
+musicResume() noexcept;
+
+//! Free music not recently played.
+void
+musicGarbageCollect() noexcept;
 
 #endif  // SRC_CORE_MUSIC_H_

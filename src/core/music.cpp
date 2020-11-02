@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** music.cpp                          **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2020 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -31,32 +31,32 @@
 //#include "util/jobs.h"
 
 void
-Music::play(StringView name) noexcept {
+musicPlay(StringView name) noexcept {
     // String name_ = name;
     // JobsEnqueue([name_]() { MusicWorker::play(name_); });
     MusicWorker::play(name);
 }
 
 void
-Music::stop() noexcept {
+musicStop() noexcept {
     // JobsEnqueue([]() { MusicWorker::stop(); });
     MusicWorker::stop();
 }
 
 void
-Music::pause() noexcept {
+musicPause() noexcept {
     // JobsEnqueue([]() { MusicWorker::pause(); });
     MusicWorker::pause();
 }
 
 void
-Music::resume() noexcept {
+musicResume() noexcept {
     // JobsEnqueue([]() { MusicWorker::resume(); });
     MusicWorker::resume();
 }
 
 void
-Music::garbageCollect() noexcept {
+musicGarbageCollect() noexcept {
     // JobsEnqueue([]() { MusicWorker::garbageCollect(); });
     MusicWorker::garbageCollect();
 }

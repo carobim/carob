@@ -57,7 +57,7 @@ Area::focus() {
     }
 
     if (musicPath.size) {
-        Music::play(musicPath);
+        musicPlay(musicPath);
     }
 
     if (dataArea) {

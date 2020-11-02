@@ -233,10 +233,10 @@ worldSetPaused(bool b) noexcept {
     paused += b ? 1 : -1;
 
     if (paused) {
-        Music::pause();
+        musicPause();
     }
     else {
-        Music::resume();
+        musicResume();
     }
 
     // If finally unpausing.
@@ -275,6 +275,6 @@ worldGarbageCollect() noexcept {
     time_t latestPermissibleUse = total - Conf::cacheTTL * 1000;
 
     imagesPrune(latestPermissibleUse);
-    Music::garbageCollect();
+    musicGarbageCollect();
     soundsPrune(latestPermissibleUse);
 }
