@@ -4,45 +4,114 @@
 language: cpp
 os: osx
 
-_null_cmake: &null_cmake
+_script: &script
   script:
-  - curl -sL https://github.com/Kitware/CMake/releases/download/v3.8.0/cmake-3.8.0-Darwin-x86_64.tar.gz | tar xz
-  - mkdir build && cd build
-  - ../cmake-3.8.0-Darwin-x86_64/CMake.app/Contents/bin/cmake ..
-  - make
+  - |
+    # Problem: The latest versions of Homebrew don't support older versions of
+    #          OS X. This causes builds to fail.
+    # Problem: Updating Homebrew on the latest macOS images is slow and causes
+    #          builds to take ~4 minutes, which is 90% of the build time.
+    # Fix:     Download & install Homebrew bottles manually.
 
-_null: &null
-  script:
-  - mkdir build && cd build
-  - cmake ..
-  - make
+    shopt -s nullglob
 
-_sdl2: &sdl2
- addons:
-   homebrew:
-     packages:
-     - sdl2
-     - sdl2_image
-     - sdl2_mixer
-     update: true
- env:
- - LDFLAGS=-L/usr/local/lib
- script:
- - mkdir build && cd build
- - cmake .. -DAV_SDL2=On
- - make
+    set -x
+
+    # Download Homebrew bottles.
+    for bottle in $BOTTLES; do
+      # if bottle=foo-1.2   then name=foo-1.2 and rebuild=
+      # if bottle=foo-1.2^3 then name=foo-1.2 and rebuild=.3
+      name=${bottle%^*}
+      rebuild=${bottle#$name}
+      rebuild=${rebuild:+.}${rebuild#^}
+
+      mkdir -p ~/Cellar
+      curl -L https://homebrew.bintray.com/bottles/$name.$BOTTLE_TAG.bottle$rebuild.tar.gz | gzip -d | tar x -C ~/Cellar
+    done
+
+    IFS='
+    '
+
+    # We don't have linker flags appropriate for linking against ar archives
+    # at the moment. Ensure the dylibs are chosen by removing the archives.
+    find ~/Cellar -name '*.a' -delete 2>/dev/null
+
+    # Link Homebrew bottles into a "/usr/local"-like environment in the home
+    # directory because the real /usr/local is read-only.
+    for pkg in ~/Cellar/*; do
+      builtin pushd $pkg >/dev/null
+      mkdir -p ~/opt
+      ln -s * ~/opt/${pkg##*/}
+      builtin popd >/dev/null
+
+      builtin pushd $pkg/* >/dev/null
+      for config in $(find lib/cmake lib/pkgconfig -type f 2>/dev/null); do
+        sed -i '' -e s-@@HOMEBREW_PREFIX@@-$HOME- $config
+      done
+      for f in $(find bin include lib share -type d 2>/dev/null); do
+        mkdir -p ~/"$f"
+      done
+      for f in $(find bin include lib share -type f 2>/dev/null); do
+        ln -s "$f" ~/"$f"
+      done
+      for f in $(find bin include lib share -type l 2>/dev/null); do
+        cp "$f" ~/"$f"
+      done
+      builtin popd >/dev/null
+    done
+
+    # Configure dylib install names.
+    for dylib in $(find ~/Cellar -name '*.dylib' -type f 2>/dev/null); do
+      otool -L $dylib
+      chmod +w $dylib
+      install_name_tool -id $dylib $dylib
+      for line in $(otool -L $dylib | grep @@HOMEBREW_PREFIX@@); do
+        link=$(echo $line | awk '{ print $1 }')
+        link=${link#@@HOMEBREW_PREFIX@@/}
+        install_name_tool -change @@HOMEBREW_PREFIX@@/$link ~/$link $dylib
+      done
+      for line in $(otool -L $dylib | grep @@HOMEBREW_CELLAR@@); do
+        link=$(echo $line | awk '{ print $1 }')
+        link=${link#@@HOMEBREW_CELLAR@@/}
+        install_name_tool -change @@HOMEBREW_CELLAR@@/$link ~/Cellar/$link $dylib
+      done
+      otool -L $dylib
+    done
+
+    export PATH=~/bin:"$PATH"
+    export CFLAGS="-I$HOME/include $CFLAGS"
+    export CXXFLAGS="-I$HOME/include $CXXFLAGS"
+    export LDFLAGS="-L$HOME/lib $LDFLAGS"
+    export CMAKE_PREFIX_PATH=~/lib/cmake${CMAKE_PREFIX_PATH:+:}"$CMAKE_PREFIX_PATH"
+    export PKG_CONFIG_PATH=~/lib/pkgconfig${PKG_CONFIG_PATH:+:}"$PKG_CONFIG_PATH"
+  - |
+    mkdir build
+    builtin cd >/dev/null build
+    cmake .. $CMAKE_OPTS
+  - make
 
 jobs:
   include:
-  - name: 10.11 null
+  - name: 10.11 El Capitan null
     osx_image: xcode7.3
-    <<: *null_cmake
-  - name: 10.15 null
+    env:
+    - BOTTLE_TAG=el_capitan
+    - BOTTLES=cmake-3.12.2
+    <<: *script
+  - name: 10.11 El Capitan sdl2
+    osx_image: xcode7.3
+    env:
+    - BOTTLE_TAG=el_capitan
+    - BOTTLES='cmake-3.12.2 jpeg-9c libmodplug-0.8.9.0 libogg-1.3.3 libpng-1.6.35 libtiff-4.0.9 libvorbis-1.3.6 pkg-config-0.29.2 sdl2-2.0.8 sdl2_image-2.0.3 sdl2_mixer-2.0.2 webp-1.0.0'
+    - CMAKE_OPTS=-DAV_SDL2=On
+    <<: *script
+  - name: 10.15 Catalina null
     osx_image: xcode12.2
-    <<: *null
-  - name: 10.13 sdl2
-    osx_image: xcode10.1
-    <<: *sdl2
-  - name: 10.15 sdl2
+    <<: *script
+  - name: 10.15 Catalina sdl2
     osx_image: xcode12.2
-    <<: *sdl2
+    env:
+    - BOTTLE_TAG=catalina
+    - BOTTLES='libmodplug-0.8.9.0^1 libogg-1.3.4 libpng-1.6.37 libtiff-4.1.0 libvorbis-1.3.7 pkg-config-0.29.2 sdl2-2.0.12 sdl2_image-2.0.5 sdl2_mixer-2.0.4 webp-1.1.0'
+    - CMAKE_OPTS=-DAV_SDL2=On
+    <<: *script
