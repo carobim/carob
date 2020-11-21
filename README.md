@@ -2,7 +2,8 @@
 
 | BUILD      | STATUS                                                                                                                                                                |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Windows    | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/TsunagariEngine/Tsunagari?svg=true)](https://ci.appveyor.com/project/TsunagariEngine/Tsunagari)       |
+| Windows    | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/TsunagariEngine/Tsunagari?svg=true)](https://ci.appveyor.com/project/TsunagariEngine/Tsunagari) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTsunagariEngine%2FTsunagari.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTsunagariEngine%2FTsunagari?ref=badge_shield)
+      |
 | macOS      | [![TravisCI](https://api.travis-ci.com/TsunagariEngine/Tsunagari.svg)](https://travis-ci.com/TsunagariEngine/Tsunagari)                                               |
 | Linux      | [![CircleCI](https://circleci.com/gh/TsunagariEngine/Tsunagari.svg?style=shield)](https://circleci.com/gh/TsunagariEngine/Tsunagari)                                  |
 | FreeBSD 11 | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-11.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-11.yml) |
@@ -50,3 +51,7 @@ Requirements:
 | NAME        | LICENSE     | LINK                   |
 | ----------- | ----------- | ---------------------- |
 | SDL2        | zlib        | http://www.libsdl.org  |
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTsunagariEngine%2FTsunagari.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTsunagariEngine%2FTsunagari?ref=badge_large)
