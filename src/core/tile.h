@@ -29,6 +29,7 @@
 #define SRC_CORE_TILE_H_
 
 #include "util/int.h"
+#include "util/noexcept.h"
 
 struct TileSet {
     int firstGid;
