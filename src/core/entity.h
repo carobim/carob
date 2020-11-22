@@ -167,35 +167,35 @@ class Entity {
 
  public:
     // Set to true if the Entity was destroyed this tick.
-    bool dead = false;
+    bool dead;
 
     // Set to true if the Entity wants the screen to be redrawn.
-    bool redraw = true;
+    bool redraw;
 
     // Pointer to Area this Entity is located on.
-    Area* area = 0;
+    Area* area;
     // Real x,y position: hold partial pixel transversal
-    rcoord r = {0.0, 0.0, 0.0};
+    rcoord r;
     // Drawing offset to center entity on tile.
     rcoord doff;
 
     String descriptor;
 
-    bool frozen = false;
+    bool frozen;
 
     float tilesPerSecond;
     float pixelsPerSecond;
 
     // True if currently moving to a new coordinate in an Area.
-    bool moving = false;
+    bool moving;
 
     rcoord destCoord;
     float angleToDest;
 
     ivec2 imgsz;
-    Animation* phase = 0;
-    String phaseName = "";
-    ivec2 facing = {0, 0};
+    Animation* phase;
+    String phaseName;
+    ivec2 facing;
 
     Animation phaseStance;
     Animation phaseDown;
