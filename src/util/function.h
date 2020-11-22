@@ -306,8 +306,8 @@ Function<R(ArgTypes...) noexcept>::swap(Function& other) noexcept {
     }
 
     if ((void*)f == &buf && (void*)other.f == &other.buf) {
-        alignas(alignof(void* [3])) char tempbuf[3 * sizeof(void*)];
-        base* t = asBase(&tempbuf);
+        Align<void* [3]> tempbuf;
+        base* t = asBase(&tempbuf.storage);
         f->clone(t);
         f->destroy();
         f = 0;

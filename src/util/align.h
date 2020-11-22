@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** align.h                     **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** align.h                          **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,7 +29,15 @@
 
 template<typename T>
 struct Align {
+#if defined(_MSC_VER) && _MSC_VER < 1900 && _WIN64
+    // 64-bit MSVC 2013 and lower
+    __declspec(align(8)) char storage[sizeof(T)];
+#elif defined(_MSC_VER) && _MSC_VER < 1900
+    // 32-bit MSVC 2013 and lower
+    __declspec(align(4)) char storage[sizeof(T)];
+#else
     alignas(alignof(T)) char storage[sizeof(T)];
+#endif
 };
 
 #endif  // SRC_UTIL_ALIGN_H_
