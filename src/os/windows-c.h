@@ -69,6 +69,7 @@ typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #define __CRTDECL __cdecl
 #define _ACRTIMP __declspec(dllimport)
 #define _ACRTIMP_ALT __declspec(dllimport)
+#define _CRTIMP __declspec(dllimport)
 #define _CRTRESTRICT __declspec(restrict)
 #define WINAPI __stdcall
 #define WINBASEAPI __declspec(dllimport)
@@ -81,11 +82,19 @@ typedef struct _iobuf {
     void* _Placeholder;
 } FILE;
 
+#if _MSC_VER < 1900
+// MSVC 2013 and below
+_CRTIMP FILE* __cdecl __iob_func() noexcept;
+#define stdin  (&__iob_func()[0])
+#define stdout (&__iob_func()[1])
+#define stderr (&__iob_func()[2])
+#else
+// MSVC 2015 and above
 _ACRTIMP_ALT FILE* __cdecl __acrt_iob_func(unsigned) noexcept;
-
 #define stdin (__acrt_iob_func(0))
 #define stdout (__acrt_iob_func(1))
 #define stderr (__acrt_iob_func(2))
+#endif
 
 typedef __int64 __time64_t;
 
