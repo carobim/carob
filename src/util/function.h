@@ -166,17 +166,6 @@ class Function<R(ArgTypes...) noexcept> {
     Function(F) noexcept;
     ~Function() noexcept;
 
-    template<class F>
-    void
-    set(F& something,
-        EnableIf<sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
-                 sizeof(buf)> = True()) noexcept;
-    template<class F>
-    void
-    set(F& something,
-        EnableIf<!(sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
-                   sizeof(buf))> = True()) noexcept;
-
     Function&
     operator=(const Function&) noexcept;
     Function&
@@ -225,34 +214,21 @@ Function<R(ArgTypes...) noexcept>::Function(Function&& other) noexcept {
 
 template<class R, class... ArgTypes>
 template<class F>
-Function<R(ArgTypes...) noexcept>::Function(F something) noexcept : f(0) {
-    set(something);
-}
+Function<R(ArgTypes...) noexcept>::Function(F something) noexcept {
+    if (sizeof(function::func<F, R(ArgTypes...) noexcept>) <= sizeof(buf)) {
+        f = new ((void*)&buf)
+                function::func<F, R(ArgTypes...) noexcept>(static_cast<F&&>(something));
+    }
+    else {
+        // f = new function::func<F, R(ArgTypes...)>(
+        //     static_cast<F&&>(something)
+        // );
+        using T = function::func<F, R(ArgTypes...)>;
 
-template<class R, class... ArgTypes>
-template<class F>
-void
-Function<R(ArgTypes...) noexcept>::set(
-        F& something,
-        EnableIf<sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
-                 sizeof(buf)>) noexcept {
-    f = new ((void*)&buf)
-            function::func<F, R(ArgTypes...) noexcept>(static_cast<F&&>(something));
-}
-
-template<class R, class... ArgTypes>
-template<class F>
-void
-Function<R(ArgTypes...) noexcept>::set(
-        F& something,
-        EnableIf<!(sizeof(function::func<F, R(ArgTypes...) noexcept>) <=
-                   sizeof(buf))>) noexcept {
-    // f = new function::func<F, R(ArgTypes...)>(static_cast<F&&>(something));
-    using T = function::func<F, R(ArgTypes...)>;
-
-    void* buf = malloc(sizeof(T));
-    new (buf) T(static_cast<F&&>(something));
-    f = reinterpret_cast<T*>(buf);
+        void* buf = malloc(sizeof(T));
+        new (buf) T(static_cast<F&&>(something));
+        f = reinterpret_cast<T*>(buf);
+    }
 }
 
 template<class R, class... ArgTypes>
