@@ -67,17 +67,9 @@ class String {
     String&
     operator<<(bool b) noexcept;
     String&
-    operator<<(int i) noexcept;
+    operator<<(int64_t i) noexcept;
     String&
-    operator<<(unsigned int u) noexcept;
-    String&
-    operator<<(long l) noexcept;
-    String&
-    operator<<(unsigned long ul) noexcept;
-    String&
-    operator<<(long long ll) noexcept;
-    String&
-    operator<<(unsigned long long ull) noexcept;
+    operator<<(uint64_t u) noexcept;
     String&
     operator<<(float f) noexcept;
 
