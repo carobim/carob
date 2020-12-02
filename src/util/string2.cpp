@@ -394,3 +394,24 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
 
     return true;
 }
+
+StringView
+Lines::operator++(int) noexcept {
+    size_t size = file.find('\n');
+    if (size == SV_NOT_FOUND) {
+        return file;
+    }
+
+    const char* begin = file.data;
+    file.data += size + 1;
+    file.size -= size + 1;
+
+    return StringView(begin, size);
+}
+
+Lines
+readLines(StringView file) noexcept {
+    Lines lines;
+    lines.file = file;
+    return lines;
+}
