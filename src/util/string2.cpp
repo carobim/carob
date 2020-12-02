@@ -315,26 +315,28 @@ parseInt100(char* s) noexcept {
     return bound(i, 0, 100);
 }
 
-Vector<StringView>
-splitStr(StringView input, StringView delimiter) noexcept {
-    Vector<StringView> strlist;
+void
+splitStr(Vector<StringView>& out, StringView input,
+         StringView delimiter) noexcept {
     size_t i = 0;
 
     for (StringPosition pos = input.find(delimiter); pos != SV_NOT_FOUND;
          pos = input.find(delimiter, i)) {
-        strlist.push_back(input.substr(i, pos - i));
+        out.push_back(input.substr(i, pos - i));
         i = pos + delimiter.size;
     }
 
     if (input.size != i) {
-        strlist.push_back(input.substr(i));
+        out.push_back(input.substr(i));
     }
-    return strlist;
 }
 
 bool
 parseRanges(Vector<int>& out, StringView format) noexcept {
-    for (StringView range : splitStr(format, ",")) {
+    Vector<StringView> tokens;
+    splitStr(tokens, format, ",");
+
+    for (StringView range : tokens) {
         StringPosition dash = range.find('-');
 
         if (dash == SV_NOT_FOUND) {

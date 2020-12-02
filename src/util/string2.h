@@ -72,8 +72,9 @@ int
 parseInt100(char* s) noexcept;
 
 //! Split a string by a delimiter.
-Vector<StringView>
-splitStr(StringView str, StringView delimiter) noexcept;
+void
+splitStr(Vector<StringView>& out, StringView str,
+         StringView delimiter) noexcept;
 
 /**
  * Parse ranges of integers separated by commas.

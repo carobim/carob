@@ -443,7 +443,8 @@ AreaJSON::processTileType(JsonValue obj,
 
     int nTiles = images.numTiles;
 
-    Vector<StringView> frames = splitStr(framesNode.toString(), ",");
+    Vector<StringView> frames;
+    splitStr(frames, framesNode.toString(), ",");
     CHECK(frames.size);
 
     // Make sure the first member is this tile.
@@ -878,18 +879,21 @@ AreaJSON::processObject(JsonValue obj) noexcept {
 
 bool
 AreaJSON::splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept {
-    for (StringView str : splitStr(strOfFlags, ",")) {
-        if (str == "nowalk") {
+    Vector<StringView> flagStrs;
+    splitStr(flagStrs, strOfFlags, ",");
+
+    for (StringView flagStr : flagStrs) {
+        if (flagStr == "nowalk") {
             *flags |= TILE_NOWALK;
         }
-        else if (str == "nowalk_player") {
+        else if (flagStr == "nowalk_player") {
             *flags |= TILE_NOWALK_PLAYER;
         }
-        else if (str == "nowalk_npc") {
+        else if (flagStr == "nowalk_npc") {
             *flags |= TILE_NOWALK_NPC;
         }
         else {
-            logErr(descriptor, String() << "Invalid tile flag: " << str);
+            logErr(descriptor, String() << "Invalid tile flag: " << flagStr);
             return false;
         }
     }
@@ -942,7 +946,8 @@ AreaJSON::parseExit(StringView dest,
       E.g.:   "babysfirst.area,1,3,0"
     */
 
-    Vector<StringView> strs = splitStr(dest, ",");
+    Vector<StringView> strs;
+    splitStr(strs, dest, ",");
 
     if (strs.size != 4) {
         logErr(descriptor, "exit: Invalid format");
@@ -990,7 +995,8 @@ AreaJSON::parseARGB(StringView str,
                     unsigned char& b) noexcept {
     unsigned char* channels[] = {&a, &r, &g, &b};
 
-    Vector<StringView> strs = splitStr(str, ",");
+    Vector<StringView> strs;
+    splitStr(strs, str, ",");
 
     if (strs.size != 4) {
         logErr(descriptor, "invalid ARGB format");
