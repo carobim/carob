@@ -77,6 +77,13 @@ splitStr(Vector<StringView>& out, StringView str,
          StringView delimiter) noexcept;
 
 /**
+ * Parse ranges of integers.
+ * Can take things such as "5-7".
+ */
+bool
+parseRange(int& lo, int& hi, StringView format) noexcept;
+
+/**
  * Parse ranges of integers separated by commas.
  * Can take things such as "5-7,2,12-18".
  */

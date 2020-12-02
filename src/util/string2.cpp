@@ -331,6 +331,32 @@ splitStr(Vector<StringView>& out, StringView input,
     }
 }
 
+/**
+ * Parse ranges of integers.
+ * Can take things such as "5-7".
+ */
+bool
+parseRange(int& lo, int& hi, StringView range) noexcept {
+    StringPosition dash = range.find('-');
+
+    if (dash == SV_NOT_FOUND) {
+        return false;
+    }
+
+    StringView rngstart = range.substr(0, dash);
+    StringView rngend = range.substr(dash + 1);
+
+    if (!parseInt(lo, rngstart) || !parseInt(hi, rngend)) {
+        return false;
+    }
+
+    if (lo > hi) {
+        return false;
+    }
+
+    return true;
+}
+
 bool
 parseRanges(Vector<int>& out, StringView format) noexcept {
     Vector<StringView> tokens;
