@@ -38,7 +38,7 @@ struct MappedFile {
 };
 
 bool
-makeMappedFile(StringView path, MappedFile& file) noexcept;
+makeMappedFile(MappedFile& file, StringView path) noexcept;
 void
 destroyMappedFile(MappedFile file) noexcept;
 

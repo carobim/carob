@@ -31,7 +31,7 @@
 #include "util/string.h"
 
 bool
-makeMappedFile(StringView& path, MappedFile& file) noexcept {
+makeMappedFile(MappedFile& file, StringView path) noexcept {
     int fd = open(String(path).null(), O_RDONLY);
     if (fd == -1) {
         return false;

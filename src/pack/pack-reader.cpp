@@ -99,7 +99,7 @@ class PackReaderImpl : public PackReader {
 PackReader*
 PackReader::fromFile(StringView path) noexcept {
     MappedFile file;
-    if (!makeMappedFile(path, file)) {
+    if (!makeMappedFile(file, path)) {
         return 0;
     }
     char* data = file.data;

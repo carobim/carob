@@ -77,7 +77,7 @@ UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;
 }
 
 bool
-makeMappedFile(StringView path, MappedFile& map) noexcept {
+makeMappedFile(MappedFile& file, StringView path) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              GENERIC_READ,
                              0,
@@ -103,21 +103,21 @@ makeMappedFile(StringView path, MappedFile& map) noexcept {
         return false;
     }
 
-    map.data = static_cast<char*>(data);
-    map.mapping = mapping;
-    map.file = file;
+    file.data = static_cast<char*>(data);
+    file.mapping = mapping;
+    file.file = file;
     return true;
 }
 
 void
-destroyMappedFile(MappedFile map) noexcept {
-    if (map.data) {
-        UnmapViewOfFile(static_cast<void*>(map.data));
+destroyMappedFile(MappedFile file) noexcept {
+    if (file.data) {
+        UnmapViewOfFile(static_cast<void*>(file.data));
     }
-    if (map.mapping) {
-        CloseHandle(map.mapping);
+    if (file.mapping) {
+        CloseHandle(file.mapping);
     }
-    if (map.file != INVALID_HANDLE_VALUE) {
-        CloseHandle(map.file);
+    if (file.file != INVALID_HANDLE_VALUE) {
+        CloseHandle(file.file);
     }
 }
