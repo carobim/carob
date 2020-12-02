@@ -40,6 +40,17 @@ StringView::StringView(const char* data, size_t size) noexcept
 StringView::StringView(const StringView& s) noexcept
         : data(s.data), size(s.size){};
 
+void
+StringView::operator=(const StringView& s) noexcept {
+    data = s.data;
+    size = s.size;
+}
+
+char
+StringView::operator[](size_t i) noexcept {
+    return data[i];
+}
+
 const char*
 StringView::begin() const noexcept {
     return data;

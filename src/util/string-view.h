@@ -49,10 +49,10 @@ class StringView {
     StringView(const StringView& s) noexcept;
 
     void
-    operator=(const StringView& s) noexcept {
-        data = s.data;
-        size = s.size;
-    }
+    operator=(const StringView& s) noexcept;
+
+    char
+    operator[](size_t i) noexcept;
 
     const char*
     begin() const noexcept;
