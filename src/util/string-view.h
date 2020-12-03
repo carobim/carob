@@ -62,6 +62,8 @@ class StringView {
     StringPosition
     find(char needle) const noexcept;
     StringPosition
+    find(char needle, size_t start) const noexcept;
+    StringPosition
     find(StringView needle) const noexcept;
     StringPosition
     find(StringView needle, size_t start) const noexcept;

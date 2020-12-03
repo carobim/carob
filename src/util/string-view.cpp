@@ -70,6 +70,18 @@ StringView::find(char needle) const noexcept {
 }
 
 StringPosition
+StringView::find(char needle, size_t start) const noexcept {
+    char* result = static_cast<char*>(memchr(
+        data + start,
+        needle, size - start
+    ));
+    if (result == 0) {
+        return SV_NOT_FOUND;
+    }
+    return StringPosition(result - data);
+}
+
+StringPosition
 StringView::find(StringView needle) const noexcept {
     char* result =
             static_cast<char*>(memmem(data, size, needle.data, needle.size));
