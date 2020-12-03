@@ -58,15 +58,9 @@ parseBool(bool& out, StringView s) noexcept;
 bool
 parseInt(int& out, String& s) noexcept;
 bool
-parseInt(int& out, StringView s) noexcept;
-bool
 parseUInt(unsigned& out, String& s) noexcept;
 bool
-parseUInt(unsigned& out, StringView s) noexcept;
-bool
 parseFloat(float& out, String& s) noexcept;
-bool
-parseFloat(float& out, StringView s) noexcept;
 
 int
 parseInt100(char* s) noexcept;
@@ -81,7 +75,7 @@ splitStr(Vector<StringView>& out, StringView str,
  * Can take things such as "5-7".
  */
 bool
-parseRange(int& lo, int& hi, StringView format) noexcept;
+parseRange(int& lo, int& hi, StringView format, String& buf) noexcept;
 
 /**
  * Parse ranges of integers separated by commas.

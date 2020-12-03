@@ -34,7 +34,7 @@
 
 static size_t
 grow1(size_t current) noexcept {
-    return current == 0 ? 4 : current * 2;
+    return current < 4 ? 4 : current * 2;
 }
 
 static size_t
@@ -102,48 +102,46 @@ String::~String() noexcept {
 
 void
 String::operator=(const char* s) noexcept {
-    free(data);
     if (s == 0) {
+        free(data);
         data = 0;
         size = capacity = 0;
+        return;
     }
-    else {
-        size_t len = strlen(s);
+
+    size_t len = strlen(s);
+    if (len > capacity) {
+        free(data);
+        capacity = len;
         // FIXME: Choose better size.
-        data = static_cast<char*>(malloc(len));
-        size = capacity = len;
-        memcpy(data, s, len);
+        data = static_cast<char*>(malloc(capacity));
     }
+    size = len;
+    memcpy(data, s, len);
 }
 
 void
 String::operator=(StringView s) noexcept {
-    free(data);
     if (s.size == 0) {
+        free(data);
         data = 0;
         size = capacity = 0;
+        return;
     }
-    else {
+
+    if (s.size > capacity) {
+        free(data);
+        capacity = s.size;
         // FIXME: Choose better size.
-        data = static_cast<char*>(malloc(s.size));
-        size = capacity = s.size;
-        memcpy(data, s.data, s.size);
+        data = static_cast<char*>(malloc(capacity));
     }
+    size = s.size;
+    memcpy(data, s.data, s.size);
 }
 
 void
 String::operator=(const String& s) noexcept {
-    free(data);
-    if (s.capacity == 0) {
-        data = 0;
-        size = capacity = 0;
-    }
-    else {
-        data = static_cast<char*>(malloc(s.capacity));
-        size = s.size;
-        capacity = s.capacity;
-        memcpy(data, s.data, size);
-    }
+    operator=(s.view());
 }
 
 void

@@ -382,13 +382,16 @@ AreaJSON::processTileSetFile(JsonValue obj,
 
     // Handle explicitly declared "non-vanilla" types.
 
+    String buf;
     for (JsonNode& tilepropertiesNode : tilespropertiesNode) {
         CHECK(tilepropertiesNode.value.isObject());
 
         // "id" is 0-based index of a tile in the current
         // tileset, if the tileset were a flat array.
+        buf.clear();
+        buf = tilepropertiesNode.key;
         unsigned id;
-        if (!parseUInt(id, tilepropertiesNode.key)) {
+        if (!parseUInt(id, buf)) {
             logErr(descriptor, "Tile type id is invalid");
             return false;
         }
@@ -447,9 +450,13 @@ AreaJSON::processTileType(JsonValue obj,
     splitStr(frames, framesNode.toString(), ",");
     CHECK(frames.size);
 
+    String buf;
+
     // Make sure the first member is this tile.
+    buf.clear();
+    buf = frames[0];
     unsigned firstFrame;
-    if (!parseUInt(firstFrame, frames[0])) {
+    if (!parseUInt(firstFrame, buf)) {
         logErr(descriptor, "couldn't parse frame index for animated tile");
         return false;
     }
@@ -463,8 +470,11 @@ AreaJSON::processTileType(JsonValue obj,
     // Add frames to our animation.
     // We already have one from TileType's constructor.
     for (StringView& frame : frames) {
+        buf.clear();
+        buf = frame;
+
         unsigned idx_;
-        if (!parseUInt(idx_, frame)) {
+        if (!parseUInt(idx_, buf)) {
             logErr(descriptor,
                    "couldn't parse frame index for animated tile");
             return false;
@@ -546,8 +556,14 @@ AreaJSON::processLayerProperties(JsonValue obj) noexcept {
 
     JsonValue depthValue = obj["depth"];
 
+    if (!depthValue.isString()) {
+        logErr(descriptor, "A tilelayer must have the \"depth\" property");
+        return false;
+    }
+
+    String buf = depthValue.toString();
     float depth;
-    if (!depthValue.isString() || !parseFloat(depth, depthValue.toString())) {
+    if (!parseFloat(depth, buf)) {
         logErr(descriptor, "A tilelayer must have the \"depth\" property");
         return false;
     }
@@ -639,8 +655,14 @@ AreaJSON::processObjectGroupProperties(JsonValue obj) noexcept {
 
     JsonValue depthValue = obj["depth"];
 
+    if (!depthValue.isString()) {
+        logErr(descriptor, "An objectlayer must have the \"depth\" property");
+        return false;
+    }
+
+    String buf = depthValue.toString();
     float depth;
-    if (!depthValue.isString() || !parseFloat(depth, depthValue.toString())) {
+    if (!parseFloat(depth, buf)) {
         logErr(descriptor, "An objectlayer must have the \"depth\" property");
         return false;
     }
@@ -718,22 +740,53 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     CHECK(exitleftValue.isString() || exitleftValue.isNull());
     CHECK(exitrightValue.isString() || exitrightValue.isNull());
 
+    String buf;
     float f;
-    CHECK(layermodValue.isNull() ||
-          (layermodValue.isString() &&
-           parseFloat(f, layermodValue.toString())));
-    CHECK(layermodValue.isNull() ||
-            (layermodupValue.isString() &&
-             parseFloat(f, layermodupValue.toString())));
-    CHECK(layermodValue.isNull() ||
-            (layermoddownValue.isString() &&
-             parseFloat(f, layermoddownValue.toString())));
-    CHECK(layermodValue.isNull() ||
-            (layermodleftValue.isString() &&
-             parseFloat(f, layermodleftValue.toString())));
-    CHECK(layermodValue.isNull() ||
-          (layermodrightValue.isString() &&
-           parseFloat(f, layermodrightValue.toString())));
+
+    if (layermodValue.isString()) {
+        buf.clear();
+        buf = layermodValue.toString();
+        CHECK(parseFloat(f, buf));
+    }
+    else {
+        CHECK(layermodValue.isNull());
+    }
+
+    if (layermodupValue.isString()) {
+        buf.clear();
+        buf = layermodupValue.toString();
+        CHECK(parseFloat(f, buf));
+    }
+    else {
+        CHECK(layermodupValue.isNull());
+    }
+
+    if (layermoddownValue.isString()) {
+        buf.clear();
+        buf = layermoddownValue.toString();
+        CHECK(parseFloat(f, buf));
+    }
+    else {
+        CHECK(layermoddownValue.isNull());
+    }
+
+    if (layermodleftValue.isString()) {
+        buf.clear();
+        buf = layermodleftValue.toString();
+        CHECK(parseFloat(f, buf));
+    }
+    else {
+        CHECK(layermodleftValue.isNull());
+    }
+
+    if (layermodrightValue.isString()) {
+        buf.clear();
+        buf = layermodrightValue.toString();
+        CHECK(parseFloat(f, buf));
+    }
+    else {
+        CHECK(layermodrightValue.isNull());
+    }
 
     const size_t z = static_cast<size_t>(grid.dim.z) - 1;
 
@@ -805,24 +858,34 @@ AreaJSON::processObject(JsonValue obj) noexcept {
 
     if (layermodValue.isString()) {
         haveLayermod[EXIT_NORMAL] = true;
-        CHECK(parseFloat(layermod[EXIT_NORMAL], layermodValue.toString()));
+        buf.clear();
+        buf = layermodValue.toString();
+        CHECK(parseFloat(layermod[EXIT_NORMAL], buf));
         flags |= TILE_NOWALK_NPC;
     }
     if (layermodupValue.isString()) {
         haveLayermod[EXIT_UP] = true;
-        CHECK(parseFloat(layermod[EXIT_UP], layermodupValue.toString()));
+        buf.clear();
+        buf = layermodupValue.toString();
+        CHECK(parseFloat(layermod[EXIT_UP], buf));
     }
     if (layermoddownValue.isString()) {
         haveLayermod[EXIT_DOWN] = true;
-        CHECK(parseFloat(layermod[EXIT_DOWN], layermoddownValue.toString()));
+        buf.clear();
+        buf = layermoddownValue.toString();
+        CHECK(parseFloat(layermod[EXIT_DOWN], buf));
     }
     if (layermodleftValue.isString()) {
         haveLayermod[EXIT_LEFT] = true;
-        CHECK(parseFloat(layermod[EXIT_LEFT], layermodleftValue.toString()));
+        buf.clear();
+        buf = layermodleftValue.toString();
+        CHECK(parseFloat(layermod[EXIT_LEFT], buf));
     }
     if (layermodrightValue.isString()) {
         haveLayermod[EXIT_RIGHT] = true;
-        CHECK(parseFloat(layermod[EXIT_RIGHT], layermodrightValue.toString()));
+        buf.clear();
+        buf = layermodrightValue.toString();
+        CHECK(parseFloat(layermod[EXIT_RIGHT], buf));
     }
 
     // Apply these properties directly to one or more tiles in a rectangle
@@ -971,13 +1034,23 @@ AreaJSON::parseExit(StringView dest,
         y = y.substr(0, y.size - 1);
     }
 
+    String buf;
+
     int x_;
     int y_;
     float z_;
 
-    CHECK(parseInt(x_, x));
-    CHECK(parseInt(y_, y));
-    CHECK(parseFloat(z_, z));
+    buf.clear();
+    buf = x;
+    CHECK(parseInt(x_, buf));
+
+    buf.clear();
+    buf = y;
+    CHECK(parseInt(y_, buf));
+
+    buf.clear();
+    buf = z;
+    CHECK(parseFloat(z_, buf));
 
     exit = { area, x_, y_, z_ };
 
@@ -1003,9 +1076,12 @@ AreaJSON::parseARGB(StringView str,
         return false;
     }
 
+    String buf;
     for (size_t i = 0; i < 4; i++) {
+        buf.clear();
+        buf = strs[i];
         int v;
-        if (!parseInt(v, strs[i])) {
+        if (!parseInt(v, buf)) {
             logErr(descriptor, "invalid ARGB format");
             return false;
         }

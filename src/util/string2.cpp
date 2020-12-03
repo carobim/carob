@@ -249,12 +249,6 @@ parseUInt(unsigned& out, String& s) noexcept {
 }
 
 bool
-parseUInt(unsigned& out, StringView s) noexcept {
-    String s_(s);
-    return parseUInt(out, s_);
-}
-
-bool
 parseInt(int& out, String& s) noexcept {
     errno = 0;
 
@@ -279,12 +273,6 @@ parseInt(int& out, String& s) noexcept {
 }
 
 bool
-parseInt(int& out, StringView s) noexcept {
-    String s_(s);
-    return parseInt(out, s_);
-}
-
-bool
 parseFloat(float& out, String& s) noexcept {
     errno = 0;
 
@@ -301,12 +289,6 @@ parseFloat(float& out, String& s) noexcept {
     }
 
     return true;
-}
-
-bool
-parseFloat(float& out, StringView s) noexcept {
-    String s_(s);
-    return parseFloat(out, s_);
 }
 
 int
@@ -336,7 +318,7 @@ splitStr(Vector<StringView>& out, StringView input,
  * Can take things such as "5-7".
  */
 bool
-parseRange(int& lo, int& hi, StringView range) noexcept {
+parseRange(int& lo, int& hi, StringView range, String& buf) noexcept {
     StringPosition dash = range.find('-');
 
     if (dash == SV_NOT_FOUND) {
@@ -346,7 +328,15 @@ parseRange(int& lo, int& hi, StringView range) noexcept {
     StringView rngstart = range.substr(0, dash);
     StringView rngend = range.substr(dash + 1);
 
-    if (!parseInt(lo, rngstart) || !parseInt(hi, rngend)) {
+    buf.clear();
+    buf = rngstart;
+    if (!parseInt(lo, buf)) {
+        return false;
+    }
+
+    buf.clear();
+    buf = rngend;
+    if (!parseInt(hi, buf)) {
         return false;
     }
 
@@ -362,12 +352,16 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
     Vector<StringView> tokens;
     splitStr(tokens, format, ",");
 
+    String buf;
     for (StringView range : tokens) {
         StringPosition dash = range.find('-');
 
         if (dash == SV_NOT_FOUND) {
+            buf.clear();
+            buf = range;
+
             int i;
-            if (!parseInt(i, range)) {
+            if (!parseInt(i, buf)) {
                 return false;
             }
 
@@ -377,8 +371,17 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
             StringView rngstart = range.substr(0, dash);
             StringView rngend = range.substr(dash + 1);
 
-            int start, end;
-            if (!parseInt(start, rngstart) || !parseInt(end, rngend)) {
+            buf.clear();
+            buf = rngstart;
+            int start;
+            if (!parseInt(start, buf)) {
+                return false;
+            }
+
+            buf.clear();
+            buf = rngend;
+            int end;
+            if (!parseInt(end, buf)) {
                 return false;
             }
 
