@@ -62,6 +62,16 @@ StringView::end() const noexcept {
 
 StringPosition
 StringView::find(char needle) const noexcept {
+    // Necessary check because GCC 8.3.0 assumes that the first parameter to
+    // memchr cannot be 0, which can propagate a `data != 0` constraint up to
+    // callers, which is a constraint that is not always true. E.g., it would
+    // be nice to call this function with .data = 0 and .size = 0 and get a
+    // SV_NOT_FOUND as a result and then later do a check against `.data == 0`,
+    // but with GCC's assumption, that check will be optimized out.
+    if (!data) {
+        return SV_NOT_FOUND;
+    }
+
     char* result = static_cast<char*>(memchr(data, needle, size));
     if (result == 0) {
         return SV_NOT_FOUND;
