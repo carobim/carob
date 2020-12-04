@@ -99,4 +99,43 @@ class Lines {
 Lines
 readLines(StringView file) noexcept;
 
+template<char c>
+class Tokens {
+ public:
+    // StringView is overwritten with each call.
+    // StringView.data == 0 on empty.
+    StringView
+    operator++(int) noexcept {
+        const char* data = buf.data;
+        size_t size = buf.find(c);
+        if (size == SV_NOT_FOUND) {
+            size = buf.size;
+            buf.data = 0;
+            buf.size = 0;
+            return StringView(data, size);
+        }
+        else {
+            buf.data += size + 1;
+            buf.size -= size + 1;
+            return StringView(data, size);
+        }
+    }
+
+ public:
+    // Whenever buf.size == 0, we require buf.data == 0.
+    StringView buf;
+};
+
+// Returned Tokens object borrows buf.
+template<char c>
+Tokens<c>
+split(StringView buf) noexcept {
+    Tokens<c> tokens;
+    tokens.buf = buf;
+    if (tokens.buf.size == 0) {
+        tokens.buf.data = 0;
+    }
+    return tokens;
+}
+
 #endif  // SRC_UTIL_STRING2_H_
