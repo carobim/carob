@@ -465,7 +465,7 @@ ReadLines::operator bool() noexcept {
 
 // StringView::data == 0 on end of file or I/O error.
 StringView
-ReadLines::operator++(int) noexcept {
+ReadLines::next() noexcept {
     if (file.chunk.size == offset) {
         if (file.rem) {
             // Slow case: File has more data.

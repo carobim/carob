@@ -151,7 +151,7 @@ class ReadLines {
 
     // StringView::data == 0 on end of file or I/O error.
     StringView
-    operator++(int) noexcept;
+    next() noexcept;
 
  public:
     FileStream file;
