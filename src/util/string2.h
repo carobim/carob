@@ -86,12 +86,19 @@ bool
 parseRanges(Vector<int>& out, StringView format) noexcept;
 
 template<char c>
-class Tokens {
+class Splits {
  public:
+    Splits(StringView buf) noexcept {
+        buf = buf;
+        if (buf.size == 0) {
+            buf.data = 0;
+        }
+    }
+
     // StringView is overwritten with each call.
     // StringView.data == 0 on empty.
     StringView
-    operator++(int) noexcept {
+    next() noexcept {
         const char* data = buf.data;
         size_t size = buf.find(c);
         if (size == SV_NOT_FOUND) {
@@ -108,21 +115,10 @@ class Tokens {
     }
 
  public:
+    // Borrowed.
     // Whenever buf.size == 0, we require buf.data == 0.
     StringView buf;
 };
-
-// Returned Tokens object borrows buf.
-template<char c>
-Tokens<c>
-split(StringView buf) noexcept {
-    Tokens<c> tokens;
-    tokens.buf = buf;
-    if (tokens.buf.size == 0) {
-        tokens.buf.data = 0;
-    }
-    return tokens;
-}
 
 class FileStream {
  public:
