@@ -216,8 +216,13 @@ template<class R, class... ArgTypes>
 template<class F>
 Function<R(ArgTypes...) noexcept>::Function(F something) noexcept {
     if (sizeof(function::func<F, R(ArgTypes...) noexcept>) <= sizeof(buf)) {
+        // This warning occurs on GCC 8.3 because of incomplete static branch
+        // analysis.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wplacement-new"
         f = new ((void*)&buf)
                 function::func<F, R(ArgTypes...) noexcept>(static_cast<F&&>(something));
+#pragma GCC diagnostic pop
     }
     else {
         // f = new function::func<F, R(ArgTypes...)>(
