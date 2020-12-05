@@ -400,15 +400,14 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
     return true;
 }
 
-bool
-FileStream::start(StringView path) noexcept {
+FileStream::FileStream(StringView path) noexcept {
     String path_ = path;
 
     fd = open(path_.null(), O_RDONLY);
     if (fd < 0) {
         // errno set
         printf("Couldn't open\n");
-        return false;
+        return;
     }
 
     struct stat status;
@@ -417,18 +416,14 @@ FileStream::start(StringView path) noexcept {
         printf("Couldn't stat\n");
         close(fd);
         fd = -1;
-        return false;
+        return;
     }
 
     rem = status.st_size;
 
     size_t bufsz = rem < CHUNK_SIZE ? rem : CHUNK_SIZE;
     chunk.reserve(bufsz);
-
-    return true;
 }
-
-FileStream::FileStream() noexcept : fd(-1) {}
 
 FileStream::~FileStream() noexcept {
     if (fd >= 0) {
@@ -437,6 +432,10 @@ FileStream::~FileStream() noexcept {
             printf("Couldn't close\n");
         }
     }
+}
+
+FileStream::operator bool() noexcept {
+    return fd >= 0;
 }
 
 bool
@@ -458,11 +457,10 @@ FileStream::advance() noexcept {
     return true;
 }
 
-ReadLines::ReadLines() noexcept : offset(0) {}
+ReadLines::ReadLines(StringView path) noexcept : file(path), offset(0) {}
 
-bool
-ReadLines::start(StringView path) noexcept {
-    return file.start(path);
+ReadLines::operator bool() noexcept {
+    return file;
 }
 
 // StringView::data == 0 on end of file or I/O error.

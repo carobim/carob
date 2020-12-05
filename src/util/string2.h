@@ -126,11 +126,11 @@ split(StringView buf) noexcept {
 
 class FileStream {
  public:
-    FileStream() noexcept;
+    FileStream(StringView path) noexcept;
     ~FileStream() noexcept;
 
-    bool
-    start(StringView path) noexcept;
+    // Whether file stream opened successfully.
+    operator bool() noexcept;
 
     bool
     advance() noexcept;
@@ -144,10 +144,10 @@ class FileStream {
 
 class ReadLines {
  public:
-    ReadLines() noexcept;
+    ReadLines(StringView path) noexcept;
 
-    bool
-    start(StringView path) noexcept;
+    // Whether file opened successfully.
+    operator bool() noexcept;
 
     // StringView::data == 0 on end of file or I/O error.
     StringView
