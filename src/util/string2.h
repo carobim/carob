@@ -157,103 +157,16 @@ class FileStream {
     String chunk;
 };
 
-
-#define CHUNK_SIZE (128 * 1024)
-
-template<char delim>
 class FileTokenStream {
  public:
-    FileTokenStream() noexcept : offset(0) {}
+    FileTokenStream() noexcept;
 
     bool
-    start(StringView path) noexcept {
-        return file.start(path);
-    }
+    start(StringView path) noexcept;
 
     // StringView::data == 0 on end of file or I/O error.
     StringView
-    operator++(int) noexcept {
-        if (file.chunk.size == offset) {
-            if (file.rem) {
-                // Slow case: File has more data.
-                //
-                // This read starts at the beginning of a chunk. We will avoid
-                // the use of joiner if the complete token ends within the
-                // chunk.
-                if (!file.advance()) {
-                    // I/O error.
-                    offset = file.chunk.size;
-                    file.rem = 0;
-                    return StringView();
-                }
-                offset = 0;
-            }
-            else {
-                // Fast case: End of file.
-                return StringView();
-            }
-        }
-        size_t position = file.chunk.view().find(delim, offset);
-        if (position != SV_NOT_FOUND) {
-            // Fast case: The token is contained within a single chunk and ends
-            //            before the end of the file. Don't use the joiner.
-            size_t oldOffset = offset;
-            offset = position + 1;  // 1 = delimiter
-            return file.chunk.view().substr(oldOffset, position - oldOffset);
-        }
-        else if (file.rem == 0) {
-            // Fast case: The token ends at the end of the file. Don't use the
-            // joiner.
-            size_t oldOffset = offset;
-            offset = file.chunk.size;
-            return StringView(file.chunk.view().substr(oldOffset));
-        }
-        else {
-            // Slow case: The token spans two or more chunks.
-
-            // To begin with, start a joiner with the last of the current
-            // chunk.
-            joiner = file.chunk.view().substr(offset);
-
-            // Start reading chunks until we find the end of the token within
-            // one.
-            if (!file.advance()) {
-                // I/O error.
-                offset = file.chunk.size;
-                file.rem = 0;
-                return StringView();
-            }
-
-            size_t position = file.chunk.view().find(delim);
-
-            while (true) {
-                if (position != SV_NOT_FOUND) {
-                    // We found the end of the token within this chunk.
-                    joiner << file.chunk.view().substr(0, position);
-                    offset = position + 1;  // 1 = delimiter
-                    return joiner.view();
-                }
-                else if (file.rem == 0) {
-                    // The file has ended. The token must end here.
-                    joiner << file.chunk;
-                    offset = file.chunk.size;
-                    return joiner.view();
-                }
-                else {
-                    // We searched the entire chunk but the token has not ended
-                    // yet.
-                    joiner << file.chunk;
-                    if (!file.advance()) {
-                        // I/O error.
-                        offset = file.chunk.size;
-                        file.rem = 0;
-                        return StringView();
-                    }
-                    position = file.chunk.view().find(delim);
-                }
-            }
-        }
-    }
+    operator++(int) noexcept;
 
  public:
     FileStream file;
