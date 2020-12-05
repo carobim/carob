@@ -395,6 +395,14 @@ endif()
 # Compilation options
 #
 
+if(GCC)
+    # Fix warning that happens in util/function.h because GCC cannot statically
+    # analyze that the code is safe.
+    if(NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 6.0)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-placement-new")
+    endif()
+endif()
+
 if(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
