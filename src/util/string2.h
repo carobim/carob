@@ -88,8 +88,8 @@ parseRanges(Vector<int>& out, StringView format) noexcept;
 template<char c>
 class Splits {
  public:
-    Splits(StringView buf) noexcept {
-        buf = buf;
+    Splits(StringView b) noexcept {
+        buf = b;
         if (buf.size == 0) {
             buf.data = 0;
         }
