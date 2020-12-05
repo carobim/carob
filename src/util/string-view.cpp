@@ -68,7 +68,7 @@ StringView::find(char needle) const noexcept {
     // be nice to call this function with .data = 0 and .size = 0 and get a
     // SV_NOT_FOUND as a result and then later do a check against `.data == 0`,
     // but with GCC's assumption, that check will be optimized out.
-    if (!data) {
+    if (data == 0) {
         return SV_NOT_FOUND;
     }
 
@@ -81,6 +81,10 @@ StringView::find(char needle) const noexcept {
 
 StringPosition
 StringView::find(char needle, size_t start) const noexcept {
+    if (data == 0) {
+        return SV_NOT_FOUND;
+    }
+
     char* result = static_cast<char*>(memchr(
         data + start,
         needle, size - start
@@ -93,6 +97,10 @@ StringView::find(char needle, size_t start) const noexcept {
 
 StringPosition
 StringView::find(StringView needle) const noexcept {
+    if (data == 0) {
+        return SV_NOT_FOUND;
+    }
+
     char* result =
             static_cast<char*>(memmem(data, size, needle.data, needle.size));
     if (result == 0) {
@@ -104,6 +112,10 @@ StringView::find(StringView needle) const noexcept {
 StringPosition
 StringView::find(StringView needle, size_t start) const noexcept {
     assert_(size >= start);
+
+    if (data == 0) {
+        return SV_NOT_FOUND;
+    }
 
     char* result = static_cast<char*>(
             memmem(data + start, size - start, needle.data, needle.size));
@@ -125,7 +137,7 @@ StringView::rfind(char needle) const noexcept {
             return StringPosition(i);
         }
         i--;
-    } while (i > 0);
+    } while (i >= 0);
 
     return SV_NOT_FOUND;
 }

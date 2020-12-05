@@ -1,8 +1,8 @@
-/**************************************
- ** Tsunagari Tile Engine            **
- ** string.cpp                       **
- ** Copyright 2019-2020 Paul Merrill **
- **************************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** string.cpp                       **
+** Copyright 2019-2020 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -145,6 +145,8 @@ String::operator<<(char c) noexcept {
 
 String&
 String::operator<<(const char* s) noexcept {
+    // TODO: Use strncpy without knowing the size. If the string has more
+    //       characters, then do a strlen & growN & memcpy like below.
     size_t len = strlen(s);
     if (capacity < size + len) {
         reserve(growN(size, len));
