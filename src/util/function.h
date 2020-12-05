@@ -219,6 +219,7 @@ Function<R(ArgTypes...) noexcept>::Function(F something) noexcept {
         // This warning occurs on GCC 8.3 because of incomplete static branch
         // analysis.
 #pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-warning-option"
 #pragma GCC diagnostic ignored "-Wplacement-new"
         f = new ((void*)&buf)
                 function::func<F, R(ArgTypes...) noexcept>(static_cast<F&&>(something));

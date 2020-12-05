@@ -292,6 +292,8 @@ void
 _exit(int) noexcept __attribute__((noreturn));
 int
 isatty(int) noexcept;
+ssize_t
+read(int, void*, size_t) noexcept;
 long
 sysconf(int) noexcept;
 ssize_t
