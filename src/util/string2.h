@@ -85,21 +85,6 @@ parseRange(int& lo, int& hi, StringView format, String& buf) noexcept;
 bool
 parseRanges(Vector<int>& out, StringView format) noexcept;
 
-class Lines {
- public:
-     // StringView is overwritten with each call.
-     // StringView.size == 0 on empty.
-     StringView
-     operator++(int) noexcept;
-
- public:
-    StringView file;
-};
-
-// Lines borrows file.
-Lines
-readLines(StringView file) noexcept;
-
 template<char c>
 class Tokens {
  public:
