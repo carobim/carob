@@ -37,18 +37,6 @@ typedef struct {
 } * _locale_t;
 typedef char* va_list;
 
-_ACRTIMP int __cdecl __stdio_common_vfprintf(unsigned __int64,
-                                             FILE*,
-                                             char const*,
-                                             _locale_t,
-                                             va_list) noexcept;
-_ACRTIMP int __cdecl __stdio_common_vsprintf(unsigned __int64,
-                                             char*,
-                                             size_t,
-                                             char const*,
-                                             _locale_t,
-                                             va_list) noexcept;
-
 #ifdef _WIN64
 #define _VA_ALIGN 8
 #define _SLOTSIZEOF(t) ((sizeof(t) + _VA_ALIGN - 1) & ~(_VA_ALIGN - 1))
@@ -72,8 +60,36 @@ void __cdecl __va_start(va_list*, ...);
 }
 __pragma(pack(pop));
 
+//#include <stdio.h>
+
+#if _MSC_VER < 1900
+#pragma pack(push, 8)
+extern "C" {
+// MSVC 2013 or lower
+//_CRTIMP int __cdecl
+//fprintf(FILE*, const char*, ...) noexcept;
+//_CRTIMP int __cdecl
+//printf(const char*, ...) noexcept;
+//_CRTIMP int __cdecl
+//sprintf(char*, const char*, ...) noexcept;
+}
+#pragma pack(pop)
+#else
+// MSVC 2015 or higher
 #define __crt_va_start(ap, x) __crt_va_start_a(ap, x)
 #define _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION (1ULL << 0)
+
+_ACRTIMP int __cdecl __stdio_common_vfprintf(unsigned __int64,
+                                             FILE*,
+                                             char const*,
+                                             _locale_t,
+                                             va_list) noexcept;
+_ACRTIMP int __cdecl __stdio_common_vsprintf(unsigned __int64,
+                                             char*,
+                                             size_t,
+                                             char const*,
+                                             _locale_t,
+                                             va_list) noexcept;
 
 __declspec(noinline) __inline unsigned __int64* __CRTDECL
         __local_stdio_printf_options(void) noexcept {
@@ -148,3 +164,4 @@ sprintf(char* const _Buffer, char const* const _Format, ...) noexcept {
     __crt_va_end(_ArgList);
     return _Result;
 }
+#endif

@@ -78,18 +78,29 @@ typedef unsigned long ULONG_PTR, *PULONG_PTR;
 __pragma(pack(push, 8));
 extern "C" {
 
-typedef struct _iobuf {
-    void* _Placeholder;
-} FILE;
-
 #if _MSC_VER < 1900
 // MSVC 2013 and below
+typedef struct _iobuf {
+	char *_ptr;
+	int   _cnt;
+	char *_base;
+	int   _flag;
+	int   _file;
+	int   _charbuf;
+	int   _bufsiz;
+	char *_tmpfname;
+} FILE;
+
 _CRTIMP FILE* __cdecl __iob_func() noexcept;
 #define stdin  (&__iob_func()[0])
 #define stdout (&__iob_func()[1])
 #define stderr (&__iob_func()[2])
 #else
 // MSVC 2015 and above
+typedef struct _iobuf {
+	void* _Placeholder;
+} FILE;
+
 _ACRTIMP_ALT FILE* __cdecl __acrt_iob_func(unsigned) noexcept;
 #define stdin (__acrt_iob_func(0))
 #define stdout (__acrt_iob_func(1))
@@ -141,12 +152,12 @@ void*
 memmove(void*, const void*, size_t) noexcept;
 }
 
-int __CRTDECL
-fprintf(FILE* const, char const* const, ...) noexcept;
-int __CRTDECL
-printf(char const* const, ...) noexcept;
-int __CRTDECL
-sprintf(char* const, char const* const, ...) noexcept;
+_CRTIMP int __cdecl
+fprintf(FILE*, char const*, ...) noexcept;
+_CRTIMP int __cdecl
+printf(char const*, ...) noexcept;
+_CRTIMP int __cdecl
+sprintf(char*, char const*, ...) noexcept;
 
 // vcruntime_string.h
 extern "C" {
