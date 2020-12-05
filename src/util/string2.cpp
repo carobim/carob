@@ -480,16 +480,16 @@ FileStream::advance() noexcept {
     return true;
 }
 
-FileTokenStream::FileTokenStream() noexcept : offset(0) {}
+ReadLines::ReadLines() noexcept : offset(0) {}
 
 bool
-FileTokenStream::start(StringView path) noexcept {
+ReadLines::start(StringView path) noexcept {
     return file.start(path);
 }
 
 // StringView::data == 0 on end of file or I/O error.
 StringView
-FileTokenStream::operator++(int) noexcept {
+ReadLines::operator++(int) noexcept {
     if (file.chunk.size == offset) {
         if (file.rem) {
             // Slow case: File has more data.

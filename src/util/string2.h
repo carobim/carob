@@ -157,9 +157,9 @@ class FileStream {
     String chunk;
 };
 
-class FileTokenStream {
+class ReadLines {
  public:
-    FileTokenStream() noexcept;
+    ReadLines() noexcept;
 
     bool
     start(StringView path) noexcept;
