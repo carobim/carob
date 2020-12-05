@@ -41,8 +41,8 @@ struct State {
 
 #define STATE (*reinterpret_cast<State*>(data))
 
-static State outstate(0);
-static State errstate(1);
+static State outstate(1);
+static State errstate(2);
 
 Output sout(&outstate);
 Output serr(&errstate);
