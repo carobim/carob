@@ -26,7 +26,8 @@
 
 #include "os/c.h"
 #include "os/os.h"
-#include "os/unix-mutex.h"
+#include "util/string-view.h"
+#include "util/string.h"
 #include "util/vector.h"
 
 const char dirSeparator = '/';

@@ -418,3 +418,62 @@ readLines(StringView file) noexcept {
     lines.file = file;
     return lines;
 }
+
+
+bool
+FileStream::start(StringView path) noexcept {
+    String path_ = path;
+
+    fd = open(path_.null(), O_RDONLY);
+    if (fd < 0) {
+        // errno set
+        printf("Couldn't open\n");
+        return false;
+    }
+
+    struct stat status;
+    if (fstat(fd, &status)) {
+        // errno set
+        printf("Couldn't stat\n");
+        close(fd);
+        fd = -1;
+        return false;
+    }
+
+    rem = status.st_size;
+
+    size_t bufsz = rem < CHUNK_SIZE ? rem : CHUNK_SIZE;
+    chunk.reserve(bufsz);
+
+    return true;
+}
+
+FileStream::FileStream() noexcept : fd(-1) {}
+
+FileStream::~FileStream() noexcept {
+    if (fd >= 0) {
+        if (close(fd)) {
+            // errno set
+            printf("Couldn't close\n");
+        }
+    }
+}
+
+bool
+FileStream::advance() noexcept {
+    chunk.size = rem < CHUNK_SIZE ? rem : CHUNK_SIZE;
+    rem -= chunk.size;
+
+    ssize_t nbytes = read(fd, chunk.data, chunk.size);
+    if (nbytes < 0) {
+        // errno set
+        printf("I/O error\n");
+        return false;
+    }
+    if (nbytes != chunk.size) {
+        printf("Incomplete read\n");
+        return false;
+    }
+
+    return true;
+}

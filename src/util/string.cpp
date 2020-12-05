@@ -102,46 +102,20 @@ String::~String() noexcept {
 
 void
 String::operator=(const char* s) noexcept {
-    if (s == 0) {
-        free(data);
-        data = 0;
-        size = capacity = 0;
-        return;
-    }
-
-    size_t len = strlen(s);
-    if (len > capacity) {
-        free(data);
-        capacity = len;
-        // FIXME: Choose better size.
-        data = static_cast<char*>(malloc(capacity));
-    }
-    size = len;
-    memcpy(data, s, len);
+    clear();
+    *this << s;
 }
 
 void
 String::operator=(StringView s) noexcept {
-    if (s.size == 0) {
-        free(data);
-        data = 0;
-        size = capacity = 0;
-        return;
-    }
-
-    if (s.size > capacity) {
-        free(data);
-        capacity = s.size;
-        // FIXME: Choose better size.
-        data = static_cast<char*>(malloc(capacity));
-    }
-    size = s.size;
-    memcpy(data, s.data, s.size);
+    clear();
+    *this << s;
 }
 
 void
 String::operator=(const String& s) noexcept {
-    operator=(s.view());
+    clear();
+    *this << s;
 }
 
 void

@@ -337,4 +337,15 @@ write(int, const void*, size_t) noexcept;
 
 }  // extern "C"
 
+
+// TODO: Place correctly.
+
+extern "C"
+int
+fstat(int, struct stat*) noexcept;
+
+extern "C"
+ssize_t
+read(int, void*, size_t) noexcept;
+
 #endif  // SRC_OS_LINUX_C_H_
