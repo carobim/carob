@@ -279,19 +279,10 @@ close(int) noexcept;
 int
 isatty(int) noexcept;
 ssize_t
+read(int, void*, size_t) noexcept;
+ssize_t
 write(int, const void*, size_t) noexcept;
 
-}
-
-
-// TODO: Place correctly.
-
-extern "C"
-int
-fstat(int, struct stat*) noexcept;
-
-extern "C"
-ssize_t
-read(int, void*, size_t) noexcept;
+}  // extern "C"
 
 #endif  // SRC_OS_MAC_C_H_
