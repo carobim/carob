@@ -82,7 +82,7 @@ _script: &script
     export CFLAGS="-I$HOME/include $CFLAGS"
     export CXXFLAGS="-I$HOME/include $CXXFLAGS"
     export LDFLAGS="-L$HOME/lib $LDFLAGS"
-    export CMAKE_PREFIX_PATH=~/lib/cmake${CMAKE_PREFIX_PATH:+:}"$CMAKE_PREFIX_PATH"
+    export CMAKE_PREFIX_PATH=~/lib/cmake${CMAKE_PREFIX_PATH:+;}"$CMAKE_PREFIX_PATH"
     export PKG_CONFIG_PATH=~/lib/pkgconfig${PKG_CONFIG_PATH:+:}"$PKG_CONFIG_PATH"
   - |
     mkdir build
