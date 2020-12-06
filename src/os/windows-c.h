@@ -141,12 +141,23 @@ void*
 memmove(void*, const void*, size_t) noexcept;
 }
 
+
+#if _MSC_VER < 1900
+// MSVC 2013 and below
+extern "C" {
+__declspec(dllimport) int __cdecl printf(const char*, ...);
+__declspec(dllimport) int __cdecl fprintf(FILE *, const char*, ...);
+__declspec(dllimport) int __cdecl sprintf(char*, const char*, ...);
+}
+#else
+// MSVC 2015 and above
 int __CRTDECL
 fprintf(FILE* const, char const* const, ...) noexcept;
 int __CRTDECL
 printf(char const* const, ...) noexcept;
 int __CRTDECL
 sprintf(char* const, char const* const, ...) noexcept;
+#endif
 
 // vcruntime_string.h
 extern "C" {

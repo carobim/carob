@@ -29,6 +29,9 @@
 
 #include "util/noexcept.h"
 
+#if _MSC_VER >= 1900
+// MSVC 2015 and above
+
 __pragma(pack(push, 8));
 extern "C" {
 typedef struct {
@@ -148,3 +151,5 @@ sprintf(char* const _Buffer, char const* const _Format, ...) noexcept {
     __crt_va_end(_ArgList);
     return _Result;
 }
+
+#endif  // _MSC_VER >= 1900
