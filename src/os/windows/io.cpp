@@ -87,7 +87,7 @@ File::operator bool() noexcept {
 }
 
 bool
-File::read(const void* buf, size_t len) noexcept {
+File::read(void* buf, size_t len) noexcept {
     unsigned long numRead;
     if (!ReadFile(handle, buf, len, &numRead, 0)) {
         // GetLastError();
