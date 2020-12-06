@@ -1,8 +1,8 @@
-/*************************************
-** Tsunagari Tile Engine            **
-** assert.cpp                       **
-** Copyright 2017-2020 Paul Merrill **
-*************************************/
+/********************************
+** Tsunagari Tile Engine       **
+** io.h                        **
+** Copyright 2020 Paul Merrill **
+********************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,31 +24,34 @@
 // IN THE SOFTWARE.
 // **********
 
-#ifndef NDEBUG
+#ifndef SRC_OS_WINDOWS_IO_H_
+#define SRC_OS_WINDOWS_IO_H_
 
-#include "util/assert.h"
-
-#include "util/io.h"
+#include "util/int.h"
 #include "util/noexcept.h"
+#include "util/string-view.h"
 
-#ifdef _WIN32
-extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
-void __cdecl __debugbreak();  // Cannot be noexcept.
-#endif
+class File {
+ public:
+    File(StringView path) noexcept;
+    ~File() noexcept;
 
-void
-assert__(const char* func,
-         const char* file,
-         int line,
-         const char* expr) noexcept {
-    sout << "Assertion failed: " << expr << ", function " << func << ", file "
-         << file << ", line " << line << "\n";
+    // Whether the file was opened successfully.
+    operator bool() noexcept;
 
-#ifdef _WIN32
-    if (IsDebuggerPresent()) {
-        __debugbreak();
-    }
-#endif
-}
+    bool
+    read(void* buf, size_t len) noexcept;
 
-#endif
+ public:
+    void* handle;
+    size_t rem;  // 0 when EOF
+};
+
+// On Windows, these are identical and both write to the attached console, if
+// it exists.
+bool
+writeStdout(const char* buf, size_t len) noexcept;
+bool
+writeStderr(const char* buf, size_t len) noexcept;
+
+#endif  // SRC_OS_WINDOWS_IO_H_

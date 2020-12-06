@@ -1,8 +1,8 @@
-/*************************************
-** Tsunagari Tile Engine            **
-** assert.cpp                       **
-** Copyright 2017-2020 Paul Merrill **
-*************************************/
+/********************************
+** Tsunagari Tile Engine       **
+** io.h                        **
+** Copyright 2020 Paul Merrill **
+********************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,31 +24,13 @@
 // IN THE SOFTWARE.
 // **********
 
-#ifndef NDEBUG
+#ifndef SRC_OS_IO_H_
+#define SRC_OS_IO_H_
 
-#include "util/assert.h"
-
-#include "util/io.h"
-#include "util/noexcept.h"
-
-#ifdef _WIN32
-extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
-void __cdecl __debugbreak();  // Cannot be noexcept.
+#if defined(_WIN32)
+#include "os/windows/io.h"
+#else
+#include "os/unix/io.h"
 #endif
 
-void
-assert__(const char* func,
-         const char* file,
-         int line,
-         const char* expr) noexcept {
-    sout << "Assertion failed: " << expr << ", function " << func << ", file "
-         << file << ", line " << line << "\n";
-
-#ifdef _WIN32
-    if (IsDebuggerPresent()) {
-        __debugbreak();
-    }
-#endif
-}
-
-#endif
+#endif  // SRC_OS_IO_H_

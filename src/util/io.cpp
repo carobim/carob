@@ -27,40 +27,50 @@
 #include "util/io.h"
 
 #include "os/c.h"
+#include "os/io.h"
 #include "util/int.h"
 #include "util/noexcept.h"
 #include "util/string.h"
 #include "util/string-view.h"
 
 struct State {
-    State(int fd) : fd(fd) {}
+    State(bool err) : err(err) {}
 
-    int fd;
+    bool err;
     String buf;
 };
 
 #define STATE (*reinterpret_cast<State*>(data))
 
-static State outstate(1);
-static State errstate(2);
+static State outstate(false);
+static State errstate(true);
 
 Output sout(&outstate);
 Output serr(&errstate);
 
 static void
 flush(State& state) noexcept {
-    int fd = state.fd;
     String& buf = state.buf;
     char* data = buf.data;
     size_t size = buf.size;
 
     if (data[size - 1] == '\n') {
-        write(fd, data, size);
+        if (state.err) {
+            writeStderr(data, size);
+        }
+        else {
+            writeStdout(data, size);
+        }
         buf.clear();
     }
     else {
         size_t len = state.buf.view().rfind('\n') + 1;
-        write(fd, data, size);
+        if (state.err) {
+            writeStderr(data, size);
+        }
+        else {
+            writeStdout(data, size);
+        }
         memcpy(data, data + len, size - len);
         buf.size -= len;
     }

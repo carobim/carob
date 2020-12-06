@@ -29,9 +29,9 @@
 
 #include "core/client-conf.h"
 #include "core/window.h"
-#include "os/c.h"
 #include "os/mutex.h"
 #include "os/os.h"
+#include "util/io.h"
 #include "util/math2.h"
 
 #ifdef _WIN32
@@ -96,17 +96,14 @@ logInfo(StringView domain, StringView msg) noexcept {
     if (verb > LogVerbosity::NORMAL) {
         LockGuard lock(stdoutMutex);
 
-        setTermColor(TC_GREEN, Stdout);
-        printf("%s ", makeTimestamp().null());
+        //setTermColor(TC_GREEN, Stdout);
+        sout << makeTimestamp() << ' ';
 
-        setTermColor(TC_YELLOW, Stdout);
-        String s = String() << "Info [" << domain << "]";
-        printf("%s", s.null());
+        //setTermColor(TC_YELLOW, Stdout);
+        sout << "Info [" << domain << ']';
 
-        setTermColor(TC_RESET, Stdout);
-        s.clear();
-        s << " - " << chomp(msg) << "\n";
-        printf("%s", s.null());
+        //setTermColor(TC_RESET, Stdout);
+        sout << " - " << chomp(msg) << '\n';
     }
 }
 
@@ -116,17 +113,15 @@ logErr(StringView domain, StringView msg) noexcept {
         {
             LockGuard lock(stdoutMutex);
 
-            setTermColor(TC_GREEN, Stderr);
-            fprintf(stderr, "%s ", makeTimestamp().null());
+            //setTermColor(TC_GREEN, Stderr);
+            serr << makeTimestamp() << ' ';
 
-            setTermColor(TC_RED, Stderr);
+            //setTermColor(TC_RED, Stderr);
             String s = String() << "Error [" << domain << "]";
-            fprintf(stderr, "%s", s.null());
+            serr << "Error [" << domain << ']';
 
-            setTermColor(TC_RESET, Stderr);
-            s.clear();
-            s << " - " << chomp(msg) << "\n";
-            fprintf(stderr, "%s", s.null());
+            //setTermColor(TC_RESET, Stderr);
+            serr << " - " << chomp(msg) << '\n';
         }
 
         String s = String() << "Error [" << domain << "] - " << chomp(msg);
@@ -152,18 +147,14 @@ logFatal(StringView domain, StringView msg) noexcept {
     {
         LockGuard lock(stdoutMutex);
 
-        setTermColor(TC_GREEN, Stderr);
-        fprintf(stderr, "%s ", makeTimestamp().null());
+        //setTermColor(TC_GREEN, Stderr);
+        serr << makeTimestamp() << ' ';
 
-        setTermColor(TC_RED, Stderr);
-        String s;
-        s << "Fatal [" << domain << "]";
-        fprintf(stderr, "%s", s.null());
+        //setTermColor(TC_RED, Stderr);
+        serr << "Fatal [" << domain << ']';
 
-        setTermColor(TC_RESET, Stderr);
-        s.clear();
-        s << " - " << chomp(msg) << "\n";
-        fprintf(stderr, "%s", s.null());
+        //setTermColor(TC_RESET, Stderr);
+        serr << " - " << chomp(msg) << '\n';
     }
 
     String s = String() << "Fatal [" << domain << "] - " << chomp(msg);
@@ -198,11 +189,9 @@ logReportVerbosityOnStartup() noexcept {
         break;
     }
 
-    setTermColor(TC_GREEN, Stdout);
-    printf("%s ", makeTimestamp().null());
+    //setTermColor(TC_GREEN, Stdout);
+    sout << makeTimestamp() << ' ';
 
-    setTermColor(TC_RESET, Stdout);
-    String s;
-    s << "Reporting engine messages in " << verbString << " mode.\n";
-    printf("%s", s.null());
+    //setTermColor(TC_RESET, Stdout);
+    sout << "Reporting engine messages in " << verbString << " mode.\n";
 }

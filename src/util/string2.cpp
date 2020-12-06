@@ -31,6 +31,7 @@
 #include "os/os.h"
 #include "util/constexpr.h"
 #include "util/int.h"
+#include "util/io.h"
 #include "util/math2.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
@@ -400,61 +401,19 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
     return true;
 }
 
-FileStream::FileStream(StringView path) noexcept {
-    String path_ = path;
-
-    fd = open(path_.null(), O_RDONLY);
-    if (fd < 0) {
-        // errno set
-        printf("Couldn't open\n");
-        return;
-    }
-
-    struct stat status;
-    if (fstat(fd, &status)) {
-        // errno set
-        printf("Couldn't stat\n");
-        close(fd);
-        fd = -1;
-        return;
-    }
-
-    rem = status.st_size;
-
-    size_t bufsz = rem < CHUNK_SIZE ? rem : CHUNK_SIZE;
+FileStream::FileStream(StringView path) noexcept : file(path) {
+    size_t bufsz = file.rem < CHUNK_SIZE ? file.rem : CHUNK_SIZE;
     chunk.reserve(bufsz);
 }
 
-FileStream::~FileStream() noexcept {
-    if (fd >= 0) {
-        if (close(fd)) {
-            // errno set
-            printf("Couldn't close\n");
-        }
-    }
-}
-
 FileStream::operator bool() noexcept {
-    return fd >= 0;
+    return file;
 }
 
 bool
 FileStream::advance() noexcept {
-    chunk.size = rem < CHUNK_SIZE ? rem : CHUNK_SIZE;
-    rem -= chunk.size;
-
-    ssize_t nbytes = read(fd, chunk.data, chunk.size);
-    if (nbytes < 0) {
-        // errno set
-        printf("I/O error\n");
-        return false;
-    }
-    if (nbytes != chunk.size) {
-        printf("Incomplete read\n");
-        return false;
-    }
-
-    return true;
+    chunk.size = file.rem < CHUNK_SIZE ? file.rem : CHUNK_SIZE;
+    return file.read(chunk.data, chunk.size);
 }
 
 ReadLines::ReadLines(StringView path) noexcept : file(path), offset(0) {}
@@ -467,7 +426,7 @@ ReadLines::operator bool() noexcept {
 StringView
 ReadLines::next() noexcept {
     if (file.chunk.size == offset) {
-        if (file.rem) {
+        if (file.file.rem) {
             // Slow case: File has more data.
             //
             // This read starts at the beginning of a chunk. We will avoid
@@ -476,7 +435,7 @@ ReadLines::next() noexcept {
             if (!file.advance()) {
                 // I/O error.
                 offset = file.chunk.size;
-                file.rem = 0;
+                file.file.rem = 0;
                 return StringView();
             }
             offset = 0;
@@ -494,7 +453,7 @@ ReadLines::next() noexcept {
         offset = position + 1;  // 1 = delimiter
         return file.chunk.view().substr(oldOffset, position - oldOffset);
     }
-    else if (file.rem == 0) {
+    else if (file.file.rem == 0) {
         // Fast case: The token ends at the end of the file. Don't use the
         // joiner.
         size_t oldOffset = offset;
@@ -513,7 +472,7 @@ ReadLines::next() noexcept {
         if (!file.advance()) {
             // I/O error.
             offset = file.chunk.size;
-            file.rem = 0;
+            file.file.rem = 0;
             return StringView();
         }
 
@@ -526,7 +485,7 @@ ReadLines::next() noexcept {
                 offset = position + 1;  // 1 = delimiter
                 return joiner.view();
             }
-            else if (file.rem == 0) {
+            else if (file.file.rem == 0) {
                 // The file has ended. The token must end here.
                 joiner << file.chunk;
                 offset = file.chunk.size;
@@ -539,7 +498,7 @@ ReadLines::next() noexcept {
                 if (!file.advance()) {
                     // I/O error.
                     offset = file.chunk.size;
-                    file.rem = 0;
+                    file.file.rem = 0;
                     return StringView();
                 }
                 position = file.chunk.view().find('\n');

@@ -28,6 +28,7 @@
 #ifndef SRC_UTIL_STRING2_H_
 #define SRC_UTIL_STRING2_H_
 
+#include "os/io.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
@@ -123,7 +124,6 @@ class Splits {
 class FileStream {
  public:
     FileStream(StringView path) noexcept;
-    ~FileStream() noexcept;
 
     // Whether file stream opened successfully.
     operator bool() noexcept;
@@ -132,9 +132,7 @@ class FileStream {
     advance() noexcept;
 
  public:
-    int fd;
-    uint64_t rem;  // 0 when EOF
-
+    File file;
     String chunk;
 };
 

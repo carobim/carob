@@ -182,6 +182,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
 set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/os/c.h
     ${HERE}/src/os/condition-variable.h
+    ${HERE}/src/os/io.h
     ${HERE}/src/os/mapped-file.h
     ${HERE}/src/os/mutex.h
     ${HERE}/src/os/os.h
@@ -198,6 +199,8 @@ if (WIN32)
         ${HERE}/src/os/windows-mapped-file.h
         ${HERE}/src/os/windows.cpp
         ${HERE}/src/os/windows.h
+        ${HERE}/src/os/windows/io.cpp
+        ${HERE}/src/os/windows/io.h
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/memmove.cpp
@@ -210,6 +213,8 @@ if (WIN32)
         ${HERE}/src/os/windows-thread.h
         ${HERE}/src/os/windows.cpp
         ${HERE}/src/os/windows.h
+        ${HERE}/src/os/windows/io.cpp
+        ${HERE}/src/os/windows/io.h
     )
 elseif(APPLE)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
@@ -223,6 +228,8 @@ elseif(APPLE)
         ${HERE}/src/os/unix-mapped-file.h
         ${HERE}/src/os/unix-mutex.h
         ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/mac-c.h
@@ -233,6 +240,8 @@ elseif(APPLE)
         ${HERE}/src/os/unix-mapped-file.h
         ${HERE}/src/os/unix-mutex.h
         ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
     )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
@@ -242,6 +251,8 @@ else()
         ${HERE}/src/os/unix-mutex.h
         ${HERE}/src/os/unix-thread.h
         ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/linux-c.h
@@ -251,6 +262,8 @@ else()
         ${HERE}/src/os/unix-mutex.h
         ${HERE}/src/os/unix-thread.h
         ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
     )
 endif()
 

@@ -26,6 +26,7 @@
 
 #include "os/c.h"
 #include "os/os.h"
+#include "util/io.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/vector.h"
@@ -254,16 +255,16 @@ setTermColor(TermColor color, PrintDest dest) noexcept {
 
     switch (color) {
     case TC_RESET:
-        fprintf(f, "%c[0m", escape);
+        serr << "\033[0m";
         break;
     case TC_GREEN:
-        fprintf(f, "%c[32m", escape);
+        serr << "\033[32m";
         break;
     case TC_YELLOW:
-        fprintf(f, "%c[33m", escape);
+        serr << "\033[33m";
         break;
     case TC_RED:
-        fprintf(f, "%c[31m", escape);
+        serr << "\033[31m";
         break;
     }
 }
