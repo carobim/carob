@@ -66,12 +66,12 @@ flush(State& state) noexcept {
     else {
         size_t len = state.buf.view().rfind('\n') + 1;
         if (state.err) {
-            writeStderr(data, size);
+            writeStderr(data, len);
         }
         else {
-            writeStdout(data, size);
+            writeStdout(data, len);
         }
-        memcpy(data, data + len, size - len);
+        memmove(data, data + len, size - len);
         buf.size -= len;
     }
 }
@@ -96,7 +96,7 @@ Output::operator<<(const char* x) noexcept {
 Output&
 Output::operator<<(StringView x) noexcept {
     STATE.buf << x;
-    if (x.find('\n')) {
+    if (x.find('\n') != SV_NOT_FOUND) {
         flush(STATE);
     }
     return *this;

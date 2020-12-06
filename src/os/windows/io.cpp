@@ -52,6 +52,7 @@ WriteConsoleA(void*, const void*, unsigned long, unsigned long*, void*) noexcept
 #define FILE_SHARE_READ 0x01
 #define FILE_SHARE_WRITE 0x02
 #define FILE_WRITE_DATA 0x02
+#define GENERIC_WRITE 0x00120116L
 #define INVALID_HANDLE_VALUE HANDLE_VALUE(-1)
 #define OPEN_EXISTING 3
 
@@ -107,8 +108,8 @@ static void* con = UNINITIALIZED;
 
 static void
 openConsole() noexcept {
-    con = CreateFileA("CONOUT$", FILE_WRITE_DATA,
-                      FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0,
+    con = CreateFileA("CONOUT$", GENERIC_WRITE,
+                      FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0,
                       0);
     // if (con == INVALID_HANDLE_VALUE) {
     //     GetLastError();
