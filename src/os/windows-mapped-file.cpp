@@ -78,34 +78,34 @@ UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;
 
 bool
 makeMappedFile(MappedFile& file, StringView path) noexcept {
-    HANDLE file = CreateFile(String(path).null(),
-                             GENERIC_READ,
-                             0,
-                             0,
-                             OPEN_EXISTING,
-                             FILE_ATTRIBUTE_NORMAL,
-                             0);
-    if (file == INVALID_HANDLE_VALUE) {
+    HANDLE hFile = CreateFile(String(path).null(),
+                              GENERIC_READ,
+                              0,
+                              0,
+                              OPEN_EXISTING,
+                              FILE_ATTRIBUTE_NORMAL,
+                              0);
+    if (hFile == INVALID_HANDLE_VALUE) {
         return false;
     }
 
     HANDLE mapping =
-            CreateFileMapping(file, 0, PAGE_READONLY, 0, 0, 0);
+            CreateFileMapping(hFile, 0, PAGE_READONLY, 0, 0, 0);
     if (mapping == 0) {
-        CloseHandle(file);
+        CloseHandle(hFile);
         return false;
     }
 
     void* data = MapViewOfFile(mapping, FILE_MAP_READ, 0, 0, 0);
     if (data == 0) {
         CloseHandle(mapping);
-        CloseHandle(file);
+        CloseHandle(hFile);
         return false;
     }
 
     file.data = static_cast<char*>(data);
     file.mapping = mapping;
-    file.file = file;
+    file.file = hFile;
     return true;
 }
 
