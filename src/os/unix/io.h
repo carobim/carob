@@ -40,7 +40,7 @@ class File {
     operator bool() noexcept;
 
     bool
-    read(void* buf, size_t len) noexcept;
+    read(const void* buf, size_t len) noexcept;
 
  public:
     int fd;

@@ -63,7 +63,7 @@ File::operator bool() noexcept {
 }
 
 bool
-File::read(void* buf, size_t len) noexcept {
+File::read(const void* buf, size_t len) noexcept {
     ssize_t nbytes = read(fd, buf, len);
     if (nbytes < 0) {
         // errno set
@@ -72,7 +72,7 @@ File::read(void* buf, size_t len) noexcept {
     if (nbytes != len) {
         return false;
     }
-    rem -= numRead;
+    rem -= nbytes;
     return true;
 }
 
