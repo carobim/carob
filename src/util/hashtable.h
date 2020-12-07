@@ -141,6 +141,7 @@ class Hashmap {
     Hashmap(size_t bucketCount = 0) noexcept {
         size = 0;
         capacity = 0;
+        data = 0;
 
         if (bucketCount) {
             capacity = pow2(bucketCount);
