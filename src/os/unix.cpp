@@ -197,21 +197,28 @@ readFile(StringView path, String& data) noexcept {
     path_.reserve(path.size + 1);
     path_ << path;
 
-    FILE* f = fopen(path_.null(), "r");
-    if (!f) {
+    int fd = open(path_.null(), O_RDONLY);
+    if (fd < 0) {
         return false;
     }
 
+    struct stat status;
+    if (fstat(fd, &status)) {
+        // errno set
+        close(fd);
+        return false;
+    }
+
+    size_t rem = status.st_size;
     data.resize(size);
 
-    ssize_t read = fread(data.data, size, 1, f);
-    if (read != 1) {
-        fclose(f);
+    ssize_t nbytes = read(fd, data.data, size);
+    if (nbytes < 0 || nbytes != size) {
+        close(fd);
         return false;
     }
 
-    fclose(f);
-
+    close(fd);
     return true;
 }
 
