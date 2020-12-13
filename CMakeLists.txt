@@ -676,9 +676,9 @@ if(AV_SDL2)
     )
 
     target_link_libraries(tsunagari
-        PUBLIC ${SDL2_LIBRARIES}
-               ${SDL2_image_LIBRARIES}
-               ${SDL2_mixer_LIBRARIES}
+        ${SDL2_LIBRARIES}
+        ${SDL2_image_LIBRARIES}
+        ${SDL2_mixer_LIBRARIES}
     )
 endif()
 
