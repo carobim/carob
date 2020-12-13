@@ -230,7 +230,10 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     rvec2 scaling = sdl2Scaling;
 
     SDL_Texture* texture = static_cast<SDL_Texture*>(image.texture);
-    SDL_Rect src{image.x, image.y, image.width, image.height};
+    SDL_Rect src{static_cast<int>(image.x),
+                 static_cast<int>(image.y),
+                 static_cast<int>(image.width),
+                 static_cast<int>(image.height)};
     SDL_Rect dst{static_cast<int>((x + translation.x) * scaling.x),
                  static_cast<int>((y + translation.y) * scaling.y),
                  static_cast<int>(image.width * scaling.x),
