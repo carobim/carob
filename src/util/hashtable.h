@@ -219,6 +219,13 @@ class Hashmap {
         assert_(it != end());
         erase(it);
     }
+    void
+    clear() noexcept {
+        for (size_t i = 0; i < capacity; i++) {
+            data[i] = Entry();
+        }
+        size = 0;
+    }
 
     // Read
     template<typename K>
@@ -317,7 +324,7 @@ class Hashmap {
         return (capacity + a - b) & mask;
     }
 
- private:
+ public:
     uint32_t size;
     uint32_t capacity;
     Entry* data;
