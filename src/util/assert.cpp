@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** assert.cpp                       **
-** Copyright 2017-2020 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -36,6 +36,52 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
 void __cdecl __debugbreak();  // Cannot be noexcept.
 #endif
 
+#ifdef __linux__
+enum ptrace_request {
+    PTRACE_TRACEME = 0,
+    PTRACE_DETACH = 17,
+};
+extern "C" long ptrace(enum ptrace_request, ...) noexcept;
+#endif
+
+static bool
+haveDebugger() {
+    static int result = 2;
+
+    if (result == 2) {
+#if defined(_WIN32)
+        result = IsDebuggerPresent();
+#elif defined(__linux__)
+        if (ptrace(PTRACE_TRACEME, 0, 0, 0) == -1) {
+            result = true;
+        }
+        else {
+            ptrace(PTRACE_DETACH, 0, 0, 0);
+            result = false;
+        }
+#endif
+    }
+
+    return static_cast<bool>(result);
+}
+
+static void
+triggerDebugger() {
+#if defined(_WIN32)
+    __debugbreak();
+#elif defined(__i386__) || defined(__x86_64__)
+    __asm__ __volatile__("int3");
+//#elif defined(__ARMCC_VERSION)
+//    __breakpoint(42)
+#elif defined(__thumb__)
+    __asm__ __volatile__(".inst 0xde01");
+#elif defined(__aarch64__)
+    __asm__ __volatile__(".inst 0xd4200000");
+#elif defined(__arm__)
+    __asm__ __volatile__(".inst 0xe7f001f0");
+#endif
+}
+
 void
 assert__(const char* func,
          const char* file,
@@ -44,11 +90,9 @@ assert__(const char* func,
     sout << "Assertion failed: " << expr << ", function " << func << ", file "
          << file << ", line " << line << "\n";
 
-#ifdef _WIN32
-    if (IsDebuggerPresent()) {
-        __debugbreak();
+    if (haveDebugger()) {
+        triggerDebugger();
     }
-#endif
 }
 
 #endif
