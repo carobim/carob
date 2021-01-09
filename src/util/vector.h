@@ -71,7 +71,8 @@ class Vector {
         free(data);
     }
 
-    void operator=(const Vector& other) noexcept {
+    void
+    operator=(const Vector& other) noexcept {
         for (size_t i = 0; i < size; i++) {
             data[i].~X();
         }
@@ -89,7 +90,8 @@ class Vector {
             }
         }
     }
-    void operator=(Vector&& other) noexcept {
+    void
+    operator=(Vector&& other) noexcept {
         for (size_t i = 0; i < size; i++) {
             data[i].~X();
         }
@@ -101,42 +103,52 @@ class Vector {
         other.size = other.capacity = 0;
     }
 
-    X& operator[](size_t i) noexcept {
+    X&
+    operator[](size_t i) noexcept {
         assert_(i < size);
         return data[i];
     }
-    X* begin() noexcept {
+    X*
+    begin() noexcept {
         return data;
     }
-    X* end() noexcept {
+    X*
+    end() noexcept {
         return data + size;
     }
 
-    void push_back(const X& x) noexcept {
+    void
+    push_back(const X& x) noexcept {
         grow();
         new (data + size) X(x);
         size++;
     }
-    void push_back(X&& x) noexcept {
+    void
+    push_back(X&& x) noexcept {
         grow();
         new (data + size) X(static_cast<X&&>(x));
         size++;
     }
-    void insert(size_t i, const X& x) noexcept {
+    void
+    insert(size_t i, const X& x) noexcept {
+        // FIXME: Does not call move constructors.
         assert_(i <= size);
         grow();
         memmove(data + i, data + i + 1, sizeof(X) * size);
         new (data + i) X(x);
         size++;
     }
-    void insert(size_t i, X&& x) noexcept {
+    void
+    insert(size_t i, X&& x) noexcept {
+        // FIXME: Does not call move constructors.
         assert_(i <= size);
         grow();
         memmove(data + i, data + i + 1, sizeof(X) * size);
         new (data + i) X(static_cast<X&&>(x));
         size++;
     }
-    void append(size_t n, const X* xs) noexcept {
+    void
+    append(size_t n, const X* xs) noexcept {
         assert_(n <= size);
         reserve(size + n);  // FIXME: Choose better size.
         for (size_t i = 0; i < n; i++) {
@@ -145,44 +157,66 @@ class Vector {
         size += n;
     }
 
-    void pop_back() noexcept {
+    void
+    pop_back() noexcept {
         assert_(size);
         data[size - 1].~X();
         size--;
     }
-    void erase(size_t i) noexcept {
+    void
+    erase(size_t i) noexcept {
         assert_(i < size);
         data[i].~X();
-        memmove(data + i, data + i + 1, sizeof(X) * (size - i));
+        for (size_t j = i; i < size - 1; i++) {
+            data[j] = data[j + 1];
+        }
         size--;
     }
 
-    void reserve(size_t n) noexcept {
+    // Calls move constructors (which empties the old objects), but not call
+    // destructors on the just-moved objects since they are hopefully empty.
+    void
+    reserve(size_t n) noexcept {
         assert_(n > capacity);
         X* newData = static_cast<X*>(malloc(sizeof(X) * n));
-        memmove(newData, data, sizeof(X) * size);
+        for (size_t i = 0; i < size; i++) {
+            new (newData + i) X(static_cast<X&&>(data[i]));
+        }
         data = newData;
         capacity = n;
     }
-    void resize(size_t n) noexcept {
-        reserve(n);
-        for (size_t i = size; i < n; i++) {
-            new (data + i) X();
+    void
+    resize(size_t n) noexcept {
+        if (n > capacity) {
+            reserve(n);
+        }
+        if (n > size) {
+            for (size_t i = size; i < n; i++) {
+                new (data + i) X();
+            }
+        }
+        else if (n < size) {
+            for (size_t i = n; i < size; i++) {
+                data[i].~X();
+            }
         }
         size = n;
     }
-    void grow() noexcept {
+    void
+    grow() noexcept {
         if (size == capacity) {
             reserve(size == 0 ? 4 : size * 2);  // FIXME: Choose better size.
         }
     }
-    void clear() noexcept {
+    void
+    clear() noexcept {
         for (size_t i = 0; i < size; i++) {
             data[i].~X();
         }
         size = 0;
     }
-    void reset() noexcept {
+    void
+    reset() noexcept {
         data = 0;
         size = capacity = 0;
     }
