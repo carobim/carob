@@ -43,6 +43,7 @@
 #define NO_VTABLE
 #endif
 
+/*
 template<class Class, class Ret, class This, class... Args>
 auto
 invoke(Ret Class::*f, This&& t, Args&&... args) noexcept
@@ -56,6 +57,7 @@ invoke(F&& f, Args&&... args) noexcept
         -> decltype(forward_<F>(f)(forward_<Args>(args)...)) {
     return forward_<F>(f)(forward_<Args>(args)...);
 }
+*/
 
 template<class F>
 class Function;  // Undefined.
@@ -112,10 +114,7 @@ namespace function {
     template<class F, class R, class... ArgTypes>
     base<R(ArgTypes...)>*
     func<F, R(ArgTypes...) noexcept>::clone() const noexcept {
-        // return new func(f);
-        void* buf = malloc(sizeof(func));
-        new (buf) func(f);
-        return reinterpret_cast<base<R(ArgTypes...) noexcept>*>(buf);
+        return new func(f);
     }
 
     template<class F, class R, class... ArgTypes>
@@ -147,7 +146,7 @@ namespace function {
 
 template<class R, class... ArgTypes>
 class Function<R(ArgTypes...) noexcept> {
- private:
+ public:
     typedef function::base<R(ArgTypes...) noexcept> base;
 
     static base*
@@ -216,7 +215,7 @@ template<class R, class... ArgTypes>
 template<class F>
 Function<R(ArgTypes...) noexcept>::Function(F something) noexcept {
     if (sizeof(function::func<F, R(ArgTypes...) noexcept>) <= sizeof(buf)) {
-        // This warning occurs on GCC 8.3 because of incomplete static branch
+        // A warning occurs here on GCC 8.3 because of incomplete static branch
         // analysis.
         f = new ((void*)&buf)
                 function::func<F, R(ArgTypes...) noexcept>(static_cast<F&&>(something));
@@ -227,9 +226,7 @@ Function<R(ArgTypes...) noexcept>::Function(F something) noexcept {
         // );
         using T = function::func<F, R(ArgTypes...)>;
 
-        void* buf = malloc(sizeof(T));
-        new (buf) T(static_cast<F&&>(something));
-        f = reinterpret_cast<T*>(buf);
+        f = new T(static_cast<F&&>(something));
     }
 }
 
