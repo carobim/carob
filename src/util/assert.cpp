@@ -45,7 +45,7 @@ extern "C" long ptrace(enum ptrace_request, ...) noexcept;
 #endif
 
 static bool
-haveDebugger() {
+haveDebugger() noexcept {
     static int result = 2;
 
     if (result == 2) {
@@ -66,7 +66,7 @@ haveDebugger() {
 }
 
 static void
-triggerDebugger() {
+triggerDebugger() noexcept {
 #if defined(_WIN32)
     __debugbreak();
 #elif defined(__i386__) || defined(__x86_64__)
@@ -90,6 +90,11 @@ assert__(const char* func,
     sout << "Assertion failed: " << expr << ", function " << func << ", file "
          << file << ", line " << line << "\n";
 
+    debugger();
+}
+
+void
+debugger() noexcept {
     if (haveDebugger()) {
         triggerDebugger();
     }

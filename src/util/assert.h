@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** assert.h                         **
-** Copyright 2017-2020 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -51,5 +51,8 @@ assert__(const char* func,
 #else
 #define assert_(expr)
 #endif
+
+void
+debugger() noexcept;
 
 #endif  // SRC_UTIL_ASSERT_H_
