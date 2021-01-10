@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** string-view.cpp                  **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -131,13 +131,13 @@ StringView::rfind(char needle) const noexcept {
         return SV_NOT_FOUND;
     }
 
-    size_t i = size - 1;
+    size_t i = size;
     do {
+        i--;
         if (data[i] == needle) {
             return StringPosition(i);
         }
-        i--;
-    } while (i >= 0);
+    } while (i > 0);
 
     return SV_NOT_FOUND;
 }
