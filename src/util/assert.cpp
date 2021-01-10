@@ -59,6 +59,8 @@ haveDebugger() noexcept {
             ptrace(PTRACE_DETACH, 0, 0, 0);
             result = false;
         }
+#else
+        result = false;
 #endif
     }
 
