@@ -114,10 +114,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     uint32_t blobCount = static_cast<uint32_t>(blobs.size);
 
     // Sort blobs by size (smallest first).
-    Blob* data = blobs.data;
-#define LESS(i, j) data[i] < data[j]
-#define SWAP(i, j) swap_(data[i], data[j])
-    QSORT(blobs.size, LESS, SWAP);
+    sortA(blobs);
 
     // Determine block offsets.
     uint32_t pathOffsetsBlockSize = (blobCount + 1) * sizeof(PathOffset);

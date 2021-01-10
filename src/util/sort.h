@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** sort.h                           **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -210,5 +210,13 @@ do {                                                                    \
         Q_LOOP(Q_N, Q_LESS, Q_SWAP);                                    \
     }                                                                   \
 } while (0)
+
+template<typename Container>
+static void
+sortA(Container& c) noexcept {
+#define LESS(i, j) c.data[i] < c.data[j]
+#define SWAP(i, j) swap_(c.data[i], c.data[j])
+    QSORT(c.size, LESS, SWAP);
+}
 
 #endif  // SRC_UTIL_SORT_H_
