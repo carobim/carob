@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress.cpp                     **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -43,7 +43,7 @@ InProgress::isOver() noexcept {
 
 
 InProgressSound::InProgressSound(StringView sound, ThenFn then) noexcept
-        : then(then) {
+        : then(static_cast<ThenFn&&>(then)) {
     SoundID sid = soundLoad(sound);
     this->sound = soundPlay(sid);
     soundRelease(sid);
@@ -67,7 +67,7 @@ InProgressSound::tick(time_t) noexcept {
 }
 
 InProgressTimer::InProgressTimer(time_t duration, ThenFn then) noexcept
-        : duration(duration), passed(0), then(then) {
+        : duration(duration), passed(0), then(static_cast<ThenFn&&>(then)) {
     if (!then) {
         logErr("InProgressTimer", "invalid 'then'");
     }
@@ -76,7 +76,9 @@ InProgressTimer::InProgressTimer(time_t duration, ThenFn then) noexcept
 InProgressTimer::InProgressTimer(time_t duration,
                                  ProgressFn progress,
                                  ThenFn then) noexcept
-        : duration(duration), passed(0), progress(progress), then(then) {
+        : duration(duration), passed(0),
+          progress(static_cast<ProgressFn&&>(progress)),
+          then(static_cast<ThenFn&&>(then)) {
     if (!progress) {
         logErr("InProgressTimer", "invalid 'progress'");
     }
