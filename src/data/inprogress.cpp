@@ -48,7 +48,7 @@ InProgressSound::InProgressSound(StringView sound, ThenFn then) noexcept
     this->sound = soundPlay(sid);
     soundRelease(sid);
 
-    if (!then) {
+    if (!this->then) {
         logErr("InProgressSound", "invalid 'then'");
     }
 }
@@ -68,7 +68,7 @@ InProgressSound::tick(time_t) noexcept {
 
 InProgressTimer::InProgressTimer(time_t duration, ThenFn then) noexcept
         : duration(duration), passed(0), then(static_cast<ThenFn&&>(then)) {
-    if (!then) {
+    if (!this->then) {
         logErr("InProgressTimer", "invalid 'then'");
     }
 }
@@ -79,7 +79,7 @@ InProgressTimer::InProgressTimer(time_t duration,
         : duration(duration), passed(0),
           progress(static_cast<ProgressFn&&>(progress)),
           then(static_cast<ThenFn&&>(then)) {
-    if (!progress) {
+    if (!this->progress) {
         logErr("InProgressTimer", "invalid 'progress'");
     }
     // then can be empty
