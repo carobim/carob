@@ -1,7 +1,7 @@
 /********************************
 ** Tsunagari Tile Engine       **
 ** hashtable.h                 **
-** Copyright 2020 Paul Merrill **
+** Copyright 2021 Paul Merrill **
 ********************************/
 
 // **********
