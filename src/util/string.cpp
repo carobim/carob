@@ -24,6 +24,9 @@
 // IN THE SOFTWARE.
 // **********
 
+// For additional copyright information pertaining to this file, please refer
+// to musl's COPYRIGHT file.
+
 #include "util/string.h"
 
 #include "os/c.h"
