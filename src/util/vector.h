@@ -166,11 +166,11 @@ class Vector {
     void
     erase(size_t i) noexcept {
         assert_(i < size);
-        data[i].~X();
-        for (size_t j = i; i < size - 1; i++) {
-            data[j] = data[j + 1];
+        for (size_t j = i; j < size - 1; j++) {
+            data[j] = static_cast<X&&>(data[j + 1]);
         }
         size--;
+        data[size].~X();
     }
 
     // Calls move constructors (which empties the old objects), but not call
