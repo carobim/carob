@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** new.h                            **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -35,7 +35,7 @@ extern "C" {
 __declspec(dllimport) void free(void*) noexcept;
 __declspec(dllimport) __declspec(restrict) void* malloc(size_t) noexcept;
 #else
-void*
+void* __restrict__
 malloc(size_t) noexcept;
 void
 free(void*) noexcept;
