@@ -232,6 +232,9 @@ class Hashmap {
     iterator
     find(const K& k) noexcept {
         assert_(k != E::value());  // Empty key shouldn't be used.
+        if (size == 0) {
+            return end();
+        }
         for (uint32_t idx = keyToIdx(k);; idx = probe(idx)) {
             if (data[idx].key == E::value()) {
                 return end();
