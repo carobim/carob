@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** unix.cpp                         **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -34,49 +34,35 @@
 const char dirSeparator = '/';
 
 Filesize
-getFileSize(StringView path_) noexcept {
-    String path(path_);
-
+getFileSize(StringView path) noexcept {
     struct stat status;
-    if (stat(path.null(), &status)) {
+    if (stat(String(path).null(), &status)) {
         return FS_ERROR;
     }
     return static_cast<Filesize>(status.st_size);
 }
 
 bool
-isDir(String& path) noexcept {
+isDir(StringView path) noexcept {
     struct stat status;
-    if (stat(path.null(), &status)) {
+    if (stat(String(path).null(), &status)) {
         return false;
     }
     return S_ISDIR(status.st_mode);
 }
 
-bool
-isDir(StringView path) noexcept {
-    String path_(path);
-    return isDir(path_);
-}
-
-void
-makeDirectory(String& path) noexcept {
-    mkdir(path.null(), 0777);
-}
-
 void
 makeDirectory(StringView path) noexcept {
-    String path_(path);
-    return makeDirectory(path_);
+    mkdir(String(path).null(), 0777);
 }
 
 Vector<String>
-listDir(String& path) noexcept {
+listDir(StringView path) noexcept {
     DIR* dir = 0;
     struct dirent* entry = 0;
     Vector<String> names;
 
-    if ((dir = opendir(path.null())) == 0) {
+    if ((dir = opendir(String(path).null())) == 0) {
         return names;
     }
 
@@ -102,15 +88,9 @@ listDir(String& path) noexcept {
     return names;
 }
 
-Vector<String>
-listDir(StringView path) noexcept {
-    String path_(path);
-    return listDir(path_);
-}
-
 bool
-writeFile(String& path, uint32_t length, void* data) noexcept {
-    int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
+writeFile(StringView path, uint32_t length, void* data) noexcept {
+    int fd = open(String(path).null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
     if (fd == -1) {
         return false;
     }
@@ -124,17 +104,11 @@ writeFile(String& path, uint32_t length, void* data) noexcept {
 }
 
 bool
-writeFile(StringView path, uint32_t length, void* data) noexcept {
-    String path_(path);
-    return writeFile(path_, length, data);
-}
-
-bool
-writeFileVec(String& path,
+writeFileVec(StringView path,
              uint32_t count,
              uint32_t* lengths,
              void** datas) noexcept {
-    int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
+    int fd = open(String(path).null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
     if (fd == -1) {
         return false;
     }
@@ -157,34 +131,6 @@ writeFileVec(String& path,
     close(fd);
     return true;
 }
-
-bool
-writeFileVec(StringView path,
-             uint32_t count,
-             uint32_t* lengths,
-             void** datas) noexcept {
-    String path_(path);
-    return writeFileVec(path_, count, lengths, datas);
-}
-
-/*
-bool writeFileVec(String& path, uint32_t count, uint32_t* lengths, void** datas)
-noexcept { int fd = open(path.null(), O_CREAT | O_WRONLY | O_TRUNC, 0666); if
-(fd == -1) { return false;
-    }
-    for (size_t i = 0; i < count; i++) {
-        size_t length = lengths[i];
-        void* data = datas[i];
-        ssize_t written = write(fd, data, length);
-        if (written != length) {
-            close(fd);
-            return false;
-        }
-    }
-    close(fd);
-    return true;
-}
-*/
 
 bool
 readFile(StringView path, String& data) noexcept {
@@ -239,7 +185,7 @@ isaTTY() noexcept {
 }
 
 void
-setTermColor(TermColor color, PrintDest dest) noexcept {
+setTermColor(TermColor color, Output& out) noexcept {
     if (!isaTTY()) {
         return;
     }
@@ -249,29 +195,18 @@ setTermColor(TermColor color, PrintDest dest) noexcept {
 
     const char escape = 27;
 
-    FILE* f;
-
-    switch (dest) {
-    case Stdout:
-        f = stdout;
-        break;
-    case Stderr:
-        f = stderr;
-        break;
-    }
-
     switch (color) {
     case TC_RESET:
-        serr << "\033[0m";
+        out << "\033[0m";
         break;
     case TC_GREEN:
-        serr << "\033[32m";
+        out << "\033[32m";
         break;
     case TC_YELLOW:
-        serr << "\033[33m";
+        out << "\033[33m";
         break;
     case TC_RED:
-        serr << "\033[31m";
+        out << "\033[31m";
         break;
     }
 }

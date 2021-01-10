@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** windows.cpp                        **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -284,7 +284,7 @@ readFile(StringView path, String& data) noexcept {
 }
 
 void
-setTermColor(TermColor color, PrintDest /*dest*/) noexcept {
+setTermColor(TermColor color, Output& /*out*/) noexcept {
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
     if (out == INVALID_HANDLE_VALUE) {
         return;

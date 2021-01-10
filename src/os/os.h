@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** os.h                             **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -28,6 +28,7 @@
 #define SRC_OS_OS_H_
 
 #include "util/int.h"
+#include "util/io.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
@@ -64,13 +65,8 @@ enum TermColor {
     TC_RED,
 };
 
-enum PrintDest {
-    Stdout,
-    Stderr,
-};
-
 void
-setTermColor(TermColor color, PrintDest dest) noexcept;
+setTermColor(TermColor color, Output& out) noexcept;
 
 void
 exitProcess(int code) noexcept;
