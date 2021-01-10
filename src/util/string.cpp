@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** string.cpp                       **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -173,44 +173,140 @@ String::operator<<(bool b) noexcept {
 
 String&
 String::operator<<(int i) noexcept {
-    char buf[64];
-    sprintf(buf, "%d", i);
-    return *this << buf;
+    // Minus sign & 10 digits.
+    if (capacity < size + 11) {
+        reserve(growN(size, 11));
+    }
+
+    if (i < 0) {
+        if (i == INT32_MIN) {
+            memcpy(data + size, "-2147483648", 11);
+            size += 11;
+            return *this;
+        }
+
+        data[size++] = '-';
+        i = -i;
+    }
+
+    char buf[10];
+    char* p = buf;
+
+    do {
+        *p++ = static_cast<char>(i % 10) + '0';
+        i /= 10;
+    } while (i > 0);
+
+    do {
+        data[size++] = *--p;
+    } while (p != buf);
+
+    return *this;
 }
 
 String&
 String::operator<<(unsigned int u) noexcept {
-    char buf[64];
-    sprintf(buf, "%u", u);
-    return *this << buf;
+    if (capacity < size + 10) {
+        reserve(growN(size, 10));
+    }
+
+    char buf[10];
+    char* p = buf;
+
+    do {
+        *p++ = static_cast<char>(u % 10) + '0';
+        u /= 10;
+    } while (u > 0);
+
+    do {
+        data[size++] = *--p;
+    } while (p != buf);
+
+    return *this;
 }
 
 String&
 String::operator<<(long l) noexcept {
-    char buf[64];
-    sprintf(buf, "%ld", l);
-    return *this << buf;
+    if (capacity < size + 20) {
+        reserve(growN(size, 20));
+    }
+
+    char buf[20];
+    char* p = buf;
+
+    do {
+        *p++ = static_cast<char>(l % 10) + '0';
+        l /= 10;
+    } while (l > 0);
+
+    do {
+        data[size++] = *--p;
+    } while (p != buf);
+
+    return *this;
 }
 
 String&
 String::operator<<(unsigned long ul) noexcept {
-    char buf[64];
-    sprintf(buf, "%lu", ul);
-    return *this << buf;
+    if (capacity < size + 20) {
+        reserve(growN(size, 20));
+    }
+
+    char buf[20];
+    char* p = buf;
+
+    do {
+        *p++ = static_cast<char>(ul % 10) + '0';
+        ul /= 10;
+    } while (ul > 0);
+
+    do {
+        data[size++] = *--p;
+    } while (p != buf);
+
+    return *this;
 }
 
 String&
 String::operator<<(long long ll) noexcept {
-    char buf[64];
-    sprintf(buf, "%lld", ll);
-    return *this << buf;
+    if (capacity < size + 20) {
+        reserve(growN(size, 20));
+    }
+
+    char buf[20];
+    char* p = buf;
+
+    do {
+        *p++ = static_cast<char>(ll % 10) + '0';
+        ll /= 10;
+    } while (ll > 0);
+
+    do {
+        data[size++] = *--p;
+    } while (p != buf);
+
+    return *this;
 }
 
 String&
 String::operator<<(unsigned long long ull) noexcept {
-    char buf[64];
-    sprintf(buf, "%llu", ull);
-    return *this << buf;
+    if (capacity < size + 20) {
+        reserve(growN(size, 20));
+    }
+
+    char buf[20];
+    char* p = buf;
+
+    do {
+        *p++ = static_cast<char>(ull % 10) + '0';
+        ull /= 10;
+    } while (ull > 0);
+
+    do {
+        data[size++] = *--p;
+    } while (p != buf);
+
+    return *this;
 }
 
 String&
