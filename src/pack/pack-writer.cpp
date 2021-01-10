@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack-writer.cpp                  **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -98,7 +98,7 @@ makePackWriter() noexcept {
 
 void
 destroyPackWriter(PackWriter* writer) noexcept {
-    writer->~PackWriter();
+    delete writer;
 }
 
 void
