@@ -32,6 +32,270 @@
 #include "util/new.h"
 #include "util/noexcept.h"
 
+#if __LDBL_MANT_DIG__ == 53 || __LDBL_MANT_DIG__ == 113
+#error Not implemented
+#endif
+
+#define FP_NAN       0
+#define FP_INFINITE  1
+#define FP_ZERO      2
+#define FP_SUBNORMAL 3
+#define FP_NORMAL    4
+
+static inline unsigned
+__FLOAT_BITS(float __f) noexcept
+{
+    union {float __f; unsigned __i;} __u;
+    __u.__f = __f;
+    return __u.__i;
+}
+static inline unsigned long long
+__DOUBLE_BITS(double __f) noexcept
+{
+    union {double __f; unsigned long long __i;} __u;
+    __u.__f = __f;
+    return __u.__i;
+}
+
+union ldshape {
+    long double f;
+    struct {
+        uint64_t m;
+        uint16_t se;
+    } i;
+};
+
+static int
+__fpclassifyl(long double x) noexcept
+{
+    union ldshape u = {x};
+    int e = u.i.se & 0x7fff;
+    int msb = u.i.m>>63;
+    if (!e && !msb)
+        return u.i.m ? FP_SUBNORMAL : FP_ZERO;
+    if (e == 0x7fff) {
+        /* The x86 variant of 80-bit extended precision only admits
+         * one representation of each infinity, with the mantissa msb
+         * necessarily set. The version with it clear is invalid/nan.
+         * The m68k variant, however, allows either, and tooling uses
+         * the version with it clear. */
+        if (!msb)
+            return FP_NAN;
+        return u.i.m << 1 ? FP_NAN : FP_INFINITE;
+    }
+    if (!msb)
+        return FP_NAN;
+    return FP_NORMAL;
+}
+
+static int
+__signbitl(long double x) noexcept
+{
+    union ldshape u = {x};
+    return u.i.se >> 15;
+}
+
+static long double
+frexpl(long double x, int *e) noexcept
+{
+    union ldshape u = {x};
+    int ee = u.i.se & 0x7fff;
+
+    if (!ee) {
+        if (x) {
+            x = frexpl(x*0x1p120, e);
+            *e -= 120;
+        } else *e = 0;
+        return x;
+    } else if (ee == 0x7fff) {
+        return x;
+    }
+
+    *e = ee - 0x3ffe;
+    u.i.se &= 0x8000;
+    u.i.se |= 0x3ffe;
+    return u.f;
+}
+
+#define isfinite(x) ( \
+    sizeof(x) == sizeof(float) ? (__FLOAT_BITS(x) & 0x7fffffff) < 0x7f800000 : \
+    sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & -1ULL>>1) < 0x7ffULL<<52 : \
+    __fpclassifyl(x) > FP_INFINITE)
+
+#define signbit(x) ( \
+    sizeof(x) == sizeof(float) ? (int)(__FLOAT_BITS(x)>>31) : \
+    sizeof(x) == sizeof(double) ? (int)(__DOUBLE_BITS(x)>>63) : \
+    __signbitl(x) )
+
+
+#define MAX(a,b) ((a)>(b) ? (a) : (b))
+#define MIN(a,b) ((a)<(b) ? (a) : (b))
+
+static char*
+fmt_u(uint32_t x, char *s) noexcept
+{
+    for (; x; x/=10) {
+        *--s = '0' + x%10;
+    }
+    return s;
+}
+
+struct Buf {
+    char buf[64];
+    char* p;  // Needs to be initialized to &buf[0].
+};
+
+static void
+out(Buf *f, const char *s, size_t l) noexcept
+{
+    static_cast<char*>(memcpy(f->p, s, l));
+    f->p += l;
+}
+
+static const char xdigits[17] = "0123456789ABCDEF";
+
+// w = 0 (no padding)
+// p = -1 (auto precision)
+// fl = 0 (misc. flags)
+static int
+fmt_fp(Buf *f, long double y, int w = 0, int p = -1, int fl = 0) noexcept
+{
+    uint32_t big[(__LDBL_MANT_DIG__+28)/29 + 1          // mantissa expansion
+        + (__LDBL_MAX_EXP__+__LDBL_MANT_DIG__+28+8)/9]; // exponent expansion
+    uint32_t *a, *d, *r, *z;
+    int e2=0, e, i, j, l;
+    char buf[9+__LDBL_MANT_DIG__/4], *s;
+    const char *prefix="-0X+0X 0X-0x+0x 0x";
+    int pl;
+    char ebuf0[3*sizeof(int)], *ebuf=&ebuf0[3*sizeof(int)], *estr;
+
+    pl=1;
+    if (signbit(y)) {
+        y=-y;
+    } else prefix++, pl=0;
+
+    if (!isfinite(y)) {
+        const char *s = y == y ? "inf" : "nan";
+        out(f, "-", pl);
+        out(f, s, 3);
+        return MAX(w, 3+pl);
+    }
+
+    y = frexpl(y, &e2) * 2;
+    if (y) e2--;
+
+    if (p<0) p=6;
+
+    if (y) y *= 0x1p28, e2-=28;
+
+    if (e2<0) a=r=z=big;
+    else a=r=z=big+sizeof(big)/sizeof(*big) - __LDBL_MANT_DIG__ - 1;
+
+    do {
+        *z = y;
+        y = 1000000000*(y-*z++);
+    } while (y);
+
+    while (e2>0) {
+        uint32_t carry=0;
+        int sh=MIN(29,e2);
+        for (d=z-1; d>=a; d--) {
+            uint64_t x = ((uint64_t)*d<<sh)+carry;
+            *d = x % 1000000000;
+            carry = x / 1000000000;
+        }
+        if (carry) *--a = carry;
+        while (z>a && !z[-1]) z--;
+        e2-=sh;
+    }
+    while (e2<0) {
+        uint32_t carry=0, *b;
+        int sh=MIN(9,-e2), need=1+(p+__LDBL_MANT_DIG__/3U+8)/9;
+        for (d=a; d<z; d++) {
+            uint32_t rm = *d & (1<<sh)-1;
+            *d = (*d>>sh) + carry;
+            carry = (1000000000>>sh) * rm;
+        }
+        if (!*a) a++;
+        if (carry) *z++ = carry;
+        /* Avoid (slow!) computation past requested precision */
+        b = r;
+        if (z-b > need) z = b+need;
+        e2+=sh;
+    }
+
+    if (a<z) for (i=10, e=9*(r-a); *a>=i; i*=10, e++);
+    else e=0;
+
+    /* Perform rounding: j is precision after the radix (possibly neg) */
+    j = p;
+    if (j < 9*(z-r-1)) {
+        uint32_t x;
+        /* We avoid C's broken division of negative numbers */
+        d = r + 1 + ((j+9*__LDBL_MAX_EXP__)/9 - __LDBL_MAX_EXP__);
+        j += 9*__LDBL_MAX_EXP__;
+        j %= 9;
+        for (i=10, j++; j<9; i*=10, j++);
+        x = *d % i;
+        /* Are there any significant digits past j? */
+        if (x || d+1!=z) {
+            long double round = 2/__LDBL_EPSILON__;
+            long double small;
+            if ((*d/i & 1) || (i==1000000000 && d>a && (d[-1]&1)))
+                round += 2;
+            if (x<i/2) small=0x0.8p0;
+            else if (x==i/2 && d+1==z) small=0x1.0p0;
+            else small=0x1.8p0;
+            if (pl && *prefix=='-') round*=-1, small*=-1;
+            *d -= x;
+            /* Decide whether to round by probing round+small */
+            if (round+small != round) {
+                *d = *d + i;
+                while (*d > 999999999) {
+                    *d--=0;
+                    if (d<a) *--a=0;
+                    (*d)++;
+                }
+                for (i=10, e=9*(r-a); *a>=i; i*=10, e++);
+            }
+        }
+        if (z>d+1) z=d+1;
+    }
+    for (; z>a && !z[-1]; z--);
+
+    if (p > INT32_MAX-1-(p != 0))
+        return -1;
+    l = 1 + p + (p != 0);
+    if (e > INT32_MAX-l) return -1;
+    if (e>0) l+=e;
+
+    if (l > INT32_MAX-pl) return -1;
+    out(f, prefix, pl);
+
+    if (a>r) a=r;
+    for (d=a; d<=r; d++) {
+        char *s = fmt_u(*d, buf+9);
+        if (d!=a) while (s>buf) *--s='0';
+        else if (s==buf+9) *--s='0';
+        out(f, s, buf+9-s);
+    }
+    if (d<z && p>0) {
+        if (p) out(f, ".", 1);
+    }
+    else {
+        l -= 1;
+    }
+    for (; d<z && p>0; d++, p-=9) {
+        char *s = fmt_u(*d, buf+9);
+        while (s>buf) *--s='0';
+        out(f, s, MIN(9,p));
+    }
+
+    return MAX(w, pl+l);
+}
+
+
+
 static size_t
 grow1(size_t current) noexcept {
     return current < 4 ? 4 : current * 2;
@@ -309,9 +573,14 @@ String::operator<<(unsigned long long ull) noexcept {
 
 String&
 String::operator<<(float f) noexcept {
-    char buf[64];
-    sprintf(buf, "%f", f);
-    return *this << buf;
+    Buf b;
+    b.p = b.buf;
+
+    fmt_fp(&b, f);
+
+    *b.p = 0;
+
+    return *this << b.buf;
 }
 
 void
