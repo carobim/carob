@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** log.cpp                            **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -132,6 +132,8 @@ logErr(StringView domain, StringView msg) noexcept {
 #ifdef __APPLE__
         macMessageBox(StringView("Tsunagari - Error"), s);
 #endif
+
+        debugger();
     }
 }
 
@@ -161,13 +163,11 @@ logFatal(StringView domain, StringView msg) noexcept {
 
 #ifdef _WIN32
     wMessageBox("Tsunagari - Fatal", s);
-
-    if (IsDebuggerPresent()) {
-        __debugbreak();
-    }
 #elif __APPLE__
     macMessageBox(StringView("Tsunagari - Fatal"), s);
 #endif
+
+    debugger();
 
     exitProcess(1);
 }
