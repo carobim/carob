@@ -168,7 +168,18 @@ String::operator<<(StringView s) noexcept {
 
 String&
 String::operator<<(bool b) noexcept {
-    return *this << (b ? "true" : "false");
+    if (capacity < size + 5) {
+        reserve(growN(size, 5));
+    }
+    if (b) {
+        memcpy(data + size, "true", 4);
+        size += 4;
+    }
+    else {
+        memcpy(data + size, "false", 5);
+        size += 5;
+    }
+    return *this;
 }
 
 String&
@@ -227,50 +238,37 @@ String::operator<<(unsigned int u) noexcept {
 
 String&
 String::operator<<(long l) noexcept {
-    if (capacity < size + 20) {
-        reserve(growN(size, 20));
-    }
-
-    char buf[20];
-    char* p = buf;
-
-    do {
-        *p++ = static_cast<char>(l % 10) + '0';
-        l /= 10;
-    } while (l > 0);
-
-    do {
-        data[size++] = *--p;
-    } while (p != buf);
-
-    return *this;
+#ifdef _WIN32
+    return *this << static_cast<int>(l);
+#else
+    return *this << static_cast<long long>(l);
+#endif
 }
 
 String&
 String::operator<<(unsigned long ul) noexcept {
-    if (capacity < size + 20) {
-        reserve(growN(size, 20));
-    }
-
-    char buf[20];
-    char* p = buf;
-
-    do {
-        *p++ = static_cast<char>(ul % 10) + '0';
-        ul /= 10;
-    } while (ul > 0);
-
-    do {
-        data[size++] = *--p;
-    } while (p != buf);
-
-    return *this;
+#ifdef _WIN32
+    return *this << static_cast<unsigned int>(ul);
+#else
+    return *this << static_cast<unsigned long long>(ul);
+#endif
 }
 
 String&
 String::operator<<(long long ll) noexcept {
     if (capacity < size + 20) {
         reserve(growN(size, 20));
+    }
+
+    if (ll < 0) {
+        if (ll == INT64_MIN) {
+            memcpy(data + size, "-9223372036854775808", 20);
+            size += 20;
+            return *this;
+        }
+
+        data[size++] = '-';
+        ll = -ll;
     }
 
     char buf[20];
