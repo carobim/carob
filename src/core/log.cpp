@@ -31,6 +31,7 @@
 #include "core/window.h"
 #include "os/mutex.h"
 #include "os/os.h"
+#include "util/assert.h"
 #include "util/io.h"
 #include "util/math2.h"
 

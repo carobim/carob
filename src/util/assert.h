@@ -48,11 +48,13 @@ assert__(const char* func,
          const char* file,
          int line,
          const char* expr) noexcept;
-#else
-#define assert_(expr)
-#endif
 
 void
 debugger() noexcept;
+
+#else
+#define assert_(expr)
+#define debugger()
+#endif
 
 #endif  // SRC_UTIL_ASSERT_H_
