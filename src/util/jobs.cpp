@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** jobs.cpp                         **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -32,6 +32,7 @@
 #include "util/assert.h"
 #include "util/function.h"
 #include "util/int.h"
+#include "util/queue.h"
 #include "util/vector.h"
 
 static size_t workerLimit = 0;
@@ -39,7 +40,7 @@ static Vector<Thread> workers;
 static int jobsRunning = 0;
 
 // Empty jobs are the signal to quit.
-static Vector<Job> jobs;
+static Queue<Job> jobs;
 
 // Whether the destructor has been called,
 static bool tearingDown = false;
@@ -65,8 +66,8 @@ work() noexcept {
                 jobAvailable.wait(lock);
             }
 
-            job = static_cast<Job&&>(jobs[0]);
-            jobs.erase(0);
+            job = static_cast<Job&&>(jobs.front());
+            jobs.pop();
 
             jobsRunning += 1;
         }
@@ -93,7 +94,7 @@ JobsEnqueue(Job job) noexcept {
 
     assert_(!tearingDown);
 
-    jobs.push_back(job);
+    jobs.push(static_cast<Job&&>(job));
 
     if (workerLimit == 0) {
         workerLimit = threadHardwareConcurrency();
@@ -125,7 +126,9 @@ JobsFlush() noexcept {
         LockGuard lock(jobsMutex);
 
         // Send over empty jobs.
-        jobs.resize(jobs.size + workers.size);
+        for (size_t i = 0; i < workers.size; i++) {
+            jobs.push(Job());
+        }
 
         tearingDown = true;
     }
