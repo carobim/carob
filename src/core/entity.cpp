@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** entity.cpp                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -532,12 +532,12 @@ Entity::setFrozen(bool b) noexcept {
 
 void
 Entity::attach(OnTickFn fn) noexcept {
-    onTickFns.push_back(fn);
+    onTickFns.push_back(static_cast<OnTickFn&&>(fn));
 }
 
 void
 Entity::attach(OnTurnFn fn) noexcept {
-    onTurnFns.push_back(fn);
+    onTurnFns.push_back(static_cast<OnTurnFn&&>(fn));
 }
 
 void
