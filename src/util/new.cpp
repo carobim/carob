@@ -65,12 +65,12 @@ operator delete[](void* ptr, size_t) noexcept {
     free(ptr);
 }
 
+#ifdef NDEBUG
 void
-__cxa_pure_virtual() {
-#ifndef NDEBUG
-    assert(false);
+__cxa_pure_virtual() {}
+#else
+void* __cxa_pure_virtual = 0;
 #endif
-}
 
 #endif  // defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) ||
         // defined(__NetBSD__)
