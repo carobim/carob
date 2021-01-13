@@ -65,13 +65,13 @@ operator delete[](void* ptr, size_t) noexcept {
     free(ptr);
 }
 
-// GCC has strict requirements for how __cxa_pure_virtual is defined:
+// Clang and GCC have strict requirements for how __cxa_pure_virtual is defined:
 //
-//   normal: void*
-//   debug: void*
-//   release: void f(){}
-//   rwdi: void f(){}
-//   msr: void f(){}
+//   (default): pointer
+//   Debug: pointer
+//   Release: function
+//   RelWithDebInfo: function
+//   MinSizeRel: function
 
 #ifdef RELEASE
 void
