@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.9...3.19)
 project(TsunagariEngine C CXX)
+#https://cmake.org/cmake/help/v2.8.9/cmake.html
 
 
 #
@@ -479,6 +480,19 @@ else()
     target_compile_definitions(pack-tool PRIVATE $<$<NOT:${IS_DEBUG}>:NDEBUG>)
 endif()
 
+# Enable RELEASE in anything with optimizations.
+if(${CMAKE_VERSION} VERSION_LESS 2.8.10)
+    set(CMAKE_CXX_FLAGS_MINSIZEREL
+        "${CMAKE_CXX_FLAGS_MINSIZEREL} -DRELEASE")
+    set(CMAKE_CXX_FLAGS_RELEASE
+        "${CMAKE_CXX_FLAGS_RELEASE} -DRELEASE")
+    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
+        "${CMAKE_CXX_FLAGS_MINSIZEREL} -DRELEASE")
+else()
+    target_compile_definitions(tsunagari PUBLIC $<${IS_RELEASE}:RELEASE>)
+    target_compile_definitions(pack-tool PRIVATE $<${IS_RELEASE}:RELEASE>)
+endif()
+
 # Emscripten configuration
 if(AV_EM)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s ALLOW_MEMORY_GROWTH=1")
@@ -505,6 +519,14 @@ if(NOT DEFINED ENV{CI})
     endif()
     if(NINJA AND GCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
+    endif()
+endif()
+
+if(AV_NULL)
+    if(${CMAKE_VERSION} VERSION_LESS 2.8.10)
+        add_definitions(-DAV_NULL)
+    else()
+        target_compile_definitions(tsunagari PUBLIC AV_NULL)
     endif()
 endif()
 

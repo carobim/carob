@@ -65,7 +65,15 @@ operator delete[](void* ptr, size_t) noexcept {
     free(ptr);
 }
 
-#ifdef NDEBUG
+// GCC has strict requirements for how __cxa_pure_virtual is defined:
+//
+//   normal: void*
+//   debug: void*
+//   release: void f(){}
+//   rwdi: void f(){}
+//   msr: void f(){}
+
+#ifdef RELEASE
 void
 __cxa_pure_virtual() {}
 #else
