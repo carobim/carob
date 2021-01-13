@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** new.cpp                     **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** new.cpp                          **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,6 +29,7 @@
 
 #include "util/new.h"
 
+#include "util/assert.h"
 #include "util/int.h"
 #include "util/noexcept.h"
 
@@ -64,7 +65,12 @@ operator delete[](void* ptr, size_t) noexcept {
     free(ptr);
 }
 
-void* __cxa_pure_virtual = 0;
+void
+__cxa_pure_virtual() {
+#ifndef NDEBUG
+    assert(false);
+#endif
+}
 
 #endif  // defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) ||
         // defined(__NetBSD__)
