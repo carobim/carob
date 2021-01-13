@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** images.h                           **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -66,9 +66,11 @@ void
 imageRelease(Image image) noexcept;
 
 // Load an image of tiles from the file at the given path. Each tile with width
-// and heigh as specified.
+// and heigh as specified. If the image does not have the expected number of
+// tiles across and high, loading fails.
 TiledImage
-tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight) noexcept;
+tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight,
+          uint32_t numAcross, uint32_t numHigh) noexcept;
 
 #define TILES_VALID(tiles) (tiles.image.texture != 0)
 

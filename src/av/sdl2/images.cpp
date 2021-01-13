@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** images.cpp                       **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -243,15 +243,18 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 }
 
 TiledImage
-tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight) noexcept {
+tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight,
+          uint32_t numAcross, uint32_t numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
+
+    assert_(tiles->image.width == tileWidth * numAcross);
+    assert_(tiles->image.height == tileHeight * numHigh);
 
     if (!tiles) {
         tiles = load(path);
         tiles->tileWidth = tileWidth;
         tiles->tileHeight = tileHeight;
-        tiles->numTiles = (tiles->image.width / tileWidth) *
-                          (tiles->image.height / tileHeight);
+        tiles->numTiles = numAcross * numHigh;
     }
 
     return *tiles;

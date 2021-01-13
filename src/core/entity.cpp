@@ -130,17 +130,27 @@ parseSprite(Entity* e, JsonValue sprite) noexcept {
 
     JsonValue tilewidthValue = sheetValue["tile_width"];
     JsonValue tileheightValue = sheetValue["tile_height"];
+    JsonValue numacrossValue = sheetValue["num_across"];
+    JsonValue numhighValue = sheetValue["num_high"];
     JsonValue pathValue = sheetValue["path"];
 
     CHECK(tilewidthValue.isNumber());
     CHECK(tileheightValue.isNumber());
+    CHECK(numacrossValue.isNumber());
+    CHECK(numhighValue.isNumber());
     CHECK(pathValue.isString());
 
-    e->imgsz.x = tilewidthValue.toInt();
-    e->imgsz.y = tileheightValue.toInt();
+    uint32_t tileWidth = tilewidthValue.toInt();
+    uint32_t tileHeight = tileheightValue.toInt();
+    uint32_t numAcross = numacrossValue.toInt();
+    uint32_t numHigh = numhighValue.toInt();
+
+    e->imgsz.x = tileWidth;
+    e->imgsz.y = tileHeight;
     StringView path = pathValue.toString();
 
-    TiledImage tiles = tilesLoad(path, e->imgsz.x, e->imgsz.y);
+    TiledImage tiles = tilesLoad(path, tileWidth, tileHeight, numAcross,
+                                 numHigh);
     CHECK(TILES_VALID(tiles));
 
     return parsePhases(e, phasesValue, tiles);

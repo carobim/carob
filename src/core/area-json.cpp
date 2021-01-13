@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** area-json.cpp                      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -321,9 +321,9 @@ AreaJSON::processTileSetFile(JsonValue obj,
 
     assert_(firstGid == tileGraphics.size);
 
-    unsigned tilex, tiley;
-    unsigned pixelw, pixelh;
-    unsigned width, height;
+    uint32_t tileWidth, tileHeight;
+    uint32_t pixelWidth, pixelHeight;
+    uint32_t numAcross, numHigh;
 
     JsonValue imageNode = obj["image"];
     JsonValue imagewidthNode = obj["imagewidth"];
@@ -339,29 +339,34 @@ AreaJSON::processTileSetFile(JsonValue obj,
     CHECK(tileheightNode.isNumber());
     CHECK(tilespropertiesNode.isObject() || tilespropertiesNode.isNull());
 
-    tilex = tilewidthNode.toInt();
-    tiley = tileheightNode.toInt();
+    tileWidth = tilewidthNode.toInt();
+    tileHeight = tileheightNode.toInt();
 
-    CHECK(tilex > 0 && tiley > 0);
-    CHECK(tilex <= 0x7FFF && tiley <= 0x7FFF);  // Reasonable limit?
+    pixelWidth = imagewidthNode.toInt();
+    pixelHeight = imageheightNode.toInt();
 
-    if (grid.tileDim && grid.tileDim.x != tilex && grid.tileDim.y != tiley) {
+    numAcross = pixelWidth / tileWidth;
+    numHigh = pixelHeight / tileHeight;
+
+    CHECK(tileWidth > 0 && tileHeight > 0);
+    CHECK(tileWidth <= 0x7FFF && tileHeight <= 0x7FFF);  // Reasonable limit?
+
+    if (grid.tileDim && grid.tileDim.x != tileWidth &&
+        grid.tileDim.y != tileHeight) {
         logErr(descriptor, "Tileset's width/height contradict earlier <layer>");
         return false;
     }
-    grid.tileDim = ivec2{static_cast<int>(tilex), static_cast<int>(tiley)};
-
-    pixelw = imagewidthNode.toInt();
-    pixelh = imageheightNode.toInt();
-
-    width = pixelw / grid.tileDim.x;
-    height = pixelh / grid.tileDim.y;
+    grid.tileDim = ivec2{
+        static_cast<int>(tileWidth),
+        static_cast<int>(tileHeight),
+    };
 
     String imgSource = String() << dirname(source) << imageNode.toString();
-    tileSets[imgSource] = TileSet{firstGid, (size_t)width, (size_t)height};
+    tileSets[imgSource] = TileSet{firstGid, numAcross, numHigh};
 
     // Load tileset image.
-    TiledImage images = tilesLoad(imgSource, tilex, tiley);
+    TiledImage images = tilesLoad(imgSource, tileWidth, tileHeight, numAcross,
+                                  numHigh);
     if (!TILES_VALID(images)) {
         logErr(descriptor, "Tileset image not found");
         return false;
@@ -527,7 +532,7 @@ AreaJSON::processLayer(JsonValue obj) noexcept {
 
     CHECK(widthValue.isNumber());
     CHECK(heightValue.isNumber());
-    CHECK(propertiesValue.isObject());
+    CHECK(propertiesValue.isObject() || propertiesValue.isNull());
     CHECK(dataValue.isArray());
 
     const int x = widthValue.toInt();
@@ -540,7 +545,9 @@ AreaJSON::processLayer(JsonValue obj) noexcept {
 
     allocateMapLayer(TileGrid::LayerType::TILE_LAYER);
 
-    CHECK(processLayerProperties(propertiesValue));
+    if (propertiesValue.isObject()) {
+        CHECK(processLayerProperties(propertiesValue));
+    }
     CHECK(processLayerData(dataValue));
 
     return true;
@@ -629,13 +636,19 @@ AreaJSON::processObjectGroup(JsonValue obj) noexcept {
      }
     */
 
+#ifndef NDEBUG
+    JsonValue nameValue = obj["name"];
+#endif
+
     JsonValue propertiesValue = obj["properties"];
     JsonValue objectsValue = obj["objects"];
 
-    CHECK(propertiesValue.isObject());
+    CHECK(propertiesValue.isObject() || propertiesValue.isNull());
     CHECK(objectsValue.isArray());
 
-    CHECK(processObjectGroupProperties(propertiesValue));
+    if (propertiesValue.isObject()) {
+        CHECK(processObjectGroupProperties(propertiesValue));
+    }
 
     for (JsonNode& objectNode : objectsValue) {
         CHECK(objectNode.value.isObject());

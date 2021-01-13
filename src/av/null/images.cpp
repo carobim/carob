@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** images.cpp                       **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -26,15 +26,14 @@
 
 #include "core/images.h"
 
-static Image
-nullImage = { reinterpret_cast<void*>(1), 0, 0, 1, 1 };
+#define NULL_TEXTURE reinterpret_cast<void*>(1)
 
 void
 imageInit() noexcept {}
 
 Image
 imageLoad(StringView path) noexcept {
-    return nullImage;
+    return { NULL_TEXTURE, 0, 0, 1, 1 };
 }
 
 void
@@ -44,8 +43,16 @@ void
 imageRelease(Image image) noexcept {}
 
 TiledImage
-tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight) noexcept {
-    return { nullImage, 1, 1, 1 };
+tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight,
+          uint32_t numAcross, uint32_t numWide) noexcept {
+    Image image = {
+        NULL_TEXTURE,
+        0,
+        0,
+        tileWidth * numAcross,
+        tileHeight * numWide,
+    };
+    return { image, tileWidth, tileHeight, numAcross * numWide };
 }
 
 void
@@ -53,7 +60,13 @@ tilesRelease(TiledImage tiles) noexcept {}
 
 Image
 tileAt(TiledImage tiles, uint32_t index) noexcept {
-    return nullImage;
+    return {
+        NULL_TEXTURE,
+        0,
+        0,
+        tiles.tileWidth,
+        tiles.tileHeight,
+    };
 }
 
 void
