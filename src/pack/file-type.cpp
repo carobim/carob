@@ -31,7 +31,7 @@
 
 static const StringView textExtensions[] = {".json"};
 
-static const StringView mediaExtensions[] = {".oga", ".png"};
+static const StringView mediaExtensions[] = {".bmp", ".oga", ".png"};
 
 FileType
 determineFileType(StringView path) noexcept {
