@@ -74,7 +74,7 @@ File::read(void* buf, size_t len) noexcept {
         // errno set
         return false;
     }
-    if (nbytes != len) {
+    if (static_cast<size_t>(nbytes) != len) {
         return false;
     }
     rem -= nbytes;
@@ -88,7 +88,7 @@ File::readOffset(void* buf, size_t len, size_t offset) noexcept {
         // errno set
         return false;
     }
-    if (nbytes != len) {
+    if (static_cast<size_t>(nbytes) != len) {
         return false;
     }
     return true;
@@ -127,31 +127,15 @@ FileWriter::resize(size_t size) noexcept {
 
 bool
 FileWriter::writeOffset(const void* buf, size_t len, size_t offset) noexcept {
-    return pwrite(fd, buf, len, offset) == len;
+    return pwrite(fd, buf, len, offset) == static_cast<ssize_t>(len);
 }
 
 bool
 writeStdout(const char* buf, size_t len) noexcept {
-    ssize_t written = write(1, buf, len);
-    if (written < 0) {
-        // errno set
-        return false;
-    }
-    if (written != len) {
-        return false;
-    }
-    return true;
+    return write(1, buf, len) == static_cast<ssize_t>(len);
 }
 
 bool
 writeStderr(const char* buf, size_t len) noexcept {
-    ssize_t written = write(2, buf, len);
-    if (written < 0) {
-        // errno set
-        return false;
-    }
-    if (written != len) {
-        return false;
-    }
-    return true;
+    return write(2, buf, len) == static_cast<ssize_t>(len);
 }

@@ -373,8 +373,8 @@ AreaJSON::processTileSetFile(JsonValue obj,
     CHECK(tileWidth > 0 && tileHeight > 0);
     CHECK(tileWidth <= 0x7FFF && tileHeight <= 0x7FFF);  // Reasonable limit?
 
-    if (grid.tileDim && grid.tileDim.x != tileWidth &&
-        grid.tileDim.y != tileHeight) {
+    if (grid.tileDim && static_cast<uint32_t>(grid.tileDim.x) != tileWidth &&
+        static_cast<uint32_t>(grid.tileDim.y) != tileHeight) {
         logErr(descriptor, "Tileset's width/height contradict earlier <layer>");
         return false;
     }
@@ -487,7 +487,7 @@ AreaJSON::processTileType(JsonValue obj,
         logErr(descriptor, "couldn't parse frame index for animated tile");
         return false;
     }
-    if (firstFrame != id) {
+    if (static_cast<int>(firstFrame) != id) {
         logErr(descriptor,
                String() << "first member of tile id " << id
                         << " animation must be itself.");
