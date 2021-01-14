@@ -126,8 +126,6 @@ parseSprite(Entity* e, JsonValue sprite) noexcept {
     CHECK(sheetValue.isObject());
     CHECK(phasesValue.isObject());
 
-    JsonValue sheet = sheetValue;
-
     JsonValue tilewidthValue = sheetValue["tile_width"];
     JsonValue tileheightValue = sheetValue["tile_height"];
     JsonValue numacrossValue = sheetValue["num_across"];
