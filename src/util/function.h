@@ -34,8 +34,10 @@
 #include "util/new.h"
 #include "util/noexcept.h"
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 26495)  // Always initialize a member variable.
+#endif
 
 #ifdef _MSC_VER
 #define NO_VTABLE __declspec(novtable)
@@ -331,6 +333,8 @@ Function<R(ArgTypes...) noexcept>::operator()(ArgTypes... args) const noexcept {
     return (*f)(forward_<ArgTypes>(args)...);
 }
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 #endif  // SRC_UTIL_FUNCTION_H_
