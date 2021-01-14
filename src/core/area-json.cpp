@@ -658,10 +658,6 @@ AreaJSON::processObjectGroup(JsonValue obj) noexcept {
      }
     */
 
-#ifndef NDEBUG
-    JsonValue nameValue = obj["name"];
-#endif
-
     JsonValue propertiesValue = obj["properties"];
     JsonValue objectsValue = obj["objects"];
 
