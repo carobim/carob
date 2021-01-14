@@ -113,4 +113,16 @@ pow2(size_t i) noexcept {
 }
 #endif
 
+template<typename T>
+static T
+align32(T x) {
+    return (x + 31) & 0xffffffe0;
+}
+
+template<typename T>
+static T
+align64(T x) {
+    return (x + 63) & 0xffffffc0;
+}
+
 #endif  // SRC_UTIL_MATH2_H_

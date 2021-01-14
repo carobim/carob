@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** io.cpp                      **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** io.cpp                           **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -50,6 +50,11 @@ File::File(StringView path) noexcept {
     rem = status.st_size;
 }
 
+File::File(File&& other) noexcept : fd(other.fd), rem(other.rem) {
+    other.fd = 0;
+    other.rem = 0;
+}
+
 File::~File() noexcept {
     if (fd >= 0) {
         if (close(fd)) {
@@ -74,6 +79,55 @@ File::read(void* buf, size_t len) noexcept {
     }
     rem -= nbytes;
     return true;
+}
+
+bool
+File::readOffset(void* buf, size_t len, size_t offset) noexcept {
+    ssize_t nbytes = pread(fd, buf, len, offset);
+    if (nbytes < 0) {
+        // errno set
+        return false;
+    }
+    if (nbytes != len) {
+        return false;
+    }
+    return true;
+}
+
+void
+File::operator=(File&& other) noexcept {
+    if (fd) {
+        close(fd);
+    }
+    fd = other.fd;
+    rem = other.rem;
+    other.fd = 0;
+    other.rem = 0;
+}
+
+FileWriter::FileWriter(StringView path) noexcept {
+    fd = open(String(path).null(), O_CREAT | O_TRUNC | O_WRONLY);
+}
+
+FileWriter::~FileWriter() noexcept {
+    if (fd >= 0) {
+        close(fd);
+    }
+}
+
+    // Whether the file was opened successfully.
+FileWriter::operator bool() noexcept {
+    return fd >= 0;
+}
+
+bool
+FileWriter::resize(size_t size) noexcept {
+    return ftruncate(fd, size) == 0;
+}
+
+bool
+FileWriter::writeOffset(const void* buf, size_t len, size_t offset) noexcept {
+    return pwrite(fd, buf, len, offset) == len;
 }
 
 bool

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack-reader.h                    **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -31,29 +31,28 @@
 #include "util/noexcept.h"
 #include "util/string-view.h"
 
-typedef uint32_t BlobIndex;
-typedef uint32_t BlobSize;
+#define BLOB_NOT_FOUND UINT32_MAX
 
-static BlobIndex BLOB_NOT_FOUND = UINT32_MAX;
-
-class PackReader {
- public:
-    static PackReader*
-    fromFile(StringView path) noexcept;
-    virtual ~PackReader() noexcept {}
-
-    virtual BlobIndex
-    size() noexcept = 0;
-
-    virtual BlobIndex
-    findIndex(StringView path) noexcept = 0;
-
-    virtual StringView
-    getBlobPath(BlobIndex index) noexcept = 0;
-    virtual BlobSize
-    getBlobSize(BlobIndex index) noexcept = 0;
-    virtual void*
-    getBlobData(BlobIndex index) noexcept = 0;
+struct BlobDetails {
+    StringView path;
+    uint32_t size;
 };
+
+struct PackReader;
+
+PackReader*
+makePackReader(StringView path) noexcept;
+void
+destroyReader(PackReader* r) noexcept;
+
+uint32_t
+readerSize(PackReader* r) noexcept;
+uint32_t
+readerIndex(PackReader* r, StringView path) noexcept;
+BlobDetails
+readerDetails(PackReader* r, uint32_t index) noexcept;
+
+bool
+readerRead(PackReader* r, void* buf, uint32_t index) noexcept;
 
 #endif  // SRC_PACK_PACK_READER_H_

@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** json.cpp                    **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** json.cpp                         **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -64,6 +64,15 @@
 
 #define JSON_ZONE_SIZE 4096
 #define JSON_STACK_SIZE 32
+
+JsonAllocator::JsonAllocator() noexcept : head(0) {}
+JsonAllocator::JsonAllocator(JsonAllocator&& other) noexcept
+        : head(other.head) {
+    other.head = 0;
+}
+JsonAllocator::~JsonAllocator() noexcept {
+    deallocate();
+}
 
 void*
 JsonAllocator::allocate(size_t size) noexcept {
@@ -446,9 +455,11 @@ JsonAllocator::operator=(JsonAllocator&& other) noexcept {
     other.head = 0;
 }
 
+JsonDocument::JsonDocument() noexcept : ok(false) {}
+
 JsonDocument::JsonDocument(String text) noexcept
         : text(static_cast<String&&>(text)) {
-    this->text << StringView("", 1);  // Add a null byte.
+    text << '\0';
     ok = parse(this->text.data, &root, allocator);
 }
 

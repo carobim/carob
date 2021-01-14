@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** client-conf.cpp                    **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********

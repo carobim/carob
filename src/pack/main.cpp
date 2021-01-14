@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** main.cpp                         **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,6 +27,7 @@
 #include "os/c.h"
 #include "os/mutex.h"
 #include "os/os.h"
+#include "pack/file-type.h"
 #include "pack/pack-reader.h"
 #include "pack/pack-writer.h"
 #include "pack/walker.h"
@@ -109,44 +110,44 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
 
 static bool
 listArchive(StringView archivePath) noexcept {
-    PackReader* pack = PackReader::fromFile(archivePath);
-
-    if (pack) {
-        String output;
-
-        for (BlobIndex i = 0; i < pack->size(); i++) {
-            StringView blobPath = pack->getBlobPath(i);
-            uint64_t blobSize = pack->getBlobSize(i);
-
-            // Print file paths with '\\' Windows.
-            String standardizedPath;
-
-            if (dirSeparator != '/') {
-                standardizedPath = blobPath;
-
-                for (size_t i = 0; i < blobPath.size; i++) {
-                    if (standardizedPath[i] == '/') {
-                        standardizedPath[i] = dirSeparator;
-                    }
-                }
-
-                blobPath = standardizedPath;
-            }
-
-            output << blobPath << ": " << blobSize << " bytes\n";
-        }
-
-        sout << output;
-
-        delete pack;
-        return true;
-    }
-    else {
+    PackReader* pack = makePackReader(archivePath);
+    if (!pack) {
         serr << exe << ": " << archivePath << ": not found\n";
 
-        delete pack;
+        destroyReader(pack);
         return false;
     }
+
+    String output;
+
+    uint32_t numEntries = readerSize(pack);
+    for (uint32_t i = 0; i < numEntries; i++) {
+        BlobDetails details = readerDetails(pack, i);
+        StringView path = details.path;
+        uint32_t size = details.size;
+
+        // Print file paths with '\\' Windows.
+        String standardizedPath;
+
+        if (dirSeparator != '/') {
+            standardizedPath = path;
+
+            for (size_t i = 0; i < path.size; i++) {
+                if (standardizedPath[i] == '/') {
+                    standardizedPath[i] = dirSeparator;
+                }
+            }
+
+            path = standardizedPath;
+        }
+
+        output << path << ": " << size << " bytes\n";
+    }
+
+    sout << output;
+
+    destroyReader(pack);
+    return true;
 }
 
 static bool
@@ -182,50 +183,56 @@ putFile(StringView path, uint32_t size, void* data) noexcept {
 
 static bool
 extractArchive(StringView archivePath) noexcept {
-    PackReader* pack = PackReader::fromFile(archivePath);
-
-    if (pack) {
-        Vector<void*> blobDatas;
-        for (BlobIndex i = 0; i < pack->size(); i++) {
-            blobDatas.push_back(pack->getBlobData(i));
-        }
-
-        for (BlobIndex i = 0; i < pack->size(); i++) {
-            StringView blobPath = pack->getBlobPath(i);
-            uint32_t blobSize = pack->getBlobSize(i);
-            void* blobData = blobDatas[i];
-
-            // Change file paths to use '\\' on Windows.
-            String standardizedPath;
-
-            if (dirSeparator != '/') {
-                standardizedPath = blobPath;
-
-                for (size_t i = 0; i < blobPath.size; i++) {
-                    if (standardizedPath[i] == '/') {
-                        standardizedPath[i] = dirSeparator;
-                    }
-                }
-
-                blobPath = standardizedPath;
-            }
-
-            if (verbose) {
-                sout << "Extracting " << blobPath << ": " << blobSize << " bytes\n";
-            }
-
-            putFile(blobPath, blobSize, blobData);
-        }
-
-        delete pack;
-        return true;
-    }
-    else {
+    PackReader* pack = makePackReader(archivePath);
+    if (!pack) {
         serr << exe << ": " << archivePath << ": not found\n";
 
-        delete pack;
+        destroyReader(pack);
         return false;
     }
+
+    uint32_t numEntries = readerSize(pack);
+
+    uint32_t maxSize = 0;
+    for (uint32_t i = 0; i < numEntries; i++) {
+        BlobDetails details = readerDetails(pack, i);
+        uint32_t size = details.size;
+        maxSize = size > maxSize ? size : maxSize;
+    }
+
+    String standardizedPath;
+    void* buf = malloc(maxSize);
+
+    for (uint32_t i = 0; i < numEntries; i++) {
+        BlobDetails details = readerDetails(pack, i);
+        StringView path = details.path;
+        uint32_t size = details.size;
+
+        // Change file paths to use '\\' on Windows.
+        if (dirSeparator != '/') {
+            standardizedPath = path;
+
+            for (size_t i = 0; i < path.size; i++) {
+                if (standardizedPath[i] == '/') {
+                    standardizedPath[i] = dirSeparator;
+                }
+            }
+
+            path = standardizedPath;
+        }
+
+        if (verbose) {
+            sout << "Extracting " << path << ": " << size << " bytes\n";
+        }
+
+        readerRead(pack, buf, i);
+
+        putFile(path, size, buf);
+    }
+
+    free(buf);
+    destroyReader(pack);
+    return true;
 }
 
 int

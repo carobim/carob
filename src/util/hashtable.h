@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** hashtable.h                 **
-** Copyright 2021 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** hashtable.h                      **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy

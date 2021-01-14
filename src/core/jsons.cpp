@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** jsons.cpp                        **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -33,13 +33,12 @@
 
 JsonDocument
 loadJson(StringView path) noexcept {
-    StringView data;
+    String data;
     if (!resourceLoad(path, data)) {
         return JsonDocument();
     }
 
     TimeMeasure m(String() << "Constructed " << path << " as json");
 
-    // Make a copy of the string, because it will be overwritten.
-    return JsonDocument(data);
+    return JsonDocument(static_cast<String&&>(data));
 }

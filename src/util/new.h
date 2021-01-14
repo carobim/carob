@@ -47,4 +47,6 @@ operator new(size_t, void* p) noexcept {
     return p;
 }
 
+#define xmalloc(T, count) static_cast<T*>(malloc(sizeof(T) * (count)))
+
 #endif  // SRC_UTIL_NEW_H_

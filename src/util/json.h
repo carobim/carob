@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** json.h                      **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** json.h                           **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -195,7 +195,7 @@ struct JsonNode {
 struct JsonIterator {
     JsonNode* node;
 
-    JsonIterator(JsonNode* node) : node(node) {}
+    JsonIterator(JsonNode* node) noexcept : node(node) {}
 
     inline void
     operator++() noexcept {
@@ -223,11 +223,9 @@ end(JsonValue) noexcept {
 }
 
 struct JsonAllocator {
-    inline JsonAllocator() noexcept : head(0) {}
-    inline JsonAllocator(JsonAllocator&& other) noexcept : head(other.head) {
-        other.head = 0;
-    }
-    inline ~JsonAllocator() noexcept { deallocate(); }
+    JsonAllocator() noexcept;
+    JsonAllocator(JsonAllocator&& other) noexcept;
+    ~JsonAllocator() noexcept;
 
     void
     operator=(JsonAllocator&& other) noexcept;
@@ -252,14 +250,16 @@ struct JsonAllocator {
 
 class JsonDocument {
  public:
-    JsonDocument() noexcept : ok(false) {}
-    JsonDocument(String text) noexcept;  // Destructively edits text.
-    JsonDocument(JsonDocument&&) noexcept;
+    JsonDocument() noexcept;
+    // Adds a NUL terminator. Best to try to pass a String with capacity > size.
+    JsonDocument(String text) noexcept;
+    JsonDocument(JsonDocument&& other) noexcept;
     ~JsonDocument() noexcept;
 
-    JsonDocument(const JsonDocument&) = delete;
+ private:
+    JsonDocument(const JsonDocument&);
     void
-    operator=(const JsonAllocator&) = delete;
+    operator=(const JsonAllocator&);
 
  public:
     JsonValue root;

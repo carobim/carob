@@ -1,7 +1,7 @@
 /******************************************
 ** Tsunagari Tile Engine                 **
 ** mac-c.h                               **
-** Copyright 2019-2020 Paul Merrill      **
+** Copyright 2019-2021 Paul Merrill      **
 ******************************************/
 
 // **********
@@ -280,6 +280,8 @@ int
 close(int) noexcept;
 int
 isatty(int) noexcept;
+ssize_t
+pread(int, void*, size_t, off_t) noexcept;
 ssize_t
 read(int, void*, size_t) noexcept;
 ssize_t

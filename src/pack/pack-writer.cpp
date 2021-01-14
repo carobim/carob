@@ -26,43 +26,21 @@
 
 #include "pack/pack-writer.h"
 
+#include "os/io.h"
 #include "os/os.h"
 #include "pack/file-type.h"
+#include "pack/layout.h"
 #include "pack/pack-reader.h"
-#include "util/constexpr.h"
 #include "util/int.h"
+#include "util/math2.h"
 #include "util/move.h"
 #include "util/noexcept.h"
 #include "util/sort.h"
 #include "util/string.h"
 #include "util/vector.h"
 
-//                                       "T   s    u    n    a   g    a   r"
-static constexpr uint8_t PACK_MAGIC[8] = {84, 115, 117, 110, 97, 103, 97, 114};
-
-static constexpr uint8_t PACK_VERSION = 1;
-
-struct HeaderBlock {
-    uint8_t magic[8];
-    uint8_t version;
-    uint8_t unused[7];
-    uint32_t blobCount;
-    uint32_t pathOffsetsBlockOffset;
-    uint32_t pathsBlockOffset;
-    uint32_t pathsBlockSize;
-    uint32_t metadataBlockOffset;
-    uint32_t dataOffsetsBlockOffset;
-};
-
 typedef uint32_t BlobSize;
 typedef uint32_t PathOffset;
-enum BlobCompressionType { BLOB_COMPRESSION_NONE };
-
-struct BlobMetadata {
-    BlobSize uncompressedSize;
-    BlobSize compressedSize;
-    BlobCompressionType compressionType;
-};
 
 struct Blob {
     String path;
@@ -109,25 +87,74 @@ packWriterAddBlob(PackWriter* writer, StringView path, BlobSize size,
 
 bool
 packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
-    Vector<Blob>& blobs = writer->blobs;
+    bool ok = false;
 
+    Vector<Blob>& blobs = writer->blobs;
     uint32_t blobCount = static_cast<uint32_t>(blobs.size);
+
+    //
+    // Compute metadata.
+    //
 
     // Sort blobs by size (smallest first).
     sortA(blobs);
 
-    // Determine block offsets.
-    uint32_t pathOffsetsBlockSize = (blobCount + 1) * sizeof(PathOffset);
-    uint32_t pathsBlockSize = 0;
-    uint32_t metadataBlockSize = blobCount * sizeof(BlobMetadata);
-    uint32_t dataOffsetsBlockSize = blobCount * sizeof(uint32_t);
+    BlobMetadata* metadataSection = xmalloc(BlobMetadata, blobCount);
 
-    for (Blob& blob : blobs) {
-        pathsBlockSize += static_cast<uint32_t>(blob.path.size);
+    PathOffset nextPathOffset = 0;
+    uint32_t nextDataOffset = 0;
+
+    for (uint32_t i = 0; i < blobCount; i++) {
+        Blob& blob = blobs[i];
+
+        BlobMetadata meta;
+        meta.pathOffset = nextPathOffset;
+        meta.pathSize = static_cast<uint32_t>(blob.path.size);
+        meta.dataOffset = nextDataOffset;
+        meta.uncompressedSize = blob.size;
+        meta.compressedSize = blob.size;
+        meta.compressionType = BLOB_COMPRESSION_NONE;
+
+        metadataSection[i] = meta;
+
+        nextPathOffset += static_cast<uint32_t>(blob.path.size);
+        nextDataOffset += align64(blob.size);
     }
 
-    // Construct blocks.
-    HeaderBlock headerBlock = {
+    //
+    // Compute paths.
+    //
+
+    String pathsSection;
+    pathsSection.reserve(nextPathOffset);
+
+    for (Blob& blob : blobs) {
+        pathsSection << blob.path;
+    }
+
+    //
+    // Compute header.
+    //
+
+    uint32_t offset = 0;
+
+    uint32_t headerOffset = offset;
+    uint32_t headerSize = sizeof32(HeaderSection);
+    offset += headerSize;
+
+    uint32_t metadataOffset = offset;
+    uint32_t metadataSize = sizeof32(BlobMetadata) * blobCount;
+    offset += metadataSize;
+
+    uint32_t pathsOffset = offset;
+    uint32_t pathsSize = nextPathOffset;
+    offset += pathsOffset;
+
+    offset = align64(offset);
+    uint32_t dataOffset = offset;
+    uint32_t dataSize = nextDataOffset;
+
+    HeaderSection headerSection = {
             {PACK_MAGIC[0],
              PACK_MAGIC[1],
              PACK_MAGIC[2],
@@ -140,85 +167,38 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
             PACK_VERSION,
             {0, 0, 0, 0, 0, 0, 0},
 
-            // blobCount
-            static_cast<uint32_t>(blobCount),
+            blobCount,
 
-            // We write blocks contiguously (well, so far we do).
-
-            // pathOffsetsBlockOffset
-            sizeof(HeaderBlock),
-            // pathsBlockOffset
-            static_cast<uint32_t>(sizeof(HeaderBlock)) + pathOffsetsBlockSize,
-            // pathsBlockSize
-            pathsBlockSize,
-            // metadataBlockOffset
-            static_cast<uint32_t>(sizeof(HeaderBlock)) + pathOffsetsBlockSize +
-                    pathsBlockSize,
-            // dataOffsetsBlockOffset
-            static_cast<uint32_t>(sizeof(HeaderBlock)) + pathOffsetsBlockSize +
-                    pathsBlockSize + metadataBlockSize,
+            pathsOffset,
+            metadataOffset,
+            dataOffset,
     };
 
-    Vector<PathOffset> pathOffsetsBlock;
-    String pathsBlock;
-    Vector<BlobMetadata> metadatasBlock;
-    Vector<uint32_t> dataOffsetsBlock;
+    //
+    // Write file to disk.
+    //
 
-    pathOffsetsBlock.reserve(blobCount + 1);
-    pathsBlock.reserve(pathsBlockSize);
-    metadatasBlock.reserve(blobCount);
-
-    PathOffset pathOffset = 0;
-    for (Blob& blob : blobs) {
-        pathOffsetsBlock.push_back(pathOffset);
-        pathOffset += static_cast<uint32_t>(blob.path.size);
-    }
-    pathOffsetsBlock.push_back(pathOffset);
-
-    for (Blob& blob : blobs) {
-        pathsBlock << blob.path;
+    FileWriter f(path);
+    if (!f) {
+        goto err;
     }
 
-    for (Blob& blob : blobs) {
-        BlobMetadata metadata = {blob.size, blob.size, BLOB_COMPRESSION_NONE};
-        metadatasBlock.push_back(metadata);
+    f.resize(dataOffset + dataSize);
+
+    f.writeOffset(&headerSection, headerSize, headerOffset);
+    f.writeOffset(metadataSection, metadataSize, metadataOffset);
+    f.writeOffset(pathsSection.data, pathsSize, pathsOffset);
+
+    for (uint32_t i = 0; i < blobCount; i++) {
+        BlobMetadata& meta = metadataSection[i];
+        Blob& blob = blobs[i];
+
+        f.writeOffset(blob.data, meta.uncompressedSize,
+                      dataOffset + meta.dataOffset);
     }
 
-    // Blob data starts immediately after the data offset block.
-    uint32_t dataOffset =
-            headerBlock.dataOffsetsBlockOffset + dataOffsetsBlockSize;
-    for (Blob& blob : blobs) {
-        dataOffsetsBlock.push_back(dataOffset);
-        dataOffset += blob.size;
-    }
-
-    // Build IO vector.
-    Vector<uint32_t> writeLengths;
-    Vector<void*> writeDatas;
-
-    writeLengths.reserve(5 + blobCount);
-    writeDatas.reserve(5 + blobCount);
-
-    writeLengths.push_back(static_cast<uint32_t>(sizeof(headerBlock)));
-    writeLengths.push_back(pathOffsetsBlockSize);
-    writeLengths.push_back(pathsBlockSize);
-    writeLengths.push_back(metadataBlockSize);
-    writeLengths.push_back(dataOffsetsBlockSize);
-
-    writeDatas.push_back(&headerBlock);
-    writeDatas.push_back(pathOffsetsBlock.data);
-    writeDatas.push_back(const_cast<char*>(pathsBlock.data));
-    writeDatas.push_back(metadatasBlock.data);
-    writeDatas.push_back(dataOffsetsBlock.data);
-
-    for (Blob& blob : blobs) {
-        writeLengths.push_back(blob.size);
-        writeDatas.push_back(const_cast<void*>(blob.data));
-    }
-
-    // Write file.
-    return writeFileVec(path,
-                        static_cast<uint32_t>(writeLengths.size),
-                        writeLengths.data,
-                        writeDatas.data);
+    ok = true;
+err:
+    free(metadataSection);
+    return ok;
 }

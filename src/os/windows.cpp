@@ -269,6 +269,7 @@ readFile(StringView path, String& data) noexcept {
         return false;
     }
 
+    data.reserve(size + 1);
     data.resize(size);
 
     DWORD read;
@@ -279,6 +280,9 @@ readFile(StringView path, String& data) noexcept {
     if (read != size) {
         return false;
     }
+
+    // Add NUL terminator.
+    data.data[size] = 0;
 
     return true;
 }

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack.cpp                         **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -31,6 +31,8 @@
 #include "os/mutex.h"
 #include "pack/pack-reader.h"
 #include "util/int.h"
+#include "util/string-view.h"
+#include "util/string.h"
 
 static Mutex mutex;
 static PackReader* pack = 0;
@@ -45,7 +47,7 @@ openPackFile() noexcept {
 
     // TimeMeasure m("Opened " + path);
 
-    pack = PackReader::fromFile(path);
+    pack = makePackReader(path);
     if (!pack) {
         logFatal("PackResources",
                  String() << path << ": could not open archive");
@@ -61,14 +63,14 @@ getFullPath(StringView path) noexcept {
 }
 
 bool
-resourceLoad(StringView path, StringView& data) noexcept {
+resourceLoad(StringView path, String& data) noexcept {
     LockGuard lock(mutex);
 
     if (!openPackFile()) {
         return false;
     }
 
-    BlobIndex index = pack->findIndex(path);
+    uint32_t index = readerIndex(pack, path);
 
     if (index == BLOB_NOT_FOUND) {
         logErr("PackResources",
@@ -76,18 +78,25 @@ resourceLoad(StringView path, StringView& data) noexcept {
         return false;
     }
 
-    uint32_t blobSize = pack->getBlobSize(index);
+    BlobDetails details = readerDetails(pack, index);
+    uint32_t size = details.size;
 
     // Will it fit in memory?
-    if (blobSize > static_cast<uint32_t>(INT32_MAX)) {
+    if (size > static_cast<uint32_t>(INT32_MAX)) {
         logErr("PackResources",
                String() << getFullPath(path) << ": file too large");
         return false;
     }
 
-    void* blob = pack->getBlobData(index);
+    if (data.capacity < size + 1) {
+        data.reserve(size + 1);
+    }
 
-    data.data = static_cast<char*>(blob);
-    data.size = blobSize;
+    bool ok = readerRead(pack, data.data, index);
+    assert_(ok);
+    (void)ok;
+
+    data.size = size;
+    data.data[size] = 0;
     return true;
 }

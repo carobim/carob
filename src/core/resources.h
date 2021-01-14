@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** resources.h                        **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -30,12 +30,13 @@
 
 #include "util/noexcept.h"
 #include "util/string-view.h"
+#include "util/string.h"
 
 // Provides data and resource extraction for a World.
 // Each World comes bundled with associated data.
 
 // Load a resource from the file at the given path.
 bool
-resourceLoad(StringView path, StringView& data) noexcept;
+resourceLoad(StringView path, String& data) noexcept;
 
 #endif  // SRC_CORE_RESOURCES_H_

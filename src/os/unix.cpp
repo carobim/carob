@@ -156,6 +156,7 @@ readFile(StringView path, String& data) noexcept {
     }
 
     size_t rem = status.st_size;
+    data.reserve(size + 1);
     data.resize(size);
 
     ssize_t nbytes = read(fd, data.data, size);
@@ -163,6 +164,9 @@ readFile(StringView path, String& data) noexcept {
         close(fd);
         return false;
     }
+
+    // Add NUL terminator.
+    data.data[size] = 0;
 
     close(fd);
     return true;
