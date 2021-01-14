@@ -470,7 +470,8 @@ endif()
 
 # Enable warnings
 if(CLANG OR GCC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wunused-variable -Wunused-but-set-variable")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif()
 
 # -fno-implicit-templates
