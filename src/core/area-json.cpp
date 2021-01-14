@@ -108,6 +108,12 @@ class AreaJSON : public Area {
               unsigned char& b) noexcept;
 };
 
+static void
+preallocateMapLayers(TileGrid& grid, size_t n) noexcept {
+    ivec3 dim = grid.dim;
+    size_t layerSize = dim.x * dim.y;
+    grid.graphics.reserve(layerSize * n);
+}
 
 Area*
 makeAreaFromJSON(Player* player, StringView filename) noexcept {
@@ -178,6 +184,22 @@ AreaJSON::processDescriptor() noexcept {
     }
 
     CHECK(layersValue.toNode());
+
+    size_t numLayers = 0;
+    for (JsonNode& layerNode : layersValue) {
+        JsonValue layerValue = layerNode.value;
+        CHECK(layerValue.isObject());
+
+        JsonValue typeValue = layerValue["type"];
+        CHECK(typeValue.isString());
+
+        StringView type = typeValue.toString();
+        if (type == "tilelayer" || type == "objectgroup") {
+            numLayers++;
+        }
+    }
+
+    preallocateMapLayers(grid, numLayers);
 
     for (JsonNode& layerNode : layersValue) {
         JsonValue layerValue = layerNode.value;
