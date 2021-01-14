@@ -421,9 +421,13 @@ if(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
+if(CLANG OR GCC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -nostdinc++")
+endif()
+
 # Disable C++ exceptions
 if(CLANG OR GCC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -fno-use-cxa-get-exception-ptr")
 elseif(MSVC)
     string(REPLACE "/EHsc" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 endif()
@@ -446,11 +450,25 @@ endif()
 
 # Hide most symbols
 if(CLANG OR GCC)
+    set(CMAKE_CXX_FLAGS
+        "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
     set(CMAKE_CXX_FLAGS_RELEASE
         "${CMAKE_CXX_FLAGS_RELEASE} -fvisibility=hidden")
     set(CMAKE_CXX_FLAGS_MINSIZEREL
         "${CMAKE_CXX_FLAGS_MINSIZEREL} -fvisibility=hidden")
 endif()
+
+# Don't allow enum values outside enum range
+if(CLANG OR GCC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-enums")
+endif()
+
+# Don't allow thread-safe function-local static variables
+if(CLANG OR GCC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-threadsafe-statics")
+endif()
+
+# -fno-implicit-templates
 
 # Reduce code size
 if(CLANG)
