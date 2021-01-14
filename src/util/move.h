@@ -46,17 +46,6 @@ template<typename T>
 using Refless = typename Refless_<T>::value;
 
 //
-// Move
-//   move_()  same as std::move
-//
-
-template<typename T>
-inline CONSTEXPR11 Refless<T>&&
-move_(T&& x) noexcept {
-    return static_cast<Refless<T>&&>(x);
-}
-
-//
 // Forward
 //   forward_()  same as std::forward
 //
@@ -81,9 +70,9 @@ forward_(Refless<T>&& x) noexcept {
 template<typename T>
 inline void
 swap_(T& a, T& b) noexcept {
-    T temp(move_(a));
-    a = move_(b);
-    b = move_(temp);
+    T temp(static_cast<T&&>(a));
+    a = static_cast<T&&>(b);
+    b = static_cast<T&&>(temp);
 }
 
 #endif  // SRC_UTIL_MOVE_H_
