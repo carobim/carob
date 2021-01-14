@@ -53,18 +53,12 @@ static Area* worldArea = 0;
 static Player player;
 
 /**
- * Last time engine state was updated. See worldUpdate().
- */
-static time_t lastTime = 0;
-
-/**
  * Total unpaused game run time.
  */
 static time_t total = 0;
 
 static bool alive = false;
 static bool redraw = false;
-static bool userPaused = false;
 static int paused = 0;
 
 static Keys keyStates[10];
