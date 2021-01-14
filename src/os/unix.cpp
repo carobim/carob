@@ -155,7 +155,7 @@ readFile(StringView path, String& data) noexcept {
     data.resize(size);
 
     ssize_t nbytes = read(fd, data.data, size);
-    if (nbytes < 0 || nbytes != size) {
+    if (nbytes < 0 || static_cast<size_t>(nbytes) != size) {
         close(fd);
         return false;
     }
