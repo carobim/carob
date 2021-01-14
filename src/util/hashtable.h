@@ -280,7 +280,6 @@ class Hashmap {
         // Must be power of 2.
         assert_((newCapacity & (newCapacity - 1)) == 0);
 
-        uint32_t oldSize = size;
         uint32_t oldCapacity = capacity;
         Entry* oldData = data;
 
