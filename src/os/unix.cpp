@@ -197,8 +197,6 @@ setTermColor(TermColor color, Output& out) noexcept {
     // VT100 terminal control codes from:
     //   http://www.termsys.demon.co.uk/vtansi.htm
 
-    const char escape = 27;
-
     switch (color) {
     case TC_RESET:
         out << "\033[0m";
