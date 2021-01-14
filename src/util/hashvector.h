@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** hashvector.h                **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** hashvector.h                     **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -79,8 +79,7 @@ class HashVector {
     grow() noexcept {
         uint32_t newAllocated = allocated == 0 ? 4 : allocated * 2;
 
-        Entry* newStorage =
-            reinterpret_cast<Entry*>(malloc(sizeof(Entry) * newAllocated));
+        Entry* newStorage = xmalloc(Entry, newAllocated);
         memcpy(newStorage, storage, sizeof(Entry) * allocated);
         free(storage);
 

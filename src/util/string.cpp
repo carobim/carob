@@ -56,7 +56,7 @@ String::String(const char* s) noexcept {
     else {
         size_t len = strlen(s);
         // FIXME: Choose better size.
-        data = static_cast<char*>(malloc(len));
+        data = xmalloc(char, len);
         size = capacity = len;
         memcpy(data, s, len);
     }
@@ -69,7 +69,7 @@ String::String(StringView s) noexcept {
     }
     else {
         // FIXME: Choose better size.
-        data = static_cast<char*>(malloc(s.size));
+        data = xmalloc(char, s.size);
         size = capacity = s.size;
         memcpy(data, s.data, s.size);
     }
@@ -81,7 +81,7 @@ String::String(const String& s) noexcept {
         size = capacity = 0;
     }
     else {
-        data = static_cast<char*>(malloc(s.capacity));
+        data = xmalloc(char, s.capacity);
         size = s.size;
         capacity = s.capacity;
         memcpy(data, s.data, size);
@@ -317,7 +317,7 @@ String::operator<<(float f) noexcept {
 void
 String::reserve(size_t n) noexcept {
     assert_(capacity < n);
-    char* newData = static_cast<char*>(malloc(n));
+    char* newData = xmalloc(char, n);
     memmove(newData, data, size);
     data = newData;
     capacity = n;

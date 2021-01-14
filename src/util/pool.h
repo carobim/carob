@@ -85,7 +85,7 @@ class Pool {
     grow() noexcept {
         uint32_t newAllocated = allocated == 0 ? 4 : allocated * 2;
 
-        T* newStorage = reinterpret_cast<T*>(malloc(sizeof(T) * newAllocated));
+        T* newStorage = xmalloc(T, newAllocated);
         memcpy(newStorage, storage, sizeof(T) * allocated);
         free(reinterpret_cast<char*>(storage));
 

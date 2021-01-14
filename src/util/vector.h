@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** vector.h                         **
-** Copyright 2017-2020 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -49,7 +49,7 @@ class Vector {
             size = capacity = 0;
         }
         else {
-            data = static_cast<X*>(malloc(sizeof(X) * other.capacity));
+            data = xmalloc(X, other.capacity);
             size = other.size;
             capacity = other.capacity;
             for (size_t i = 0; i < size; i++) {
@@ -82,7 +82,7 @@ class Vector {
             size = capacity = 0;
         }
         else {
-            data = static_cast<X*>(malloc(sizeof(X) * other.capacity));
+            data = xmalloc(X, other.capacity);
             size = other.size;
             capacity = other.capacity;
             for (size_t i = 0; i < size; i++) {
@@ -178,7 +178,7 @@ class Vector {
     void
     reserve(size_t n) noexcept {
         assert_(n > capacity);
-        X* newData = static_cast<X*>(malloc(sizeof(X) * n));
+        X* newData = xmalloc(X, n);
         for (size_t i = 0; i < size; i++) {
             new (newData + i) X(static_cast<X&&>(data[i]));
         }

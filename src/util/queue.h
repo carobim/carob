@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** queue.h                     **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** queue.h                          **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,6 +35,20 @@ template<typename T>
 class Queue {
  public:
     Queue() noexcept : data(0), offset(0), size(0), capacity(0) {}
+    ~Queue() noexcept {
+        // Items at head of ring buffer.
+        for (size_t i = offset; i < offset + size && i < capacity; i++) {
+            data[i].~T();
+        }
+        // Items at tail of ring buffer.
+        for (size_t i = 0;
+             offset + size > capacity && i < offset + size - capacity;
+             i++) {
+            data[i].~T();
+        }
+
+        free(data);
+    }
 
     // Write
     void
@@ -69,7 +83,7 @@ class Queue {
     void
     resize() noexcept {
         size_t newCapacity = capacity ? capacity * 2 : 4;
-        T* newData = static_cast<T*>(malloc(sizeof(T) * newCapacity));
+        T* newData = xmalloc(T, newCapacity);
 
         // Realign data items at offset 0 in the new array.
         for (size_t i = offset; i < offset + size && i < capacity; i++) {
