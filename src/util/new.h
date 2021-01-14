@@ -47,6 +47,8 @@ operator new(size_t, void* p) noexcept {
     return p;
 }
 
-#define xmalloc(T, count) static_cast<T*>(malloc(sizeof(T) * (count)))
+// The cast to uint32_t fixes a Walloc-size-larger-than on GCC 8.3.0.
+#define xmalloc(T, count) \
+    static_cast<T*>(malloc(static_cast<uint32_t>(sizeof(T) * (count))))
 
 #endif  // SRC_UTIL_NEW_H_
