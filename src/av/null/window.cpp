@@ -103,7 +103,6 @@ windowMainLoop() noexcept {
         }
 
         Nanoseconds frameEnd = chronoNow();
-        Nanoseconds timeTaken = frameEnd - frameStart;
 
         //
         // Sleep until next frame.
