@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** string-view.h                    **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 **************************************/
 
 // **********
@@ -44,7 +44,7 @@ class StringView {
     StringView(const char* data) noexcept;
     template<size_t N>
     StringView(const char (&data)[N]) noexcept
-            : data(data), size(N){};
+            : data(data), size(N){}
     StringView(const char* data, size_t size) noexcept;
     StringView(const StringView& s) noexcept;
 

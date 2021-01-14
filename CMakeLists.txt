@@ -468,6 +468,11 @@ if(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-threadsafe-statics")
 endif()
 
+# Enable warnings
+if(CLANG OR GCC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+endif()
+
 # -fno-implicit-templates
 
 # Reduce code size
