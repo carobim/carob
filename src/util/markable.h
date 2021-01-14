@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** markable.h                       **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -32,7 +32,8 @@
 #include "util/noexcept.h"
 
 struct M {};
-static M mark;
+
+#define mark M()
 
 template<typename T, T MarkedValue>
 class Markable {
