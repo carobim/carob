@@ -165,17 +165,6 @@ parsePhases(Entity* e, JsonValue phases, TiledImage tiles) noexcept {
     return true;
 }
 
-static Vector<int>
-intArrayToVector(JsonValue array) noexcept {
-    Vector<int> v;
-    for (JsonNode& node : array) {
-        if (node.value.isNumber()) {
-            v.push_back(node.value.toInt());
-        }
-    }
-    return v;
-}
-
 static bool
 parsePhase(Entity* e,
            StringView name,
