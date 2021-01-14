@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** window.cpp                       **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -31,6 +31,7 @@
 #include "core/log.h"
 #include "core/world.h"
 #include "os/chrono.h"
+#include "os/os.h"
 #include "os/thread.h"
 #include "util/string-view.h"
 #include "util/string.h"
@@ -107,6 +108,8 @@ windowMainLoop() noexcept {
         //
         // Sleep until next frame.
         //
+        exitProcess(0);
+
         Nanoseconds sleepDuration = nextFrameStart - frameEnd;
         if (sleepDuration < 0) {
             sleepDuration = 0;
