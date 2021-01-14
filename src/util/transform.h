@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** transform.h                      **
-** Copyright 2017-2020 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -37,8 +37,7 @@ struct Transform {
     inline float& operator[](size_t i) noexcept { return m[i]; }
 };
 
-static Transform transformIdentity =
-    {{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+#define transformIdentity {{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}}
 
 Transform
 transformScale(float factor) noexcept;
