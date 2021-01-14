@@ -463,6 +463,14 @@ elseif(MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GS-")
 endif()
 
+# Disable frame pointer
+if(CLANG OR GCC)
+    set(CMAKE_CXX_FLAGS_RELEASE
+        "${CMAKE_CXX_FLAGS_RELEASE} -fomit-frame-pointer")
+    set(CMAKE_CXX_FLAGS_MINSIZEREL
+        "${CMAKE_CXX_FLAGS_MINSIZEREL} -fomit-frame-pointer")
+endif()
+
 # Optimize at link time
 if(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto")
