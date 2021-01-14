@@ -328,6 +328,8 @@ close(int) noexcept;
 void
 _exit(int) noexcept __attribute__((noreturn));
 int
+ftruncate(int, off_t) noexcept;
+int
 isatty(int) noexcept;
 ssize_t
 pread(int, void*, size_t, off_t) noexcept;
@@ -337,8 +339,6 @@ ssize_t
 read(int, void*, size_t) noexcept;
 long
 sysconf(int) noexcept;
-int
-ftruncate(int, off_t) noexcept;
 ssize_t
 write(int, const void*, size_t) noexcept;
 #define _SC_NPROCESSORS_ONLN 84

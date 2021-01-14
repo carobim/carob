@@ -274,14 +274,18 @@ int
 clock_gettime(clockid_t, struct timespec*) noexcept;
 
 // unistd.h
+int
+close(int) noexcept;
 void
 _exit(int) noexcept __attribute__((noreturn));
 int
-close(int) noexcept;
+ftruncate(int, off_t) noexcept;
 int
 isatty(int) noexcept;
 ssize_t
 pread(int, void*, size_t, off_t) noexcept;
+ssize_t
+pwrite(int, const void*, size_t, off_t) noexcept;
 ssize_t
 read(int, void*, size_t) noexcept;
 ssize_t
