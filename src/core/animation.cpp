@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** animation.cpp                      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -116,6 +116,7 @@ Animation::Animation(Vector<Image> frames, time_t frameTime) noexcept {
     assert_(frameTime > 0);
     for (Image frame : frames) {
         assert_(IMAGE_VALID(frame));
+        (void)frame;
     }
 
     id = pool.allocate();
