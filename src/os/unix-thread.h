@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** unix-thread.h                    **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -81,7 +81,7 @@ threadHardwareConcurrency() noexcept {
     return static_cast<unsigned>(result);
 }
 
-static void
+static inline void
 threadDisableTimerCoalescing() noexcept {}
 
 #endif  // SRC_OS_LINUX_THREAD_H_
