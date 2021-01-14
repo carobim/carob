@@ -134,11 +134,6 @@ writeFileVec(StringView path,
 
 bool
 readFile(StringView path, String& data) noexcept {
-    Filesize size = getFileSize(path);
-    if (size == FS_ERROR) {
-        return false;
-    }
-
     String path_;
     path_.reserve(path.size + 1);
     path_ << path;
@@ -155,7 +150,7 @@ readFile(StringView path, String& data) noexcept {
         return false;
     }
 
-    size_t rem = status.st_size;
+    size_t size = status.st_size;
     data.reserve(size + 1);
     data.resize(size);
 
