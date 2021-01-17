@@ -175,10 +175,10 @@ jobs:
           cmake .. &&
           make -j `grep processor /proc/cpuinfo | wc -l`
 
-  # Has CMake 3.17, GCC 9, Samurai 1.1
-  alpine_3_12:
+  # Has CMake 3.18, GCC 10, Samurai 1.2
+  alpine_3_13:
     docker:
-      - image: alpine:3.12
+      - image: alpine:3.13
     steps:
       - run: |
           apk update &&
@@ -206,4 +206,4 @@ workflows:
       - void
       - void_musl
       - alpine_3_1
-      - alpine_3_12
+      - alpine_3_13
