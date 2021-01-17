@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** window.cpp                       **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -234,9 +234,9 @@ windowMainLoop() noexcept {
             // logInfo("SDL2", "dt == 0");
         }
 
-        bool drew = false;
+        //bool drew = false;
         if (worldNeedsRedraw()) {
-            drew = true;
+            //drew = true;
 
             worldDraw(&display);
 
@@ -248,7 +248,7 @@ windowMainLoop() noexcept {
         }
 
         Nanoseconds frameEnd = chronoNow();
-        Nanoseconds timeTaken = frameEnd - frameStart;
+        //Nanoseconds timeTaken = frameEnd - frameStart;
 
         //
         // Sleep until next frame.

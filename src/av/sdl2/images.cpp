@@ -138,7 +138,7 @@ load(StringView path) noexcept {
     TiledImage& tiles = images.allocate(hash_(path));
     tiles = {};
 
-    StringView r;
+    String r;
     if (!resourceLoad(path, r)) {
         // Error logged.
         return 0;
@@ -270,10 +270,10 @@ tileAt(TiledImage tiles, uint32_t index) noexcept {
     Image image = tiles.image;
 
     return {
-        tiles.image.texture,
-        tiles.image.x + tiles.tileWidth * index % tiles.image.width,
-        tiles.image.y + tiles.tileWidth * index / tiles.image.width *
-                        tiles.tileHeight,
+        image.texture,
+        image.x + tiles.tileWidth * index % image.width,
+        image.y + tiles.tileWidth * index / image.width *
+                  tiles.tileHeight,
         tiles.tileWidth,
         tiles.tileHeight,
     };

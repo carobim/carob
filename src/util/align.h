@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** align.h                          **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,14 +27,25 @@
 #ifndef SRC_UTIL_ALIGN_H_
 #define SRC_UTIL_ALIGN_H_
 
+#define IS_GCC defined(__GNUC__) && !defined(__clang__)
+
+#define MSVC_NEEDS_CONSTANT defined(_MSC_VER) && _MSC_VER < 1900
+#define GCC_NEEDS_CONSTANT IS_GCC && __GNUC__ == 4 && __GNUC_MINOR__ <= 8
+
 template<typename T>
 struct Align {
-#if defined(_MSC_VER) && _MSC_VER < 1900 && _WIN64
-    // 64-bit MSVC 2013 and lower
+#if MSVC_NEEDS_CONSTANT && _WIN64
+    // - 64-bit MSVC 2013 and lower
     __declspec(align(8)) char storage[sizeof(T)];
-#elif defined(_MSC_VER) && _MSC_VER < 1900
-    // 32-bit MSVC 2013 and lower
+#elif MSVC_NEEDS_CONSTANT
+    // - 32-bit MSVC 2013 and lower
     __declspec(align(4)) char storage[sizeof(T)];
+#elif GCC_NEEDS_CONSTANT && __amd64__
+    // - 64-bit GCC 4.8 and lower
+    alignas(8) char storage[sizeof(T)];
+#elif GCC_NEEDS_CONSTANT
+    // - 32-bit GCC 4.8 and lower
+    alignas(4) char storage[sizeof(T)];
 #else
     alignas(alignof(T)) char storage[sizeof(T)];
 #endif

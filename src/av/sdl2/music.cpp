@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** music.cpp                        **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -39,7 +39,7 @@
 
 struct Song {
     // The Mix_Music needs the music data to be kept around for its lifetime.
-    StringView fileContent;
+    String fileContent;
 
     Mix_Music* mix;
 };
@@ -55,7 +55,7 @@ load(StringView path) noexcept {
     Song& newSong = songs.allocate(hash_(path));
     newSong.mix = 0;
 
-    StringView r;
+    String r;
     if (!resourceLoad(path, r)) {
         // Error logged.
         return 0;
@@ -74,7 +74,7 @@ load(StringView path) noexcept {
     }
 
     // We need to keep the memory around, so put it in a struct.
-    newSong.fileContent = r;
+    newSong.fileContent = static_cast<String&&>(r);
     newSong.mix = mix;
 
     return &newSong;

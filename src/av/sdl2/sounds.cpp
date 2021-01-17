@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** sounds.cpp                       **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -43,7 +43,7 @@ struct SDL2Sound {
     int numUsers;
     time_t lastUse;
 
-    StringView frames;  // Audio frames.
+    String frames;  // Audio frames.
     Mix_Chunk* chunk;   // Decoding configuration.
 };
 
@@ -113,7 +113,7 @@ init() noexcept {
 
 static SDL2Sound
 makeSound(StringView path) noexcept {
-    StringView r;
+    String r;
     if (!resourceLoad(path, r)) {
         // Error logged.
         return SDL2Sound();
@@ -135,7 +135,7 @@ makeSound(StringView path) noexcept {
         return SDL2Sound();
     }
 
-    return SDL2Sound{1, 0, r, chunk};
+    return SDL2Sound{1, 0, static_cast<String&&>(r), chunk};
 }
 
 SoundID
