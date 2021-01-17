@@ -157,6 +157,7 @@ soundLoad(StringView path) noexcept {
     }
 
     int sid = soundPool.allocate();
+    new (&soundPool[sid].frames) String();
     soundPool[sid] = sound;
 
     soundIDs[path] = sid;
