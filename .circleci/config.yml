@@ -117,7 +117,62 @@ jobs:
           cmake .. -G Ninja &&
           ninja
 
-  arch_latest:
+  # Has CMake 3.0, GCC 4.8
+  alpine_3_1:
+    docker:
+      - image: alpine:3.1
+    steps:
+      - run: |
+          apk update &&
+          apk add cmake g++ make
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. &&
+          make -j `grep processor /proc/cpuinfo | wc -l`
+
+  # Has CMake 3.18, GCC 10, Samurai 1.2
+  alpine_3_13:
+    docker:
+      - image: alpine:3.13
+    steps:
+      - run: |
+          apk update &&
+          apk add cmake g++ samurai
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          samu
+
+  # Has CMake 3.3, GCC 4.9, Ninja 1.6
+  #nix_1_1_0:
+  #  shell: /bin/sh
+  #  docker:
+  #    - image: nixos/nix:1.1.0
+  #  steps:
+  #    - checkout
+  #    - run: |
+  #        nix-env -i bash &&
+  #        mkdir build &&
+  #        cd build &&
+  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja && ninja'
+
+  # Has CMake 3.17, GCC 9.3, Samurai 1.1
+  nix_2_3_6:
+    shell: /bin/sh
+    docker:
+      - image: nixos/nix:2.3.6
+    steps:
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja && samu'
+
+  arch:
     docker:
       - image: archlinux/base:latest
     steps:
@@ -160,61 +215,6 @@ jobs:
           cmake .. -G Ninja &&
           samu
 
-  # Has CMake 3.3, GCC 4.9, Ninja 1.6
-  #nix_1_1_0:
-  #  shell: /bin/sh
-  #  docker:
-  #    - image: nixos/nix:1.1.0
-  #  steps:
-  #    - checkout
-  #    - run: |
-  #        nix-env -i bash &&
-  #        mkdir build &&
-  #        cd build &&
-  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja && ninja'
-
-  # Has CMake 3.17, GCC 9.3, Samurai 1.1
-  nix_2_3_6:
-    shell: /bin/sh
-    docker:
-      - image: nixos/nix:2.3.6
-    steps:
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja && samu'
-
-  # Has CMake 3.0, GCC 4.8
-  alpine_3_1:
-    docker:
-      - image: alpine:3.1
-    steps:
-      - run: |
-          apk update &&
-          apk add cmake g++ make
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. &&
-          make -j `grep processor /proc/cpuinfo | wc -l`
-
-  # Has CMake 3.18, GCC 10, Samurai 1.2
-  alpine_3_13:
-    docker:
-      - image: alpine:3.13
-    steps:
-      - run: |
-          apk update &&
-          apk add cmake g++ samurai
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja &&
-          samu
-
 workflows:
   version: 2
   build_all:
@@ -227,9 +227,9 @@ workflows:
       - centos_8
       - fedora_20
       - fedora_33
-      - arch_latest
-      - void
-      - void_musl
-      - nix_2_3_6
       - alpine_3_1
       - alpine_3_13
+      - nix_2_3_6
+      - arch
+      - void
+      - void_musl
