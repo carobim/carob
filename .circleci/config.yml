@@ -160,6 +160,31 @@ jobs:
           cmake .. -G Ninja &&
           samu
 
+  # Has CMake 3.3, GCC 4.9, Ninja 1.6
+  #nix_1_1_0:
+  #  shell: /bin/sh
+  #  docker:
+  #    - image: nixos/nix:1.1.0
+  #  steps:
+  #    - checkout
+  #    - run: |
+  #        nix-env -i bash &&
+  #        mkdir build &&
+  #        cd build &&
+  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja && ninja'
+
+  # Has CMake 3.17, GCC 9.3, Samurai 1.1
+  nix_2_3_6:
+    shell: /bin/sh
+    docker:
+      - image: nixos/nix:2.3.6
+    steps:
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja && samu'
+
   # Has CMake 3.0, GCC 4.8
   alpine_3_1:
     docker:
@@ -205,5 +230,6 @@ workflows:
       - arch_latest
       - void
       - void_musl
+      - nix_2_3_6
       - alpine_3_1
       - alpine_3_13
