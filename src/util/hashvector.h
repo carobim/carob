@@ -57,10 +57,11 @@ class HashVector {
             grow();
         }
 
-        Entry& e = storage[used++];
-        e.hash = hash;
+        Entry* e = &storage[used++];
+        new (&e->value) Value();
+        e->hash = hash;
 
-        return e.value;
+        return e->value;
     }
 
     Value*
