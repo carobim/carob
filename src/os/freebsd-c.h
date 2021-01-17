@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** freebsd-c.h                      **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -293,7 +293,13 @@ close(int) noexcept;
 void
 _exit(int) noexcept __attribute__((noreturn));
 int
+ftruncate(int, off_t) noexcept;
+int
 isatty(int) noexcept;
+ssize_t
+pread(int, void*, size_t, off_t) noexcept;
+ssize_t
+pwrite(int, const void*, size_t, off_t) noexcept;
 ssize_t
 read(int, void*, size_t) noexcept;
 long
