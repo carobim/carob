@@ -1,122 +1,6 @@
 version: 2.1
 
 jobs:
-  # Has CMake 3.0, GCC 4.9
-  debian_8_jessie:
-    docker:
-      - image: debian:8-slim
-    steps:
-      - run: |
-          apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja &&
-          ninja
-
-  # Has CMake 3.13, GCC 8
-  debian_10_buster:
-    docker:
-      - image: debian:10-slim
-    steps:
-      - run: |
-          apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja &&
-          ninja
-
-  # Has CMake 2.8.12, GCC 4.9, Ninja 1.3
-  ubuntu_14_04_trusty:
-    docker:
-      - image: ubuntu:14.04
-    steps:
-      - run: |
-          apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja &&
-          ninja
-
-  # Has CMake 3.16, GCC 10, Ninja 1.10
-  ubuntu_20_10_groovy:
-    docker:
-      - image: ubuntu:20.10
-    steps:
-      - run: |
-          apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja &&
-          ninja
-
-  # Has CMake 2.8.12, GCC 4.8
-  centos_7:
-    docker:
-      - image: centos:7
-    steps:
-      - run: |
-          yum install -y cmake gcc-c++ make
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. &&
-          make -j `grep processor /proc/cpuinfo | wc -l`
-
-  # Has CMake 3.11, GCC 8
-  centos_8:
-    docker:
-      - image: centos:8
-    steps:
-      - run: |
-          dnf install -y cmake gcc-c++ make
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. &&
-          make -j `grep processor /proc/cpuinfo | wc -l`
-
-  # Has CMake 2.8.12, GCC 4.8, Ninja 1.4
-  fedora_20:
-    docker:
-      - image: fedora:20
-    steps:
-      - run: |
-          yum install -y cmake gcc-c++ ninja-build
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja &&
-          ninja-build
-
-  # Has CMake 3.18, GCC 10, Ninja 1.10
-  fedora_33:
-    docker:
-      - image: fedora:33
-    steps:
-      - run: |
-          dnf install -y cmake gcc-c++ ninja-build
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja &&
-          ninja
-
   # Has CMake 3.0, GCC 4.8
   alpine_3_1:
     docker:
@@ -147,6 +31,105 @@ jobs:
           cmake .. -G Ninja &&
           samu
 
+  arch:
+    docker:
+      - image: archlinux/base:latest
+    steps:
+      - run: |
+          pacman -Sy --noconfirm cmake gcc samurai
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          samu
+
+  # Has CMake 2.8.12, GCC 4.8
+  centos_7:
+    docker:
+      - image: centos:7
+    steps:
+      - run: |
+          yum install -y cmake gcc-c++ make
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. &&
+          make -j `grep processor /proc/cpuinfo | wc -l`
+
+  # Has CMake 3.11, GCC 8
+  centos_8:
+    docker:
+      - image: centos:8
+    steps:
+      - run: |
+          dnf install -y cmake gcc-c++ make
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. &&
+          make -j `grep processor /proc/cpuinfo | wc -l`
+
+  # Has CMake 3.0, GCC 4.9
+  debian_8_jessie:
+    docker:
+      - image: debian:8-slim
+    steps:
+      - run: |
+          apt-get update &&
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          ninja
+
+  # Has CMake 3.13, GCC 8
+  debian_10_buster:
+    docker:
+      - image: debian:10-slim
+    steps:
+      - run: |
+          apt-get update &&
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          ninja
+
+  # Has CMake 2.8.12, GCC 4.8, Ninja 1.4
+  fedora_20:
+    docker:
+      - image: fedora:20
+    steps:
+      - run: |
+          yum install -y cmake gcc-c++ ninja-build
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          ninja-build
+
+  # Has CMake 3.18, GCC 10, Ninja 1.10
+  fedora_33:
+    docker:
+      - image: fedora:33
+    steps:
+      - run: |
+          dnf install -y cmake gcc-c++ ninja-build
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          ninja
+
   # Has CMake 3.3, GCC 4.9, Ninja 1.6
   #nix_1_1_0:
   #  shell: /bin/sh
@@ -172,18 +155,35 @@ jobs:
           cd build &&
           nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja && samu'
 
-  arch:
+  # Has CMake 2.8.12, GCC 4.9, Ninja 1.3
+  ubuntu_14_04_trusty:
     docker:
-      - image: archlinux/base:latest
+      - image: ubuntu:14.04
     steps:
       - run: |
-          pacman -Sy --noconfirm cmake gcc samurai
+          apt-get update &&
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
           cd build &&
           cmake .. -G Ninja &&
-          samu
+          ninja
+
+  # Has CMake 3.16, GCC 10, Ninja 1.10
+  ubuntu_20_10_groovy:
+    docker:
+      - image: ubuntu:20.10
+    steps:
+      - run: |
+          apt-get update &&
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja &&
+          ninja
 
   void:
     shell: /bin/sh
@@ -219,17 +219,17 @@ workflows:
   version: 2
   build_all:
     jobs:
-      - debian_8_jessie
-      - debian_10_buster
-      - ubuntu_14_04_trusty
-      - ubuntu_20_10_groovy
-      - centos_7
-      - centos_8
-      - fedora_20
-      - fedora_33
       - alpine_3_1
       - alpine_3_13
-      - nix_2_3_6
       - arch
+      - centos_7
+      - centos_8
+      - debian_8_jessie
+      - debian_10_buster
+      - fedora_20
+      - fedora_33
+      - nix_2_3_6
+      - ubuntu_14_04_trusty
+      - ubuntu_20_10_groovy
       - void
       - void_musl
