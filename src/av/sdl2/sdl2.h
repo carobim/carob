@@ -53,7 +53,8 @@ const char*
 SDL_GetError() noexcept;
 
 // SDL_scancode.h
-typedef enum {} SDL_Scancode;
+//typedef enum {} SDL_Scancode;
+typedef int SDL_Scancode;
 
 // SDK_keycode.h
 typedef int32_t SDL_Keycode;
