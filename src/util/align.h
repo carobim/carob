@@ -35,7 +35,7 @@
 #define MSVC_NEEDS_CONSTANT
 #endif
 
-#if IS_GCC && __GNUC__ == 4 && __GNUC_MINOR__ <= 8
+#if defined(IS_GCC) && __GNUC__ == 4 && __GNUC_MINOR__ <= 8
 #define GCC_NEEDS_CONSTANT
 #endif
 
