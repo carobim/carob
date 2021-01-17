@@ -247,11 +247,12 @@ tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight,
           uint32_t numAcross, uint32_t numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
-    assert_(tiles->image.width == tileWidth * numAcross);
-    assert_(tiles->image.height == tileHeight * numHigh);
-
     if (!tiles) {
         tiles = load(path);
+
+        assert_(tiles->image.width == tileWidth * numAcross);
+        assert_(tiles->image.height == tileHeight * numHigh);
+
         tiles->tileWidth = tileWidth;
         tiles->tileHeight = tileHeight;
         tiles->numTiles = numAcross * numHigh;
