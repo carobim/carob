@@ -30,6 +30,7 @@
 #include "data/data-world.h"
 #include "os/mutex.h"
 #include "pack/pack-reader.h"
+#include "util/assert.h"
 #include "util/int.h"
 #include "util/string-view.h"
 #include "util/string.h"
