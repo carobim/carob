@@ -89,8 +89,8 @@ resourceLoad(StringView path, String& data) noexcept {
         return false;
     }
 
-    if (data.capacity < size + 1) {
-        data.reserve(size + 1);
+    if (data.capacity < static_cast<size_t>(size) + 1) {
+        data.reserve(static_cast<size_t>(size) + 1);
     }
 
     bool ok = readerRead(pack, data.data, index);
