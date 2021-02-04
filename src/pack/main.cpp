@@ -41,9 +41,11 @@ static bool verbose = false;
 
 static void
 usage() noexcept {
-    serr << "usage: " << exe << " create [-v] <output-archive> [input-file]...\n"
-            "       " << exe << " list <input-archive>\n"
-            "       " << exe << " extract [-v] <input-archive>\n";
+    String msg;
+    msg << "usage: " << exe << " create [-v] <output-archive> [input-file]...\n"
+           "       " << exe << " list <input-archive>\n"
+           "       " << exe << " extract [-v] <input-archive>\n";
+    serr << msg;
 }
 
 struct CreateArchiveContext {
