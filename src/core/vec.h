@@ -52,8 +52,6 @@ template<typename T>
 struct vec2 {
     T x, y;
 
-    operator bool() noexcept { return x || y; }
-
     float
     distanceTo(vec2<T> other) noexcept {
         T dx = x - other.x;
@@ -65,8 +63,6 @@ struct vec2 {
 template<typename T>
 struct vec3 {
     T x, y, z;
-
-    operator bool() noexcept { return x || y || z; }
 
     float
     distanceTo(vec3<T> other) noexcept {
@@ -100,26 +96,31 @@ operator-(const vec3<T>& a, const vec3<T>& b) noexcept {
     return {a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
-template<typename T, typename CO>
-vec2<T> operator*(CO co, const vec2<T>& a) noexcept {
-    return {a.x * (T)co, a.y * (T)co};
+template<typename T>
+vec2<T> operator*(T co, const vec2<T>& a) noexcept {
+    return {a.x * co, a.y * co};
 }
 
-template<typename T, typename CO>
-vec3<T> operator*(CO co, const vec3<T>& a) noexcept {
-    return {a.x * (T)co, a.y * (T)co, a.z * (T)co};
+template<typename T>
+vec2<T> operator*(const vec2<T>& a, const vec2<T>& b) noexcept {
+    return {a.x * b.x, a.y * b.y};
 }
 
-template<typename T, typename CO>
+template<typename T>
+vec3<T> operator*(T co, const vec3<T>& a) noexcept {
+    return {a.x * co, a.y * (T)co, a.z * co};
+}
+
+template<typename T>
 vec2<T>
-operator/(const vec2<T>& a, CO co) noexcept {
-    return {a.x / (T)co, a.y / (T)co};
+operator/(const vec2<T>& a, T co) noexcept {
+    return {a.x / co, a.y / co};
 }
 
-template<typename T, typename CO>
+template<typename T>
 vec3<T>
-operator/(const vec3<T>& a, CO co) noexcept {
-    return {a.x / (T)co, a.y / (T)co, a.z / (T)co};
+operator/(const vec3<T>& a, T co) noexcept {
+    return {a.x / co, a.y / co, a.z / co};
 }
 
 template<typename T>

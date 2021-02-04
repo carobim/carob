@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** player.cpp                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -147,7 +147,7 @@ Player::setFrozen(bool b) noexcept {
     }
 
     Entity::setFrozen(b);
-    if (!frozen && velocity) {
+    if (!frozen && !velocity.x && !velocity.y) {
         moveByTile(velocity);
     }
 }
@@ -161,7 +161,7 @@ Player::arrived() noexcept {
     }
 
     // If we have a velocity, keep moving.
-    if (confMoveMode == MoveMode::TILE && velocity) {
+    if (confMoveMode == MoveMode::TILE && (velocity.x || velocity.y)) {
         moveByTile(velocity);
     }
 }

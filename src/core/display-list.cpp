@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** display-list.cpp                 **
-** Copyright 2018-2020 Paul Merrill **
+** Copyright 2018-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -34,14 +34,14 @@ static void
 pushLetterbox(DisplayList* display) noexcept {
     // Aspect ratio correction.
     rvec2 sz = display->size;
-    rvec2 lb = -1 * display->padding;
+    rvec2 lb = -1.f * display->padding;
 
     // Map bounds.
     rvec2 scale = display->scale;
     rvec2 virtScroll = display->scroll;
     rvec2 padding = display->padding;
 
-    rvec2 physScroll = -1 * virtScroll * scale + padding;
+    rvec2 physScroll = -1.f * virtScroll * scale + padding;
 
     float x = lb.x;
     float y = lb.y;

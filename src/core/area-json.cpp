@@ -373,7 +373,8 @@ AreaJSON::processTileSetFile(JsonValue obj,
     CHECK(tileWidth > 0 && tileHeight > 0);
     CHECK(tileWidth <= 0x7FFF && tileHeight <= 0x7FFF);  // Reasonable limit?
 
-    if (grid.tileDim && static_cast<uint32_t>(grid.tileDim.x) != tileWidth &&
+    if ((grid.tileDim.x || grid.tileDim.y) &&
+        static_cast<uint32_t>(grid.tileDim.x) != tileWidth &&
         static_cast<uint32_t>(grid.tileDim.y) != tileHeight) {
         logErr(descriptor, "Tileset's width/height contradict earlier <layer>");
         return false;

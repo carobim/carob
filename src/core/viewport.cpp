@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** viewport.cpp                       **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -48,7 +48,7 @@ static Entity* targete;
 
 static rvec2
 centerOn(rvec2 pt) noexcept {
-    return pt - virtRes / 2;
+    return pt - virtRes / 2.f;
 }
 
 static float
@@ -117,7 +117,7 @@ static rvec2
 addLetterboxOffset(rvec2 pt) noexcept {
     rvec2 physRes = viewportGetPhysRes();
     rvec2 letterbox = getLetterbox();
-    return pt - letterbox * physRes / 2;
+    return pt - letterbox * physRes / 2.f;
 }
 
 static void
