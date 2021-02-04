@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** io.cpp                      **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** io.cpp                           **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -47,6 +47,8 @@ static State errstate(true);
 
 Output sout(&outstate);
 Output serr(&errstate);
+
+// FIXME: Flush manually instead of automatically on every '\n'.
 
 static void
 flush(State& state) noexcept {

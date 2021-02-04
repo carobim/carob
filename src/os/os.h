@@ -34,6 +34,9 @@
 #include "util/string.h"
 #include "util/vector.h"
 
+// FIXME: Break up disk IO from terminal IO from process managment into separate
+//        files.
+
 extern const char dirSeparator;
 
 typedef uint64_t Filesize;

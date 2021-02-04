@@ -28,6 +28,7 @@
 
 #include "util/assert.h"
 
+#include "os/os.h"
 #include "util/io.h"
 #include "util/noexcept.h"
 
@@ -89,10 +90,15 @@ assert__(const char* func,
          const char* file,
          int line,
          const char* expr) noexcept {
-    sout << "Assertion failed: " << expr << ", function " << func << ", file "
-         << file << ", line " << line << "\n";
+    if (haveDebugger()) {
+        triggerDebugger();
+    }
+    else {
+        sout << "Assertion failed: " << expr << ", function " << func
+             << ", file " << file << ", line " << line << "\n";
 
-    debugger();
+        exitProcess(127);
+    }
 }
 
 void

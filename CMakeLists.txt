@@ -93,6 +93,11 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/pack/main.cpp
 )
 
+set(TEST_SOURCES ${TEST_SOURCES}
+    ${HERE}/test/util/string-view.cpp
+    ${HERE}/test/main.cpp
+)
+
 if(AV_NULL)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/null/images.cpp
@@ -220,6 +225,14 @@ if (WIN32)
         ${HERE}/src/os/windows/io.cpp
         ${HERE}/src/os/windows/io.h
     )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/os/windows-c.cpp
+        ${HERE}/src/os/windows-c.h
+        ${HERE}/src/os/windows.cpp
+        ${HERE}/src/os/windows.h
+        ${HERE}/src/os/windows/io.cpp
+        ${HERE}/src/os/windows/io.h
+    )
 elseif(APPLE)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/mac-c.h
@@ -247,6 +260,12 @@ elseif(APPLE)
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/os/mac-c.h
+        ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
+    )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/linux-c.h
@@ -265,6 +284,12 @@ else()
         ${HERE}/src/os/unix-mapped-file.h
         ${HERE}/src/os/unix-mutex.h
         ${HERE}/src/os/unix-thread.h
+        ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
+    )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/os/linux-c.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
@@ -358,6 +383,20 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/util/vector.h
 )
 
+set(TEST_SOURCES ${TEST_SOURCES}
+    ${HERE}/src/util/assert.h
+    ${HERE}/src/util/fnv.cpp
+    ${HERE}/src/util/fnv.h
+    ${HERE}/src/util/int.h
+    ${HERE}/src/util/io.cpp
+    ${HERE}/src/util/io.h
+    ${HERE}/src/util/noexcept.h
+    ${HERE}/src/util/string-view.cpp
+    ${HERE}/src/util/string-view.h
+    ${HERE}/src/util/string.cpp
+    ${HERE}/src/util/string.h
+)
+
 if(MSVC OR ${CMAKE_VERSION} VERSION_LESS 3.1)
     # MSVC 2017 and below, and CMake 3.0 and below cannot vary source files by
     # configuration.
@@ -367,11 +406,17 @@ if(MSVC OR ${CMAKE_VERSION} VERSION_LESS 3.1)
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/util/assert.cpp
     )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/util/assert.cpp
+    )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+        $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
+    )
+    set(TEST_SOURCES ${TEST_SOURCES}
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
 endif()
@@ -384,6 +429,7 @@ endif()
 add_library(tsunagari ${TSUNAGARI_SOURCES})
 add_executable(null-world ${NULL_WORLD_SOURCES})
 add_executable(pack-tool ${PACK_TOOL_SOURCES})
+add_executable(test ${TEST_SOURCES})
 
 target_link_libraries(null-world tsunagari)
 
@@ -398,10 +444,12 @@ if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8.0)
     get_target_property(TSUNAGARI_SOURCES tsunagari SOURCES)
     get_target_property(NULL_WORLD_SOURCES null-world SOURCES)
     get_target_property(PACK_TOOL_SOURCES pack-tool SOURCES)
+    get_target_property(TEST_SOURCES test SOURCES)
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
         FILES ${TSUNAGARI_SOURCES}
               ${NULL_WORLD_SOURCES}
               ${PACK_TOOL_SOURCES}
+              ${TEST_SOURCES}
     )
 endif()
 
