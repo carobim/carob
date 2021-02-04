@@ -28,9 +28,18 @@
 #ifndef SRC_CORE_VEC_H_
 #define SRC_CORE_VEC_H_
 
-#include "os/c.h"
-#include "util/fnv.h"
+#include "util/constexpr.h"
+#include "util/int.h"
 #include "util/noexcept.h"
+
+// clang-format off
+
+// TODO: Replace ivec with veci
+// TODO: Replace rvec with vecf
+struct ivec2 { int x, y; };
+struct ivec3 { int x, y, z; };
+struct rvec2 { float x, y; };
+struct rvec3 { float x, y, z; };
 
 /**
  * Virtual integer coordinate.
@@ -48,129 +57,57 @@ struct icube {
     int x2, y2, z2;
 };
 
-template<typename T>
-struct vec2 {
-    T x, y;
+ivec2 operator+(ivec2, ivec2) noexcept;
+ivec3 operator+(ivec3, ivec3) noexcept;
+rvec2 operator+(rvec2, rvec2) noexcept;
+rvec3 operator+(rvec3, rvec3) noexcept;
 
-    float
-    distanceTo(vec2<T> other) noexcept {
-        T dx = x - other.x;
-        T dy = y - other.y;
-        return sqrt(dx * dx + dy * dy);
-    }
-};
+ivec2 operator-(ivec2, ivec2) noexcept;
+ivec3 operator-(ivec3, ivec3) noexcept;
+rvec2 operator-(rvec2, rvec2) noexcept;
+rvec3 operator-(rvec3, rvec3) noexcept;
 
-template<typename T>
-struct vec3 {
-    T x, y, z;
+ivec2 operator*(ivec2, ivec2) noexcept;
+ivec2 operator*(int, ivec2) noexcept;
+ivec3 operator*(int, ivec3) noexcept;
+rvec2 operator*(rvec2, rvec2) noexcept;
+rvec2 operator*(float, rvec2) noexcept;
+rvec3 operator*(float, rvec3) noexcept;
 
-    float
-    distanceTo(vec3<T> other) noexcept {
-        T dx = x - other.x;
-        T dy = y - other.y;
-        return static_cast<float>(sqrt(dx * dx + dy * dy));
-    }
-};
+ivec2 operator*(ivec2, int) noexcept;
+ivec3 operator*(ivec3, int) noexcept;
+rvec2 operator*(rvec2, float) noexcept;
+rvec3 operator*(rvec3, float) noexcept;
 
-template<typename T>
-vec2<T>
-operator+(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return {a.x + b.x, a.y + b.y};
-}
+ivec2 operator/(ivec2, int) noexcept;
+ivec3 operator/(ivec3, int) noexcept;
+rvec2 operator/(rvec2, float) noexcept;
+rvec3 operator/(rvec3, float) noexcept;
 
-template<typename T>
-vec3<T>
-operator+(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return {a.x + b.x, a.y + b.y, a.z + b.z};
-}
+bool operator==(ivec2, ivec2) noexcept;
+bool operator==(ivec3, ivec3) noexcept;
+bool operator==(rvec2, rvec2) noexcept;
+bool operator==(rvec3, rvec3) noexcept;
 
-template<typename T>
-vec2<T>
-operator-(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return {a.x - b.x, a.y - b.y};
-}
+bool operator!=(ivec2, ivec2) noexcept;
+bool operator!=(ivec3, ivec3) noexcept;
+bool operator!=(rvec2, rvec2) noexcept;
+bool operator!=(rvec3, rvec3) noexcept;
 
-template<typename T>
-vec3<T>
-operator-(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return {a.x - b.x, a.y - b.y, a.z - b.z};
-}
+float distanceTo(rvec2, rvec2) noexcept;
+float distanceTo(rvec3, rvec3) noexcept;
 
-template<typename T>
-vec2<T> operator*(T co, const vec2<T>& a) noexcept {
-    return {a.x * co, a.y * co};
-}
-
-template<typename T>
-vec2<T> operator*(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return {a.x * b.x, a.y * b.y};
-}
-
-template<typename T>
-vec3<T> operator*(T co, const vec3<T>& a) noexcept {
-    return {a.x * co, a.y * (T)co, a.z * co};
-}
-
-template<typename T>
-vec2<T>
-operator/(const vec2<T>& a, T co) noexcept {
-    return {a.x / co, a.y / co};
-}
-
-template<typename T>
-vec3<T>
-operator/(const vec3<T>& a, T co) noexcept {
-    return {a.x / co, a.y / co, a.z / co};
-}
-
-template<typename T>
-bool
-operator==(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return a.x == b.x && a.y == b.y;
-}
-
-template<typename T>
-bool
-operator!=(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return a.x != b.x || a.y != b.y;
-}
-
-template<typename T>
-bool
-operator==(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return a.x == b.x && a.y == b.y && a.z == b.z;
-}
-
-template<typename T>
-bool
-operator!=(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return a.x != b.x || a.y != b.y || a.z != b.z;
-}
-
-template<typename T>
-size_t
-hash_(vec2<T> a) noexcept {
-    return fnvHash(reinterpret_cast<const char*>(&a), sizeof(a));
-}
-
-template<typename T>
-size_t
-hash_(vec3<T> a) noexcept {
-    return fnvHash(reinterpret_cast<const char*>(&a), sizeof(a));
-}
-
-//! Integer vector.
-typedef vec2<int> ivec2;
-typedef vec3<int> ivec3;
-
-//! Real vector.
-typedef vec2<float> rvec2;
-typedef vec3<float> rvec3;
+size_t hash_(ivec2) noexcept;
+size_t hash_(ivec3) noexcept;
+size_t hash_(rvec2) noexcept;
+size_t hash_(rvec3) noexcept;
 
 static const CONSTEXPR11 ivec3 IVEC3_MIN = {
     INT32_MIN,
     INT32_MIN,
     INT32_MIN,
 };
+
+// clang-format on
 
 #endif  // SRC_CORE_VEC_H_

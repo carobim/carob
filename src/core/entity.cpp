@@ -626,7 +626,7 @@ Entity::moveTowardDestination(time_t dt) noexcept {
     redraw = true;
 
     float traveledPixels = pixelsPerSecond * static_cast<float>(dt) / 1000.0f;
-    float toDestPixels = r.distanceTo(destCoord);
+    float toDestPixels = distanceTo(r, destCoord);
     if (toDestPixels > traveledPixels) {
         // The destination has not been reached yet.
         r.x += static_cast<float>(cos(angleToDest)) * traveledPixels;

@@ -154,6 +154,8 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/core/tile.h
     ${HERE}/src/core/tile-grid.cpp
     ${HERE}/src/core/tile-grid.h
+    ${HERE}/src/core/vec.cpp
+    ${HERE}/src/core/vec.h
     ${HERE}/src/core/viewport.cpp
     ${HERE}/src/core/viewport.h
     ${HERE}/src/core/window.cpp
