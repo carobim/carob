@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** area.cpp                           **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -176,7 +176,7 @@ Area::needsRedraw() {
         }
         for (int y = tiles.y1; y < tiles.y2; y++) {
             for (int x = tiles.x1; x < tiles.x2; x++) {
-                int type = grid.getTileType(icoord{x, y, z});
+                int type = grid.getTileType(ivec3{x, y, z});
 
                 if (type == 0) {
                     continue;
@@ -339,7 +339,7 @@ Area::getDataArea() {
 
 void
 Area::runScript(TileGrid::ScriptType type,
-                icoord tile,
+                ivec3 tile,
                 Entity* triggeredBy) noexcept {
     DataArea::TileScript* script = grid.scripts[type].tryAt(tile);
     if (script) {
@@ -375,7 +375,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
     for (int y = tiles.y1; y < tiles.y2; y++) {
         for (int x = tiles.x1; x < tiles.x2; x++) {
             // We are certain the Tile exists.
-            int type = grid.getTileType(icoord{x, y, z});
+            int type = grid.getTileType(ivec3{x, y, z});
 
             if (type == 0) {
                 continue;

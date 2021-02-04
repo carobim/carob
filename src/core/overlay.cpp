@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** overlay.cpp                        **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -44,12 +44,13 @@ Overlay::teleport(vicoord coord) noexcept {
 
 void
 Overlay::drift(ivec2 xy) noexcept {
-    driftTo(ivec2{(int)r.x + xy.x, (int)r.y + xy.y});
+    driftTo(ivec2{static_cast<int>(r.x) + xy.x, static_cast<int>(r.y) + xy.y});
 }
 
 void
 Overlay::driftTo(ivec2 xy) noexcept {
-    setDestinationCoordinate(rcoord{(float)xy.x, (float)xy.y, r.z});
+    setDestinationCoordinate(rvec3{static_cast<float>(xy.x),
+                                   static_cast<float>(xy.y), r.z});
     pickFacingForAngle();
     moving = true;
     setAnimationMoving();

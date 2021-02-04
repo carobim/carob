@@ -66,7 +66,7 @@ boundDimension(float screen, float area, float pt, bool loop) noexcept {
 
 static rvec2
 boundToArea(rvec2 pt) noexcept {
-    icoord ad = viewportArea->grid.dim;
+    ivec3 ad = viewportArea->grid.dim;
     ivec2 td = viewportArea->grid.tileDim;
     float areaWidth = static_cast<float>(ad.x * td.x);
     float areaHeight = static_cast<float>(ad.y * td.y);
@@ -86,7 +86,7 @@ offsetForPt(rvec2 pt) noexcept {
 
 static void
 _jumpToEntity(Entity* e) noexcept {
-    rcoord pos = e->getPixelCoord();
+    rvec3 pos = e->getPixelCoord();
     ivec2 td = viewportArea->grid.tileDim;
     rvec2 center = {pos.x + td.x / 2, pos.y + td.y / 2};
     off = offsetForPt(center);

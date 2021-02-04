@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** character.h                        **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -49,7 +49,7 @@ class Character : public Entity {
     destroy() noexcept;
 
     //! Retrieve position within Area.
-    icoord
+    ivec3
     getTileCoords_i() noexcept;
     vicoord
     getTileCoords_vi() noexcept;
@@ -58,11 +58,11 @@ class Character : public Entity {
     void
     setTileCoords(int x, int y) noexcept;
     void
-    setTileCoords(icoord phys) noexcept;
+    setTileCoords(ivec3 phys) noexcept;
     void
     setTileCoords(vicoord virt) noexcept;
     void
-    setTileCoords(rcoord virt) noexcept;
+    setTileCoords(rvec3 virt) noexcept;
 
     void
     setArea(Area* area, vicoord position) noexcept;
@@ -74,15 +74,15 @@ class Character : public Entity {
  protected:
     //! Indicates which coordinate we will move into if we proceed in
     //! direction specified.
-    icoord
+    ivec3
     moveDest(ivec2 facing) noexcept;
 
     //! Returns true if we can move in the desired direction.
     bool
-    canMove(icoord dest) noexcept;
+    canMove(ivec3 dest) noexcept;
 
     bool
-    nowalked(icoord phys) noexcept;
+    nowalked(ivec3 phys) noexcept;
 
     void
     arrived() noexcept;
@@ -90,11 +90,11 @@ class Character : public Entity {
     void
     leaveTile() noexcept;
     void
-    leaveTile(icoord phys) noexcept;
+    leaveTile(ivec3 phys) noexcept;
     void
     enterTile() noexcept;
     void
-    enterTile(icoord phys) noexcept;
+    enterTile(ivec3 phys) noexcept;
 
     void
     runTileExitScript() noexcept;
@@ -105,7 +105,7 @@ class Character : public Entity {
     unsigned nowalkFlags;
     unsigned nowalkExempt;
 
-    rcoord fromCoord;
+    rvec3 fromCoord;
     Exit* destExit;
 };
 

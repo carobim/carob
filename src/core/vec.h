@@ -167,11 +167,7 @@ typedef vec3<int> ivec3;
 typedef vec2<float> rvec2;
 typedef vec3<float> rvec3;
 
-//! Coordinates.
-typedef ivec3 icoord;
-typedef rvec3 rcoord;
-
-static const CONSTEXPR11 icoord ICOORD_MIN = {
+static const CONSTEXPR11 ivec3 IVEC3_MIN = {
     INT32_MIN,
     INT32_MIN,
     INT32_MIN,

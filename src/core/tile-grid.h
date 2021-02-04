@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** tile-grid.h                        **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -93,7 +93,7 @@ struct Exit {
     vicoord coords;
 };
 
-typedef void (*TileScript)(Entity& triggeredBy, icoord tile);
+typedef void (*TileScript)(Entity& triggeredBy, ivec3 tile);
 
 struct EmptyFloat {
     static CONSTEXPR11 float
@@ -103,9 +103,9 @@ struct EmptyFloat {
 };
 
 struct EmptyIcoord {
-    static CONSTEXPR11 icoord
+    static CONSTEXPR11 ivec3
     value() {
-        return ICOORD_MIN;
+        return IVEC3_MIN;
     }
 };
 
@@ -114,7 +114,7 @@ class TileGrid {
     TileGrid() noexcept;
 
     int
-    getTileType(icoord phys) noexcept;
+    getTileType(ivec3 phys) noexcept;
     int
     getTileType(vicoord virt) noexcept;
 
@@ -123,11 +123,11 @@ class TileGrid {
 
     //! Returns true if a Tile exists at the specified coordinate.
     bool
-    inBounds(icoord phys) noexcept;
+    inBounds(ivec3 phys) noexcept;
     bool
     inBounds(vicoord virt) noexcept;
     bool
-    inBounds(rcoord virt) noexcept;
+    inBounds(rvec3 virt) noexcept;
 
  public:
     // Convert between virtual and physical map coordinates. Physical
@@ -135,17 +135,17 @@ class TileGrid {
     // is represented by an arbirarily chosen integer in the physical system.
     // Virtual coordinates include the correct floating-point depth.
     vicoord
-    phys2virt_vi(icoord phys) noexcept;
-    rcoord
-    phys2virt_r(icoord phys) noexcept;
-    icoord
+    phys2virt_vi(ivec3 phys) noexcept;
+    rvec3
+    phys2virt_r(ivec3 phys) noexcept;
+    ivec3
     virt2phys(vicoord virt) noexcept;
-    icoord
-    virt2phys(rcoord virt) noexcept;
-    rcoord
+    ivec3
+    virt2phys(rvec3 virt) noexcept;
+    rvec3
     virt2virt(vicoord virt) noexcept;
     vicoord
-    virt2virt(rcoord virt) noexcept;
+    virt2virt(rvec3 virt) noexcept;
 
     // Convert between virtual and physical map depths.
     int
@@ -161,15 +161,15 @@ class TileGrid {
     // @param area    the area containing this Tile
     // @param here    area-space coordinate for this Tile
     // @param facing  facing vector
-    icoord
-    moveDest(icoord from, ivec2 facing) noexcept;
+    ivec3
+    moveDest(ivec3 from, ivec2 facing) noexcept;
 
     // nullptr means not found
     Exit*
-    exitAt(icoord from, ivec2 facing) noexcept;
+    exitAt(ivec3 from, ivec2 facing) noexcept;
     // nullptr means not found
     float*
-    layermodAt(icoord from, ivec2 facing) noexcept;
+    layermodAt(ivec3 from, ivec2 facing) noexcept;
 
  public:
     // 3-dimensional array of the tiles that make up the grid.
@@ -197,7 +197,7 @@ class TileGrid {
     bool loopX;
     bool loopY;
 
-    Hashmap<icoord, bool, EmptyIcoord> occupied;
+    Hashmap<ivec3, bool, EmptyIcoord> occupied;
 
     enum ScriptType {
         SCRIPT_TYPE_ENTER,
@@ -206,13 +206,13 @@ class TileGrid {
         SCRIPT_TYPE_LAST,
     };
 
-    Hashmap<icoord, DataArea::TileScript, EmptyIcoord>
+    Hashmap<ivec3, DataArea::TileScript, EmptyIcoord>
             scripts[SCRIPT_TYPE_LAST];
 
-    Hashmap<icoord, unsigned, EmptyIcoord> flags;
+    Hashmap<ivec3, unsigned, EmptyIcoord> flags;
 
-    Hashmap<icoord, Exit, EmptyIcoord> exits[EXITS_LENGTH];
-    Hashmap<icoord, float, EmptyIcoord> layermods[EXITS_LENGTH];
+    Hashmap<ivec3, Exit, EmptyIcoord> exits[EXITS_LENGTH];
+    Hashmap<ivec3, float, EmptyIcoord> layermods[EXITS_LENGTH];
 
  private:
     TileGrid(const TileGrid&);

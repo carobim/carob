@@ -492,7 +492,7 @@ Entity::setAnimationMoving() noexcept {
 }
 
 
-rcoord
+rvec3
 Entity::getPixelCoord() noexcept {
     return r;
 }
@@ -607,7 +607,7 @@ Entity::_setPhase(StringView name) noexcept {
 }
 
 void
-Entity::setDestinationCoordinate(rcoord destCoord) noexcept {
+Entity::setDestinationCoordinate(rvec3 destCoord) noexcept {
     // Set z right away so that we're on-level with the square we're
     // entering.
     r.z = destCoord.z;

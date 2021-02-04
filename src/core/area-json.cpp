@@ -935,7 +935,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     // We know which Tiles are being talked about now... yay
     for (int Y = y; Y < y + h; Y++) {
         for (int X = x; X < x + w; X++) {
-            icoord tile = {X, Y, static_cast<int>(z)};
+            ivec3 tile = {X, Y, static_cast<int>(z)};
 
             grid.flags[tile] |= flags;
             for (size_t i = 0; i < EXITS_LENGTH; i++) {

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** area.h                             **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -127,7 +127,7 @@ class Area {
 
     void
     runScript(TileGrid::ScriptType type,
-              icoord tile,
+              ivec3 tile,
               Entity* triggeredBy) noexcept;
 
  public:
