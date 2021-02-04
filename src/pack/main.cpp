@@ -53,7 +53,7 @@ struct CreateArchiveContext {
 };
 
 static void
-addFile(CreateArchiveContext& ctx, StringView path) noexcept {
+addFile(CreateArchiveContext* ctx, StringView path) noexcept {
     String data;
     bool ok = readFile(path, data);
 
@@ -83,11 +83,17 @@ addFile(CreateArchiveContext& ctx, StringView path) noexcept {
         path = standardizedPath;
     }
 
-    LockGuard guard(ctx.packMutex);
-    packWriterAddBlob(ctx.pack, path, static_cast<uint32_t>(data.size),
+    LockGuard guard(ctx->packMutex);
+    packWriterAddBlob(ctx->pack, path, static_cast<uint32_t>(data.size),
                       data.data);
 
     data.reset();  // Don't delete data pointer.
+}
+
+static void
+addFileCallback(void* data, StringView path) noexcept {
+    CreateArchiveContext* ctx = reinterpret_cast<CreateArchiveContext*>(data);
+    addFile(ctx, path);
 }
 
 static bool
@@ -95,8 +101,7 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
     CreateArchiveContext ctx;
     ctx.pack = makePackWriter();
 
-    walk(static_cast<Vector<StringView>&&>(paths),
-         [&](StringView path) noexcept { addFile(ctx, path); });
+    walk(static_cast<Vector<StringView>&&>(paths), &ctx, addFileCallback);
 
     if (verbose) {
         sout << "Writing to " << archivePath << '\n';

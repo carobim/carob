@@ -338,19 +338,17 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/util/constexpr.h
     ${HERE}/src/util/fnv.cpp
     ${HERE}/src/util/fnv.h
-    ${HERE}/src/util/function.h
     ${HERE}/src/util/hashtable.h
     ${HERE}/src/util/int.h
     ${HERE}/src/util/io.cpp
     ${HERE}/src/util/io.h
-    ${HERE}/src/util/jobs.cpp
-    ${HERE}/src/util/jobs.h
     ${HERE}/src/util/list.h
     ${HERE}/src/util/meta.h
     ${HERE}/src/util/move.h
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h
     ${HERE}/src/util/noexcept.h
+    ${HERE}/src/util/queue.h
     ${HERE}/src/util/sort.h
     ${HERE}/src/util/string-view.cpp
     ${HERE}/src/util/string-view.h
@@ -694,17 +692,14 @@ if(LINUX AND NOT AV_EM)
 
     if(GLIBC_VERSION)
         target_link_libraries(tsunagari m pthread)
-        target_link_libraries(pack-tool pthread)
     endif()
 endif()
 
 if(FREEBSD OR NETBSD)
     target_link_libraries(tsunagari PUBLIC  m pthread)
-    target_link_libraries(pack-tool PRIVATE m pthread)
 endif()
 if(AV_EM)
     target_link_libraries(tsunagari PUBLIC  pthread)
-    target_link_libraries(pack-tool PRIVATE pthread)
 endif()
 
 if(AV_SDL2)
