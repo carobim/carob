@@ -25,7 +25,6 @@
 // **********
 
 #include "os/c.h"
-#include "os/mutex.h"
 #include "os/os.h"
 #include "pack/file-type.h"
 #include "pack/pack-reader.h"
@@ -49,7 +48,6 @@ usage() noexcept {
 
 struct CreateArchiveContext {
     PackWriter* pack;
-    Mutex packMutex;
 };
 
 static void
@@ -83,7 +81,6 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
         path = standardizedPath;
     }
 
-    LockGuard guard(ctx->packMutex);
     packWriterAddBlob(ctx->pack, path, static_cast<uint32_t>(data.size),
                       data.data);
 
