@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** display-list.h                   **
-** Copyright 2018-2020 Paul Merrill **
+** Copyright 2018-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -33,17 +33,17 @@
 
 struct DisplayItem {
     Image image;
-    rvec2 destination;
+    fvec2 destination;
 };
 
 struct DisplayList {
     bool loopX;
     bool loopY;
 
-    rvec2 padding;
-    rvec2 scale;
-    rvec2 scroll;
-    rvec2 size;
+    fvec2 padding;
+    fvec2 scale;
+    fvec2 scroll;
+    fvec2 size;
 
     Vector<DisplayItem> items;
 

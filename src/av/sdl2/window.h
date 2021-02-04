@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** window.h                         **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -31,8 +31,8 @@
 #include "core/vec.h"
 
 extern SDL_Window* sdl2Window;
-extern rvec2 sdl2Translation;
-extern rvec2 sdl2Scaling;
+extern fvec2 sdl2Translation;
+extern fvec2 sdl2Scaling;
 
 void
 imageStartFrame() noexcept;

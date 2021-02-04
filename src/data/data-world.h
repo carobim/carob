@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** data-world.h                       **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -47,7 +47,7 @@ extern StringView dataWorldAuthor;
 extern StringView dataWorldVersion;
 
 extern enum MoveMode dataWorldMoveMode;
-extern rvec2 dataWorldViewportResolution;
+extern fvec2 dataWorldViewportResolution;
 extern int dataWorldInputPersistDelayInitial;
 extern int dataWorldInputPersistDelayConsecutive;
 extern StringView dataWorldStartArea;

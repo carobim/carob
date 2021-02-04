@@ -40,8 +40,8 @@
 #include "util/transform.h"
 
 SDL_Window* sdl2Window = 0;
-rvec2 sdl2Translation = {0.0, 0.0};
-rvec2 sdl2Scaling = {0.0, 0.0};
+fvec2 sdl2Translation = {0.0, 0.0};
+fvec2 sdl2Scaling = {0.0, 0.0};
 
 static Nanoseconds start = 0;
 

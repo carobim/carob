@@ -101,7 +101,7 @@ Character::setTileCoords(vicoord virt) noexcept {
 }
 
 void
-Character::setTileCoords(rvec3 virt) noexcept {
+Character::setTileCoords(fvec3 virt) noexcept {
     leaveTile();
     redraw = true;
     r = virt;

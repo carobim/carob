@@ -62,7 +62,7 @@ class Character : public Entity {
     void
     setTileCoords(vicoord virt) noexcept;
     void
-    setTileCoords(rvec3 virt) noexcept;
+    setTileCoords(fvec3 virt) noexcept;
 
     void
     setArea(Area* area, vicoord position) noexcept;
@@ -105,7 +105,7 @@ class Character : public Entity {
     unsigned nowalkFlags;
     unsigned nowalkExempt;
 
-    rvec3 fromCoord;
+    fvec3 fromCoord;
     Exit* destExit;
 };
 

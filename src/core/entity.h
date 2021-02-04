@@ -102,7 +102,7 @@ class Entity {
 
     // The offset from the upper-left of the Area to the upper-left of the
     // Tile the Entity is standing on.
-    rvec3
+    fvec3
     getPixelCoord() noexcept;
 
 
@@ -154,7 +154,7 @@ class Entity {
     _setPhase(StringView name) noexcept;
 
     void
-    setDestinationCoordinate(rvec3 destCoord) noexcept;
+    setDestinationCoordinate(fvec3 destCoord) noexcept;
 
     void
     moveTowardDestination(time_t dt) noexcept;
@@ -175,9 +175,9 @@ class Entity {
     // Pointer to Area this Entity is located on.
     Area* area;
     // Real x,y position: hold partial pixel transversal
-    rvec3 r;
+    fvec3 r;
     // Drawing offset to center entity on tile.
-    rvec3 doff;
+    fvec3 doff;
 
     String descriptor;
 
@@ -189,7 +189,7 @@ class Entity {
     // True if currently moving to a new coordinate in an Area.
     bool moving;
 
-    rvec3 destCoord;
+    fvec3 destCoord;
     float angleToDest;
 
     ivec2 imgsz;

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** null-world.cpp                   **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -39,7 +39,7 @@ StringView dataWorldAuthor = "Paul Merrill";
 StringView dataWorldVersion = "1";
 
 enum MoveMode dataWorldMoveMode = MoveMode::TILE;
-rvec2 dataWorldViewportResolution = {240, 160};
+fvec2 dataWorldViewportResolution = {240, 160};
 int dataWorldInputPersistDelayInitial = 300;
 int dataWorldInputPersistDelayConsecutive = 100;
 StringView dataWorldStartArea = "null-area.json";

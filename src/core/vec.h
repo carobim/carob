@@ -34,12 +34,10 @@
 
 // clang-format off
 
-// TODO: Replace ivec with veci
-// TODO: Replace rvec with vecf
 struct ivec2 { int x, y; };
 struct ivec3 { int x, y, z; };
-struct rvec2 { float x, y; };
-struct rvec3 { float x, y, z; };
+struct fvec2 { float x, y; };
+struct fvec3 { float x, y, z; };
 
 /**
  * Virtual integer coordinate.
@@ -59,48 +57,48 @@ struct icube {
 
 ivec2 operator+(ivec2, ivec2) noexcept;
 ivec3 operator+(ivec3, ivec3) noexcept;
-rvec2 operator+(rvec2, rvec2) noexcept;
-rvec3 operator+(rvec3, rvec3) noexcept;
+fvec2 operator+(fvec2, fvec2) noexcept;
+fvec3 operator+(fvec3, fvec3) noexcept;
 
 ivec2 operator-(ivec2, ivec2) noexcept;
 ivec3 operator-(ivec3, ivec3) noexcept;
-rvec2 operator-(rvec2, rvec2) noexcept;
-rvec3 operator-(rvec3, rvec3) noexcept;
+fvec2 operator-(fvec2, fvec2) noexcept;
+fvec3 operator-(fvec3, fvec3) noexcept;
 
 ivec2 operator*(ivec2, ivec2) noexcept;
 ivec2 operator*(int, ivec2) noexcept;
 ivec3 operator*(int, ivec3) noexcept;
-rvec2 operator*(rvec2, rvec2) noexcept;
-rvec2 operator*(float, rvec2) noexcept;
-rvec3 operator*(float, rvec3) noexcept;
+fvec2 operator*(fvec2, fvec2) noexcept;
+fvec2 operator*(float, fvec2) noexcept;
+fvec3 operator*(float, fvec3) noexcept;
 
 ivec2 operator*(ivec2, int) noexcept;
 ivec3 operator*(ivec3, int) noexcept;
-rvec2 operator*(rvec2, float) noexcept;
-rvec3 operator*(rvec3, float) noexcept;
+fvec2 operator*(fvec2, float) noexcept;
+fvec3 operator*(fvec3, float) noexcept;
 
 ivec2 operator/(ivec2, int) noexcept;
 ivec3 operator/(ivec3, int) noexcept;
-rvec2 operator/(rvec2, float) noexcept;
-rvec3 operator/(rvec3, float) noexcept;
+fvec2 operator/(fvec2, float) noexcept;
+fvec3 operator/(fvec3, float) noexcept;
 
 bool operator==(ivec2, ivec2) noexcept;
 bool operator==(ivec3, ivec3) noexcept;
-bool operator==(rvec2, rvec2) noexcept;
-bool operator==(rvec3, rvec3) noexcept;
+bool operator==(fvec2, fvec2) noexcept;
+bool operator==(fvec3, fvec3) noexcept;
 
 bool operator!=(ivec2, ivec2) noexcept;
 bool operator!=(ivec3, ivec3) noexcept;
-bool operator!=(rvec2, rvec2) noexcept;
-bool operator!=(rvec3, rvec3) noexcept;
+bool operator!=(fvec2, fvec2) noexcept;
+bool operator!=(fvec3, fvec3) noexcept;
 
-float distanceTo(rvec2, rvec2) noexcept;
-float distanceTo(rvec3, rvec3) noexcept;
+float distanceTo(fvec2, fvec2) noexcept;
+float distanceTo(fvec3, fvec3) noexcept;
 
 size_t hash_(ivec2) noexcept;
 size_t hash_(ivec3) noexcept;
-size_t hash_(rvec2) noexcept;
-size_t hash_(rvec3) noexcept;
+size_t hash_(fvec2) noexcept;
+size_t hash_(fvec3) noexcept;
 
 static const CONSTEXPR11 ivec3 IVEC3_MIN = {
     INT32_MIN,

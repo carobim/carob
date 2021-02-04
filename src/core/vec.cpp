@@ -40,12 +40,12 @@ ivec3
 operator+(ivec3 a, ivec3 b) noexcept {
     return {a.x + b.x, a.y + b.y, a.z + b.z};
 }
-rvec2
-operator+(rvec2 a, rvec2 b) noexcept {
+fvec2
+operator+(fvec2 a, fvec2 b) noexcept {
     return {a.x + b.x, a.y + b.y};
 }
-rvec3
-operator+(rvec3 a, rvec3 b) noexcept {
+fvec3
+operator+(fvec3 a, fvec3 b) noexcept {
     return {a.x + b.x, a.y + b.y, a.z + b.z};
 }
 
@@ -57,12 +57,12 @@ ivec3
 operator-(ivec3 a, ivec3 b) noexcept {
     return {a.x - b.x, a.y - b.y, a.z - b.z};
 }
-rvec2
-operator-(rvec2 a, rvec2 b) noexcept {
+fvec2
+operator-(fvec2 a, fvec2 b) noexcept {
     return {a.x - b.x, a.y - b.y};
 }
-rvec3
-operator-(rvec3 a, rvec3 b) noexcept {
+fvec3
+operator-(fvec3 a, fvec3 b) noexcept {
     return {a.x - b.x, a.y - b.y, a.z - b.z};
 }
 
@@ -78,16 +78,16 @@ ivec3
 operator*(int co, ivec3 a) noexcept {
     return {a.x * co, a.y * co, a.z * co};
 }
-rvec2
-operator*(rvec2 a, rvec2 b) noexcept {
+fvec2
+operator*(fvec2 a, fvec2 b) noexcept {
     return {a.x * b.x, a.y * b.y};
 }
-rvec2
-operator*(float co, rvec2 a) noexcept {
+fvec2
+operator*(float co, fvec2 a) noexcept {
     return {a.x * co, a.y * co};
 }
-rvec3
-operator*(float co, rvec3 a) noexcept {
+fvec3
+operator*(float co, fvec3 a) noexcept {
     return {a.x * co, a.y * co, a.z * co};
 }
 
@@ -99,12 +99,12 @@ ivec3
 operator/(ivec3 a, int co) noexcept {
     return {a.x / co, a.y / co, a.z / co};
 }
-rvec2
-operator/(rvec2 a, float co) noexcept {
+fvec2
+operator/(fvec2 a, float co) noexcept {
     return {a.x / co, a.y / co};
 }
-rvec3
-operator/(rvec3 a, float co) noexcept {
+fvec3
+operator/(fvec3 a, float co) noexcept {
     return {a.x / co, a.y / co, a.z / co};
 }
 
@@ -117,11 +117,11 @@ operator==(ivec3 a, ivec3 b) noexcept {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 bool
-operator==(rvec2 a, rvec2 b) noexcept {
+operator==(fvec2 a, fvec2 b) noexcept {
     return a.x == b.x && a.y == b.y;
 }
 bool
-operator==(rvec3 a, rvec3 b) noexcept {
+operator==(fvec3 a, fvec3 b) noexcept {
     return a.x == b.x && a.y == b.y && a.z == b.z;
 }
 
@@ -134,22 +134,22 @@ operator!=(ivec3 a, ivec3 b) noexcept {
     return a.x != b.x || a.y != b.y || a.z != b.z;
 }
 bool
-operator!=(rvec2 a, rvec2 b) noexcept {
+operator!=(fvec2 a, fvec2 b) noexcept {
     return a.x != b.x || a.y != b.y;
 }
 bool
-operator!=(rvec3 a, rvec3 b) noexcept {
+operator!=(fvec3 a, fvec3 b) noexcept {
     return a.x != b.x || a.y != b.y || a.z != b.z;
 }
 
 float
-distanceTo(rvec2 a, rvec2 b) noexcept {
+distanceTo(fvec2 a, fvec2 b) noexcept {
     float dx = a.x - b.x;
     float dy = a.y - b.y;
     return sqrt(dx * dx + dy * dy);
 }
 float
-distanceTo(rvec3 a, rvec3 b) noexcept {
+distanceTo(fvec3 a, fvec3 b) noexcept {
     float dx = a.x - b.x;
     float dy = a.y - b.y;
     return sqrt(dx * dx + dy * dy);
@@ -164,10 +164,10 @@ hash_(ivec3 a) noexcept {
     return fnvHash(reinterpret_cast<char*>(&a), sizeof(a));
 }
 size_t
-hash_(rvec2 a) noexcept {
+hash_(fvec2 a) noexcept {
     return fnvHash(reinterpret_cast<char*>(&a), sizeof(a));
 }
 size_t
-hash_(rvec3 a) noexcept {
+hash_(fvec3 a) noexcept {
     return fnvHash(reinterpret_cast<char*>(&a), sizeof(a));
 }

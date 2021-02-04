@@ -278,8 +278,8 @@ Area::getTileSet(StringView imagePath) {
 
 icube
 Area::visibleTiles() {
-    rvec2 screen = viewportGetVirtRes();
-    rvec2 off = viewportGetMapOffset();
+    fvec2 screen = viewportGetVirtRes();
+    fvec2 off = viewportGetMapOffset();
 
     int x1 = static_cast<int>(floor(off.x / grid.tileDim.x));
     int y1 = static_cast<int>(floor(off.y / grid.tileDim.y));
@@ -394,7 +394,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
             // ImageID.
             Image img = tileGraphics[type].getFrame();
 
-            rvec2 drawPos{float(x * width), float(y * height)};
+            fvec2 drawPos{float(x * width), float(y * height)};
             // drawPos.z = depth + drawPos.y / tileDimY *
             // ISOMETRIC_ZOFF_PER_TILE;
             items[itemCount++] = DisplayItem{img, drawPos};

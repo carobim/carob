@@ -49,7 +49,7 @@ Overlay::drift(ivec2 xy) noexcept {
 
 void
 Overlay::driftTo(ivec2 xy) noexcept {
-    setDestinationCoordinate(rvec3{static_cast<float>(xy.x),
+    setDestinationCoordinate(fvec3{static_cast<float>(xy.x),
                                    static_cast<float>(xy.y), r.z});
     pickFacingForAngle();
     moving = true;

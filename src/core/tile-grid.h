@@ -127,7 +127,7 @@ class TileGrid {
     bool
     inBounds(vicoord virt) noexcept;
     bool
-    inBounds(rvec3 virt) noexcept;
+    inBounds(fvec3 virt) noexcept;
 
  public:
     // Convert between virtual and physical map coordinates. Physical
@@ -136,16 +136,16 @@ class TileGrid {
     // Virtual coordinates include the correct floating-point depth.
     vicoord
     phys2virt_vi(ivec3 phys) noexcept;
-    rvec3
+    fvec3
     phys2virt_r(ivec3 phys) noexcept;
     ivec3
     virt2phys(vicoord virt) noexcept;
     ivec3
-    virt2phys(rvec3 virt) noexcept;
-    rvec3
+    virt2phys(fvec3 virt) noexcept;
+    fvec3
     virt2virt(vicoord virt) noexcept;
     vicoord
-    virt2virt(rvec3 virt) noexcept;
+    virt2virt(fvec3 virt) noexcept;
 
     // Convert between virtual and physical map depths.
     int
