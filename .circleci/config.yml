@@ -15,7 +15,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j `grep processor /proc/cpuinfo | wc -l`
-      - run: ./test
+      - run: build/test
 
   # Has CMake 3.18, GCC 10, Samurai 1.2
   alpine_3_13:
@@ -31,7 +31,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: ./test
+      - run: build/test
 
   arch:
     docker:
@@ -45,7 +45,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: ./test
+      - run: build/test
 
   # Has CMake 2.8.12, GCC 4.8
   centos_7:
@@ -60,7 +60,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j `grep processor /proc/cpuinfo | wc -l`
-      - run: ./test
+      - run: build/test
 
   # Has CMake 3.11, GCC 8
   centos_8:
@@ -75,7 +75,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j `grep processor /proc/cpuinfo | wc -l`
-      - run: ./test
+      - run: build/test
 
   # Has CMake 3.0, GCC 4.9
   debian_8_jessie:
@@ -91,7 +91,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: ./test
+      - run: build/test
 
   # Has CMake 3.13, GCC 8
   debian_10_buster:
@@ -107,7 +107,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: ./test
+      - run: build/test
 
   # Has CMake 2.8.12, GCC 4.8, Ninja 1.4
   fedora_20:
@@ -122,7 +122,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja-build
-      - run: ./test
+      - run: build/test
 
   # Has CMake 3.18, GCC 10, Ninja 1.10
   fedora_33:
@@ -137,7 +137,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: ./test
+      - run: build/test
 
   # Has CMake 3.3, GCC 4.9, Ninja 1.6
   #nix_1_1_0:
@@ -178,7 +178,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: ./test
+      - run: build/test
 
   # Has CMake 3.16, GCC 10, Ninja 1.10
   ubuntu_20_10_groovy:
@@ -194,7 +194,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: ./test
+      - run: build/test
 
   void:
     shell: /bin/sh
@@ -210,7 +210,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: ./test
+      - run: build/test
 
   void_musl:
     shell: /bin/sh
@@ -226,7 +226,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: ./test
+      - run: build/test
 
 workflows:
   version: 2
