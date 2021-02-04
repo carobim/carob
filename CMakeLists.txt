@@ -18,6 +18,7 @@ endif()
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
 
 option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
+option(STATIC_LINK "Build statically linked binaries")
 
 
 #
@@ -607,6 +608,15 @@ endif()
 #
 # Linking and externally-managed dependencies
 #
+
+if(STATIC_LINK)
+    if(CLANG OR GCC)
+        set(CMAKE_EXE_LINKER_FLAGS
+            "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -static")
+    else()
+        message(WARNING "Not sure how to statically link for this compiler")
+    endif()
+endif()
 
 # Optimize at link time
 if(CLANG OR GCC)
