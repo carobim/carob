@@ -13,8 +13,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j `grep processor /proc/cpuinfo | wc -l`
+      - run: ./test
 
   # Has CMake 3.18, GCC 10, Samurai 1.2
   alpine_3_13:
@@ -28,8 +29,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
+      - run: ./test
 
   arch:
     docker:
@@ -41,8 +43,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
+      - run: ./test
 
   # Has CMake 2.8.12, GCC 4.8
   centos_7:
@@ -55,8 +58,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j `grep processor /proc/cpuinfo | wc -l`
+      - run: ./test
 
   # Has CMake 3.11, GCC 8
   centos_8:
@@ -69,8 +73,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j `grep processor /proc/cpuinfo | wc -l`
+      - run: ./test
 
   # Has CMake 3.0, GCC 4.9
   debian_8_jessie:
@@ -84,8 +89,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
+      - run: ./test
 
   # Has CMake 3.13, GCC 8
   debian_10_buster:
@@ -99,8 +105,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
+      - run: ./test
 
   # Has CMake 2.8.12, GCC 4.8, Ninja 1.4
   fedora_20:
@@ -113,8 +120,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja-build
+      - run: ./test
 
   # Has CMake 3.18, GCC 10, Ninja 1.10
   fedora_33:
@@ -127,8 +135,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
+      - run: ./test
 
   # Has CMake 3.3, GCC 4.9, Ninja 1.6
   #nix_1_1_0:
@@ -141,7 +150,7 @@ jobs:
   #        nix-env -i bash &&
   #        mkdir build &&
   #        cd build &&
-  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja && ninja'
+  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja && ./test'
 
   # Has CMake 3.17, GCC 9.3, Samurai 1.1
   nix_2_3_6:
@@ -153,7 +162,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja && samu'
+          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./test'
 
   # Has CMake 2.8.12, GCC 4.9, Ninja 1.3
   ubuntu_14_04_trusty:
@@ -167,8 +176,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
+      - run: ./test
 
   # Has CMake 3.16, GCC 10, Ninja 1.10
   ubuntu_20_10_groovy:
@@ -182,8 +192,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
+      - run: ./test
 
   void:
     shell: /bin/sh
@@ -197,8 +208,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
+      - run: ./test
 
   void_musl:
     shell: /bin/sh
@@ -212,8 +224,9 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
+      - run: ./test
 
 workflows:
   version: 2
