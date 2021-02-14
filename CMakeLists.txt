@@ -718,8 +718,8 @@ if(APPLE)
     set(GUI_TYPE MACOSX_BUNDLE)
 
     target_link_libraries(tsunagari
-        PUBLIC /System/Library/Frameworks/Cocoa.framework
-               /System/Library/Frameworks/Foundation.framework
+        /System/Library/Frameworks/Cocoa.framework
+        /System/Library/Frameworks/Foundation.framework
     )
 
     set(CMAKE_EXE_LINKER_FLAGS
