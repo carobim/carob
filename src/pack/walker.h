@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** walker.h                         **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,15 +27,15 @@
 #ifndef SRC_PACK_WALKER_H_
 #define SRC_PACK_WALKER_H_
 
-#include "util/function.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/vector.h"
 
 // Recursively walk the file system under the following paths, calling op on
-// each regular file (non-directory) found. Uses one thread per logical core, so
-// op can be called multiple times in parallel.
+// each regular file (non-directory) found.
 void
-walk(Vector<StringView> paths, Function<void(StringView)> op) noexcept;
+walk(Vector<StringView> paths,
+     void* userData,
+     void (*op)(void* userData, StringView path)) noexcept;
 
 #endif  // SRC_PACK_WALKER_H_

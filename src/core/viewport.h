@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** viewport.h                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -37,7 +37,7 @@ class Entity;
 //! General control over where and how the map is rendered.
 
 void
-viewportSetSize(rvec2 virtRes) noexcept;
+viewportSetSize(fvec2 virtRes) noexcept;
 
 void
 viewportTick(time_t dt) noexcept;
@@ -45,30 +45,30 @@ void
 viewportTurn() noexcept;
 
 //! How far the map is scrolled in pixels, counting from the upper-left.
-rvec2
+fvec2
 viewportGetMapOffset() noexcept;
 
 //! Size of the letterbox matte bars in pixels.
-rvec2
+fvec2
 viewportGetLetterboxOffset() noexcept;
 
 //! Multiplier in X and Y dimensions to get from virtRes to physRes.
-rvec2
+fvec2
 viewportGetScale() noexcept;
 
 //! The resolution our game is actually being drawn at.
-rvec2
+fvec2
 viewportGetPhysRes() noexcept;
 
 //! The resolution our game thinks it is being drawn at. Chosen by a
 //! world's creator. This allows graphics to look the same on any
 //! setups of any resolution.
-rvec2
+fvec2
 viewportGetVirtRes() noexcept;
 
 // Immediatly center render offset. Stop any tracking.
 void
-viewportJumpToPt(rvec2 pt) noexcept;
+viewportJumpToPt(fvec2 pt) noexcept;
 void
 viewportJumpToEntity(Entity* e) noexcept;
 

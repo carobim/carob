@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** vec.h                              **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -28,9 +28,16 @@
 #ifndef SRC_CORE_VEC_H_
 #define SRC_CORE_VEC_H_
 
-#include "os/c.h"
-#include "util/fnv.h"
+#include "util/constexpr.h"
+#include "util/int.h"
 #include "util/noexcept.h"
+
+// clang-format off
+
+struct ivec2 { int x, y; };
+struct ivec3 { int x, y, z; };
+struct fvec2 { float x, y; };
+struct fvec3 { float x, y, z; };
 
 /**
  * Virtual integer coordinate.
@@ -48,132 +55,57 @@ struct icube {
     int x2, y2, z2;
 };
 
-template<typename T>
-struct vec2 {
-    T x, y;
+ivec2 operator+(ivec2, ivec2) noexcept;
+ivec3 operator+(ivec3, ivec3) noexcept;
+fvec2 operator+(fvec2, fvec2) noexcept;
+fvec3 operator+(fvec3, fvec3) noexcept;
 
-    operator bool() noexcept { return x || y; }
+ivec2 operator-(ivec2, ivec2) noexcept;
+ivec3 operator-(ivec3, ivec3) noexcept;
+fvec2 operator-(fvec2, fvec2) noexcept;
+fvec3 operator-(fvec3, fvec3) noexcept;
 
-    float
-    distanceTo(vec2<T> other) noexcept {
-        T dx = x - other.x;
-        T dy = y - other.y;
-        return sqrt(dx * dx + dy * dy);
-    }
+ivec2 operator*(ivec2, ivec2) noexcept;
+ivec2 operator*(int, ivec2) noexcept;
+ivec3 operator*(int, ivec3) noexcept;
+fvec2 operator*(fvec2, fvec2) noexcept;
+fvec2 operator*(float, fvec2) noexcept;
+fvec3 operator*(float, fvec3) noexcept;
+
+ivec2 operator*(ivec2, int) noexcept;
+ivec3 operator*(ivec3, int) noexcept;
+fvec2 operator*(fvec2, float) noexcept;
+fvec3 operator*(fvec3, float) noexcept;
+
+ivec2 operator/(ivec2, int) noexcept;
+ivec3 operator/(ivec3, int) noexcept;
+fvec2 operator/(fvec2, float) noexcept;
+fvec3 operator/(fvec3, float) noexcept;
+
+bool operator==(ivec2, ivec2) noexcept;
+bool operator==(ivec3, ivec3) noexcept;
+bool operator==(fvec2, fvec2) noexcept;
+bool operator==(fvec3, fvec3) noexcept;
+
+bool operator!=(ivec2, ivec2) noexcept;
+bool operator!=(ivec3, ivec3) noexcept;
+bool operator!=(fvec2, fvec2) noexcept;
+bool operator!=(fvec3, fvec3) noexcept;
+
+float distanceTo(fvec2, fvec2) noexcept;
+float distanceTo(fvec3, fvec3) noexcept;
+
+size_t hash_(ivec2) noexcept;
+size_t hash_(ivec3) noexcept;
+size_t hash_(fvec2) noexcept;
+size_t hash_(fvec3) noexcept;
+
+static const CONSTEXPR11 ivec3 IVEC3_MIN = {
+    INT32_MIN,
+    INT32_MIN,
+    INT32_MIN,
 };
 
-template<typename T>
-struct vec3 {
-    T x, y, z;
-
-    operator bool() noexcept { return x || y || z; }
-
-    float
-    distanceTo(vec3<T> other) noexcept {
-        T dx = x - other.x;
-        T dy = y - other.y;
-        return static_cast<float>(sqrt(dx * dx + dy * dy));
-    }
-};
-
-template<typename T>
-vec2<T>
-operator+(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return {a.x + b.x, a.y + b.y};
-}
-
-template<typename T>
-vec3<T>
-operator+(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return {a.x + b.x, a.y + b.y, a.z + b.z};
-}
-
-template<typename T>
-vec2<T>
-operator-(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return {a.x - b.x, a.y - b.y};
-}
-
-template<typename T>
-vec3<T>
-operator-(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return {a.x - b.x, a.y - b.y, a.z - b.z};
-}
-
-template<typename T, typename CO>
-vec2<T> operator*(CO co, const vec2<T>& a) noexcept {
-    return {a.x * (T)co, a.y * (T)co};
-}
-
-template<typename T, typename CO>
-vec3<T> operator*(CO co, const vec3<T>& a) noexcept {
-    return {a.x * (T)co, a.y * (T)co, a.z * (T)co};
-}
-
-template<typename T, typename CO>
-vec2<T>
-operator/(const vec2<T>& a, CO co) noexcept {
-    return {a.x / (T)co, a.y / (T)co};
-}
-
-template<typename T, typename CO>
-vec3<T>
-operator/(const vec3<T>& a, CO co) noexcept {
-    return {a.x / (T)co, a.y / (T)co, a.z / (T)co};
-}
-
-template<typename T>
-bool
-operator==(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return a.x == b.x && a.y == b.y;
-}
-
-template<typename T>
-bool
-operator!=(const vec2<T>& a, const vec2<T>& b) noexcept {
-    return a.x != b.x || a.y != b.y;
-}
-
-template<typename T>
-bool
-operator==(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return a.x == b.x && a.y == b.y && a.z == b.z;
-}
-
-template<typename T>
-bool
-operator!=(const vec3<T>& a, const vec3<T>& b) noexcept {
-    return a.x != b.x || a.y != b.y || a.z != b.z;
-}
-
-template<typename T>
-size_t
-hash_(vec2<T> a) noexcept {
-    return fnvHash(reinterpret_cast<const char*>(&a), sizeof(a));
-}
-
-template<typename T>
-size_t
-hash_(vec3<T> a) noexcept {
-    return fnvHash(reinterpret_cast<const char*>(&a), sizeof(a));
-}
-
-//! Integer vector.
-typedef vec2<int> ivec2;
-typedef vec3<int> ivec3;
-
-//! Real vector.
-typedef vec2<float> rvec2;
-typedef vec3<float> rvec3;
-
-//! Coordinates.
-typedef ivec3 icoord;
-typedef rvec3 rcoord;
-
-static const CONSTEXPR11 icoord ICOORD_MIN = {
-        INT32_MIN,
-        INT32_MIN,
-        INT32_MIN,
-};
+// clang-format on
 
 #endif  // SRC_CORE_VEC_H_

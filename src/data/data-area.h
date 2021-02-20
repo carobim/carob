@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** data-area.h                        **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -40,7 +40,7 @@ class Entity;
 
 class DataArea {
  public:
-    typedef void (DataArea::*TileScript)(Entity& triggeredBy, icoord tile);
+    typedef void (DataArea::*TileScript)(Entity& triggeredBy, ivec3 tile);
 
  public:
     DataArea() noexcept {}

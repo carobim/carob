@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** tile-grid.cpp                      **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -60,7 +60,7 @@ TileGrid::TileGrid() noexcept
     : dim({0, 0, 0}), tileDim({0, 0}), loopX(false), loopY(false) {}
 
 int
-TileGrid::getTileType(icoord phys) noexcept {
+TileGrid::getTileType(ivec3 phys) noexcept {
     int idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;
     return graphics[idx];
 }
@@ -72,14 +72,14 @@ TileGrid::getTileType(vicoord virt) noexcept {
 
 void
 TileGrid::setTileType(vicoord virt, int type) noexcept {
-    icoord phys = virt2phys(virt);
+    ivec3 phys = virt2phys(virt);
 
     int idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;
     graphics[idx] = type;
 }
 
 bool
-TileGrid::inBounds(icoord phys) noexcept {
+TileGrid::inBounds(ivec3 phys) noexcept {
     return (loopX || (0 <= phys.x && phys.x < dim.x)) &&
            (loopY || (0 <= phys.y && phys.y < dim.y)) &&
            (0 <= phys.z && phys.z < dim.z);
@@ -91,46 +91,46 @@ TileGrid::inBounds(vicoord virt) noexcept {
 }
 
 bool
-TileGrid::inBounds(rcoord virt) noexcept {
+TileGrid::inBounds(fvec3 virt) noexcept {
     return inBounds(virt2phys(virt));
 }
 
 
 vicoord
-TileGrid::phys2virt_vi(icoord phys) noexcept {
+TileGrid::phys2virt_vi(ivec3 phys) noexcept {
     return vicoord{phys.x, phys.y, indexDepth(phys.z)};
 }
 
-rcoord
-TileGrid::phys2virt_r(icoord phys) noexcept {
-    return rcoord{static_cast<float>(phys.x * tileDim.x),
+fvec3
+TileGrid::phys2virt_r(ivec3 phys) noexcept {
+    return fvec3{static_cast<float>(phys.x * tileDim.x),
                   static_cast<float>(phys.y * tileDim.y),
                   indexDepth(phys.z)};
 }
 
-icoord
+ivec3
 TileGrid::virt2phys(vicoord virt) noexcept {
-    return icoord{static_cast<int>(virt.x),
+    return ivec3{static_cast<int>(virt.x),
                   static_cast<int>(virt.y),
                   depthIndex(virt.z)};
 }
 
-icoord
-TileGrid::virt2phys(rcoord virt) noexcept {
-    return icoord{static_cast<int>(virt.x) / tileDim.x,
+ivec3
+TileGrid::virt2phys(fvec3 virt) noexcept {
+    return ivec3{static_cast<int>(virt.x) / tileDim.x,
                   static_cast<int>(virt.y) / tileDim.y,
                   depthIndex(virt.z)};
 }
 
-rcoord
+fvec3
 TileGrid::virt2virt(vicoord virt) noexcept {
-    return rcoord{static_cast<float>(virt.x * tileDim.x),
+    return fvec3{static_cast<float>(virt.x * tileDim.x),
                   static_cast<float>(virt.y * tileDim.y),
                   virt.z};
 }
 
 vicoord
-TileGrid::virt2virt(rcoord virt) noexcept {
+TileGrid::virt2virt(fvec3 virt) noexcept {
     return vicoord{static_cast<int>(virt.x) / tileDim.x,
                    static_cast<int>(virt.y) / tileDim.y,
                    virt.z};
@@ -148,9 +148,9 @@ TileGrid::indexDepth(int idx) noexcept {
     return idx2depth[(size_t)idx];
 }
 
-icoord
-TileGrid::moveDest(icoord from, ivec2 facing) noexcept {
-    icoord dest = from + icoord{facing.x, facing.y, 0};
+ivec3
+TileGrid::moveDest(ivec3 from, ivec2 facing) noexcept {
+    ivec3 dest = from + ivec3{facing.x, facing.y, 0};
 
     float* layermod = layermodAt(from, facing);
     if (layermod) {
@@ -160,13 +160,13 @@ TileGrid::moveDest(icoord from, ivec2 facing) noexcept {
 }
 
 Exit*
-TileGrid::exitAt(icoord from, ivec2 facing) noexcept {
+TileGrid::exitAt(ivec3 from, ivec2 facing) noexcept {
     int idx = ivec2_to_dir(facing);
     return idx == -1 ? 0 : exits[idx].tryAt(from);
 }
 
 float*
-TileGrid::layermodAt(icoord from, ivec2 facing) noexcept {
+TileGrid::layermodAt(ivec3 from, ivec2 facing) noexcept {
     int idx = ivec2_to_dir(facing);
     return idx == -1 ? 0 : layermods[idx].tryAt(from);
 }

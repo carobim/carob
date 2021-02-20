@@ -106,7 +106,7 @@ File::operator=(File&& other) noexcept {
 }
 
 FileWriter::FileWriter(StringView path) noexcept {
-    fd = open(String(path).null(), O_CREAT | O_TRUNC | O_WRONLY);
+    fd = open(String(path).null(), O_CREAT | O_TRUNC | O_WRONLY, 0666);
 }
 
 FileWriter::~FileWriter() noexcept {

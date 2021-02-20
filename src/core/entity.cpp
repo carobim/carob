@@ -397,7 +397,7 @@ Entity::draw(DisplayList* display) noexcept {
     float minY = maxY - imgsz.y;
 
     display->items.push_back(
-            DisplayItem{phase->setFrame(now), rvec2{minX, minY}});
+            DisplayItem{phase->setFrame(now), fvec2{minX, minY}});
 }
 
 bool
@@ -492,7 +492,7 @@ Entity::setAnimationMoving() noexcept {
 }
 
 
-rcoord
+fvec3
 Entity::getPixelCoord() noexcept {
     return r;
 }
@@ -607,7 +607,7 @@ Entity::_setPhase(StringView name) noexcept {
 }
 
 void
-Entity::setDestinationCoordinate(rcoord destCoord) noexcept {
+Entity::setDestinationCoordinate(fvec3 destCoord) noexcept {
     // Set z right away so that we're on-level with the square we're
     // entering.
     r.z = destCoord.z;
@@ -626,7 +626,7 @@ Entity::moveTowardDestination(time_t dt) noexcept {
     redraw = true;
 
     float traveledPixels = pixelsPerSecond * static_cast<float>(dt) / 1000.0f;
-    float toDestPixels = r.distanceTo(destCoord);
+    float toDestPixels = distanceTo(r, destCoord);
     if (toDestPixels > traveledPixels) {
         // The destination has not been reached yet.
         r.x += static_cast<float>(cos(angleToDest)) * traveledPixels;

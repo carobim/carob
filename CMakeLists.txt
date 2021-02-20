@@ -18,6 +18,7 @@ endif()
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
 
 option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
+option(STATIC_LINK "Build statically linked binaries")
 
 
 #
@@ -92,6 +93,11 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/pack/main.cpp
 )
 
+set(TEST_SOURCES ${TEST_SOURCES}
+    ${HERE}/test/util/string-view.cpp
+    ${HERE}/test/main.cpp
+)
+
 if(AV_NULL)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/null/images.cpp
@@ -154,6 +160,8 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/core/tile.h
     ${HERE}/src/core/tile-grid.cpp
     ${HERE}/src/core/tile-grid.h
+    ${HERE}/src/core/vec.cpp
+    ${HERE}/src/core/vec.h
     ${HERE}/src/core/viewport.cpp
     ${HERE}/src/core/viewport.h
     ${HERE}/src/core/window.cpp
@@ -217,6 +225,14 @@ if (WIN32)
         ${HERE}/src/os/windows/io.cpp
         ${HERE}/src/os/windows/io.h
     )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/os/windows-c.cpp
+        ${HERE}/src/os/windows-c.h
+        ${HERE}/src/os/windows.cpp
+        ${HERE}/src/os/windows.h
+        ${HERE}/src/os/windows/io.cpp
+        ${HERE}/src/os/windows/io.h
+    )
 elseif(APPLE)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/mac-c.h
@@ -244,6 +260,12 @@ elseif(APPLE)
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/os/mac-c.h
+        ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
+    )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/linux-c.h
@@ -262,6 +284,12 @@ else()
         ${HERE}/src/os/unix-mapped-file.h
         ${HERE}/src/os/unix-mutex.h
         ${HERE}/src/os/unix-thread.h
+        ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
+    )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/os/linux-c.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
@@ -336,25 +364,37 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/util/constexpr.h
     ${HERE}/src/util/fnv.cpp
     ${HERE}/src/util/fnv.h
-    ${HERE}/src/util/function.h
     ${HERE}/src/util/hashtable.h
     ${HERE}/src/util/int.h
     ${HERE}/src/util/io.cpp
     ${HERE}/src/util/io.h
-    ${HERE}/src/util/jobs.cpp
-    ${HERE}/src/util/jobs.h
     ${HERE}/src/util/list.h
     ${HERE}/src/util/meta.h
     ${HERE}/src/util/move.h
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h
     ${HERE}/src/util/noexcept.h
+    ${HERE}/src/util/queue.h
     ${HERE}/src/util/sort.h
     ${HERE}/src/util/string-view.cpp
     ${HERE}/src/util/string-view.h
     ${HERE}/src/util/string.cpp
     ${HERE}/src/util/string.h
     ${HERE}/src/util/vector.h
+)
+
+set(TEST_SOURCES ${TEST_SOURCES}
+    ${HERE}/src/util/assert.h
+    ${HERE}/src/util/fnv.cpp
+    ${HERE}/src/util/fnv.h
+    ${HERE}/src/util/int.h
+    ${HERE}/src/util/io.cpp
+    ${HERE}/src/util/io.h
+    ${HERE}/src/util/noexcept.h
+    ${HERE}/src/util/string-view.cpp
+    ${HERE}/src/util/string-view.h
+    ${HERE}/src/util/string.cpp
+    ${HERE}/src/util/string.h
 )
 
 if(MSVC OR ${CMAKE_VERSION} VERSION_LESS 3.1)
@@ -366,11 +406,17 @@ if(MSVC OR ${CMAKE_VERSION} VERSION_LESS 3.1)
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/util/assert.cpp
     )
+    set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/util/assert.cpp
+    )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
+        $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
+    )
+    set(TEST_SOURCES ${TEST_SOURCES}
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
 endif()
@@ -383,6 +429,7 @@ endif()
 add_library(tsunagari ${TSUNAGARI_SOURCES})
 add_executable(null-world ${NULL_WORLD_SOURCES})
 add_executable(pack-tool ${PACK_TOOL_SOURCES})
+add_executable(test ${TEST_SOURCES})
 
 target_link_libraries(null-world tsunagari)
 
@@ -397,10 +444,12 @@ if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8.0)
     get_target_property(TSUNAGARI_SOURCES tsunagari SOURCES)
     get_target_property(NULL_WORLD_SOURCES null-world SOURCES)
     get_target_property(PACK_TOOL_SOURCES pack-tool SOURCES)
+    get_target_property(TEST_SOURCES test SOURCES)
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
         FILES ${TSUNAGARI_SOURCES}
               ${NULL_WORLD_SOURCES}
               ${PACK_TOOL_SOURCES}
+              ${TEST_SOURCES}
     )
 endif()
 
@@ -608,6 +657,15 @@ endif()
 # Linking and externally-managed dependencies
 #
 
+if(STATIC_LINK)
+    if(CLANG OR GCC)
+        set(CMAKE_EXE_LINKER_FLAGS
+            "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -static")
+    else()
+        message(WARNING "Not sure how to statically link for this compiler")
+    endif()
+endif()
+
 # Optimize at link time
 if(CLANG OR GCC)
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE
@@ -660,8 +718,8 @@ if(APPLE)
     set(GUI_TYPE MACOSX_BUNDLE)
 
     target_link_libraries(tsunagari
-        PUBLIC /System/Library/Frameworks/Cocoa.framework
-               /System/Library/Frameworks/Foundation.framework
+        /System/Library/Frameworks/Cocoa.framework
+        /System/Library/Frameworks/Foundation.framework
     )
 
     set(CMAKE_EXE_LINKER_FLAGS
@@ -692,17 +750,14 @@ if(LINUX AND NOT AV_EM)
 
     if(GLIBC_VERSION)
         target_link_libraries(tsunagari m pthread)
-        target_link_libraries(pack-tool pthread)
     endif()
 endif()
 
 if(FREEBSD OR NETBSD)
     target_link_libraries(tsunagari PUBLIC  m pthread)
-    target_link_libraries(pack-tool PRIVATE m pthread)
 endif()
 if(AV_EM)
     target_link_libraries(tsunagari PUBLIC  pthread)
-    target_link_libraries(pack-tool PRIVATE pthread)
 endif()
 
 if(AV_SDL2)

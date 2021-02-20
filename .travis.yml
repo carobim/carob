@@ -87,8 +87,9 @@ _script: &script
   - |
     mkdir build
     builtin cd >/dev/null build
-    cmake .. $CMAKE_OPTS
+    cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
   - make
+  - ./test
 
 jobs:
   include:

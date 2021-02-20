@@ -226,8 +226,8 @@ void
 imageDraw(Image image, float x, float y, float z) noexcept {
     assert_(IMAGE_VALID(image));
 
-    rvec2 translation = sdl2Translation;
-    rvec2 scaling = sdl2Scaling;
+    fvec2 translation = sdl2Translation;
+    fvec2 scaling = sdl2Scaling;
 
     SDL_Texture* texture = static_cast<SDL_Texture*>(image.texture);
     SDL_Rect src{static_cast<int>(image.x),

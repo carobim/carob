@@ -1,8 +1,8 @@
-/*************************************
-** Tsunagari Tile Engine            **
-** window.h                         **
-** Copyright 2016-2021 Paul Merrill **
-*************************************/
+/********************************
+** Tsunagari Tile Engine       **
+** main.cpp                    **
+** Copyright 2021 Paul Merrill **
+********************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,19 +24,12 @@
 // IN THE SOFTWARE.
 // **********
 
-#ifndef SRC_AV_SDL2_WINDOW_H_
-#define SRC_AV_SDL2_WINDOW_H_
-
-#include "av/sdl2/sdl2.h"
-#include "core/vec.h"
-
-extern SDL_Window* sdl2Window;
-extern fvec2 sdl2Translation;
-extern fvec2 sdl2Scaling;
-
 void
-imageStartFrame() noexcept;
-void
-imageEndFrame() noexcept;
+testUtilStringView() noexcept;
 
-#endif  // SRC_AV_SDL2_WINDOW_H_
+int
+main() noexcept {
+    testUtilStringView();
+
+    return 0;
+}

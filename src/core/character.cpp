@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** character.cpp                      **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -66,7 +66,7 @@ Character::destroy() noexcept {
     Entity::destroy();
 }
 
-icoord
+ivec3
 Character::getTileCoords_i() noexcept {
     return area->grid.virt2phys(r);
 }
@@ -85,7 +85,7 @@ Character::setTileCoords(int x, int y) noexcept {
 }
 
 void
-Character::setTileCoords(icoord phys) noexcept {
+Character::setTileCoords(ivec3 phys) noexcept {
     leaveTile();
     redraw = true;
     r = area->grid.phys2virt_r(phys);
@@ -101,7 +101,7 @@ Character::setTileCoords(vicoord virt) noexcept {
 }
 
 void
-Character::setTileCoords(rcoord virt) noexcept {
+Character::setTileCoords(fvec3 virt) noexcept {
     leaveTile();
     redraw = true;
     r = virt;
@@ -125,9 +125,9 @@ Character::moveByTile(ivec2 delta) noexcept {
 
     setFacing(delta);
 
-    icoord dest = moveDest(facing);
+    ivec3 dest = moveDest(facing);
 
-    icoord from = getTileCoords_i();
+    ivec3 from = getTileCoords_i();
     setDestinationCoordinate(area->grid.phys2virt_r(dest));
 
     destExit = 0;
@@ -181,21 +181,21 @@ Character::moveByTile(ivec2 delta) noexcept {
     }
 }
 
-icoord
+ivec3
 Character::moveDest(ivec2 facing) noexcept {
-    icoord here = getTileCoords_i();
+    ivec3 here = getTileCoords_i();
 
     if (area->grid.inBounds(here)) {
         // Handle layermod.
         return area->grid.moveDest(here, facing);
     }
     else {
-        return here + icoord{facing.x, facing.y, 0};
+        return here + ivec3{facing.x, facing.y, 0};
     }
 }
 
 bool
-Character::canMove(icoord dest) noexcept {
+Character::canMove(ivec3 dest) noexcept {
     if (destExit) {
         // We can always take exits as long as we can take exits.
         // (Even if they would cause us to be out of bounds.)
@@ -223,7 +223,7 @@ Character::canMove(icoord dest) noexcept {
 }
 
 bool
-Character::nowalked(icoord phys) noexcept {
+Character::nowalked(ivec3 phys) noexcept {
     unsigned flags = nowalkFlags & ~nowalkExempt;
     unsigned* tileFlags = area->grid.flags.tryAt(phys);
     return tileFlags && (*tileFlags & flags) != 0;
@@ -233,7 +233,7 @@ void
 Character::arrived() noexcept {
     Entity::arrived();
 
-    icoord dest = area->grid.virt2phys(destCoord);
+    ivec3 dest = area->grid.virt2phys(destCoord);
     bool inBounds = area->grid.inBounds(dest);
 
     if (inBounds) {
@@ -267,7 +267,7 @@ Character::leaveTile() noexcept {
 }
 
 void
-Character::leaveTile(icoord phys) noexcept {
+Character::leaveTile(ivec3 phys) noexcept {
     area->grid.occupied.erase(phys);
 }
 
@@ -279,7 +279,7 @@ Character::enterTile() noexcept {
 }
 
 void
-Character::enterTile(icoord phys) noexcept {
+Character::enterTile(ivec3 phys) noexcept {
     area->grid.occupied[phys] = true;
 }
 

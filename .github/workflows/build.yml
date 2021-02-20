@@ -16,5 +16,7 @@ jobs:
           PATH=$PATH:$PWD
           mkdir build
           cd build
-          cmake .. -G Ninja
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
           ninja
+      - name: Test
+        run: build/test

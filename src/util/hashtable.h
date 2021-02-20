@@ -55,6 +55,7 @@
 #include "util/hash.h"
 #include "util/int.h"
 #include "util/math2.h"
+#include "util/new.h"
 #include "util/noexcept.h"
 
 /*
@@ -145,12 +146,18 @@ class Hashmap {
 
         if (bucketCount) {
             capacity = pow2(bucketCount);
-            data = new Entry[capacity];
+            data = static_cast<Entry*>(malloc(sizeof(Entry) * capacity));
+            for (size_t i = 0; i < capacity; i++) {
+                new (data + i) Entry;
+            }
         }
     }
 
     ~Hashmap() noexcept {
-        delete[] data;
+        for (size_t i = 0; i < capacity; i++) {
+            data[i].~Entry();
+        }
+        free(data);
     }
 
     // Iterators
@@ -285,10 +292,10 @@ class Hashmap {
 
         size = 0;
         capacity = newCapacity;
-        data = new Entry[capacity];
+        data = static_cast<Entry*>(malloc(sizeof(Entry) * capacity));
 
         for (uint32_t i = 0; i < capacity; i++) {
-            new (data + i) Entry();
+            new (data + i) Entry;
         }
 
         for (uint32_t i = 0; i < oldCapacity; i++) {
@@ -300,11 +307,10 @@ class Hashmap {
                     static_cast<Value&&>(value);
             }
 
-            key.~Key();
-            value.~Value();
+            oldData[i].~Entry();
         }
 
-        delete[] oldData;
+        free(oldData);
     }
 
     template<typename K>

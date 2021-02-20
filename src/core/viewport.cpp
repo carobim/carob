@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** viewport.cpp                       **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -39,16 +39,16 @@ enum TrackingMode {
 };
 
 static float aspectRatio;
-static rvec2 off = {0, 0};
-static rvec2 virtRes;
+static fvec2 off = {0, 0};
+static fvec2 virtRes;
 
 static TrackingMode mode = TM_MANUAL;
 static Area* viewportArea = 0;
 static Entity* targete;
 
-static rvec2
-centerOn(rvec2 pt) noexcept {
-    return pt - virtRes / 2;
+static fvec2
+centerOn(fvec2 pt) noexcept {
+    return pt - virtRes / 2.f;
 }
 
 static float
@@ -64,9 +64,9 @@ boundDimension(float screen, float area, float pt, bool loop) noexcept {
     return wiggleRoom <= 0 ? wiggleRoom / 2 : bound(pt, 0.0f, wiggleRoom);
 }
 
-static rvec2
-boundToArea(rvec2 pt) noexcept {
-    icoord ad = viewportArea->grid.dim;
+static fvec2
+boundToArea(fvec2 pt) noexcept {
+    ivec3 ad = viewportArea->grid.dim;
     ivec2 td = viewportArea->grid.tileDim;
     float areaWidth = static_cast<float>(ad.x * td.x);
     float areaHeight = static_cast<float>(ad.y * td.y);
@@ -79,32 +79,32 @@ boundToArea(rvec2 pt) noexcept {
     };
 }
 
-static rvec2
-offsetForPt(rvec2 pt) noexcept {
+static fvec2
+offsetForPt(fvec2 pt) noexcept {
     return boundToArea(centerOn(pt));
 }
 
 static void
 _jumpToEntity(Entity* e) noexcept {
-    rcoord pos = e->getPixelCoord();
+    fvec3 pos = e->getPixelCoord();
     ivec2 td = viewportArea->grid.tileDim;
-    rvec2 center = {pos.x + td.x / 2, pos.y + td.y / 2};
+    fvec2 center = {pos.x + td.x / 2, pos.y + td.y / 2};
     off = offsetForPt(center);
 }
 
 //! Returns as a normalized vector the percentage of screen that should
 //! be blanked to preserve the aspect ratio. It can also be thought of
 //! as the correcting aspect ratio.
-static rvec2
+static fvec2
 getLetterbox() noexcept {
-    rvec2 physRes = viewportGetPhysRes();
+    fvec2 physRes = viewportGetPhysRes();
     float physAspect = physRes.x / physRes.y;
     float virtAspect = virtRes.x / virtRes.y;
 
     if (physAspect > virtAspect) {
         // Letterbox cuts off left-right.
         float cut = 1 - virtAspect / physAspect;
-        return rvec2{cut, 0};
+        return fvec2{cut, 0};
     }
     else {
         // Letterbox cuts off top-bottom.
@@ -113,11 +113,11 @@ getLetterbox() noexcept {
     }
 }
 
-static rvec2
-addLetterboxOffset(rvec2 pt) noexcept {
-    rvec2 physRes = viewportGetPhysRes();
-    rvec2 letterbox = getLetterbox();
-    return pt - letterbox * physRes / 2;
+static fvec2
+addLetterboxOffset(fvec2 pt) noexcept {
+    fvec2 physRes = viewportGetPhysRes();
+    fvec2 letterbox = getLetterbox();
+    return pt - letterbox * physRes / 2.f;
 }
 
 static void
@@ -133,7 +133,7 @@ update() noexcept {
 }
 
 void
-viewportSetSize(rvec2 virtRes_) noexcept {
+viewportSetSize(fvec2 virtRes_) noexcept {
     virtRes = virtRes_;
 
     // Calculate or recalculate the aspect ratio.
@@ -152,20 +152,20 @@ viewportTurn() noexcept {
     update();
 }
 
-rvec2
+fvec2
 viewportGetMapOffset() noexcept {
     return off;
 }
 
-rvec2
+fvec2
 viewportGetLetterboxOffset() noexcept {
-    return addLetterboxOffset(rvec2{0.0, 0.0});
+    return addLetterboxOffset(fvec2{0.0, 0.0});
 }
 
-rvec2
+fvec2
 viewportGetScale() noexcept {
-    rvec2 letterbox = getLetterbox();
-    rvec2 physRes = {
+    fvec2 letterbox = getLetterbox();
+    fvec2 physRes = {
         static_cast<float>(windowWidth()),
         static_cast<float>(windowHeight()),
     };
@@ -176,7 +176,7 @@ viewportGetScale() noexcept {
     };
 }
 
-rvec2
+fvec2
 viewportGetPhysRes() noexcept {
     return {
         static_cast<float>(windowWidth()),
@@ -184,14 +184,14 @@ viewportGetPhysRes() noexcept {
     };
 }
 
-rvec2
+fvec2
 viewportGetVirtRes() noexcept {
     return virtRes;
 }
 
 // Immediatly center render offset. Stop any tracking.
 void
-viewportJumpToPt(rvec2 pt) noexcept {
+viewportJumpToPt(fvec2 pt) noexcept {
     mode = TM_MANUAL;
     off = offsetForPt(pt);
 }

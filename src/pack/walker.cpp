@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** walker.cpp                       **
-** Copyright 2017-2019 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,41 +27,37 @@
 #include "pack/walker.h"
 
 #include "os/os.h"
-#include "util/jobs.h"
 #include "util/noexcept.h"
 #include "util/string-view.h"
-
-struct WalkContext {
-    Function<void(StringView)> op;
-};
-
-static void
-walkPath(WalkContext& ctx, StringView path) noexcept {
-    // TODO: The call to isDir can be removed on Unix-like systems, which will
-    //       save a stat(), as readdir() returns a file's type already.
-    if (isDir(path)) {
-        Vector<String> names = listDir(path);
-        for (String& name : names) {
-            String child;
-            child << path << dirSeparator << name;
-            JobsEnqueue([&ctx, child /* = move_(child) */]() noexcept {
-                walkPath(ctx, child);
-            });
-        }
-    }
-    else {
-        ctx.op(path);
-    }
-}
+#include "util/queue.h"
+#include "util/vector.h"
 
 void
-walk(Vector<StringView> paths, Function<void(StringView)> op) noexcept {
-    WalkContext ctx;
-    ctx.op = static_cast<Function<void(StringView)>&&>(op);
+walk(Vector<StringView> paths,
+     void* userData,
+     void (*op)(void* userData, StringView path)) noexcept {
+    Queue<String> files;
 
     for (StringView& path : paths) {
-        JobsEnqueue([&]() noexcept { walkPath(ctx, path); });
+        files.push(path);
     }
 
-    JobsFlush();
+    while (files.size) {
+        String path = static_cast<String&&>(files.front());
+        files.pop();
+
+        // TODO: The call to isDir can be removed on Unix-like systems, which
+        //       will save a stat(), as readdir() returns a file's type already.
+        if (isDir(path)) {
+            Vector<String> names = listDir(path);
+            for (String& name : names) {
+                String child;
+                child << path << dirSeparator << name;
+                files.push(static_cast<String&&>(child));
+            }
+        }
+        else {
+            op(userData, path.view());
+        }
+    }
 }
