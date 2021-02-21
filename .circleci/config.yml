@@ -35,10 +35,23 @@ jobs:
 
   arch:
     docker:
-      - image: archlinux:base-devel
+      # FIXME: From archlinux:base-20210207.0.15200
+      #          to archlinux:base-devel-20210214.0.15477 (latest as of 2020-02-20)
+      #        cause build errors on CircleCI.
+      #
+      # The error is:
+      #
+      #   [root@6073f6ffd437 /]# pacman
+      #   error: failed to initialize alpm library
+      #   (could not find or read directory: /var/lib/pacman/)
+      #
+      # Possibly related to https://bugs.archlinux.org/task/69563.
+      #
+      # Stick with the last known good version of base-20210131.0.14634 for now.
+      - image: archlinux:base-20210131.0.14634
     steps:
       - run: |
-          pacman -Sy --noconfirm cmake samurai
+          pacman -Sy --noconfirm cmake gcc samurai
       - checkout
       - run: |
           mkdir build &&
