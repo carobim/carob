@@ -26,33 +26,34 @@
 
 #ifndef NDEBUG
 
-#include "util/assert.h"
+#    include "util/assert.h"
 
-#include "os/os.h"
-#include "util/io.h"
-#include "util/noexcept.h"
+#    include "os/os.h"
+#    include "util/io.h"
+#    include "util/noexcept.h"
 
-#ifdef _WIN32
+#    ifdef _WIN32
 extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
 void __cdecl __debugbreak();  // Cannot be noexcept.
-#endif
+#    endif
 
-#ifdef __linux__
+#    ifdef __linux__
 enum ptrace_request {
     PTRACE_TRACEME = 0,
     PTRACE_DETACH = 17,
 };
-extern "C" long ptrace(enum ptrace_request, ...) noexcept;
-#endif
+extern "C" long
+ptrace(enum ptrace_request, ...) noexcept;
+#    endif
 
 static bool
 haveDebugger() noexcept {
     static int result = 2;
 
     if (result == 2) {
-#if defined(_WIN32)
+#    if defined(_WIN32)
         result = IsDebuggerPresent();
-#elif defined(__linux__)
+#    elif defined(__linux__)
         if (ptrace(PTRACE_TRACEME, 0, 0, 0) == -1) {
             result = true;
         }
@@ -60,9 +61,9 @@ haveDebugger() noexcept {
             ptrace(PTRACE_DETACH, 0, 0, 0);
             result = false;
         }
-#else
+#    else
         result = false;
-#endif
+#    endif
     }
 
     return static_cast<bool>(result);
@@ -70,19 +71,19 @@ haveDebugger() noexcept {
 
 static void
 triggerDebugger() noexcept {
-#if defined(_WIN32)
+#    if defined(_WIN32)
     __debugbreak();
-#elif defined(__i386__) || defined(__x86_64__)
+#    elif defined(__i386__) || defined(__x86_64__)
     __asm__ __volatile__("int3");
 //#elif defined(__ARMCC_VERSION)
 //    __breakpoint(42)
-#elif defined(__thumb__)
+#    elif defined(__thumb__)
     __asm__ __volatile__(".inst 0xde01");
-#elif defined(__aarch64__)
+#    elif defined(__aarch64__)
     __asm__ __volatile__(".inst 0xd4200000");
-#elif defined(__arm__)
+#    elif defined(__arm__)
     __asm__ __volatile__(".inst 0xe7f001f0");
-#endif
+#    endif
 }
 
 void

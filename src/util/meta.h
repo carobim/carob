@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** meta.h                           **
-** Copyright 2017-2020 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -49,7 +49,7 @@ using If = typename If_<Cond, WhenTrue, WhenFalse>::value;
 //
 // template struct EnableIf
 //
-struct True {};
+struct True { };
 
 template<bool Cond>
 struct EnableIf_;

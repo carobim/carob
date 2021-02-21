@@ -92,14 +92,14 @@ template<typename Key, typename Value, typename E = Empty<Key>>
 class Hashmap {
  public:
     struct Entry {
-        Entry() : key(E::value()), value() {}
+        Entry() : key(E::value()), value() { }
 
         Key key;
         Value value;
     };
 
     struct iterator {
-        iterator(const iterator& other) noexcept : h(other.h), i(other.i) {}
+        iterator(const iterator& other) noexcept : h(other.h), i(other.i) { }
 
         bool
         operator==(iterator other) noexcept {
@@ -118,17 +118,22 @@ class Hashmap {
             skipEmpties();
         }
 
-        Entry& operator*() noexcept { return h->data[i]; }
-        Entry* operator->() noexcept { return &h->data[i]; }
+        Entry&
+        operator*() noexcept {
+            return h->data[i];
+        }
+        Entry*
+        operator->() noexcept {
+            return &h->data[i];
+        }
 
      private:
         explicit iterator(Hashmap* h) noexcept : h(h), i(0) { skipEmpties(); }
-        explicit iterator(Hashmap* h, uint32_t i) noexcept : h(h), i(i) {}
+        explicit iterator(Hashmap* h, uint32_t i) noexcept : h(h), i(i) { }
 
         void
         skipEmpties() noexcept {
-            while (i < h->capacity &&
-                   h->data[i].key == E::value()) {
+            while (i < h->capacity && h->data[i].key == E::value()) {
                 i++;
             }
         }
@@ -171,7 +176,8 @@ class Hashmap {
     }
 
     // Read/write
-    Value& operator[](const Key& key) noexcept {
+    Value&
+    operator[](const Key& key) noexcept {
         assert_(key != E::value());  // Empty key shouldn't be used.
         reserve(size + 1);
         for (uint32_t idx = keyToIdx(key);; idx = probe(idx)) {
@@ -186,7 +192,8 @@ class Hashmap {
             }
         }
     }
-    Value& operator[](Key&& key) noexcept {
+    Value&
+    operator[](Key&& key) noexcept {
         assert_(key != E::value());  // Empty key shouldn't be used.
         reserve(size + 1);
         for (uint32_t idx = keyToIdx(key);; idx = probe(idx)) {
@@ -304,7 +311,7 @@ class Hashmap {
 
             if (key != E::value()) {
                 operator[](static_cast<Key&&>(key)) =
-                    static_cast<Value&&>(value);
+                        static_cast<Value&&>(value);
             }
 
             oldData[i].~Entry();

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** main.cpp                           **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -40,11 +40,11 @@
 #include "util/int.h"
 
 #ifdef _WIN32
-#include "os/windows.h"
+#    include "os/windows.h"
 #endif
 
 #ifdef __APPLE__
-#include "os/mac-gui.h"
+#    include "os/mac-gui.h"
 #endif
 
 /**

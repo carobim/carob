@@ -111,8 +111,8 @@ int
 open(const char*, int, ...) noexcept;
 #define O_RDONLY 00
 #define O_WRONLY 01
-#define O_CREAT 0100
-#define O_TRUNC 01000
+#define O_CREAT  0100
+#define O_TRUNC  01000
 
 // sys/mman.h
 void*
@@ -121,7 +121,7 @@ int
 munmap(void*, size_t) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x01
-#define PROT_READ 1
+#define PROT_READ  1
 
 #if defined(__EMSCRIPTEN__)
 // musl arch/emscripten/bits/stat.h
@@ -191,8 +191,8 @@ int
 mkdir(const char*, mode_t) noexcept;
 int
 stat(const char*, struct stat*) noexcept;
-#define S_IFMT 0170000
-#define S_IFDIR 0040000
+#define S_IFMT     0170000
+#define S_IFDIR    0040000
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 
 // sys/uio.h

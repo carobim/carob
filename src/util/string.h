@@ -1,8 +1,8 @@
 /**************************************
  ** Tsunagari Tile Engine            **
  ** string.h                         **
- ** Copyright 2019-2020 Paul Merrill **
- **************************************/
+ ** Copyright 2019-2021 Paul Merrill **
+ *************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,9 +33,9 @@
 
 class String {
  public:
-     char* data;
-     size_t size;
-     size_t capacity;
+    char* data;
+    size_t size;
+    size_t capacity;
 
  public:
     String() noexcept;

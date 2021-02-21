@@ -34,10 +34,16 @@
 struct Transform {
     float m[16];
 
-    inline float& operator[](size_t i) noexcept { return m[i]; }
+    inline float&
+    operator[](size_t i) noexcept {
+        return m[i];
+    }
 };
 
-#define transformIdentity {{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}}
+#define transformIdentity                                  \
+    {                                                      \
+        { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 } \
+    }
 
 Transform
 transformScale(float factor) noexcept;

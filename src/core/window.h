@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** window.h                           **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -46,29 +46,41 @@ typedef uint32_t Keys;
 
 // This module is handles input and drawing.
 
-void windowCreate() noexcept;
+void
+windowCreate() noexcept;
 
 //! Time since epoch.
-time_t windowTime() noexcept;
+time_t
+windowTime() noexcept;
 
 //! Width of the window in pixels.
-int windowWidth() noexcept;
+int
+windowWidth() noexcept;
 
 //! Height of the window in pixels.
-int windowHeight() noexcept;
+int
+windowHeight() noexcept;
 
 //! Set window manager caption.
-void windowSetCaption(StringView caption) noexcept;
+void
+windowSetCaption(StringView caption) noexcept;
 
 //! Show the window and start the main loop.
-void windowMainLoop() noexcept;
+void
+windowMainLoop() noexcept;
 
-void windowPushScale(float x, float y) noexcept;
-void windowPopScale() noexcept;
-void windowPushTranslate(float x, float y) noexcept;
-void windowPopTranslate() noexcept;
-void windowPushClip(float x, float y, float width, float height) noexcept;
-void windowPopClip() noexcept;
+void
+windowPushScale(float x, float y) noexcept;
+void
+windowPopScale() noexcept;
+void
+windowPushTranslate(float x, float y) noexcept;
+void
+windowPopTranslate() noexcept;
+void
+windowPushClip(float x, float y, float width, float height) noexcept;
+void
+windowPopClip() noexcept;
 
 void
 windowEmitKeyDown(Key key) noexcept;

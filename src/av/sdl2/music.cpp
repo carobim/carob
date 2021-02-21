@@ -184,4 +184,4 @@ musicWorkerResume() noexcept {
 }
 
 void
-musicWorkerGarbageCollect() noexcept {}
+musicWorkerGarbageCollect() noexcept { }

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** windows-thread.h                 **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -67,7 +67,7 @@ uintptr_t __cdecl _beginthreadex(void* security,
                                  unsigned initflag,
                                  unsigned* thrdaddr) noexcept;
 
-#define INFINITE 0xFFFFFFFF  // Infinite timeout.
+#define INFINITE    0xFFFFFFFF  // Infinite timeout.
 #define WAIT_FAILED 0xFFFFFFFF
 }
 

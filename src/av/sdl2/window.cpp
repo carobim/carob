@@ -45,7 +45,7 @@ fvec2 sdl2Scaling = {0.0, 0.0};
 
 static Nanoseconds start = 0;
 
-static Transform transformStack[10] = { transformIdentity };
+static Transform transformStack[10] = {transformIdentity};
 static size_t transformCount = 1;
 
 static int
@@ -171,9 +171,12 @@ windowCreate() noexcept {
             flags |= SDL_WINDOW_FULLSCREEN;
         }
 
-        sdl2Window = SDL_CreateWindow(
-                "Tsunagari", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                width, height, flags);
+        sdl2Window = SDL_CreateWindow("Tsunagari",
+                                      SDL_WINDOWPOS_UNDEFINED,
+                                      SDL_WINDOWPOS_UNDEFINED,
+                                      width,
+                                      height,
+                                      flags);
 
         if (sdl2Window == 0) {
             sdlDie("SDL2", "SDL_CreateWindow");
@@ -211,7 +214,7 @@ windowMainLoop() noexcept {
 
     Nanoseconds frameStart = chronoNow();
     Nanoseconds previousFrameStart =
-        frameStart - idealFrameTime;  // Bogus initial value.
+            frameStart - idealFrameTime;  // Bogus initial value.
 
     Nanoseconds nextFrameStart = frameStart + idealFrameTime;
 
@@ -326,10 +329,10 @@ windowPopTranslate() noexcept {
 }
 
 void
-windowPushClip(float x, float y, float width, float height) noexcept {}
+windowPushClip(float x, float y, float width, float height) noexcept { }
 
 void
-windowPopClip() noexcept {}
+windowPopClip() noexcept { }
 
 void
 windowClose() noexcept {

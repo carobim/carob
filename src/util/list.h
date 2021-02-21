@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** list.h                           **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -54,7 +54,7 @@ class List {
         T x;
 
         template<typename... Args>
-        Node(Args&&... args) noexcept : x{forward_<Args>(args)...} {}
+        Node(Args&&... args) noexcept : x{forward_<Args>(args)...} { }
     };
 
  public:
@@ -62,10 +62,12 @@ class List {
         friend List;
 
      public:
-        inline CONSTEXPR14 T& operator*() const noexcept {
+        inline CONSTEXPR14 T&
+        operator*() const noexcept {
             return links->toNode()->x;
         }
-        inline CONSTEXPR14 T* operator->() const noexcept {
+        inline CONSTEXPR14 T*
+        operator->() const noexcept {
             return &links->toNode()->x;
         }
         inline void
@@ -83,7 +85,7 @@ class List {
 
      private:
         CONSTEXPR11
-        Iterator(Links* links) noexcept : links(links) {}
+        Iterator(Links* links) noexcept : links(links) { }
         Links* links;
     };
 
@@ -91,10 +93,12 @@ class List {
         friend List;
 
      public:
-        inline const T& operator*() const noexcept {
+        inline const T&
+        operator*() const noexcept {
             return links->toNode()->x;
         }
-        inline const T* operator->() const noexcept {
+        inline const T*
+        operator->() const noexcept {
             return &links->toNode()->x;
         }
         inline void
@@ -111,7 +115,7 @@ class List {
         }
 
      private:
-        ConstIterator(const Links* links) noexcept : links(links) {}
+        ConstIterator(const Links* links) noexcept : links(links) { }
         const Links* links;
     };
 

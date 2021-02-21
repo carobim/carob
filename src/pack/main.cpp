@@ -42,9 +42,13 @@ static bool verbose = false;
 static void
 usage() noexcept {
     String msg;
-    msg << "usage: " << exe << " create [-v] <output-archive> [input-file]...\n"
-           "       " << exe << " list <input-archive>\n"
-           "       " << exe << " extract [-v] <input-archive>\n";
+    msg << "usage: " << exe
+        << " create [-v] <output-archive> [input-file]...\n"
+           "       "
+        << exe
+        << " list <input-archive>\n"
+           "       "
+        << exe << " extract [-v] <input-archive>\n";
     serr << msg;
 }
 
@@ -83,7 +87,9 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
         path = standardizedPath;
     }
 
-    packWriterAddBlob(ctx->pack, path, static_cast<uint32_t>(data.size),
+    packWriterAddBlob(ctx->pack,
+                      path,
+                      static_cast<uint32_t>(data.size),
                       data.data);
 
     data.reset();  // Don't delete data pointer.
@@ -281,7 +287,9 @@ main(int argc, char* argv[]) noexcept {
         args.erase(0);
 
         return createArchive(archivePath,
-                             static_cast<Vector<StringView>&&>(args)) ? 0 : 1;
+                             static_cast<Vector<StringView>&&>(args))
+                       ? 0
+                       : 1;
     }
     else if (command == "list") {
         verbose = true;

@@ -43,7 +43,7 @@
 template<typename Value>
 class HashVector {
  public:
-    HashVector() noexcept : storage(0), allocated(0), used(0) {}
+    HashVector() noexcept : storage(0), allocated(0), used(0) { }
     ~HashVector() noexcept {
         for (Entry* e = storage; e < storage + used; e++) {
             e->value.~Value();

@@ -30,11 +30,11 @@
 #include "os/io.h"
 #include "util/int.h"
 #include "util/noexcept.h"
-#include "util/string.h"
 #include "util/string-view.h"
+#include "util/string.h"
 
 struct State {
-    State(bool err) : err(err) {}
+    State(bool err) : err(err) { }
 
     bool err;
     String buf;
@@ -78,7 +78,7 @@ flush(State& state) noexcept {
     }
 }
 
-Output::Output(void* data) noexcept : data(data) {}
+Output::Output(void* data) noexcept : data(data) { }
 
 Output&
 Output::operator<<(char x) noexcept {

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** constexpr.h                      **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,25 +27,26 @@
 #ifndef SRC_UTIL_CONSTEXPR_H_
 #define SRC_UTIL_CONSTEXPR_H_
 
-#if __cplusplus < 201103L && \
-        _MSC_VER < 1900  // Visual Studio 2013 or lower
-#define constexpr
+#if __cplusplus < 201103L && _MSC_VER < 1900  // Visual Studio 2013 or lower
+#    define constexpr
 #endif
 
-#if __cplusplus >= 201103L || \
-        _MSC_VER >= 1900  // GCC and Clang on C++11 or higher, or Visual Studio
-                          // 2015 or higher
-#define CONSTEXPR11 constexpr
+#if __cplusplus >= 201103L ||                                               \
+        _MSC_VER >=                                                         \
+                1900  // GCC and Clang on C++11 or higher, or Visual Studio \
+                      // 2015 or higher
+#    define CONSTEXPR11 constexpr
 #else
-#define CONSTEXPR11
+#    define CONSTEXPR11
 #endif
 
-#if __cplusplus >= 201402L || \
-        _MSC_VER >= 1910  // GCC and Clang on C++14 or higher, or Visual Studio
-                          // 2017 or higher
-#define CONSTEXPR14 constexpr
+#if __cplusplus >= 201402L ||                                               \
+        _MSC_VER >=                                                         \
+                1910  // GCC and Clang on C++14 or higher, or Visual Studio \
+                      // 2017 or higher
+#    define CONSTEXPR14 constexpr
 #else
-#define CONSTEXPR14
+#    define CONSTEXPR14
 #endif
 
 #endif  // SRC_UTIL_CONSTEXPR_H_

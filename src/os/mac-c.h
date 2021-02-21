@@ -1,8 +1,8 @@
-/******************************************
-** Tsunagari Tile Engine                 **
-** mac-c.h                               **
-** Copyright 2019-2021 Paul Merrill      **
-******************************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** mac-c.h                          **
+** Copyright 2019-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -52,8 +52,8 @@ struct timespec {
 
 // sys/_pthread/_pthread_types.h
 #define __PTHREAD_MUTEX_SIZE__ 56
-#define __PTHREAD_COND_SIZE__ 40
-#define __PTHREAD_SIZE__ 8176
+#define __PTHREAD_COND_SIZE__  40
+#define __PTHREAD_SIZE__       8176
 struct pthread_mutex_t {
     long __sig;
     char __opaque[__PTHREAD_MUTEX_SIZE__];
@@ -93,8 +93,8 @@ int
 open(const char*, int, ...) noexcept;
 #define O_RDONLY 0x0000
 #define O_WRONLY 0x0001
-#define O_CREAT 0x0200
-#define O_TRUNC 0x0400
+#define O_CREAT  0x0200
+#define O_TRUNC  0x0400
 
 // sys/mman.h
 void*
@@ -103,7 +103,7 @@ int
 munmap(void*, size_t) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x0001
-#define PROT_READ 0x01
+#define PROT_READ  0x01
 
 // sys/stat.h
 struct stat {
@@ -132,14 +132,14 @@ int
 mkdir(const char*, mode_t) noexcept;
 int
 stat(const char*, struct stat*) noexcept __asm("_stat$INODE64");
-#define S_IFMT 0170000
-#define S_IFDIR 0040000
+#define S_IFMT     0170000
+#define S_IFDIR    0040000
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 
 // sys/sysctl.h
 int
 sysctl(int*, unsigned int, void*, size_t*, void*, size_t) noexcept;
-#define CTL_HW 6
+#define CTL_HW  6
 #define HW_NCPU 3
 
 // sys/uio.h
@@ -232,7 +232,7 @@ sprintf(char*, const char*, ...) noexcept;
 extern FILE* __stdinp;
 extern FILE* __stdoutp;
 extern FILE* __stderrp;
-#define stdin __stdinp
+#define stdin  __stdinp
 #define stdout __stdoutp
 #define stderr __stderrp
 

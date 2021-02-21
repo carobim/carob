@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine            **
 ** cooldown.cpp                     **
 ** Copyright 2014 Michael Reiley    **
-** Copyright 2014-2020 Paul Merrill **
+** Copyright 2014-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -29,9 +29,9 @@
 
 #include "core/log.h"
 
-Cooldown::Cooldown() noexcept : duration(0), passed(0) {}
+Cooldown::Cooldown() noexcept : duration(0), passed(0) { }
 
-Cooldown::Cooldown(time_t duration) noexcept : duration(duration), passed(0) {}
+Cooldown::Cooldown(time_t duration) noexcept : duration(duration), passed(0) { }
 
 void
 Cooldown::setDuration(time_t duration) noexcept {

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** music.cpp                        **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,15 +27,15 @@
 #include "core/music-worker.h"
 
 void
-musicWorkerPlay(StringView path) noexcept {}
+musicWorkerPlay(StringView path) noexcept { }
 
 void
-musicWorkerStop() noexcept {}
+musicWorkerStop() noexcept { }
 
 void
-musicWorkerPause() noexcept {}
+musicWorkerPause() noexcept { }
 void
-musicWorkerResume() noexcept {}
+musicWorkerResume() noexcept { }
 
 void
-musicWorkerGarbageCollect() noexcept {}
+musicWorkerGarbageCollect() noexcept { }

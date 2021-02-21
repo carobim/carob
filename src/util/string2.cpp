@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** string2.cpp                        **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -45,7 +45,7 @@
 bool
 isInteger(StringView s) noexcept {
 #define SPACE 0
-#define SIGN 1
+#define SIGN  1
 #define DIGIT 2
 
     int state = SPACE;
@@ -82,10 +82,10 @@ isInteger(StringView s) noexcept {
  */
 bool
 isDecimal(StringView s) noexcept {
-#define SPACE 0
-#define SIGN 1
-#define DIGIT 2
-#define DOT 3
+#define SPACE  0
+#define SIGN   1
+#define DIGIT  2
+#define DOT    3
 #define DIGIT2 4
 
     int state = SPACE;
@@ -134,9 +134,9 @@ isDecimal(StringView s) noexcept {
  */
 bool
 isRanges(StringView s) noexcept {
-#define SIGN 0
+#define SIGN  0
 #define DIGIT 1
-#define DASH 3
+#define DASH  3
 #define COMMA 4
 
     bool dashed = false;
@@ -301,7 +301,8 @@ parseInt100(char* s) noexcept {
 }
 
 void
-splitStr(Vector<StringView>& out, StringView input,
+splitStr(Vector<StringView>& out,
+         StringView input,
          StringView delimiter) noexcept {
     size_t i = 0;
 
@@ -416,7 +417,7 @@ FileStream::advance() noexcept {
     return file.read(chunk.data, chunk.size);
 }
 
-ReadLines::ReadLines(StringView path) noexcept : file(path), offset(0) {}
+ReadLines::ReadLines(StringView path) noexcept : file(path), offset(0) { }
 
 ReadLines::operator bool() noexcept {
     return file;

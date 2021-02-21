@@ -31,14 +31,16 @@
 #include "util/fnv.h"
 #include "util/noexcept.h"
 
-StringView::StringView() noexcept
-            : data(0), size(0){}
+StringView::StringView() noexcept : data(0), size(0) { }
 StringView::StringView(const char* data) noexcept
-        : data(data), size(strlen(data)) {}
+        : data(data),
+          size(strlen(data)) { }
 StringView::StringView(const char* data, size_t size) noexcept
-        : data(data), size(size){}
+        : data(data),
+          size(size) { }
 StringView::StringView(const StringView& s) noexcept
-        : data(s.data), size(s.size){}
+        : data(s.data),
+          size(s.size) { }
 
 void
 StringView::operator=(const StringView& s) noexcept {
@@ -85,10 +87,8 @@ StringView::find(char needle, size_t start) const noexcept {
         return SV_NOT_FOUND;
     }
 
-    char* result = static_cast<char*>(memchr(
-        data + start,
-        needle, size - start
-    ));
+    char* result =
+            static_cast<char*>(memchr(data + start, needle, size - start));
     if (result == 0) {
         return SV_NOT_FOUND;
     }

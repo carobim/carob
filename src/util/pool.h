@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pool.h                           **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -46,7 +46,7 @@ class Pool {
     typedef uint32_t Link;
 
  public:
-    Pool() : storage(0), allocated(0), nextFree(POOL_END) {}
+    Pool() : storage(0), allocated(0), nextFree(POOL_END) { }
     ~Pool() { free(reinterpret_cast<char*>(storage)); }
 
     // Returns an unconstructed piece of memory.
@@ -68,13 +68,14 @@ class Pool {
         nextFree = i;
     }
 
-    T& operator[](uint32_t i) noexcept {
+    T&
+    operator[](uint32_t i) noexcept {
         assert_(0 <= i && i < allocated);
         return storage[i];
     }
 
  private:
-    Pool(const Pool&) {}
+    Pool(const Pool&) { }
 
     Link&
     asLink(uint32_t i) noexcept {

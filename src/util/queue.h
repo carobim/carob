@@ -34,7 +34,7 @@
 template<typename T>
 class Queue {
  public:
-    Queue() noexcept : data(0), offset(0), size(0), capacity(0) {}
+    Queue() noexcept : data(0), offset(0), size(0), capacity(0) { }
     ~Queue() noexcept {
         // Items at head of ring buffer.
         for (size_t i = offset; i < offset + size && i < capacity; i++) {
@@ -93,8 +93,7 @@ class Queue {
         for (size_t i = 0;
              offset + size > capacity && i < offset + size - capacity;
              i++) {
-            new (&newData[i + capacity - offset])
-                T(static_cast<T&&>(data[i]));
+            new (&newData[i + capacity - offset]) T(static_cast<T&&>(data[i]));
             data[i].~T();
         }
 

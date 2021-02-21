@@ -27,11 +27,11 @@
 #if defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) || \
         defined(__NetBSD__)
 
-#include "util/new.h"
+#    include "util/new.h"
 
-#include "util/assert.h"
-#include "util/int.h"
-#include "util/noexcept.h"
+#    include "util/assert.h"
+#    include "util/int.h"
+#    include "util/noexcept.h"
 
 // Note: Do not add noexcept.
 void*
@@ -73,12 +73,12 @@ operator delete[](void* ptr, size_t) noexcept {
 //   RelWithDebInfo: function
 //   MinSizeRel: function
 
-#ifdef RELEASE
+#    ifdef RELEASE
 void
-__cxa_pure_virtual() {}
-#else
+__cxa_pure_virtual() { }
+#    else
 void* __cxa_pure_virtual = 0;
-#endif
+#    endif
 
-#endif  // defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) ||
+#endif  // defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) || \
         // defined(__NetBSD__)

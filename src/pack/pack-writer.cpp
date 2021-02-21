@@ -80,8 +80,10 @@ destroyPackWriter(PackWriter* writer) noexcept {
 }
 
 void
-packWriterAddBlob(PackWriter* writer, StringView path, BlobSize size,
-        const void* data) noexcept {
+packWriterAddBlob(PackWriter* writer,
+                  StringView path,
+                  BlobSize size,
+                  const void* data) noexcept {
     writer->blobs.push_back({path, size, data});
 }
 
@@ -193,7 +195,8 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
         BlobMetadata& meta = metadataSection[i];
         Blob& blob = blobs[i];
 
-        f.writeOffset(blob.data, meta.uncompressedSize,
+        f.writeOffset(blob.data,
+                      meta.uncompressedSize,
                       dataOffset + meta.dataOffset);
     }
 

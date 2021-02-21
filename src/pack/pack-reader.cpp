@@ -35,7 +35,7 @@
 #include "util/noexcept.h"
 
 struct PackReader {
-    PackReader(File file) : file(static_cast<File&&>(file)) {}
+    PackReader(File file) : file(static_cast<File&&>(file)) { }
 
     File file;
 
@@ -136,8 +136,8 @@ readerDetails(PackReader* r, uint32_t index) noexcept {
     uint32_t size = meta.uncompressedSize;
 
     return {
-        path,
-        size,
+            path,
+            size,
     };
 }
 

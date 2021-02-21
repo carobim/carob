@@ -69,8 +69,11 @@ imageRelease(Image image) noexcept;
 // and heigh as specified. If the image does not have the expected number of
 // tiles across and high, loading fails.
 TiledImage
-tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight,
-          uint32_t numAcross, uint32_t numHigh) noexcept;
+tilesLoad(StringView path,
+          uint32_t tileWidth,
+          uint32_t tileHeight,
+          uint32_t numAcross,
+          uint32_t numHigh) noexcept;
 
 #define TILES_VALID(tiles) (tiles.image.texture != 0)
 

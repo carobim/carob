@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** sounds.cpp                       **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -35,24 +35,24 @@ soundLoad(StringView path) noexcept {
     return mark;
 }
 void
-soundsPrune(time_t latestPermissibleUse) noexcept {}
+soundsPrune(time_t latestPermissibleUse) noexcept { }
 
 PlayingSoundID
 soundPlay(SoundID id) noexcept {
     return mark;
 }
 void
-soundRelease(SoundID id) noexcept {}
+soundRelease(SoundID id) noexcept { }
 
 bool
 playingSoundIsPlaying(PlayingSoundID id) noexcept {
     return false;
 }
 void
-playingSoundStop(PlayingSoundID id) noexcept {}
+playingSoundStop(PlayingSoundID id) noexcept { }
 void
-playingSoundVolume(PlayingSoundID id, float volume) noexcept {}
+playingSoundVolume(PlayingSoundID id, float volume) noexcept { }
 void
-playingSoundSpeed(PlayingSoundID id, float speed) noexcept {}
+playingSoundSpeed(PlayingSoundID id, float speed) noexcept { }
 void
-playingSoundRelease(PlayingSoundID id) noexcept {}
+playingSoundRelease(PlayingSoundID id) noexcept { }

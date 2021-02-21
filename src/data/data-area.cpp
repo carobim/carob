@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** data-area.cpp                      **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -32,16 +32,16 @@
 #include "util/random.h"
 
 void
-DataArea::onLoad() noexcept {}
+DataArea::onLoad() noexcept { }
 
 void
-DataArea::onFocus() noexcept {}
+DataArea::onFocus() noexcept { }
 
 void
-DataArea::onTick(time_t) noexcept {}
+DataArea::onTick(time_t) noexcept { }
 
 void
-DataArea::onTurn() noexcept {}
+DataArea::onTurn() noexcept { }
 
 void
 DataArea::tick(time_t dt) noexcept {

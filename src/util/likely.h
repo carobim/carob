@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** likely.h                         **
-** Copyright 2017-2020 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -28,11 +28,11 @@
 #define SRC_UTIL_LIKELY_H_
 
 #if defined(__GNUC__) && (__GNUC__ >= 3)
-#define likely(x) __builtin_expect(!!(x), true)
-#define unlikely(x) __builtin_expect(!!(x), false)
+#    define likely(x)   __builtin_expect(!!(x), true)
+#    define unlikely(x) __builtin_expect(!!(x), false)
 #else
-#define likely(x) (x)
-#define unlikely(x) (x)
+#    define likely(x)   (x)
+#    define unlikely(x) (x)
 #endif
 
 #endif  // SRC_UTIL_LIKELY_H_

@@ -28,8 +28,8 @@
 
 #include "os/os.h"
 #include "util/noexcept.h"
-#include "util/string-view.h"
 #include "util/queue.h"
+#include "util/string-view.h"
 #include "util/vector.h"
 
 void

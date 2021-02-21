@@ -32,38 +32,49 @@
 #include "util/string.h"
 
 extern "C" {
-__declspec(dllimport) int __stdcall
-CloseHandle(void*);
-__declspec(dllimport) void* __stdcall
-CreateFileA(const char*, unsigned long, unsigned long, void*, unsigned long,
-            unsigned long, void*) noexcept;
-__declspec(dllimport) int __stdcall
-GetFileSizeEx(void*, long long*) noexcept;
-__declspec(dllimport) int __stdcall
-ReadFile(void*, void*, unsigned long, unsigned long*, void*) noexcept;
-__declspec(dllimport) int __stdcall
-SetFileValidData(void*, long long) noexcept;
-__declspec(dllimport) int __stdcall
-WriteConsoleA(void*, const void*, unsigned long, unsigned long*, void*) noexcept;
+__declspec(dllimport) int __stdcall CloseHandle(void*);
+__declspec(dllimport) void* __stdcall CreateFileA(const char*,
+                                                  unsigned long,
+                                                  unsigned long,
+                                                  void*,
+                                                  unsigned long,
+                                                  unsigned long,
+                                                  void*) noexcept;
+__declspec(dllimport) int __stdcall GetFileSizeEx(void*, long long*) noexcept;
+__declspec(dllimport) int __stdcall ReadFile(void*,
+                                             void*,
+                                             unsigned long,
+                                             unsigned long*,
+                                             void*) noexcept;
+__declspec(dllimport) int __stdcall SetFileValidData(void*, long long) noexcept;
+__declspec(dllimport) int __stdcall WriteConsoleA(void*,
+                                                  const void*,
+                                                  unsigned long,
+                                                  unsigned long*,
+                                                  void*) noexcept;
 }
 
 #define HANDLE_VALUE(x) (reinterpret_cast<void*>(static_cast<ssize_t>(x)))
 
 #define FILE_READ_ATTRIBUTES 0x80
-#define FILE_READ_DATA 0x01
-#define FILE_SHARE_READ 0x01
-#define FILE_SHARE_WRITE 0x02
-#define FILE_WRITE_DATA 0x02
-#define GENERIC_WRITE 0x00120116L
+#define FILE_READ_DATA       0x01
+#define FILE_SHARE_READ      0x01
+#define FILE_SHARE_WRITE     0x02
+#define FILE_WRITE_DATA      0x02
+#define GENERIC_WRITE        0x00120116L
 #define INVALID_HANDLE_VALUE HANDLE_VALUE(-1)
-#define CREATE_NEW 1
-#define OPEN_EXISTING 3
-#define TRUNCATE_EXISTING 5
+#define CREATE_NEW           1
+#define OPEN_EXISTING        3
+#define TRUNCATE_EXISTING    5
 
 File::File(StringView path) noexcept {
     handle = CreateFileA(String(path).null(),
-                         FILE_READ_ATTRIBUTES | FILE_READ_DATA, 0, 0,
-                         OPEN_EXISTING, 0, 0);
+                         FILE_READ_ATTRIBUTES | FILE_READ_DATA,
+                         0,
+                         0,
+                         OPEN_EXISTING,
+                         0,
+                         0);
     // if (handle == INVALID_HANDLE_VALUE) {
     //     GetLastError();
     // }
@@ -107,7 +118,13 @@ File::read(void* buf, size_t len) noexcept {
 }
 
 FileWriter::FileWriter(StringView path) noexcept {
-    handle = CreateFileA(String(path).null(), GENERIC_WRITE, 0, 0, CREATE_NEW | TRUNCATE_EXISTING, 0, 0);
+    handle = CreateFileA(String(path).null(),
+                         GENERIC_WRITE,
+                         0,
+                         0,
+                         CREATE_NEW | TRUNCATE_EXISTING,
+                         0,
+                         0);
 }
 
 FileWriter::~FileWriter() noexcept {
@@ -137,8 +154,12 @@ static void* con = UNINITIALIZED;
 
 static void
 openConsole() noexcept {
-    con = CreateFileA("CONOUT$", GENERIC_WRITE,
-                      FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0,
+    con = CreateFileA("CONOUT$",
+                      GENERIC_WRITE,
+                      FILE_SHARE_WRITE,
+                      0,
+                      OPEN_EXISTING,
+                      0,
                       0);
     // if (con == INVALID_HANDLE_VALUE) {
     //     GetLastError();

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** pack-writer.h                    **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -40,8 +40,10 @@ void
 destroyPackWriter(PackWriter* writer) noexcept;
 
 void
-packWriterAddBlob(PackWriter* writer, StringView path, uint32_t size,
-        const void* data) noexcept;
+packWriterAddBlob(PackWriter* writer,
+                  StringView path,
+                  uint32_t size,
+                  const void* data) noexcept;
 
 bool
 packWriterWriteToFile(PackWriter* writer, StringView path) noexcept;

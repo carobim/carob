@@ -147,8 +147,8 @@ parseSprite(Entity* e, JsonValue sprite) noexcept {
     e->imgsz.y = tileHeight;
     StringView path = pathValue.toString();
 
-    TiledImage tiles = tilesLoad(path, tileWidth, tileHeight, numAcross,
-                                 numHigh);
+    TiledImage tiles =
+            tilesLoad(path, tileWidth, tileHeight, numAcross, numHigh);
     CHECK(TILES_VALID(tiles));
 
     return parsePhases(e, phasesValue, tiles);
@@ -357,10 +357,16 @@ setScript(Entity* e, StringView trigger, ScriptRef& script) noexcept {
  */
 
 Entity::Entity() noexcept
-    : dead(false), redraw(true), area(0), r({0.0, 0.0, 0.0}), frozen(false),
-      moving(false), phase(0), facing({0, 0}) {}
+        : dead(false),
+          redraw(true),
+          area(0),
+          r({0.0, 0.0, 0.0}),
+          frozen(false),
+          moving(false),
+          phase(0),
+          facing({0, 0}) { }
 
-Entity::~Entity() noexcept {}
+Entity::~Entity() noexcept { }
 
 bool
 Entity::init(StringView descriptor, StringView initialPhase) noexcept {

@@ -43,31 +43,31 @@
 
 #pragma pack(push, 8)
 extern "C" {
-#define FORMAT_MESSAGE_FROM_SYSTEM 0x1000
+#define FORMAT_MESSAGE_FROM_SYSTEM    0x1000
 #define FORMAT_MESSAGE_IGNORE_INSERTS 0x200
-#define FormatMessage FormatMessageA
-#define ATTACH_PARENT_PROCESS ((DWORD)-1)
-#define CREATE_ALWAYS 2
-#define CreateDirectory CreateDirectoryA
-#define CreateFile CreateFileA
-#define FILE_ATTRIBUTE_DIRECTORY 0x10
-#define FILE_READ_ATTRIBUTES 0x80
-#define FILE_READ_DATA 0x1
-#define FILE_WRITE_DATA 0x2
-#define FindFirstFile FindFirstFileA
-#define FindNextFile FindNextFileA
-#define FOREGROUND_BLUE 0x1
-#define FOREGROUND_GREEN 0x2
-#define FOREGROUND_INTENSITY 0x8
-#define FOREGROUND_RED 0x4
-#define GetFileAttributes GetFileAttributesA
-#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
-#define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1)
-#define MAX_PATH 260
-#define MB_OK 0
-#define MessageBox MessageBoxA
-#define OPEN_EXISTING 3
-#define STD_OUTPUT_HANDLE ((DWORD)-11)
+#define FormatMessage                 FormatMessageA
+#define ATTACH_PARENT_PROCESS         ((DWORD)-1)
+#define CREATE_ALWAYS                 2
+#define CreateDirectory               CreateDirectoryA
+#define CreateFile                    CreateFileA
+#define FILE_ATTRIBUTE_DIRECTORY      0x10
+#define FILE_READ_ATTRIBUTES          0x80
+#define FILE_READ_DATA                0x1
+#define FILE_WRITE_DATA               0x2
+#define FindFirstFile                 FindFirstFileA
+#define FindNextFile                  FindNextFileA
+#define FOREGROUND_BLUE               0x1
+#define FOREGROUND_GREEN              0x2
+#define FOREGROUND_INTENSITY          0x8
+#define FOREGROUND_RED                0x4
+#define GetFileAttributes             GetFileAttributesA
+#define INVALID_FILE_ATTRIBUTES       ((DWORD)-1)
+#define INVALID_HANDLE_VALUE          ((HANDLE)(LONG_PTR)-1)
+#define MAX_PATH                      260
+#define MB_OK                         0
+#define MessageBox                    MessageBoxA
+#define OPEN_EXISTING                 3
+#define STD_OUTPUT_HANDLE             ((DWORD)-11)
 
 typedef struct {
     DWORD dwLowDateTime;
@@ -321,9 +321,15 @@ setTermColor(TermColor color, Output& /*out*/) noexcept {
     case TC_RESET:
         attribute = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
         break;
-    case TC_GREEN: attribute = FOREGROUND_GREEN; break;
-    case TC_YELLOW: attribute = FOREGROUND_RED | FOREGROUND_GREEN; break;
-    case TC_RED: attribute = FOREGROUND_RED; break;
+    case TC_GREEN:
+        attribute = FOREGROUND_GREEN;
+        break;
+    case TC_YELLOW:
+        attribute = FOREGROUND_RED | FOREGROUND_GREEN;
+        break;
+    case TC_RED:
+        attribute = FOREGROUND_RED;
+        break;
     }
 
     BOOL ok = SetConsoleTextAttribute(out, attribute);

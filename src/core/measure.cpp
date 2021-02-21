@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** measure.cpp                      **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -30,7 +30,7 @@
 #include "util/noexcept.h"
 
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
-#include "util/hashtable.h"
+#    include "util/hashtable.h"
 
 // sys/kdebug_signpost.h
 extern "C" {

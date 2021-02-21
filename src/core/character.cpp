@@ -58,7 +58,7 @@ Character::tick(time_t dt) noexcept {
 }
 
 void
-Character::turn() noexcept {}
+Character::turn() noexcept { }
 
 void
 Character::destroy() noexcept {

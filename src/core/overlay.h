@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** overlay.h                          **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -32,8 +32,8 @@
 
 class Overlay : public Entity {
  public:
-    Overlay() noexcept {}
-    virtual ~Overlay() noexcept {}
+    Overlay() noexcept { }
+    virtual ~Overlay() noexcept { }
 
     void
     tick(time_t dt) noexcept;

@@ -36,11 +36,11 @@
 #include "util/math2.h"
 
 #ifdef _WIN32
-#include "os/windows.h"
+#    include "os/windows.h"
 #endif
 
 #ifdef __APPLE__
-#include "os/mac-gui.h"
+#    include "os/mac-gui.h"
 #endif
 
 static LogVerbosity verb = LogVerbosity::NORMAL;

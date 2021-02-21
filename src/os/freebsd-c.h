@@ -95,8 +95,8 @@ int
 open(const char*, int, ...) noexcept;
 #define O_RDONLY 0x0000
 #define O_WRONLY 0x0001
-#define O_CREAT 0x0200
-#define O_TRUNC 0x0400
+#define O_CREAT  0x0200
+#define O_TRUNC  0x0400
 }
 
 // sys/mman.h
@@ -107,7 +107,7 @@ int
 munmap(void*, size_t) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x0001
-#define PROT_READ 0x01
+#define PROT_READ  0x01
 }
 
 // sys/stat.h
@@ -151,8 +151,8 @@ int
 mkdir(const char*, mode_t) noexcept;
 int
 stat(const char*, struct stat*) noexcept;
-#define S_IFMT 0170000
-#define S_IFDIR 0040000
+#define S_IFMT     0170000
+#define S_IFDIR    0040000
 #define S_ISDIR(m) (((m)&0170000) == 0040000)
 }
 
@@ -195,7 +195,7 @@ sqrt(double) noexcept;
 // pthread.h
 extern "C" {
 #define PTHREAD_MUTEX_INITIALIZER 0
-#define PTHREAD_COND_INITIALIZER 0
+#define PTHREAD_COND_INITIALIZER  0
 int
 pthread_mutex_destroy(pthread_mutex_t*) noexcept;
 int
@@ -235,7 +235,7 @@ sprintf(char*, const char*, ...) noexcept;
 extern FILE* __stdinp;
 extern FILE* __stdoutp;
 extern FILE* __stderrp;
-#define stdin __stdinp
+#define stdin  __stdinp
 #define stdout __stdoutp
 #define stderr __stderrp
 }

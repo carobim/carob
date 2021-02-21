@@ -32,9 +32,8 @@
 #include "data/inprogress-sound.h"
 #include "data/inprogress-timer.h"
 
-InProgress::InProgress() noexcept : over(false) {
-}
-InProgress::~InProgress() noexcept {}
+InProgress::InProgress() noexcept : over(false) { }
+InProgress::~InProgress() noexcept { }
 
 bool
 InProgress::isOver() noexcept {
@@ -67,7 +66,9 @@ InProgressSound::tick(time_t) noexcept {
 }
 
 InProgressTimer::InProgressTimer(time_t duration, ThenFn then) noexcept
-        : duration(duration), passed(0), then(static_cast<ThenFn&&>(then)) {
+        : duration(duration),
+          passed(0),
+          then(static_cast<ThenFn&&>(then)) {
     if (!this->then) {
         logErr("InProgressTimer", "invalid 'then'");
     }
@@ -76,7 +77,8 @@ InProgressTimer::InProgressTimer(time_t duration, ThenFn then) noexcept
 InProgressTimer::InProgressTimer(time_t duration,
                                  ProgressFn progress,
                                  ThenFn then) noexcept
-        : duration(duration), passed(0),
+        : duration(duration),
+          passed(0),
           progress(static_cast<ProgressFn&&>(progress)),
           then(static_cast<ThenFn&&>(then)) {
     if (!this->progress) {

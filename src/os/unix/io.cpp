@@ -115,7 +115,7 @@ FileWriter::~FileWriter() noexcept {
     }
 }
 
-    // Whether the file was opened successfully.
+// Whether the file was opened successfully.
 FileWriter::operator bool() noexcept {
     return fd >= 0;
 }

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** mac-thread.cpp                   **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -44,7 +44,7 @@ mach_thread_self() noexcept;
 }
 
 // mach/thread_policy.h
-#define THREAD_EXTENDED_POLICY 1
+#define THREAD_EXTENDED_POLICY       1
 #define THREAD_EXTENDED_POLICY_COUNT 1
 struct thread_extended_policy {
     int32_t timeshare;

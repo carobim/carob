@@ -35,14 +35,14 @@
 #include "util/noexcept.h"
 
 #ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 26495)  // Always initialize a member variable.
+#    pragma warning(push)
+#    pragma warning(disable : 26495)  // Always initialize a member variable.
 #endif
 
 #ifdef _MSC_VER
-#define NO_VTABLE __declspec(novtable)
+#    define NO_VTABLE __declspec(novtable)
 #else
-#define NO_VTABLE
+#    define NO_VTABLE
 #endif
 
 /*
@@ -75,8 +75,8 @@ namespace function {
         operator=(const base&) noexcept;
 
      public:
-        base() noexcept {}
-        virtual ~base() noexcept {}
+        base() noexcept { }
+        virtual ~base() noexcept { }
         //virtual base*
         //clone() const noexcept = 0;
         //virtual void
@@ -98,8 +98,8 @@ namespace function {
         F f;
 
      public:
-        explicit func(F&& f) noexcept : f(static_cast<F&&>(f)) {}
-        explicit func(const F& f) noexcept : f(f) {}
+        explicit func(F&& f) noexcept : f(static_cast<F&&>(f)) { }
+        explicit func(const F& f) noexcept : f(f) { }
 
         //base<R(ArgTypes...) noexcept>*
         //clone() const noexcept;
@@ -130,8 +130,7 @@ namespace function {
 
     template<class F, class R, class... ArgTypes>
     void
-    func<F, R(ArgTypes...)>::move(
-            base<R(ArgTypes...) noexcept>* p) noexcept {
+    func<F, R(ArgTypes...)>::move(base<R(ArgTypes...) noexcept>* p) noexcept {
         new (p) func(static_cast<F&&>(f));
     }
 
@@ -163,7 +162,7 @@ class Function<R(ArgTypes...) noexcept> {
     base* f;
 
  public:
-    inline Function() noexcept : f(0) {}
+    inline Function() noexcept : f(0) { }
     Function(Function&&) noexcept;
     //Function(const Function&) noexcept;
     template<class F>
@@ -226,14 +225,12 @@ Function<R(ArgTypes...) noexcept>::Function(F something) noexcept {
     if (sizeof(function::func<F, R(ArgTypes...) noexcept>) <= sizeof(buf)) {
         // A warning occurs here on GCC 8.3 because of incomplete static branch
         // analysis.
-        f = new ((void*)&buf)
-                function::func<F, R(ArgTypes...) noexcept>(static_cast<F&&>(something));
+        f = new ((void*)&buf) function::func<F, R(ArgTypes...) noexcept>(
+                static_cast<F&&>(something));
     }
     else {
-
         f = new function::func<F, R(ArgTypes...) noexcept>(
-            static_cast<F&&>(something)
-        );
+                static_cast<F&&>(something));
     }
 }
 
@@ -334,7 +331,7 @@ Function<R(ArgTypes...) noexcept>::operator()(ArgTypes... args) const noexcept {
 }
 
 #ifdef _MSC_VER
-#pragma warning(pop)
+#    pragma warning(pop)
 #endif
 
 #endif  // SRC_UTIL_FUNCTION_H_

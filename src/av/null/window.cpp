@@ -37,7 +37,7 @@
 #include "util/string.h"
 
 void
-windowCreate() noexcept {}
+windowCreate() noexcept { }
 
 time_t
 windowTime() noexcept {
@@ -55,7 +55,7 @@ windowHeight() noexcept {
 }
 
 void
-windowSetCaption(StringView) noexcept {}
+windowSetCaption(StringView) noexcept { }
 
 void
 windowMainLoop() noexcept {
@@ -65,7 +65,7 @@ windowMainLoop() noexcept {
 
     Nanoseconds frameStart = chronoNow();
     Nanoseconds previousFrameStart =
-        frameStart - idealFrameTime;  // Bogus initial value.
+            frameStart - idealFrameTime;  // Bogus initial value.
 
     // FIXME: Should be set to right after a frame is uploaded and we can begin
     //        drawing the next frame.
@@ -82,8 +82,8 @@ windowMainLoop() noexcept {
     Nanoseconds nextFrameStart = frameStart + idealFrameTime;
 
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #endif
     while (true) {
         //
@@ -133,25 +133,25 @@ windowMainLoop() noexcept {
         }
     }
 #ifdef __clang__
-#pragma clang diagnostic pop
+#    pragma clang diagnostic pop
 #endif
 }
 
 void
-windowDrawRect(float, float, float, float, uint32_t) noexcept {}
+windowDrawRect(float, float, float, float, uint32_t) noexcept { }
 
 void
-windowPushScale(float, float) noexcept {}
+windowPushScale(float, float) noexcept { }
 void
-windowPopScale() noexcept {}
+windowPopScale() noexcept { }
 void
-windowPushTranslate(float, float) noexcept {}
+windowPushTranslate(float, float) noexcept { }
 void
-windowPopTranslate() noexcept {}
+windowPopTranslate() noexcept { }
 void
-windowPushClip(float, float, float, float) noexcept {}
+windowPushClip(float, float, float, float) noexcept { }
 void
-windowPopClip() noexcept {}
+windowPopClip() noexcept { }
 
 void
-windowClose() noexcept {}
+windowClose() noexcept { }

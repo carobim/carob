@@ -46,7 +46,7 @@ growN(size_t current, size_t addition) noexcept {
     return newSize;
 }
 
-String::String() noexcept : data(0), size(0), capacity(0) {}
+String::String() noexcept : data(0), size(0), capacity(0) { }
 
 String::String(const char* s) noexcept {
     if (s == 0) {

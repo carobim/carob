@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** none.h                      **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** none.h                           **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,7 +27,7 @@
 #ifndef SRC_UTIL_NONE_H_
 #define SRC_UTIL_NONE_H_
 
-struct None {};
+struct None { };
 static None none;
 
 #endif  // SRC_UTIL_NONE_H_

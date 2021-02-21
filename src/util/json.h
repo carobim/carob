@@ -60,10 +60,10 @@
 #include "util/string-view.h"
 #include "util/string.h"
 
-#define JSON_VALUE_NAN_MASK 0x7FF8000000000000ULL
+#define JSON_VALUE_NAN_MASK     0x7FF8000000000000ULL
 #define JSON_VALUE_PAYLOAD_MASK 0x00007FFFFFFFFFFFULL
-#define JSON_VALUE_TAG_MASK 0xF
-#define JSON_VALUE_TAG_SHIFT 47
+#define JSON_VALUE_TAG_MASK     0xF
+#define JSON_VALUE_TAG_SHIFT    47
 
 enum JsonTag {
     JSON_NUMBER = 0,
@@ -81,9 +81,8 @@ union JsonValue {
     uint64_t ival;
     double fval;
 
-    inline JsonValue(double x) noexcept : fval(x) {}
-    inline JsonValue(JsonTag tag = JSON_NULL,
-                     void* payload = 0) noexcept {
+    inline JsonValue(double x) noexcept : fval(x) { }
+    inline JsonValue(JsonTag tag = JSON_NULL, void* payload = 0) noexcept {
         // assert_(reinterpret_cast<size_t>(payload) <=
         // JSON_VALUE_PAYLOAD_MASK);
         ival = JSON_VALUE_NAN_MASK |
@@ -177,7 +176,8 @@ union JsonValue {
         return reinterpret_cast<JsonNode*>(getPayload());
     }
 
-    JsonValue operator[](StringView key) noexcept;
+    JsonValue
+    operator[](StringView key) noexcept;
 
     inline uint64_t
     getPayload() noexcept {
@@ -195,7 +195,7 @@ struct JsonNode {
 struct JsonIterator {
     JsonNode* node;
 
-    JsonIterator(JsonNode* node) noexcept : node(node) {}
+    JsonIterator(JsonNode* node) noexcept : node(node) { }
 
     inline void
     operator++() noexcept {
@@ -207,9 +207,15 @@ struct JsonIterator {
         return node != other.node;
     }
 
-    inline JsonNode& operator*() noexcept { return *node; }
+    inline JsonNode&
+    operator*() noexcept {
+        return *node;
+    }
 
-    inline JsonNode& operator->() noexcept { return *node; }
+    inline JsonNode&
+    operator->() noexcept {
+        return *node;
+    }
 };
 
 inline JsonIterator

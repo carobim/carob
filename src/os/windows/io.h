@@ -48,7 +48,7 @@ class File {
 };
 
 class FileWriter {
-public:
+ public:
     FileWriter(StringView path) noexcept;
     ~FileWriter() noexcept;
 
@@ -56,12 +56,12 @@ public:
     operator bool() noexcept;
 
     bool
-        resize(size_t size) noexcept;
+    resize(size_t size) noexcept;
 
     bool
-        writeOffset(const void* buf, size_t len, size_t offset) noexcept;
+    writeOffset(const void* buf, size_t len, size_t offset) noexcept;
 
-public:
+ public:
     void* handle;
 };
 

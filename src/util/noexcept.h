@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** noexcept.h                  **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** noexcept.h                       **
+** Copyright 2019-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,12 +28,12 @@
 #define SRC_UTIL_NOEXCEPT_H_
 
 #if defined(_MSC_VER) && _MSC_VER == 1900  // Visual Studio 2015
-#pragma warning(disable : 4577)  // 'noexcept' used but no exception handling is
-                                 // enabled
+     // 'noexcept' used but no exception handling is enabled.
+#    pragma warning(disable : 4577)  
 #endif
 
 #if defined(_MSC_VER) && _MSC_VER < 1900  // Visual Studio 2013 or lower
-#define noexcept throw()
+#    define noexcept throw()
 #endif
 
 #endif  // SRC_UTIL_NOEXCEPT_H_

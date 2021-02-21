@@ -92,8 +92,8 @@ int
 open(const char*, int, ...) noexcept;
 #define O_RDONLY 0x00000000
 #define O_WRONLY 0x00000001
-#define O_CREAT 0x00000200
-#define O_TRUNC 0x00000400
+#define O_CREAT  0x00000200
+#define O_TRUNC  0x00000400
 }
 
 // sys/mman.h
@@ -104,7 +104,7 @@ int
 munmap(void*, size_t) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x0001
-#define PROT_READ 0x01
+#define PROT_READ  0x01
 }
 
 // sys/stat.h
@@ -134,8 +134,8 @@ int
 mkdir(const char*, mode_t) noexcept;
 int
 stat(const char*, struct stat*) noexcept __asm("__stat50");
-#define S_IFMT 0170000
-#define S_IFDIR 0040000
+#define S_IFMT     0170000
+#define S_IFDIR    0040000
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 }
 
@@ -224,13 +224,13 @@ pthread_join(pthread_t, void**) noexcept;
     { 0x33330003, 0, {0, 0, 0}, {0}, {0, 0, 0}, 0, 0, 0, 0 }
 #define PTHREAD_COND_INITIALIZER \
     { 0x55550005, 0, {0, 0}, 0, 0 }
-#define pthread_mutex_destroy __libc_mutex_destroy
-#define pthread_mutex_lock __libc_mutex_lock
-#define pthread_mutex_unlock __libc_mutex_unlock
-#define pthread_cond_destroy __libc_cond_destroy
-#define pthread_cond_signal __libc_cond_signal
+#define pthread_mutex_destroy  __libc_mutex_destroy
+#define pthread_mutex_lock     __libc_mutex_lock
+#define pthread_mutex_unlock   __libc_mutex_unlock
+#define pthread_cond_destroy   __libc_cond_destroy
+#define pthread_cond_signal    __libc_cond_signal
 #define pthread_cond_broadcast __libc_cond_broadcast
-#define pthread_cond_wait __libc_cond_wait
+#define pthread_cond_wait      __libc_cond_wait
 }
 
 // stdio.h
@@ -275,7 +275,7 @@ printf(const char*, ...) noexcept;
 int
 sprintf(char*, const char*, ...) noexcept;
 extern FILE __sF[3];
-#define stdin (&__sF[0])
+#define stdin  (&__sF[0])
 #define stdout (&__sF[1])
 #define stderr (&__sF[2])
 }

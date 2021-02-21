@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** sdl2.h                           **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -101,7 +101,7 @@ SDL_PollEvent(SDL_Event*) noexcept;
 // SDL_pixels.h
 #define SDL_PIXELFORMAT_RGBA8888 373694468
 #define SDL_PIXELFORMAT_ABGR8888 376840196
-#define SDL_PIXELFORMAT_RGBA32 SDL_PIXELFORMAT_ABGR8888  // When little endian
+#define SDL_PIXELFORMAT_RGBA32   SDL_PIXELFORMAT_ABGR8888  // When little endian
 
 // SDL_rect.h
 typedef struct {
@@ -147,11 +147,11 @@ void
 SDL_ShowWindow(SDL_Window*) noexcept;
 void*
 SDL_GL_GetProcAddress(const char*) noexcept;
-#define SDL_WINDOW_FULLSCREEN 0x00000001
-#define SDL_WINDOW_HIDDEN 0x00000008
-#define SDL_WINDOWPOS_UNDEFINED_MASK 0x1FFF0000u
+#define SDL_WINDOW_FULLSCREEN              0x00000001
+#define SDL_WINDOW_HIDDEN                  0x00000008
+#define SDL_WINDOWPOS_UNDEFINED_MASK       0x1FFF0000u
 #define SDL_WINDOWPOS_UNDEFINED_DISPLAY(X) (SDL_WINDOWPOS_UNDEFINED_MASK | (X))
-#define SDL_WINDOWPOS_UNDEFINED SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)
+#define SDL_WINDOWPOS_UNDEFINED            SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)
 
 // SDL_render.h
 typedef struct SDL_Renderer SDL_Renderer;
@@ -199,10 +199,10 @@ SDL_SetRenderDrawColor(SDL_Renderer*,
                        uint8_t,
                        uint8_t,
                        uint8_t) noexcept;
-#define SDL_RENDERER_ACCELERATED 2
-#define SDL_RENDERER_PRESENTVSYNC 4
+#define SDL_RENDERER_ACCELERATED   2
+#define SDL_RENDERER_PRESENTVSYNC  4
 #define SDL_RENDERER_TARGETTEXTURE 8
-#define SDL_TEXTUREACCESS_TARGET 2
+#define SDL_TEXTUREACCESS_TARGET   2
 
 // SDL_image library
 // SDL_image.h

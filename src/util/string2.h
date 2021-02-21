@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** string2.h                          **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -69,7 +69,8 @@ parseInt100(char* s) noexcept;
 
 //! Split a string by a delimiter.
 void
-splitStr(Vector<StringView>& out, StringView str,
+splitStr(Vector<StringView>& out,
+         StringView str,
          StringView delimiter) noexcept;
 
 /**

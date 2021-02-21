@@ -193,10 +193,18 @@ setTermColor(TermColor color, Output& out) noexcept {
     //   http://www.termsys.demon.co.uk/vtansi.htm
 
     switch (color) {
-    case TC_RESET: out << "\033[0m"; break;
-    case TC_GREEN: out << "\033[32m"; break;
-    case TC_YELLOW: out << "\033[33m"; break;
-    case TC_RED: out << "\033[31m"; break;
+    case TC_RESET:
+        out << "\033[0m";
+        break;
+    case TC_GREEN:
+        out << "\033[32m";
+        break;
+    case TC_YELLOW:
+        out << "\033[33m";
+        break;
+    case TC_RED:
+        out << "\033[31m";
+        break;
     }
 }
 

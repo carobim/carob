@@ -74,8 +74,8 @@ boundToArea(fvec2 pt) noexcept {
     bool loopY = viewportArea->grid.loopY;
 
     return {
-        boundDimension(virtRes.x, areaWidth, pt.x, loopX),
-        boundDimension(virtRes.y, areaHeight, pt.y, loopY),
+            boundDimension(virtRes.x, areaWidth, pt.x, loopX),
+            boundDimension(virtRes.y, areaHeight, pt.y, loopY),
     };
 }
 
@@ -166,22 +166,20 @@ fvec2
 viewportGetScale() noexcept {
     fvec2 letterbox = getLetterbox();
     fvec2 physRes = {
-        static_cast<float>(windowWidth()),
-        static_cast<float>(windowHeight()),
+            static_cast<float>(windowWidth()),
+            static_cast<float>(windowHeight()),
     };
 
     return {
-        physRes.x / virtRes.x * (1 - letterbox.x),
-        physRes.y / virtRes.y * (1 - letterbox.y),
+            physRes.x / virtRes.x * (1 - letterbox.x),
+            physRes.y / virtRes.y * (1 - letterbox.y),
     };
 }
 
 fvec2
 viewportGetPhysRes() noexcept {
-    return {
-        static_cast<float>(windowWidth()),
-        static_cast<float>(windowHeight())
-    };
+    return {static_cast<float>(windowWidth()),
+            static_cast<float>(windowHeight())};
 }
 
 fvec2

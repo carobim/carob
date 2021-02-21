@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** windows-mapped-file.cpp          **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -64,16 +64,16 @@ MapViewOfFile(HANDLE hFileMappingObject,
 WINBASEAPI BOOL WINAPI
 UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;
 
-#define CreateFile CreateFileA
+#define CreateFile        CreateFileA
 #define CreateFileMapping CreateFileMappingA
 
 #define FILE_ATTRIBUTE_NORMAL 0x00000080
-#define FILE_MAP_READ SECTION_MAP_READ
-#define GENERIC_READ 0x80000000L
-#define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1)
-#define OPEN_EXISTING 3
-#define PAGE_READONLY 0x02
-#define SECTION_MAP_READ 0x0004
+#define FILE_MAP_READ         SECTION_MAP_READ
+#define GENERIC_READ          0x80000000L
+#define INVALID_HANDLE_VALUE  ((HANDLE)(LONG_PTR)-1)
+#define OPEN_EXISTING         3
+#define PAGE_READONLY         0x02
+#define SECTION_MAP_READ      0x0004
 }
 
 bool

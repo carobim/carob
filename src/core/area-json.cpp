@@ -96,10 +96,7 @@ class AreaJSON : public Area {
     bool
     splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept;
     bool
-    parseExit(StringView dest,
-              Exit& exit,
-              bool* wwide,
-              bool* hwide) noexcept;
+    parseExit(StringView dest, Exit& exit, bool* wwide, bool* hwide) noexcept;
     bool
     parseARGB(StringView str,
               unsigned char& a,
@@ -278,9 +275,7 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
 static StringView
 dirname(StringView path) noexcept {
     StringPosition slash = path.rfind('/');
-    return slash == SV_NOT_FOUND
-        ? ""
-        : path.substr(0, slash + 1);
+    return slash == SV_NOT_FOUND ? "" : path.substr(0, slash + 1);
 }
 
 bool
@@ -380,16 +375,16 @@ AreaJSON::processTileSetFile(JsonValue obj,
         return false;
     }
     grid.tileDim = ivec2{
-        static_cast<int>(tileWidth),
-        static_cast<int>(tileHeight),
+            static_cast<int>(tileWidth),
+            static_cast<int>(tileHeight),
     };
 
     String imgSource = String() << dirname(source) << imageNode.toString();
     tileSets[imgSource] = TileSet{firstGid, numAcross, numHigh};
 
     // Load tileset image.
-    TiledImage images = tilesLoad(imgSource, tileWidth, tileHeight, numAcross,
-                                  numHigh);
+    TiledImage images =
+            tilesLoad(imgSource, tileWidth, tileHeight, numAcross, numHigh);
     if (!TILES_VALID(images)) {
         logErr(descriptor, "Tileset image not found");
         return false;
@@ -503,8 +498,7 @@ AreaJSON::processTileType(JsonValue obj,
 
         unsigned idx_;
         if (!parseUInt(idx_, buf)) {
-            logErr(descriptor,
-                   "couldn't parse frame index for animated tile");
+            logErr(descriptor, "couldn't parse frame index for animated tile");
             return false;
         }
         if (idx_ > static_cast<unsigned>(INT32_MAX)) {
@@ -515,8 +509,7 @@ AreaJSON::processTileType(JsonValue obj,
         int idx = static_cast<int>(idx_);
 
         if (nTiles <= idx) {
-            logErr(descriptor,
-                   "frame index out of range for animated tile");
+            logErr(descriptor, "frame index out of range for animated tile");
             return false;
         }
 
@@ -864,20 +857,26 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     if (exitupValue.isString()) {
         haveExit[EXIT_UP] = true;
         StringView value = exitupValue.toString();
-        CHECK(parseExit(
-                value, exit[EXIT_UP], &wwide[EXIT_UP], &hwide[EXIT_UP]));
+        CHECK(parseExit(value,
+                        exit[EXIT_UP],
+                        &wwide[EXIT_UP],
+                        &hwide[EXIT_UP]));
     }
     if (exitdownValue.isString()) {
         haveExit[EXIT_DOWN] = true;
         StringView value = exitdownValue.toString();
-        CHECK(parseExit(
-                value, exit[EXIT_DOWN], &wwide[EXIT_DOWN], &hwide[EXIT_DOWN]));
+        CHECK(parseExit(value,
+                        exit[EXIT_DOWN],
+                        &wwide[EXIT_DOWN],
+                        &hwide[EXIT_DOWN]));
     }
     if (exitleftValue.isString()) {
         haveExit[EXIT_LEFT] = true;
         StringView value = exitleftValue.toString();
-        CHECK(parseExit(
-                value, exit[EXIT_LEFT], &wwide[EXIT_LEFT], &hwide[EXIT_LEFT]));
+        CHECK(parseExit(value,
+                        exit[EXIT_LEFT],
+                        &wwide[EXIT_LEFT],
+                        &hwide[EXIT_LEFT]));
     }
     if (exitrightValue.isString()) {
         haveExit[EXIT_RIGHT] = true;
@@ -1084,7 +1083,7 @@ AreaJSON::parseExit(StringView dest,
     buf = z;
     CHECK(parseFloat(z_, buf));
 
-    exit = { area, x_, y_, z_ };
+    exit = {area, x_, y_, z_};
 
     *wwide = x.find('+') != SV_NOT_FOUND;
     *hwide = y.find('+') != SV_NOT_FOUND;

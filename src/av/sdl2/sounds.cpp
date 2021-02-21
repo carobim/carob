@@ -43,8 +43,8 @@ struct SDL2Sound {
     int numUsers;
     time_t lastUse;
 
-    String frames;  // Audio frames.
-    Mix_Chunk* chunk;   // Decoding configuration.
+    String frames;     // Audio frames.
+    Mix_Chunk* chunk;  // Decoding configuration.
 };
 
 static bool

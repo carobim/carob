@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** windows-c.cpp                      **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -53,8 +53,8 @@ _ACRTIMP int __cdecl __stdio_common_vsprintf(unsigned __int64,
                                              va_list) noexcept;
 
 #    ifdef _WIN64
-#        define _VA_ALIGN 8
-#        define _SLOTSIZEOF(t) ((sizeof(t) + _VA_ALIGN - 1) & ~(_VA_ALIGN - 1))
+#        define _VA_ALIGN       8
+#        define _SLOTSIZEOF(t)  ((sizeof(t) + _VA_ALIGN - 1) & ~(_VA_ALIGN - 1))
 #        define _APALIGN(t, ap) (((va_list)0 - (ap)) & (__alignof(t) - 1))
 
 void __cdecl __va_start(va_list*, ...);
@@ -78,7 +78,7 @@ void __cdecl __va_start(va_list*, ...);
 }
 __pragma(pack(pop));
 
-#    define __crt_va_start(ap, x) __crt_va_start_a(ap, x)
+#    define __crt_va_start(ap, x)                                 __crt_va_start_a(ap, x)
 #    define _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION (1ULL << 0)
 
 __declspec(noinline) __inline unsigned __int64* __CRTDECL

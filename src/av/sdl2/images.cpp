@@ -40,7 +40,7 @@
 #include "util/string-view.h"
 #include "util/string.h"
 
-#define ATLAS_WIDTH 2048
+#define ATLAS_WIDTH  2048
 #define ATLAS_HEIGHT 512
 
 static SDL_Renderer* renderer = 0;
@@ -53,11 +53,11 @@ void
 imageInit() noexcept {
     TimeMeasure m("Created SDL2 renderer");
 
-    renderer = SDL_CreateRenderer(
-            sdl2Window,
-            -1,
-            SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC |
-                SDL_RENDERER_TARGETTEXTURE);
+    renderer = SDL_CreateRenderer(sdl2Window,
+                                  -1,
+                                  SDL_RENDERER_ACCELERATED |
+                                          SDL_RENDERER_PRESENTVSYNC |
+                                          SDL_RENDERER_TARGETTEXTURE);
 
     if (renderer == 0) {
         sdlDie("SDL2", "SDL_CreateRenderer");
@@ -102,12 +102,10 @@ imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept {
     uint8_t g = static_cast<uint8_t>((argb >> 8) & 0xFF);
     uint8_t b = static_cast<uint8_t>((argb >> 0) & 0xFF);
 
-    SDL_Rect rect = {
-        static_cast<int>(x1),
-        static_cast<int>(y1),
-        static_cast<int>(x2 - x1),
-        static_cast<int>(y2 - y1)
-    };
+    SDL_Rect rect = {static_cast<int>(x1),
+                     static_cast<int>(y1),
+                     static_cast<int>(x2 - x1),
+                     static_cast<int>(y2 - y1)};
 
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -117,8 +115,10 @@ imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept {
 static void
 initAtlas() noexcept {
     if (atlas == 0) {
-        atlas = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
-                                  SDL_TEXTUREACCESS_TARGET, ATLAS_WIDTH,
+        atlas = SDL_CreateTexture(renderer,
+                                  SDL_PIXELFORMAT_RGBA32,
+                                  SDL_TEXTUREACCESS_TARGET,
+                                  ATLAS_WIDTH,
                                   ATLAS_HEIGHT);
         if (atlas == 0) {
             logFatal("SDL2", "Failed to create texture");
@@ -176,14 +176,13 @@ load(StringView path) noexcept {
         SDL_FreeSurface(surface);
 
         if (!texture) {
-            logFatal("SDL2",
-                     String() << "Failed to create texture: " << path);
+            logFatal("SDL2", String() << "Failed to create texture: " << path);
             return 0;
         }
 
         // Copy this texture's data into the atlas texture.
-        SDL_Rect src = { 0, 0, width, height  };
-        SDL_Rect dst = { x, y, width, height  };
+        SDL_Rect src = {0, 0, width, height};
+        SDL_Rect dst = {x, y, width, height};
 
         SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_NONE);
 
@@ -196,11 +195,11 @@ load(StringView path) noexcept {
     }
 
     tiles.image = {
-        atlas,
-        static_cast<uint32_t>(x),
-        static_cast<uint32_t>(y),
-        static_cast<uint32_t>(width),
-        static_cast<uint32_t>(height),
+            atlas,
+            static_cast<uint32_t>(x),
+            static_cast<uint32_t>(y),
+            static_cast<uint32_t>(width),
+            static_cast<uint32_t>(height),
     };
 
     atlasUsed += static_cast<uint32_t>(width);
@@ -220,7 +219,7 @@ imageLoad(StringView path) noexcept {
 }
 
 void
-imageRelease(Image image) noexcept {}
+imageRelease(Image image) noexcept { }
 
 void
 imageDraw(Image image, float x, float y, float z) noexcept {
@@ -243,8 +242,11 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 }
 
 TiledImage
-tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight,
-          uint32_t numAcross, uint32_t numHigh) noexcept {
+tilesLoad(StringView path,
+          uint32_t tileWidth,
+          uint32_t tileHeight,
+          uint32_t numAcross,
+          uint32_t numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
     if (!tiles) {
@@ -262,7 +264,7 @@ tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight,
 }
 
 void
-tilesRelease(TiledImage tiles) noexcept {}
+tilesRelease(TiledImage tiles) noexcept { }
 
 Image
 tileAt(TiledImage tiles, uint32_t index) noexcept {
@@ -271,14 +273,13 @@ tileAt(TiledImage tiles, uint32_t index) noexcept {
     Image image = tiles.image;
 
     return {
-        image.texture,
-        image.x + tiles.tileWidth * index % image.width,
-        image.y + tiles.tileWidth * index / image.width *
-                  tiles.tileHeight,
-        tiles.tileWidth,
-        tiles.tileHeight,
+            image.texture,
+            image.x + tiles.tileWidth * index % image.width,
+            image.y + tiles.tileWidth * index / image.width * tiles.tileHeight,
+            tiles.tileWidth,
+            tiles.tileHeight,
     };
 }
 
 void
-imagesPrune(time_t latestPermissibleUse) noexcept {}
+imagesPrune(time_t latestPermissibleUse) noexcept { }

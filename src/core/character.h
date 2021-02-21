@@ -38,7 +38,7 @@ struct Exit;
 class Character : public Entity {
  public:
     Character() noexcept;
-    virtual ~Character() noexcept {}
+    virtual ~Character() noexcept { }
 
     virtual void
     tick(time_t dt) noexcept;

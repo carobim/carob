@@ -62,10 +62,10 @@
 #include "util/string-view.h"
 #include "util/string.h"
 
-#define JSON_ZONE_SIZE 4096
+#define JSON_ZONE_SIZE  4096
 #define JSON_STACK_SIZE 32
 
-JsonAllocator::JsonAllocator() noexcept : head(0) {}
+JsonAllocator::JsonAllocator() noexcept : head(0) { }
 JsonAllocator::JsonAllocator(JsonAllocator&& other) noexcept
         : head(other.head) {
     other.head = 0;
@@ -439,7 +439,8 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
     return false;
 }
 
-JsonValue JsonValue::operator[](StringView key) noexcept {
+JsonValue
+JsonValue::operator[](StringView key) noexcept {
     for (JsonNode& node : *this) {
         if (key == node.key) {
             return node.value;
@@ -455,7 +456,7 @@ JsonAllocator::operator=(JsonAllocator&& other) noexcept {
     other.head = 0;
 }
 
-JsonDocument::JsonDocument() noexcept : ok(false) {}
+JsonDocument::JsonDocument() noexcept : ok(false) { }
 
 JsonDocument::JsonDocument(String text) noexcept
         : text(static_cast<String&&>(text)) {

@@ -42,7 +42,7 @@ class Vector {
     size_t capacity;
 
  public:
-    Vector() noexcept : data(0), size(0), capacity(0) {}
+    Vector() noexcept : data(0), size(0), capacity(0) { }
     Vector(const Vector& other) noexcept {
         if (other.capacity == 0) {
             data = 0;

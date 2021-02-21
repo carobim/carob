@@ -206,8 +206,7 @@ class TileGrid {
         SCRIPT_TYPE_LAST,
     };
 
-    Hashmap<ivec3, DataArea::TileScript, EmptyIcoord>
-            scripts[SCRIPT_TYPE_LAST];
+    Hashmap<ivec3, DataArea::TileScript, EmptyIcoord> scripts[SCRIPT_TYPE_LAST];
 
     Hashmap<ivec3, unsigned, EmptyIcoord> flags;
 

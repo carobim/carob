@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** window.cpp                         **
 ** Copyright 2011-2014 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -39,8 +39,7 @@ windowEmitKeyDown(Key key) noexcept {
     windowKeysDown |= key;
 
     if (windowKeysDown & KEY_ESCAPE &&
-            (windowKeysDown & KEY_LEFT_SHIFT ||
-             windowKeysDown & KEY_RIGHT_SHIFT)) {
+        (windowKeysDown & KEY_LEFT_SHIFT || windowKeysDown & KEY_RIGHT_SHIFT)) {
         windowClose();
         exitProcess(0);
     }

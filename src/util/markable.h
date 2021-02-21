@@ -31,7 +31,7 @@
 #include "util/constexpr.h"
 #include "util/noexcept.h"
 
-struct M {};
+struct M { };
 
 #define mark M()
 
@@ -44,19 +44,19 @@ class Markable {
  public:
     explicit CONSTEXPR11
     Markable() noexcept
-            : x(MarkedValue) {}
+            : x(MarkedValue) { }
     explicit CONSTEXPR11
     Markable(T&& x) noexcept
-            : x(static_cast<T&&>(x)) {}
+            : x(static_cast<T&&>(x)) { }
     explicit CONSTEXPR11
     Markable(const T& x) noexcept
-            : x(x) {}
+            : x(x) { }
     CONSTEXPR11
-    Markable(M) noexcept : x(MarkedValue) {}
+    Markable(M) noexcept : x(MarkedValue) { }
     CONSTEXPR11
-    Markable(Markable&& other) noexcept : x(static_cast<T&&>(other.x)) {}
+    Markable(Markable&& other) noexcept : x(static_cast<T&&>(other.x)) { }
     CONSTEXPR11
-    Markable(const Markable& other) noexcept : x(other.x) {}
+    Markable(const Markable& other) noexcept : x(other.x) { }
 
     inline void
     operator=(T&& x_) noexcept {
@@ -85,12 +85,14 @@ class Markable {
     }
     inline CONSTEXPR11 operator bool() const noexcept { return exists(); }
 
-    inline CONSTEXPR14 T* operator->() noexcept {
+    inline CONSTEXPR14 T*
+    operator->() noexcept {
         assert_(exists());
         return &x;
     }
 
-    inline CONSTEXPR14 T& operator*() noexcept {
+    inline CONSTEXPR14 T&
+    operator*() noexcept {
         assert_(exists());
         return x;
     }
