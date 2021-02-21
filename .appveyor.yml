@@ -13,7 +13,7 @@ for:
   - cd build
   - cmake .. -G "Visual Studio 12 2013" -DCMAKE_BUILD_TYPE=Debug
   - cmake --build .
-  - .\test
+  - Debug\test.exe
 - matrix:
     only:
     - image: Visual Studio 2015
@@ -22,7 +22,7 @@ for:
   - cd build
   - cmake .. -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=Debug
   - cmake --build .
-  - .\test
+  - Debug\test.exe
 - matrix:
     only:
     - image: Visual Studio 2017
@@ -31,7 +31,7 @@ for:
   - cd build
   - cmake .. -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=Debug
   - cmake --build .
-  - .\test
+  - Debug\test.exe
 - matrix:
     only:
     - image: Visual Studio 2019
@@ -40,4 +40,4 @@ for:
   - cd build
   - cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug
   - cmake --build .
-  - .\test
+  - Debug\test.exe
