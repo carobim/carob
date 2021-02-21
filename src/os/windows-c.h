@@ -35,20 +35,23 @@
 // TCHAR type is 2 bytes in UNICODE, 1 byte otherwise
 typedef char CHAR, *LPSTR, *LPTSTR, *NPSTR, *PSTR, TCHAR;
 typedef int BOOL;
+typedef long LONG, *PLONG;
 typedef size_t SIZE_T, *PSIZE_T;
 typedef void *LPVOID, *HANDLE, *HWND, *PVOID;
+typedef __int64 LONGLONG;
 
 typedef unsigned char BOOLEAN, BYTE;
 typedef unsigned int UINT;
 typedef unsigned long DWORD, *DWORD_PTR, ULONG, *LPDWORD;
 typedef unsigned short WORD;
+typedef unsigned __int64 ULONGLONG;
 
 typedef const char *LPCSTR, *LPCSTR;
 typedef const void* LPCVOID;
 
 typedef struct {
     long long QuadPart;
-} LARGE_INTEGER;
+} LARGE_INTEGER, *PLARGE_INTEGER;
 
 #if defined(_WIN64)
 typedef long long INT_PTR, *PINT_PTR;

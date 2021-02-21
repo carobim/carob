@@ -94,17 +94,6 @@ File::readOffset(void* buf, size_t len, size_t offset) noexcept {
     return true;
 }
 
-void
-File::operator=(File&& other) noexcept {
-    if (fd) {
-        close(fd);
-    }
-    fd = other.fd;
-    rem = other.rem;
-    other.fd = 0;
-    other.rem = 0;
-}
-
 FileWriter::FileWriter(StringView path) noexcept {
     fd = open(String(path).null(), O_CREAT | O_TRUNC | O_WRONLY, 0666);
 }

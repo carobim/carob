@@ -34,6 +34,7 @@
 class File {
  public:
     File(StringView path) noexcept;
+    File(File&& other) noexcept;
     ~File() noexcept;
 
     // Whether the file was opened successfully.
@@ -42,9 +43,16 @@ class File {
     bool
     read(void* buf, size_t len) noexcept;
 
+    bool
+    readOffset(void* buf, size_t len, size_t offset) noexcept;
+
  public:
     void* handle;
     size_t rem;  // 0 when EOF
+
+ private:
+    void
+    operator=(const File&) noexcept;
 };
 
 class FileWriter {

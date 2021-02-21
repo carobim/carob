@@ -46,9 +46,6 @@ class File {
     bool
     readOffset(void* buf, size_t len, size_t offset) noexcept;
 
-    void
-    operator=(File&& other) noexcept;
-
  public:
     int fd;
     size_t rem;  // 0 when EOF
