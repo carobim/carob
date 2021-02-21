@@ -11,5 +11,6 @@
 *.swp
 
 /.idea
+/.vs
 /cmake-build*
 /build*
