@@ -11,7 +11,7 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 12 2013" -DCMAKE_BUILD_TYPE=Debug
+  - cmake .. -G "Visual Studio 12 2013"
   - cmake --build .
   - Debug\test.exe
 - matrix:
@@ -20,7 +20,7 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE=Debug
+  - cmake .. -G "Visual Studio 14 2015"
   - cmake --build .
   - Debug\test.exe
 - matrix:
@@ -29,7 +29,7 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 15 2017" -DCMAKE_BUILD_TYPE=Debug
+  - cmake .. -G "Visual Studio 15 2017"
   - cmake --build .
   - Debug\test.exe
 - matrix:
@@ -38,6 +38,6 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=Debug
+  - cmake .. -G "Visual Studio 16 2019"
   - cmake --build .
   - Debug\test.exe
