@@ -66,7 +66,7 @@ haveDebugger() noexcept {
 #    endif
     }
 
-    return static_cast<bool>(result);
+    return result != 0;
 }
 
 static void

@@ -144,15 +144,15 @@ operator!=(fvec3 a, fvec3 b) noexcept {
 
 float
 distanceTo(fvec2 a, fvec2 b) noexcept {
-    float dx = a.x - b.x;
-    float dy = a.y - b.y;
-    return sqrt(dx * dx + dy * dy);
+    double dx = static_cast<double>(a.x) - static_cast<double>(b.x);
+    double dy = static_cast<double>(a.y) - static_cast<double>(b.y);
+    return static_cast<float>(sqrt(dx * dx + dy * dy));
 }
 float
 distanceTo(fvec3 a, fvec3 b) noexcept {
-    float dx = a.x - b.x;
-    float dy = a.y - b.y;
-    return sqrt(dx * dx + dy * dy);
+    double dx = static_cast<double>(a.x) - static_cast<double>(b.x);
+    double dy = static_cast<double>(a.y) - static_cast<double>(b.y);
+    return static_cast<float>(sqrt(dx * dx + dy * dy));
 }
 
 size_t
