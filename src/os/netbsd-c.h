@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** netbsd-c.h                       **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -222,7 +222,8 @@ int
 pthread_join(pthread_t, void**) noexcept;
 #define PTHREAD_MUTEX_INITIALIZER \
     { 0x33330003, 0, {0, 0, 0}, {0}, {0, 0, 0}, 0, 0, 0, 0 }
-#define PTHREAD_COND_INITIALIZER { 0x55550005, 0, {0, 0}, 0, 0 }
+#define PTHREAD_COND_INITIALIZER \
+    { 0x55550005, 0, {0, 0}, 0, 0 }
 #define pthread_mutex_destroy __libc_mutex_destroy
 #define pthread_mutex_lock __libc_mutex_lock
 #define pthread_mutex_unlock __libc_mutex_unlock
@@ -319,8 +320,8 @@ extern "C" {
 int
 clock_gettime(clockid_t, struct timespec*) noexcept __asm("__clock_gettime50");
 int
-nanosleep(const struct timespec*,
-          struct timespec*) noexcept __asm("__nanosleep50");
+nanosleep(const struct timespec*, struct timespec*) noexcept
+        __asm("__nanosleep50");
 #define CLOCK_MONOTONIC 3
 }
 

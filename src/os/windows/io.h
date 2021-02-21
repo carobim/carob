@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** io.h                        **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** io.h                             **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -45,6 +45,24 @@ class File {
  public:
     void* handle;
     size_t rem;  // 0 when EOF
+};
+
+class FileWriter {
+public:
+    FileWriter(StringView path) noexcept;
+    ~FileWriter() noexcept;
+
+    // Whether the file was opened successfully.
+    operator bool() noexcept;
+
+    bool
+        resize(size_t size) noexcept;
+
+    bool
+        writeOffset(const void* buf, size_t len, size_t offset) noexcept;
+
+public:
+    void* handle;
 };
 
 // On Windows, these are identical and both write to the attached console, if

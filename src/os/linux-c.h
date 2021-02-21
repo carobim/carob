@@ -96,7 +96,7 @@ struct pthread_mutex_t {
 };
 
 #else
-#error unknown system
+#    error unknown system
 #endif
 
 // bits/errno.h

@@ -75,7 +75,7 @@ void
 exitProcess(int code) noexcept;
 
 #ifdef _WIN32
-#include "windows.h"
+#    include "windows.h"
 #endif
 
 #endif  // SRC_OS_OS_H_

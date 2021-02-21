@@ -89,8 +89,7 @@ makeMappedFile(MappedFile& file, StringView path) noexcept {
         return false;
     }
 
-    HANDLE mapping =
-            CreateFileMapping(hFile, 0, PAGE_READONLY, 0, 0, 0);
+    HANDLE mapping = CreateFileMapping(hFile, 0, PAGE_READONLY, 0, 0, 0);
     if (mapping == 0) {
         CloseHandle(hFile);
         return false;

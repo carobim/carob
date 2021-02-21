@@ -1,8 +1,8 @@
-/*********************************
-** Tsunagari Tile Engine        **
-** windows-condition-variable.h **
-** Copyright 2019 Paul Merrill  **
-*********************************/
+/***************************************
+** Tsunagari Tile Engine             **
+** windows-condition-variable.h      **
+** Copyright 2019-2021 Paul Merrill  **
+**************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -57,7 +57,7 @@ SleepConditionVariableSRW(PCONDITION_VARIABLE ConditionVariable,
 
 class ConditionVariable {
  public:
-    inline ConditionVariable() noexcept : cv(CONDITION_VARIABLE_INIT) {}
+    inline ConditionVariable() noexcept : cv(CONDITION_VARIABLE_INIT) { }
 
     ConditionVariable(const ConditionVariable&) = delete;
     ConditionVariable&

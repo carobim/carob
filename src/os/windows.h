@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** windows.h                          **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -37,10 +37,17 @@
  * console to its process. Otherwise it does nothing.
  */
 void
-wFixConsole() noexcept;
+wFixConsole(void) noexcept;
 
 // Simple wrapper to create a halting (modal) message box.
 void
 wMessageBox(StringView title, StringView text) noexcept;
+
+#ifdef NDEBUG
+#    define printWin32Error()
+#else
+void
+printWin32Error(void) noexcept;
+#endif
 
 #endif  // SRC_OS_WINDOWS_H_

@@ -49,7 +49,7 @@ ReleaseSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
 
 class Mutex {
  public:
-    constexpr Mutex() noexcept : m(SRWLOCK_INIT) {}
+    constexpr Mutex() noexcept : m(SRWLOCK_INIT) { }
 
     inline void
     lock() noexcept {

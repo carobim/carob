@@ -1,8 +1,8 @@
-/**********************************
-** Tsunagari Tile Engine         **
-** condition-variable.h          **
-** Copyright 2019 Paul Merrill   **
-**********************************/
+/***************************************
+** Tsunagari Tile Engine              **
+** condition-variable.h               **
+** Copyright 2019-2021 Paul Merrill   **
+***************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,9 +28,9 @@
 #define SRC_OS_CONDITION_VARIBLE_H_
 
 #ifdef _WIN32
-#include "os/windows-condition-variable.h"
+#    include "os/windows-condition-variable.h"
 #else
-#include "os/unix-condition-variable.h"
+#    include "os/unix-condition-variable.h"
 #endif
 
 #endif  // SRC_OS_CONDITION_VARIBLE_H_

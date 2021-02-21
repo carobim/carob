@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** io.cpp                      **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** io.cpp                           **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,7 +41,9 @@ __declspec(dllimport) int __stdcall
 GetFileSizeEx(void*, long long*) noexcept;
 __declspec(dllimport) int __stdcall
 ReadFile(void*, void*, unsigned long, unsigned long*, void*) noexcept;
-__declspec(dllimport)  int __stdcall
+__declspec(dllimport) int __stdcall
+SetFileValidData(void*, long long) noexcept;
+__declspec(dllimport) int __stdcall
 WriteConsoleA(void*, const void*, unsigned long, unsigned long*, void*) noexcept;
 }
 
@@ -54,7 +56,9 @@ WriteConsoleA(void*, const void*, unsigned long, unsigned long*, void*) noexcept
 #define FILE_WRITE_DATA 0x02
 #define GENERIC_WRITE 0x00120116L
 #define INVALID_HANDLE_VALUE HANDLE_VALUE(-1)
+#define CREATE_NEW 1
 #define OPEN_EXISTING 3
+#define TRUNCATE_EXISTING 5
 
 File::File(StringView path) noexcept {
     handle = CreateFileA(String(path).null(),
@@ -100,6 +104,31 @@ File::read(void* buf, size_t len) noexcept {
     }
     rem -= numRead;
     return true;
+}
+
+FileWriter::FileWriter(StringView path) noexcept {
+    handle = CreateFileA(String(path).null(), GENERIC_WRITE, 0, 0, CREATE_NEW | TRUNCATE_EXISTING, 0, 0);
+}
+
+FileWriter::~FileWriter() noexcept {
+    if (handle != INVALID_HANDLE_VALUE) {
+        CloseHandle(handle);
+    }
+}
+
+// Whether the file was opened successfully.
+FileWriter::operator bool() noexcept {
+    return handle != INVALID_HANDLE_VALUE;
+}
+
+bool
+FileWriter::resize(size_t size) noexcept {
+    return ftruncate(fd, size) == 0;
+}
+
+bool
+FileWriter::writeOffset(const void* buf, size_t len, size_t offset) noexcept {
+    return pwrite(fd, buf, len, offset) == static_cast<ssize_t>(len);
 }
 
 #define UNINITIALIZED HANDLE_VALUE(-2)

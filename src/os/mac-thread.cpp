@@ -64,8 +64,7 @@ Thread::Thread(Function<void() noexcept> f) noexcept {
     void* fun = malloc(sizeof(F));
     new (fun) F(static_cast<F&&>(f));
 
-    int err =
-            pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, fun);
+    int err = pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, fun);
     (void)err;
     assert_(err == 0);
 }

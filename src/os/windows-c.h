@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** windows-c.h                      **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -32,23 +32,19 @@
 
 #define VOID void
 
+// TCHAR type is 2 bytes in UNICODE, 1 byte otherwise
+typedef char CHAR, *LPSTR, *LPTSTR, *NPSTR, *PSTR, TCHAR;
 typedef int BOOL;
-typedef unsigned char BOOLEAN;
-typedef unsigned char BYTE;
-typedef char CHAR;
-typedef unsigned long* DWORD_PTR;
-typedef unsigned long DWORD;
-typedef void* HANDLE;
-typedef void* HWND;
-typedef DWORD* LPDWORD;
-typedef const char* LPCSTR;
-typedef const void* LPCVOID;
-typedef void* LPVOID;
-typedef void* PVOID;
 typedef size_t SIZE_T, *PSIZE_T;
+typedef void *LPVOID, *HANDLE, *HWND, *PVOID;
+
+typedef unsigned char BOOLEAN, BYTE;
 typedef unsigned int UINT;
-typedef unsigned long ULONG;
+typedef unsigned long DWORD, *DWORD_PTR, ULONG, *LPDWORD;
 typedef unsigned short WORD;
+
+typedef const char *LPCSTR, *LPCSTR;
+typedef const void* LPCVOID;
 
 typedef struct {
     long long QuadPart;
@@ -75,63 +71,84 @@ typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #define WINBASEAPI __declspec(dllimport)
 #define WINUSERAPI __declspec(dllimport)
 
-__pragma(pack(push, 8));
-extern "C" {
+#define errno (*_errno())
 
 typedef struct _iobuf {
     void* _Placeholder;
 } FILE;
-
-#if _MSC_VER < 1900
-// MSVC 2013 and below
-_CRTIMP FILE* __cdecl __iob_func() noexcept;
-#define stdin  (&__iob_func()[0])
-#define stdout (&__iob_func()[1])
-#define stderr (&__iob_func()[2])
-#else
-// MSVC 2015 and above
-_ACRTIMP_ALT FILE* __cdecl __acrt_iob_func(unsigned) noexcept;
-#define stdin (__acrt_iob_func(0))
-#define stdout (__acrt_iob_func(1))
-#define stderr (__acrt_iob_func(2))
-#endif
-
 typedef __int64 __time64_t;
 
-_ACRTIMP __time64_t __cdecl _time64(__time64_t*) noexcept;
-_ACRTIMP __declspec(noreturn) void __cdecl exit(int) noexcept;
-_ACRTIMP int __cdecl rand() noexcept;
-_ACRTIMP void __cdecl srand(unsigned int) noexcept;
-
-void* __cdecl memchr(const void*, int, size_t) noexcept;
-int __cdecl memcmp(void const*, void const*, size_t) noexcept;
-void* __cdecl memcpy(void*, void const*, size_t) noexcept;
-size_t __cdecl strlen(char const*) noexcept;
-
-int __cdecl abs(int) noexcept;
-double __cdecl atan2(double, double) noexcept;
-_ACRTIMP double __cdecl ceil(double) noexcept;
-#if defined _M_X64
-_ACRTIMP float __cdecl ceilf(float) noexcept;
+__pragma(pack(push, 8));
+extern "C" {
+#if _MSC_VER < 1900
+// MSVC 2013 and below
+_CRTIMP FILE*
+__iob_func() noexcept;
+#    define stdin (&__iob_func()[0])
+#    define stdout (&__iob_func()[1])
+#    define stderr (&__iob_func()[2])
 #else
-__inline float __CRTDECL
-ceilf(float _X) noexcept {
-    return (float)ceil(_X);
+// MSVC 2015 and above
+_ACRTIMP_ALT FILE*
+__acrt_iob_func(unsigned) noexcept;
+#    define stdin (__acrt_iob_func(0))
+#    define stdout (__acrt_iob_func(1))
+#    define stderr (__acrt_iob_func(2))
+#endif
+
+_ACRTIMP __time64_t
+_time64(__time64_t*) noexcept;
+//_ACRTIMP __declspec(noreturn) void exit(int) noexcept;
+_ACRTIMP int
+rand(void) noexcept;
+_ACRTIMP void
+srand(unsigned int) noexcept;
+
+void*
+memchr(const void*, int, size_t) noexcept;
+int
+memcmp(void const*, void const*, size_t) noexcept;
+void*
+memcpy(void*, void const*, size_t) noexcept;
+size_t
+strlen(char const*) noexcept;
+
+int
+abs(int) noexcept;
+double
+atan2(double, double) noexcept;
+_ACRTIMP double
+ceil(double) noexcept;
+#if defined _M_X64
+_ACRTIMP float
+ceilf(float) noexcept;
+#else
+inline float
+ceilf(float x) noexcept {
+    return (float)ceil(x);
 }
 #endif
-double __cdecl cos(double) noexcept;
-_ACRTIMP double __cdecl floor(double) noexcept;
-double __cdecl sin(double) noexcept;
-double __cdecl sqrt(double) noexcept;
+double
+cos(double) noexcept;
+_ACRTIMP double
+floor(double) noexcept;
+double
+sin(double) noexcept;
+double
+sqrt(double) noexcept;
 
-_ACRTIMP double __cdecl strtod(char const*, char**) noexcept;
-_ACRTIMP long __cdecl strtol(char const*, char**, int) noexcept;
-_ACRTIMP unsigned long __cdecl strtoul(char const*, char**, int) noexcept;
-_ACRTIMP int __cdecl atoi(char const*) noexcept;
+_ACRTIMP double
+strtod(char const*, char**) noexcept;
+_ACRTIMP long
+strtol(char const*, char**, int) noexcept;
+_ACRTIMP unsigned long
+strtoul(char const*, char**, int) noexcept;
+_ACRTIMP int
+atoi(char const*) noexcept;
 
-_ACRTIMP int* __cdecl _errno();
-#define errno (*_errno())
-}
+_ACRTIMP int*
+_errno(void);
+}  // extern "C"
 __pragma(pack(pop));
 
 extern "C" {
@@ -139,29 +156,32 @@ void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
 void*
 memmove(void*, const void*, size_t) noexcept;
-}
-
+}  // extern "C"
 
 #if _MSC_VER < 1900
 // MSVC 2013 and below
 extern "C" {
-__declspec(dllimport) int __cdecl printf(const char*, ...);
-__declspec(dllimport) int __cdecl fprintf(FILE *, const char*, ...);
-__declspec(dllimport) int __cdecl sprintf(char*, const char*, ...);
-}
+_ACRTIMP int
+printf(const char*, ...) noexcept;
+_ACRTIMP int
+fprintf(FILE*, const char*, ...) noexcept;
+_ACRTIMP int
+sprintf(char*, const char*, ...) noexcept;
+}  // extern "C"
 #else
 // MSVC 2015 and above
-int __CRTDECL
-fprintf(FILE* const, char const* const, ...) noexcept;
-int __CRTDECL
+int
 printf(char const* const, ...) noexcept;
-int __CRTDECL
+int
+fprintf(FILE* const, char const* const, ...) noexcept;
+int
 sprintf(char* const, char const* const, ...) noexcept;
 #endif
 
 // vcruntime_string.h
 extern "C" {
-void* __cdecl memset(void*, int, size_t);
-}
+void*
+memset(void*, int, size_t);
+}  // extern "C"
 
 #endif  // SRC_OS_WINDOWS_C_H_

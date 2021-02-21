@@ -59,13 +59,13 @@ WINBASEAPI DWORD WINAPI
 WaitForSingleObjectEx(HANDLE hHandle,
                       DWORD dwMilliseconds,
                       BOOL bAlertable) noexcept;
-_ACRTIMP uintptr_t __cdecl _beginthreadex(
-        void* security,
-        unsigned stack_size,
-        unsigned(WINAPI* start_address)(void*),
-        void* arglist,
-        unsigned initflag,
-        unsigned* thrdaddr) noexcept;
+_ACRTIMP
+uintptr_t __cdecl _beginthreadex(void* security,
+                                 unsigned stack_size,
+                                 unsigned(WINAPI* start_address)(void*),
+                                 void* arglist,
+                                 unsigned initflag,
+                                 unsigned* thrdaddr) noexcept;
 
 #define INFINITE 0xFFFFFFFF  // Infinite timeout.
 #define WAIT_FAILED 0xFFFFFFFF
@@ -83,7 +83,7 @@ class Thread {
  public:
     inline explicit Thread(Function<void()> f) noexcept {
         Function<void()>* data =
-            new Function<void()>(static_cast<Function<void()>&&>(f));
+                new Function<void()>(static_cast<Function<void()>&&>(f));
         id = reinterpret_cast<HANDLE>(_beginthreadex(0,
                                                      0,
                                                      beginthreadex_thunk,
@@ -125,6 +125,6 @@ threadHardwareConcurrency() noexcept {
 }
 
 static void
-threadDisableTimerCoalescing() noexcept {}
+threadDisableTimerCoalescing() noexcept { }
 
 #endif  // SRC_OS_WINDOWS_THREAD_H_

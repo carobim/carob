@@ -44,7 +44,7 @@ class Thread {
  public:
     inline explicit Thread(Function<void()> f) noexcept {
         Function<void()>* fun =
-            new Function<void()>(static_cast<Function<void()>&&>(f));
+                new Function<void()>(static_cast<Function<void()>&&>(f));
 
         int err = pthread_create(&t, 0, run, static_cast<void*>(fun));
         (void)err;
@@ -82,6 +82,6 @@ threadHardwareConcurrency() noexcept {
 }
 
 static inline void
-threadDisableTimerCoalescing() noexcept {}
+threadDisableTimerCoalescing() noexcept { }
 
 #endif  // SRC_OS_LINUX_THREAD_H_

@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** io.h                        **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** io.h                             **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,9 +28,9 @@
 #define SRC_OS_IO_H_
 
 #if defined(_WIN32)
-#include "os/windows/io.h"
+#    include "os/windows/io.h"
 #else
-#include "os/unix/io.h"
+#    include "os/unix/io.h"
 #endif
 
 #endif  // SRC_OS_IO_H_

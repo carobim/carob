@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** mutex.h                          **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -28,9 +28,9 @@
 #define SRC_OS_MUTEX_H_
 
 #ifdef _WIN32
-#include "os/windows-mutex.h"
+#    include "os/windows-mutex.h"
 #else
-#include "os/unix-mutex.h"
+#    include "os/unix-mutex.h"
 #endif
 
 #include "util/noexcept.h"
