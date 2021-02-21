@@ -25,6 +25,7 @@
 // **********
 
 #include "util/assert.h"
+#include "util/noexcept.h"
 #include "util/string-view.h"
 
 void
