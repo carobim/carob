@@ -201,7 +201,11 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
 if (WIN32)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/memmove.cpp
-        #${HERE}/src/os/windows-c.cpp  # Not used in linking???
+
+        # On MSVC2013 including this file results in a warning. In MSVC2015+
+        # omitting it results in an error.
+        ${HERE}/src/os/windows-c.cpp
+        
         ${HERE}/src/os/windows-c.h
         ${HERE}/src/os/windows-chrono.cpp
         ${HERE}/src/os/windows-mapped-file.cpp
