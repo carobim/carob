@@ -226,6 +226,7 @@ if (WIN32)
         ${HERE}/src/os/windows/io.h
     )
     set(TEST_SOURCES ${TEST_SOURCES}
+        ${HERE}/src/os/memmove.cpp
         ${HERE}/src/os/windows-c.cpp
         ${HERE}/src/os/windows-c.h
         ${HERE}/src/os/windows.cpp
