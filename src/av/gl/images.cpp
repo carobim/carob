@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** images.cpp                       **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -33,10 +33,10 @@
 #include "core/measure.h"
 #include "core/resources.h"
 #include "core/window.h"
+#include "util/assert.h"
 #include "util/hashvector.h"
 #include "util/int.h"
 #include "util/noexcept.h"
-#include "util/optional.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
@@ -460,7 +460,7 @@ imageInit() noexcept {
     aPosition = glGetAttribLocation_(program, "aPosition");
     uAtlas = glGetUniformLocation_(program, "tAtlas");
 
-    float width = static_cast<float>(windowWidth());
+    //float width = static_cast<float>(windowWidth());
     float height = static_cast<float>(windowHeight());
 
     float positions[] = {
@@ -519,18 +519,15 @@ load(StringView path) noexcept {
     TiledImage& tiles = images.allocate(hash_(path));
     tiles = {};
 
-    Optional<StringView> r = Resources::load(path);
-    if (!r) {
+    String r;
+    if (!resourceLoad(path, r)) {
         // Error logged.
         return 0;
     }
 
-    // FIXME: Do this at the resource level.
-    //assert_(r->size < INT32_MAX);
-
     SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r->data)),
-                          static_cast<int>(r->size));
+            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                          static_cast<int>(r.size));
 
     int x = atlasUsed;
     int y = 0;
@@ -622,18 +619,23 @@ imageDraw(Image image, float x, float y, float z) noexcept {}
 // glOrtho(-320,320,240,-240,0,1);
 
 TiledImage
-tilesLoad(StringView path, uint32_t tileWidth, uint32_t tileHeight) noexcept {
+tilesLoad(StringView path,
+          uint32_t tileWidth,
+          uint32_t tileHeight,
+          uint32_t numAcross,
+          uint32_t numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
     if (!tiles) {
         tiles = load(path);
+
+        assert_(tiles->image.width == tileWidth * numAcross);
+        assert_(tiles->image.height == tileHeight * numHigh);
+
         tiles->tileWidth = tileWidth;
         tiles->tileHeight = tileHeight;
-        tiles->numTiles = (tiles->image.width / tileWidth) *
-                          (tiles->image.height / tileHeight);
+        tiles->numTiles = numAcross * numHigh;
     }
-
-    assert_(tiles);
 
     return *tiles;
 }
@@ -648,10 +650,9 @@ tileAt(TiledImage tiles, uint32_t index) noexcept {
     Image image = tiles.image;
 
     return {
-        tiles.image.texture,
-        tiles.image.x + tiles.tileWidth * index % tiles.image.width,
-        tiles.image.y + tiles.tileWidth * index / tiles.image.width *
-                        tiles.tileHeight,
+        image.texture,
+        image.x + tiles.tileWidth * index % image.width,
+        image.y + tiles.tileWidth * index / image.width * tiles.tileHeight,
         tiles.tileWidth,
         tiles.tileHeight,
     };
