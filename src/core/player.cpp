@@ -147,9 +147,6 @@ Player::setFrozen(bool b) noexcept {
     }
 
     Entity::setFrozen(b);
-    if (!frozen && !velocity.x && !velocity.y) {
-        moveByTile(velocity);
-    }
 }
 
 void
