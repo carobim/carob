@@ -37,6 +37,7 @@
 #include "util/hashvector.h"
 #include "util/int.h"
 #include "util/noexcept.h"
+#include "util/random.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
@@ -205,6 +206,7 @@ GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 #define GL_FALSE                          0x0000
 #define GL_NO_ERROR                       0x0000
 #define GL_TRIANGLES                      0x0004
+#define GL_TRIANGLE_STRIP                 0x0005
 #define GL_INVALID_ENUM                   0x0500
 #define GL_INVALID_VALUE                  0x0501
 #define GL_INVALID_OPERATION              0x0502
@@ -361,11 +363,14 @@ vertexSource =
     "#version 110\n"
     "\n"
     "attribute vec3 aPosition;\n"
+    "attribute vec3 aColor;\n"
     "varying vec2 vTexCoord;\n"
+    "varying vec3 vColor;\n"
     "\n"
     "void main() {\n"
     //"    vTexCoord = (aPosition + 1.0) / 2.0;\n"
     "    vTexCoord = vec2(0, 0);\n"
+    "    vColor = aColor;\n"
     "    gl_Position = vec4(aPosition, 1.0);\n"
     "}\n";
 
@@ -374,11 +379,12 @@ fragmentSource =
     "#version 110\n"
     "\n"
     "varying vec2 vTexCoord;\n"
+    "varying vec3 vColor;\n"
     "uniform sampler2D tAtlas;\n"
     "\n"
     "void main() {\n"
     "    gl_FragColor = texture2D(tAtlas, vTexCoord);\n"
-    "    gl_FragColor = vec4(1, 1, 1, 1);\n"
+    "    gl_FragColor = vec4(vColor, 1);\n"
     "}\n";
 
 #define ATLAS_WIDTH 2048
@@ -388,10 +394,12 @@ static HashVector<TiledImage> images;
 static size_t atlasUsed = 0;
 
 static Attribute aPosition;
+static Attribute aColor;
 //static Attribute aTexCoord;
 //static Uniform uResolution;
 static Uniform uAtlas;
 static VertexBuffer vbPosition = 1;
+static VertexBuffer vbColor = 2;
 //static VertexBuffer vbTexCoord;
 static Texture tAtlas;
 
@@ -458,19 +466,24 @@ imageInit() noexcept {
     glUseProgram_(program);
 
     aPosition = glGetAttribLocation_(program, "aPosition");
+    aColor = glGetAttribLocation_(program, "aColor");
     uAtlas = glGetUniformLocation_(program, "tAtlas");
 
     //float width = static_cast<float>(windowWidth());
-    float height = static_cast<float>(windowHeight());
+    //float height = static_cast<float>(windowHeight());
 
     float positions[] = {
-        0, 0, 0,
+          0, 0, 0,
         0.5, 0, 0,
-        0, height, 0,
+          0, 1, 0,
+        0.5, 1, 0,
+    };
 
-        0, height, 0,
-        0.5, 0, 0,
-        0.5, height, 0,
+    float colors[] = {
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
     };
 
     /*
@@ -488,9 +501,14 @@ imageInit() noexcept {
     glBindBuffer_(GL_ARRAY_BUFFER, vbPosition);
     glBufferData_(GL_ARRAY_BUFFER, sizeof(positions), positions,
                   GL_STATIC_DRAW);
-
     glVertexAttribPointer_(aPosition, 3, GL_FLOAT, false, 0, 0);
     glEnableVertexAttribArray_(aPosition);
+
+    glBindBuffer_(GL_ARRAY_BUFFER, vbColor);
+    glBufferData_(GL_ARRAY_BUFFER, sizeof(colors), colors,
+                  GL_STATIC_DRAW);
+    glVertexAttribPointer_(aColor, 3, GL_FLOAT, false, 0, 0);
+    glEnableVertexAttribArray_(aColor);
 
     glUniform1i_(uAtlas, 0);
 
@@ -673,6 +691,19 @@ imageStartFrame() noexcept {
 
 void
 imageEndFrame() noexcept {
-    glDrawArrays_(GL_TRIANGLES, 0, 6);
+    float colors[] = {
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
+        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
+    };
+
+    glBindBuffer_(GL_ARRAY_BUFFER, vbColor);
+    glBufferData_(GL_ARRAY_BUFFER, sizeof(colors), colors,
+                  GL_STATIC_DRAW);
+    glVertexAttribPointer_(aColor, 3, GL_FLOAT, false, 0, 0);
+    glEnableVertexAttribArray_(aColor);
+
+    glDrawArrays_(GL_TRIANGLE_STRIP, 0, 4);
     SDL_GL_SwapWindow(sdl2Window);
 }
