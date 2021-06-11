@@ -354,18 +354,22 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
 
     time_t now = worldTime();
 
+    // FIXME: Same.
     if (tileGraphics.size > tilesAnimated.size) {
         tilesAnimated.resize(tileGraphics.size);
     }
+
+    // FIXME: Only do this once per draw() call. Don't do it per drawTiles.
     for (bool& animated : tilesAnimated) {
         animated = false;
     }
 
     size_t maxTiles = (tiles.y2 - tiles.y1) * (tiles.x2 - tiles.x1);
-    if (maxTiles > items.size) {
-        items.resize(maxTiles);
-    }
-    size_t itemCount = 0;
+    size_t itemCount = items.size;
+
+    // FIXME: Resize once before any drawTiles calls.
+    //        Do maxTiles * count(TILE_LAYERS).
+    items.resize(maxTiles + itemCount);
 
     // float depth = grid.idx2depth[(size_t)z];
 
