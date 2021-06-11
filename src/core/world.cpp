@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** world.cpp                          **
 ** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -247,12 +247,10 @@ worldStoreKeys() noexcept {
 void
 worldRestoreKeys() noexcept {
     Keys now = windowKeysDown;
-    Keys then = keyStates[numKeyStates - 1];
-
-    numKeyStates--;
+    Keys then = keyStates[--numKeyStates];
 
     for (size_t i = 0; i < sizeof(Keys) * 8; i++) {
-        Key key = (now ^ then) & (i << 1);
+        Key key = (now ^ then) & (1 << i);
         if (key) {
             if (now & key) {
                 worldButtonDown(key);

@@ -139,14 +139,14 @@ Player::useTile() noexcept {
 
 void
 Player::setFrozen(bool b) noexcept {
+    Entity::setFrozen(b);
+
     if (b) {
         worldStoreKeys();
     }
     else {
         worldRestoreKeys();
     }
-
-    Entity::setFrozen(b);
 }
 
 void
