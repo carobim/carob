@@ -109,6 +109,11 @@ void
 musicWorkerPlay(StringView path) noexcept {
     init();
 
+    if (path.size == 1 && path[0] == 0) {
+        musicWorkerStop();
+        return;
+    }
+
     uint32_t pathHash = hash_(path);
 
     if (songHash == pathHash) {

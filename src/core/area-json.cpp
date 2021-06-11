@@ -250,6 +250,9 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
 
     if (musicValue.isString()) {
         musicPath = musicValue.toString();
+        if (musicPath == "") {
+            musicPath << StringView("\0", 1);
+        }
     }
     if (loopValue.isString()) {
         StringView directions = loopValue.toString();
