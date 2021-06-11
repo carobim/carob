@@ -38,29 +38,32 @@ typedef int32_t dev_t;
 typedef uint32_t gid_t;
 typedef uint64_t ino64_t;
 typedef uint16_t mode_t;
+// In sys/_type/_nlink_t.h on Xcode 12.5/macOS 11
 typedef uint16_t nlink_t;
 typedef int64_t off_t;
 typedef uint32_t uid_t;
+// In sys/_type/_iovec_t.h on Xcode 12.5/macOS 11
 struct iovec {
     void* iov_base;
     size_t iov_len;
 };
+// In sys/_type/_timespec.h on Xcode 12.5/macOS 11
 struct timespec {
     time_t tv_sec;
     long tv_nsec;
 };
 
 // sys/_pthread/_pthread_types.h
-#define __PTHREAD_MUTEX_SIZE__ 56
 #define __PTHREAD_COND_SIZE__  40
+#define __PTHREAD_MUTEX_SIZE__ 56
 #define __PTHREAD_SIZE__       8176
-struct pthread_mutex_t {
-    long __sig;
-    char __opaque[__PTHREAD_MUTEX_SIZE__];
-};
 struct pthread_cond_t {
     long __sig;
     char __opaque[__PTHREAD_COND_SIZE__];
+};
+struct pthread_mutex_t {
+    long __sig;
+    char __opaque[__PTHREAD_MUTEX_SIZE__];
 };
 struct _pthread_t {
     long __sig;
@@ -68,6 +71,17 @@ struct _pthread_t {
     char __opaque[__PTHREAD_SIZE__];
 };
 typedef _pthread_t* pthread_t;
+
+// sys/cdefs.h
+#if defined(__i386__)
+#    error unknown C types on 32-bit XNU
+#elif defined(__x86_64__)
+#    define __DARWIN_ALIAS_I(sym) __asm("_" #sym "$INODE64")
+#    define __DARWIN_INODE64(sym) __asm("_" #sym "$INODE64")
+#else
+#    define __DARWIN_ALIAS_I(sym)
+#    define __DARWIN_INODE64(sym)
+#endif
 
 // sys/dirent.h
 #define __DARWIN_MAXPATHLEN 1024
@@ -83,18 +97,18 @@ struct dirent {
 #define DT_REG 8
 
 // sys/errno.h
-extern int*
-__error() noexcept;
+int*
+__error(void) noexcept;
 #define errno (*__error())
 #define EINTR 4
 
 // sys/fcntl.h
 int
 open(const char*, int, ...) noexcept;
-#define O_RDONLY 0x0000
-#define O_WRONLY 0x0001
-#define O_CREAT  0x0200
-#define O_TRUNC  0x0400
+#define O_RDONLY 0x000
+#define O_WRONLY 0x001
+#define O_CREAT  0x200
+#define O_TRUNC  0x400
 
 // sys/mman.h
 void*
@@ -102,8 +116,8 @@ mmap(void*, size_t, int, int, int, off_t) noexcept;
 int
 munmap(void*, size_t) noexcept;
 #define MAP_FAILED ((void*)-1)
-#define MAP_SHARED 0x0001
-#define PROT_READ  0x01
+#define MAP_SHARED 0x1
+#define PROT_READ  0x1
 
 // sys/stat.h
 struct stat {
@@ -127,14 +141,16 @@ struct stat {
     int64_t st_qspare[2];
 };
 int
-fstat(int, struct stat*) noexcept __asm("_fstat$INODE64");
+fstat(int, struct stat*) noexcept __DARWIN_INODE64(fstat);
 int
 mkdir(const char*, mode_t) noexcept;
 int
-stat(const char*, struct stat*) noexcept __asm("_stat$INODE64");
+stat(const char*, struct stat*) noexcept __DARWIN_INODE64(stat);
+// In sys/_types/_s_ifmt.h on Xcode 12.5/macOS 11
 #define S_IFMT     0170000
+// In sys/_types/_s_ifmt.h on Xcode 12.5/macOS 11
 #define S_IFDIR    0040000
-#define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
+#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
 
 // sys/sysctl.h
 int
@@ -165,9 +181,9 @@ struct DIR {
 int
 closedir(DIR*) noexcept;
 DIR*
-opendir(const char*) noexcept __asm("_opendir$INODE64");
+opendir(const char*) noexcept __DARWIN_ALIAS_I(opendir);
 struct dirent*
-readdir(DIR*) noexcept __asm("_readdir$INODE64");
+readdir(DIR*) noexcept __DARWIN_INODE64(readdir);
 
 // math.h
 double
