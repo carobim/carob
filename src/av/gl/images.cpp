@@ -173,6 +173,7 @@ GLFN_VOID_1(void, glActiveTexture, GLenum)
 GLFN_VOID_2(void, glAttachShader, Program, Shader)
 GLFN_VOID_2(void, glBindBuffer, GLenum, Buffer)
 GLFN_VOID_2(void, glBindTexture, GLenum, Texture)
+GLFN_VOID_2(void, glBlendFunc, GLenum, GLenum)
 GLFN_VOID_4(void, glBufferData, GLenum, GLsizeiptr, const void*, GLenum)
 GLFN_VOID_1(void, glClear, GLbitfield)
 GLFN_VOID_4(void, glClearColor, GLfloat, GLfloat, GLfloat, GLfloat)
@@ -180,6 +181,7 @@ GLFN_VOID_1(void, glCompileShader, Shader)
 GLFN_RETURN_0(Program, glCreateProgram)
 GLFN_RETURN_1(Shader, glCreateShader, GLenum)
 GLFN_VOID_3(void, glDrawArrays, GLenum, GLint, GLsizei)
+GLFN_VOID_1(void, glEnable, GLenum)
 GLFN_VOID_1(void, glEnableVertexAttribArray, Attribute)
 GLFN_VOID_2(void, glGenBuffers, GLsizei, Buffer*)
 GLFN_VOID_2(void, glGenTextures, GLsizei, Texture*)
@@ -208,11 +210,14 @@ GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 #define GL_NO_ERROR                       0x0000
 #define GL_TRIANGLES                      0x0004
 #define GL_TRIANGLE_STRIP                 0x0005
+#define GL_SRC_ALPHA                      0x0302
+#define GL_ONE_MINUS_SRC_ALPHA            0x0303
 #define GL_INVALID_ENUM                   0x0500
 #define GL_INVALID_VALUE                  0x0501
 #define GL_INVALID_OPERATION              0x0502
 #define GL_OUT_OF_MEMORY                  0x0505
 #define GL_INVALID_FRAMEBUFFER_OPERATION  0x0506
+#define GL_BLEND                          0x0BE2
 #define GL_TEXTURE_2D                     0x0DE1
 #define GL_UNSIGNED_BYTE                  0x1401
 #define GL_FLOAT                          0x1406
@@ -227,6 +232,7 @@ GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 #define GL_TEXTURE_WRAP_S                 0x2802
 #define GL_TEXTURE_WRAP_T                 0x2803
 #define GL_COLOR_BUFFER_BIT               0x4000
+#define GL_BGRA                           0x80E1
 #define GL_CLAMP_TO_EDGE                  0x812F
 #define GL_TEXTURE0                       0x84C0
 #define GL_ARRAY_BUFFER                   0x8892
@@ -364,14 +370,12 @@ vertexSource =
     "#version 110\n"
     "\n"
     "attribute vec3 aPosition;\n"
-    "attribute vec3 aColor;\n"
+    "attribute vec2 aTexCoord;\n"
     "varying vec2 vTexCoord;\n"
     "varying vec3 vColor;\n"
     "\n"
     "void main() {\n"
-    //"    vTexCoord = (aPosition + 1.0) / 2.0;\n"
-    "    vTexCoord = vec2(0, 0);\n"
-    "    vColor = aColor;\n"
+    "    vTexCoord = aTexCoord;\n"
     "    gl_Position = vec4(aPosition, 1.0);\n"
     "}\n";
 
@@ -380,12 +384,10 @@ fragmentSource =
     "#version 110\n"
     "\n"
     "varying vec2 vTexCoord;\n"
-    "varying vec3 vColor;\n"
     "uniform sampler2D tAtlas;\n"
     "\n"
     "void main() {\n"
     "    gl_FragColor = texture2D(tAtlas, vTexCoord);\n"
-    "    gl_FragColor = vec4(vColor, 1);\n"
     "}\n";
 
 #define ATLAS_WIDTH 2048
@@ -395,15 +397,19 @@ static HashVector<TiledImage> images;
 static size_t atlasUsed = 0;
 
 static Attribute aPosition;
-static Attribute aColor;
-//static Attribute aTexCoord;
+static Attribute aTexCoord;
 //static Uniform uResolution;
 static Uniform uAtlas;
 static VertexBuffer vbAttributes = 1;
 //static VertexBuffer vbTexCoord;
 static Texture tAtlas;
 
-static Vector<fvec3> attributes;
+struct Vertex {
+    fvec3 position;
+    fvec2 texCoord;
+};
+
+static Vector<Vertex> attributes;
 
 static bool printed = false;
 
@@ -436,6 +442,7 @@ imageInit() noexcept {
     loadFunction(glAttachShader);
     loadFunction(glBindBuffer);
     loadFunction(glBindTexture);
+    loadFunction(glBlendFunc);
     loadFunction(glBufferData);
     loadFunction(glClear);
     loadFunction(glClearColor);
@@ -443,6 +450,7 @@ imageInit() noexcept {
     loadFunction(glCreateProgram);
     loadFunction(glCreateShader);
     loadFunction(glDrawArrays);
+    loadFunction(glEnable);
     loadFunction(glEnableVertexAttribArray);
     loadFunction(glGenBuffers);
     loadFunction(glGenTextures);
@@ -464,11 +472,14 @@ imageInit() noexcept {
     loadFunction(glVertexAttribPointer);
     loadFunction(glViewport);
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     Program program = makeProgram(vertexSource, fragmentSource);
     glUseProgram_(program);
 
     aPosition = glGetAttribLocation_(program, "aPosition");
-    aColor = glGetAttribLocation_(program, "aColor");
+    aTexCoord = glGetAttribLocation_(program, "aTexCoord");
     uAtlas = glGetUniformLocation_(program, "tAtlas");
 
     glUniform1i_(uAtlas, 0);
@@ -487,10 +498,6 @@ imageInit() noexcept {
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D_(GL_TEXTURE_2D, 0, GL_RGBA, ATLAS_WIDTH, ATLAS_HEIGHT, 0,
                   GL_RGBA, GL_UNSIGNED_BYTE, 0);
-
-    const uint8_t data[] = { 255, 255, 255, 255 };
-    glTexImage2D_(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0,
-                  GL_RGBA, GL_UNSIGNED_BYTE, &data);
 }
 
 static TiledImage*
@@ -516,8 +523,8 @@ load(StringView path) noexcept {
     {
         TimeMeasure m(String() << "Constructed " << path << " as image");
 
-        //SDL_Surface* surface = IMG_Load_RW(ops, 1);
-        SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
+        SDL_Surface* surface = IMG_Load_RW(ops, 1);
+        //SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
         if (!surface) {
             logFatal("SDL2", String() << "Invalid image: " << path);
             return 0;
@@ -533,11 +540,11 @@ load(StringView path) noexcept {
         glTexSubImage2D_(
             GL_TEXTURE_2D,  // target
             0,  // level
-            x, // xoffset
-            y, // yoffset
+            x,  // xoffset
+            y,  // yoffset
             width,  // width
             height,  // height
-            GL_RGBA,  // format
+            GL_BGRA,  // format
             GL_UNSIGNED_BYTE,  // type
             surface->pixels  // data
         );
@@ -589,6 +596,8 @@ imageRelease(Image image) noexcept {}
 
 void
 imageDraw(Image image, float x, float y, float z) noexcept {
+    // FIXME: Optimize math.
+
     fvec2 trans = sdl2Translation;
     fvec2 scale = sdl2Scaling;
 
@@ -613,31 +622,33 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 
     size_t offset = attributes.size;
 
+    const size_t QUAD_COORDS = 6;
+
     if (attributes.capacity == 0) {
-        attributes.reserve(12 * 8);
+        attributes.reserve(QUAD_COORDS * 8);
     }
-    else if (attributes.size + 12 > attributes.capacity) {
+    else if (attributes.size + QUAD_COORDS > attributes.capacity) {
         attributes.reserve(attributes.capacity * 2);
     }
-    attributes.size += 12;
+    attributes.size += QUAD_COORDS;
 
-    attributes[offset+0] = {left, bottom, z};
-    attributes[offset+1] = {1.f, 0.f, 0.f};
+    float tw = ATLAS_WIDTH;
+    float th = ATLAS_HEIGHT;
 
-    attributes[offset+2] = {right, bottom, z};
-    attributes[offset+3] = {0.f, 1.f, 0.f};
+    float ttop = image.y / th;
+    float tbottom = (image.y + image.height) / th;
+    float tleft = image.x / tw;
+    float tright = (image.x + image.width) / tw;
 
-    attributes[offset+4] = {left, top, z};
-    attributes[offset+5] = {0.f, 0.f, 1.f};
+    // Q: Why are the texture coordinates upside down?
 
-    attributes[offset+6] = {right, bottom, z};
-    attributes[offset+7] = {0.f, 1.f, 0.f};
+    attributes[offset+0] = { {left, bottom, z}, {tleft, tbottom} };
+    attributes[offset+1] = { {right, bottom, z}, {tright, tbottom} };
+    attributes[offset+2] = { {left, top, z}, {tleft, ttop} };
 
-    attributes[offset+8] = {left, top, z};
-    attributes[offset+9] = {0.f, 0.f, 1.f};
-
-    attributes[offset+10] = {right, top, z};
-    attributes[offset+11] = {0.f, 0.f, 0.f};
+    attributes[offset+3] = { {right, bottom, z}, {tright, tbottom} };
+    attributes[offset+4] = { {left, top, z}, {tleft, ttop} };
+    attributes[offset+5] = { {right, top, z}, {tright, ttop} };
 }
 
 // TODO:
@@ -690,10 +701,13 @@ imagesPrune(time_t latestPermissibleUse) noexcept {}
 
 void
 imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept {
+    // TODO
 }
 
 void
 imageStartFrame() noexcept {
+    // FIXME: Uses lots of CPU on macOS. Replace with adding black borders
+    //        around play area.
     glClearColor_(0, 0, 0, 1);
     glClear_(GL_COLOR_BUFFER_BIT);
 }
@@ -701,15 +715,18 @@ imageStartFrame() noexcept {
 void
 imageEndFrame() noexcept {
     glBindBuffer_(GL_ARRAY_BUFFER, vbAttributes);
-    glBufferData_(GL_ARRAY_BUFFER, attributes.size * sizeof(fvec3),
+    glBufferData_(GL_ARRAY_BUFFER, attributes.size * sizeof(Vertex),
                   attributes.data, GL_STATIC_DRAW);
 
-    glVertexAttribPointer_(aPosition, 3, GL_FLOAT, false, 2 * sizeof(fvec3), 0);
+    glVertexAttribPointer_(aPosition, 3, GL_FLOAT, false,
+                           sizeof(Vertex),
+                           &static_cast<Vertex*>(0)->position);
     glEnableVertexAttribArray_(aPosition);
 
-    glVertexAttribPointer_(aColor, 3, GL_FLOAT, false, 2 * sizeof(fvec3),
-                           reinterpret_cast<const void*>(1 * sizeof(fvec3)));
-    glEnableVertexAttribArray_(aColor);
+    glVertexAttribPointer_(aTexCoord, 2, GL_FLOAT, false,
+                           sizeof(Vertex),
+                           &static_cast<Vertex*>(0)->texCoord);
+    glEnableVertexAttribArray_(aTexCoord);
 
     glDrawArrays_(GL_TRIANGLES, 0, attributes.size);
     SDL_GL_SwapWindow(sdl2Window);
