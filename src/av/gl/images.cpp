@@ -263,8 +263,7 @@ customError(StringView call, StringView msg) noexcept {
 }
 
 static void
-enumError(StringView call) noexcept {
-    GLenum error = glGetError();
+enumError(StringView call, GLenum error) noexcept {
     StringView errorName = getErrorName(error);
 
     customError(call, errorName);
@@ -272,8 +271,9 @@ enumError(StringView call) noexcept {
 
 static void
 checkError(StringView call) noexcept {
-    if (glGetError()) {
-        enumError(call);
+    GLenum error = glGetError();
+    if (error) {
+        enumError(call, error);
     }
 }
 
@@ -516,8 +516,8 @@ load(StringView path) noexcept {
     {
         TimeMeasure m(String() << "Constructed " << path << " as image");
 
-        SDL_Surface* surface = IMG_Load_RW(ops, 1);
-        //SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
+        //SDL_Surface* surface = IMG_Load_RW(ops, 1);
+        SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
         if (!surface) {
             logFatal("SDL2", String() << "Invalid image: " << path);
             return 0;
@@ -530,7 +530,6 @@ load(StringView path) noexcept {
         //
         // Copy surface into the atlas to the right of the previous image,
         // or at the left edge, if there was no previous image.
-        /*
         glTexSubImage2D_(
             GL_TEXTURE_2D,  // target
             0,  // level
@@ -542,7 +541,6 @@ load(StringView path) noexcept {
             GL_UNSIGNED_BYTE,  // type
             surface->pixels  // data
         );
-        */
         /*
         glTexImage2D_(
             GL_TEXTURE_2D,
