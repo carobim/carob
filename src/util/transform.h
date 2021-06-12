@@ -49,6 +49,9 @@ Transform
 transformScale(float factor) noexcept;
 
 Transform
+transformScale(float x, float y) noexcept;
+
+Transform
 transformTranslate(float x, float y) noexcept;
 
 Transform

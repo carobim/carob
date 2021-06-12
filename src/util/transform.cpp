@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** transform.cpp                    **
-** Copyright 2017-2020 Paul Merrill **
+** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -34,6 +34,11 @@ transformScale(float factor) noexcept {
 }
 
 Transform
+transformScale(float x, float y) noexcept {
+    return {{x, 0, 0, 0, 0, y, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+}
+
+Transform
 transformTranslate(float x, float y) noexcept {
     return {{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1}};
 }
@@ -42,10 +47,10 @@ Transform
 operator*(Transform a, Transform b) noexcept {
     Transform result;
     for (int i = 0; i < 16; i++) {
-        result.m[i] = a.m[i / 4 * 4 + 0] * b.m[i % 4 + 0 * 4] +
-                      a.m[i / 4 * 4 + 1] * b.m[i % 4 + 1 * 4] +
-                      a.m[i / 4 * 4 + 2] * b.m[i % 4 + 2 * 4] +
-                      a.m[i / 4 * 4 + 3] * b.m[i % 4 + 3 * 4];
+        result.m[i] = a.m[(i & ~3)    ] * b.m[(i & 3)     ] +
+                      a.m[(i & ~3) | 1] * b.m[(i & 3) |  4] +
+                      a.m[(i & ~3) | 2] * b.m[(i & 3) |  8] +
+                      a.m[ i       | 3] * b.m[(i & 3) | 12];
     }
     return result;
 }

@@ -29,6 +29,7 @@
 #include "av/sdl2/error.h"
 #include "av/sdl2/sdl2.h"
 #include "av/sdl2/window.h"
+#include "core/client-conf.h"
 #include "core/log.h"
 #include "core/measure.h"
 #include "core/resources.h"
@@ -40,6 +41,7 @@
 #include "util/random.h"
 #include "util/string-view.h"
 #include "util/string.h"
+#include "util/transform.h"
 #include "util/vector.h"
 
 //
@@ -77,6 +79,7 @@ typedef char GLchar;
 typedef unsigned GLenum;
 typedef int GLint;
 typedef float GLfloat;
+typedef double GLdouble;
 typedef int GLsizei;
 typedef ssize_t GLsizeiptr;
 typedef uint8_t GLubyte;
@@ -93,6 +96,14 @@ typedef GLuint VertexBuffer;
 // TODO: Figure out noexcept?
 typedef GLenum (APIENTRY* GlGetErrorProc)();
 static APICALL GlGetErrorProc glGetError;
+
+#define GLFN_VOID_0(rt, fn) \
+    typedef rt (APIENTRY* fn##Proc)(); \
+    static APICALL fn##Proc fn; \
+    static rt fn##_() noexcept { \
+        fn(); \
+        checkError(#fn); \
+    }
 
 #define GLFN_VOID_1(rt, fn, t1) \
     typedef rt (APIENTRY* fn##Proc)(t1); \
@@ -201,6 +212,8 @@ GLFN_VOID_3(void, glTexParameteri, GLenum, GLenum, GLint)
 GLFN_VOID_9(void, glTexSubImage2D, GLenum, GLint, GLint, GLint, GLsizei,
                                    GLsizei, GLenum, GLenum, const void*)
 GLFN_VOID_2(void, glUniform1i, Uniform, GLint)
+GLFN_VOID_4(void, glUniformMatrix4fv, Uniform, GLsizei, GLboolean,
+                                      const GLfloat*)
 GLFN_VOID_1(void, glUseProgram, Program)
 GLFN_VOID_6(void, glVertexAttribPointer, Buffer, GLint, GLenum, GLboolean,
                                          GLsizei, const void*)
@@ -221,11 +234,13 @@ GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 #define GL_TEXTURE_2D                     0x0DE1
 #define GL_UNSIGNED_BYTE                  0x1401
 #define GL_FLOAT                          0x1406
+#define GL_PROJECTION                     0x1701
 #define GL_RGBA                           0x1908
 #define GL_VENDOR                         0x1F00
 #define GL_RENDERER                       0x1F01
 #define GL_VERSION                        0x1F02
 #define GL_EXTENSIONS                     0x1F03
+#define GL_NEAREST                        0x2600
 #define GL_LINEAR                         0x2601
 #define GL_TEXTURE_MAG_FILTER             0x2800
 #define GL_TEXTURE_MIN_FILTER             0x2801
@@ -369,25 +384,25 @@ static const char*
 vertexSource =
     "#version 110\n"
     "\n"
+    "uniform mat4 uProjection;\n"
     "attribute vec3 aPosition;\n"
     "attribute vec2 aTexCoord;\n"
     "varying vec2 vTexCoord;\n"
-    "varying vec3 vColor;\n"
     "\n"
     "void main() {\n"
     "    vTexCoord = aTexCoord;\n"
-    "    gl_Position = vec4(aPosition, 1.0);\n"
+    "    gl_Position = uProjection * vec4(aPosition, 1.0);\n"
     "}\n";
 
 static const char*
 fragmentSource =
     "#version 110\n"
     "\n"
+    "uniform sampler2D uAtlas;\n"
     "varying vec2 vTexCoord;\n"
-    "uniform sampler2D tAtlas;\n"
     "\n"
     "void main() {\n"
-    "    gl_FragColor = texture2D(tAtlas, vTexCoord);\n"
+    "    gl_FragColor = texture2D(uAtlas, vTexCoord);\n"
     "}\n";
 
 #define ATLAS_WIDTH 2048
@@ -398,11 +413,9 @@ static size_t atlasUsed = 0;
 
 static Attribute aPosition;
 static Attribute aTexCoord;
-//static Uniform uResolution;
-static Uniform uAtlas;
+static Uniform uProjection;
 static VertexBuffer vbAttributes = 1;
-//static VertexBuffer vbTexCoord;
-static Texture tAtlas;
+static Texture uAtlas;
 
 struct Vertex {
     fvec3 position;
@@ -468,6 +481,7 @@ imageInit() noexcept {
     loadFunction(glTexParameteri);
     loadFunction(glTexSubImage2D);
     loadFunction(glUniform1i);
+    loadFunction(glUniformMatrix4fv);
     loadFunction(glUseProgram);
     loadFunction(glVertexAttribPointer);
     loadFunction(glViewport);
@@ -480,7 +494,8 @@ imageInit() noexcept {
 
     aPosition = glGetAttribLocation_(program, "aPosition");
     aTexCoord = glGetAttribLocation_(program, "aTexCoord");
-    uAtlas = glGetUniformLocation_(program, "tAtlas");
+    uAtlas = glGetUniformLocation_(program, "uAtlas");
+    uProjection = glGetUniformLocation_(program, "uProjection");
 
     glUniform1i_(uAtlas, 0);
 
@@ -489,11 +504,11 @@ imageInit() noexcept {
 
     //glViewport_(0, 0, 1, 1);
 
-    glGenTextures_(1, &tAtlas);
+    glGenTextures_(1, &uAtlas);
     glActiveTexture_(GL_TEXTURE0);
-    glBindTexture_(GL_TEXTURE_2D, tAtlas);
-    glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture_(GL_TEXTURE_2D, uAtlas);
+    glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D_(GL_TEXTURE_2D, 0, GL_RGBA, ATLAS_WIDTH, ATLAS_HEIGHT, 0,
@@ -566,7 +581,7 @@ load(StringView path) noexcept {
     }
 
     tiles.image = {
-        reinterpret_cast<void*>(tAtlas),
+        reinterpret_cast<void*>(uAtlas),
         static_cast<uint32_t>(x),
         static_cast<uint32_t>(y),
         static_cast<uint32_t>(width),
@@ -596,29 +611,13 @@ imageRelease(Image image) noexcept {}
 
 void
 imageDraw(Image image, float x, float y, float z) noexcept {
-    // FIXME: Optimize math.
-
     fvec2 trans = sdl2Translation;
     fvec2 scale = sdl2Scaling;
 
-    float ww = static_cast<float>(windowWidth());
-    float wh = static_cast<float>(windowHeight());
-
-    float iw = image.width;
-    float ih = image.height;
-
-    x = (x + trans.x) * scale.x;
-    y = (y + trans.y) * scale.y;
-    iw = iw * scale.x;
-    ih = ih * scale.y;
-
-    float top = 1 - 2 * y / wh;
-    float bottom = top - 2 * ih / wh;
-    float left = -1 + 2 * x / ww;
-    float right = left + 2 * iw / ww;
-
-    // FIXME: Do a transform so no math is needed here and we can just
-    //        use (0, width) x (0, height).
+    float yTop    = scale.y * (trans.y + y);
+    float yBottom = scale.y * (trans.y + y + image.height);
+    float xLeft   = scale.x * (trans.x + x);
+    float xRight  = scale.x * (trans.x + x + image.width);
 
     size_t offset = attributes.size;
 
@@ -632,29 +631,22 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     }
     attributes.size += QUAD_COORDS;
 
-    float tw = ATLAS_WIDTH;
-    float th = ATLAS_HEIGHT;
+    float tWidth = ATLAS_WIDTH;
+    float tHeight = ATLAS_HEIGHT;
 
-    float ttop = image.y / th;
-    float tbottom = (image.y + image.height) / th;
-    float tleft = image.x / tw;
-    float tright = (image.x + image.width) / tw;
+    float vTop    =  image.y                 / tHeight;
+    float vBottom = (image.y + image.height) / tHeight;
+    float uLeft   =  image.x                 / tWidth;
+    float uRight  = (image.x + image.width)  / tWidth;
 
-    // Q: Why are the texture coordinates upside down?
+    attributes[offset+0] = { {xLeft,  yBottom, z}, {uLeft,  vBottom} };
+    attributes[offset+1] = { {xRight, yBottom, z}, {uRight, vBottom} };
+    attributes[offset+2] = { {xLeft,  yTop,    z}, {uLeft,  vTop   } };
 
-    attributes[offset+0] = { {left, bottom, z}, {tleft, tbottom} };
-    attributes[offset+1] = { {right, bottom, z}, {tright, tbottom} };
-    attributes[offset+2] = { {left, top, z}, {tleft, ttop} };
-
-    attributes[offset+3] = { {right, bottom, z}, {tright, tbottom} };
-    attributes[offset+4] = { {left, top, z}, {tleft, ttop} };
-    attributes[offset+5] = { {right, top, z}, {tright, ttop} };
+    attributes[offset+3] = { {xRight, yBottom, z}, {uRight, vBottom} };
+    attributes[offset+4] = { {xLeft,  yTop,    z}, {uLeft,  vTop   } };
+    attributes[offset+5] = { {xRight, yTop,    z}, {uRight, vTop   } };
 }
-
-// TODO:
-// glMatrixMode(GL_PROJECTION | GL_MODELVIEW);
-// glLoadIdentity();
-// glOrtho(-320,320,240,-240,0,1);
 
 TiledImage
 tilesLoad(StringView path,
@@ -727,6 +719,14 @@ imageEndFrame() noexcept {
                            sizeof(Vertex),
                            &static_cast<Vertex*>(0)->texCoord);
     glEnableVertexAttribArray_(aTexCoord);
+
+    float ww = static_cast<float>(confWindowSize.x);
+    float wh = static_cast<float>(confWindowSize.y);
+
+    Transform transform = transformScale(2.0f / ww, -2.0f / wh) *
+                          transformTranslate(-1, 1);
+
+    glUniformMatrix4fv_(uProjection, 1, false, transform.m);
 
     glDrawArrays_(GL_TRIANGLES, 0, attributes.size);
     SDL_GL_SwapWindow(sdl2Window);
