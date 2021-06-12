@@ -182,6 +182,7 @@ class Vector {
         for (size_t i = 0; i < size; i++) {
             new (newData + i) X(static_cast<X&&>(data[i]));
         }
+        free(data);
         data = newData;
         capacity = n;
     }
