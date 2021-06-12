@@ -105,7 +105,7 @@ File::operator bool() noexcept {
 bool
 File::read(void* buf, size_t len) noexcept {
     unsigned long numRead;
-    if (!ReadFile(handle, buf, len, &numRead, 0)) {
+    if (!ReadFile(handle, buf, static_cast<DWORD>(len), &numRead, 0)) {
         // GetLastError();
         assert_(false);
         return false;
@@ -120,7 +120,8 @@ File::read(void* buf, size_t len) noexcept {
 
 bool
 File::readOffset(void* buf, size_t len, size_t offset) noexcept {
-    DWORD position = SetFilePointer(handle, len, 0, 0);
+    assert_(len <= INT32_MAX);
+    DWORD position = SetFilePointer(handle, static_cast<LONG>(len), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
         assert_(false);
@@ -153,7 +154,8 @@ FileWriter::operator bool() noexcept {
 
 bool
 FileWriter::resize(size_t size) noexcept {
-    DWORD position = SetFilePointer(handle, size, 0, 0);
+    assert_(size <= INT32_MAX);
+    DWORD position = SetFilePointer(handle, static_cast<LONG>(size), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
         assert_(false);
@@ -172,7 +174,8 @@ FileWriter::resize(size_t size) noexcept {
 
 bool
 FileWriter::writeOffset(const void* buf, size_t len, size_t offset) noexcept {
-    DWORD position = SetFilePointer(handle, offset, 0, 0);
+    assert_(len <= INT32_MAX);
+    DWORD position = SetFilePointer(handle, static_cast<LONG>(offset), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
         assert_(false);
@@ -180,7 +183,7 @@ FileWriter::writeOffset(const void* buf, size_t len, size_t offset) noexcept {
     }
 
     DWORD written;
-    BOOL ok = WriteFile(handle, buf, len, &written, 0);
+    BOOL ok = WriteFile(handle, buf, static_cast<DWORD>(len), &written, 0);
     if (!ok) {
         //printWin32Error();
         assert_(false);
@@ -222,8 +225,10 @@ writeStdout(const char* buf, size_t len) noexcept {
         return false;
     }
 
+    assert_(len <= INT32_MAX);
+
     DWORD written;
-    if (!WriteConsoleA(con, buf, len, &written, 0)) {
+    if (!WriteConsoleA(con, buf, static_cast<DWORD>(len), &written, 0)) {
         // GetLastError();
         assert_(false);
         return false;
