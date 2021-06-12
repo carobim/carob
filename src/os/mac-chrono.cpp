@@ -70,6 +70,7 @@ static void
 initTimebase(void) {
     if (timebase.numer == 0 && timebase.denom == 0) {
         kern_return_t err = mach_timebase_info(&timebase);
+        (void)err;
         assert_(err == KERN_SUCCESS);
     }
 }
@@ -89,7 +90,7 @@ chronoSleep(Nanoseconds ns) noexcept {
     initTimebase();
     uint64_t deadline = mach_absolute_time() + toAbsolute(ns);
 
-    kern_return_t err = KERN_SUCCESS;
+    kern_return_t err;
     do {
         err = mach_wait_until(deadline);
     } while (err != KERN_SUCCESS);
