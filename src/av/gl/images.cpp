@@ -40,6 +40,7 @@
 #include "util/random.h"
 #include "util/string-view.h"
 #include "util/string.h"
+#include "util/vector.h"
 
 //
 // Reusable GL [ES] code
@@ -398,10 +399,11 @@ static Attribute aColor;
 //static Attribute aTexCoord;
 //static Uniform uResolution;
 static Uniform uAtlas;
-static VertexBuffer vbPosition = 1;
-static VertexBuffer vbColor = 2;
+static VertexBuffer vbAttributes = 1;
 //static VertexBuffer vbTexCoord;
 static Texture tAtlas;
+
+static Vector<fvec3> attributes;
 
 static bool printed = false;
 
@@ -468,47 +470,6 @@ imageInit() noexcept {
     aPosition = glGetAttribLocation_(program, "aPosition");
     aColor = glGetAttribLocation_(program, "aColor");
     uAtlas = glGetUniformLocation_(program, "tAtlas");
-
-    //float width = static_cast<float>(windowWidth());
-    //float height = static_cast<float>(windowHeight());
-
-    float positions[] = {
-          0, 0, 0,
-        0.5, 0, 0,
-          0, 1, 0,
-        0.5, 1, 0,
-    };
-
-    float colors[] = {
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-    };
-
-    /*
-    float positions[] = {
-        0, 0, 0,
-        1, 0, 0,
-        0, 1, 0,
-
-        0, 1, 0,
-        1, 0, 0,
-        1, 1, 0,
-    };
-    */
-
-    glBindBuffer_(GL_ARRAY_BUFFER, vbPosition);
-    glBufferData_(GL_ARRAY_BUFFER, sizeof(positions), positions,
-                  GL_STATIC_DRAW);
-    glVertexAttribPointer_(aPosition, 3, GL_FLOAT, false, 0, 0);
-    glEnableVertexAttribArray_(aPosition);
-
-    glBindBuffer_(GL_ARRAY_BUFFER, vbColor);
-    glBufferData_(GL_ARRAY_BUFFER, sizeof(colors), colors,
-                  GL_STATIC_DRAW);
-    glVertexAttribPointer_(aColor, 3, GL_FLOAT, false, 0, 0);
-    glEnableVertexAttribArray_(aColor);
 
     glUniform1i_(uAtlas, 0);
 
@@ -629,7 +590,57 @@ void
 imageRelease(Image image) noexcept {}
 
 void
-imageDraw(Image image, float x, float y, float z) noexcept {}
+imageDraw(Image image, float x, float y, float z) noexcept {
+    fvec2 trans = sdl2Translation;
+    fvec2 scale = sdl2Scaling;
+
+    float ww = static_cast<float>(windowWidth());
+    float wh = static_cast<float>(windowHeight());
+
+    float iw = image.width;
+    float ih = image.height;
+
+    x = (x + trans.x) * scale.x;
+    y = (y + trans.y) * scale.y;
+    iw = iw * scale.x;
+    ih = ih * scale.y;
+
+    float top = 1 - 2 * y / wh;
+    float bottom = top - 2 * ih / wh;
+    float left = -1 + 2 * x / ww;
+    float right = left + 2 * iw / ww;
+
+    // FIXME: Do a transform so no math is needed here and we can just
+    //        use (0, width) x (0, height).
+
+    size_t offset = attributes.size;
+
+    if (attributes.capacity == 0) {
+        attributes.reserve(12 * 8);
+    }
+    else if (attributes.size + 12 > attributes.capacity) {
+        attributes.reserve(attributes.capacity * 2);
+    }
+    attributes.size += 12;
+
+    attributes[offset+0] = {left, bottom, z};
+    attributes[offset+1] = {1.f, 0.f, 0.f};
+
+    attributes[offset+2] = {right, bottom, z};
+    attributes[offset+3] = {0.f, 1.f, 0.f};
+
+    attributes[offset+4] = {left, top, z};
+    attributes[offset+5] = {0.f, 0.f, 1.f};
+
+    attributes[offset+6] = {right, bottom, z};
+    attributes[offset+7] = {0.f, 1.f, 0.f};
+
+    attributes[offset+8] = {left, top, z};
+    attributes[offset+9] = {0.f, 0.f, 1.f};
+
+    attributes[offset+10] = {right, top, z};
+    attributes[offset+11] = {0.f, 0.f, 0.f};
+}
 
 // TODO:
 // glMatrixMode(GL_PROJECTION | GL_MODELVIEW);
@@ -691,19 +702,19 @@ imageStartFrame() noexcept {
 
 void
 imageEndFrame() noexcept {
-    float colors[] = {
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-        randFloat(0, 1), randFloat(0, 1), randFloat(0, 1),
-    };
+    glBindBuffer_(GL_ARRAY_BUFFER, vbAttributes);
+    glBufferData_(GL_ARRAY_BUFFER, attributes.size * sizeof(fvec3),
+                  attributes.data, GL_STATIC_DRAW);
 
-    glBindBuffer_(GL_ARRAY_BUFFER, vbColor);
-    glBufferData_(GL_ARRAY_BUFFER, sizeof(colors), colors,
-                  GL_STATIC_DRAW);
-    glVertexAttribPointer_(aColor, 3, GL_FLOAT, false, 0, 0);
+    glVertexAttribPointer_(aPosition, 3, GL_FLOAT, false, 2 * sizeof(fvec3), 0);
+    glEnableVertexAttribArray_(aPosition);
+
+    glVertexAttribPointer_(aColor, 3, GL_FLOAT, false, 2 * sizeof(fvec3),
+                           reinterpret_cast<const void*>(1 * sizeof(fvec3)));
     glEnableVertexAttribArray_(aColor);
 
-    glDrawArrays_(GL_TRIANGLE_STRIP, 0, 4);
+    glDrawArrays_(GL_TRIANGLES, 0, attributes.size);
     SDL_GL_SwapWindow(sdl2Window);
+
+    attributes.size = 0;
 }
