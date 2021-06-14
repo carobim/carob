@@ -33,7 +33,7 @@
 
 struct DisplayItem {
     Image image;
-    fvec2 destination;
+    fvec3 destination;
 };
 
 struct DisplayList {

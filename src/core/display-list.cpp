@@ -79,7 +79,8 @@ displayListPresent(DisplayList* display) noexcept {
     windowPushTranslate(-display->scroll.x, -display->scroll.y);
 
     for (DisplayItem& item : display->items) {
-        imageDraw(item.image, item.destination.x, item.destination.y, 0);
+        imageDraw(item.image, item.destination.x, item.destination.y,
+                  item.destination.z);
     }
 
     windowPopTranslate();

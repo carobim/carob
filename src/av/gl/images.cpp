@@ -79,6 +79,7 @@ typedef char GLchar;
 typedef unsigned GLenum;
 typedef int GLint;
 typedef float GLfloat;
+typedef float GLclampf;
 typedef double GLdouble;
 typedef int GLsizei;
 typedef ssize_t GLsizeiptr;
@@ -181,6 +182,7 @@ static APICALL GlGetErrorProc glGetError;
     }
 
 GLFN_VOID_1(void, glActiveTexture, GLenum)
+GLFN_VOID_2(void, glAlphaFunc, GLenum, GLclampf)
 GLFN_VOID_2(void, glAttachShader, Program, Shader)
 GLFN_VOID_2(void, glBindBuffer, GLenum, Buffer)
 GLFN_VOID_2(void, glBindTexture, GLenum, Texture)
@@ -223,6 +225,8 @@ GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 #define GL_NO_ERROR                       0x0000
 #define GL_TRIANGLES                      0x0004
 #define GL_TRIANGLE_STRIP                 0x0005
+#define GL_DEPTH_BUFFER_BIT               0x0100
+#define GL_NOTEQUAL                       0x0205
 #define GL_SRC_ALPHA                      0x0302
 #define GL_ONE_MINUS_SRC_ALPHA            0x0303
 #define GL_INVALID_ENUM                   0x0500
@@ -230,6 +234,8 @@ GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 #define GL_INVALID_OPERATION              0x0502
 #define GL_OUT_OF_MEMORY                  0x0505
 #define GL_INVALID_FRAMEBUFFER_OPERATION  0x0506
+#define GL_DEPTH_TEST                     0x0B71
+#define GL_ALPHA_TEST                     0x0BC0
 #define GL_BLEND                          0x0BE2
 #define GL_TEXTURE_2D                     0x0DE1
 #define GL_UNSIGNED_BYTE                  0x1401
@@ -380,6 +386,9 @@ makeProgram(const char* vertexSource, const char* fragmentSource) noexcept {
 // Tsunagari-specific code
 //
 
+#define Z_NEAR_MAX "1024.0"
+#define Z_FAR_MAX "-1024.0"
+
 static const char*
 vertexSource =
     "#version 110\n"
@@ -391,7 +400,10 @@ vertexSource =
     "\n"
     "void main() {\n"
     "    vTexCoord = aTexCoord;\n"
-    "    gl_Position = uProjection * vec4(aPosition, 1.0);\n"
+    "    float near = " Z_NEAR_MAX ";\n"
+    "    float far = " Z_FAR_MAX ";\n"
+    "    float z = (aPosition.z - near) / (far - near);\n"
+    "    gl_Position = uProjection * vec4(aPosition.xy, z, 1.0);\n"
     "}\n";
 
 static const char*
@@ -452,6 +464,7 @@ imageInit() noexcept {
     }
 
     loadFunction(glActiveTexture);
+    loadFunction(glAlphaFunc);
     loadFunction(glAttachShader);
     loadFunction(glBindBuffer);
     loadFunction(glBindTexture);
@@ -486,8 +499,16 @@ imageInit() noexcept {
     loadFunction(glVertexAttribPointer);
     loadFunction(glViewport);
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable_(GL_BLEND);
+    glBlendFunc_(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnable_(GL_DEPTH_TEST);
+
+    // Deprecated in OpenGL 3.0 and replaced in 3.1 with the "discard" GLSL
+    // operation.
+    // TODO: Test for availability with GL_ALPHA_TEST.
+    glEnable_(GL_ALPHA_TEST);
+    glAlphaFunc_(GL_NOTEQUAL, 0.0f);
 
     Program program = makeProgram(vertexSource, fragmentSource);
     glUseProgram_(program);
@@ -696,7 +717,7 @@ imageStartFrame() noexcept {
     // FIXME: Uses lots of CPU on macOS. Replace with adding black borders
     //        around play area.
     glClearColor_(0, 0, 0, 1);
-    glClear_(GL_COLOR_BUFFER_BIT);
+    glClear_(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void

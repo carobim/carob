@@ -404,7 +404,7 @@ Entity::draw(DisplayList* display) noexcept {
     float minY = maxY - imgsz.y;
 
     display->items.push_back(
-            DisplayItem{phase->setFrame(now), fvec2{minX, minY}});
+            DisplayItem{phase->setFrame(now), fvec3{minX, minY, r.z}});
 }
 
 bool

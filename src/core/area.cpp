@@ -371,7 +371,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
     //        Do maxTiles * count(TILE_LAYERS).
     items.resize(maxTiles + itemCount);
 
-    // float depth = grid.idx2depth[(size_t)z];
+    float depth = grid.idx2depth[(size_t)z];
 
     int width = 16;
     int height = 16;
@@ -398,7 +398,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
             // ImageID.
             Image img = tileGraphics[type].getFrame();
 
-            fvec2 drawPos{float(x * width), float(y * height)};
+            fvec3 drawPos{float(x * width), float(y * height), depth};
             // drawPos.z = depth + drawPos.y / tileDimY *
             // ISOMETRIC_ZOFF_PER_TILE;
             items[itemCount++] = DisplayItem{img, drawPos};
