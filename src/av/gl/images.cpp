@@ -499,11 +499,6 @@ imageInit() noexcept {
 
     glUniform1i_(uAtlas, 0);
 
-    //glUniform2f_(uResolution, width, height);
-    //glViewport_(0, 0, windowWidth(), windowHeight());
-
-    //glViewport_(0, 0, 1, 1);
-
     glGenTextures_(1, &uAtlas);
     glActiveTexture_(GL_TEXTURE0);
     glBindTexture_(GL_TEXTURE_2D, uAtlas);
