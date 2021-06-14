@@ -103,7 +103,7 @@ displayListPresent(DisplayList* display) noexcept {
         if (IMAGE_VALID(pauseInfo)) {
             float iw = static_cast<float>(pauseInfo.width);
             float ih = static_cast<float>(pauseInfo.height);
-            float top = 1e10;
+            float top = 768.0f;
             imageDraw(pauseInfo, ww / 2 - iw / 2, wh / 2 - ih / 2, top);
         }
         imageRelease(pauseInfo);
