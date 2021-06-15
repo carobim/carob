@@ -95,5 +95,11 @@ void
 imageDrawRect(float left, float right, float top, float bottom, float z,
               uint32_t argb) noexcept;
 
+void
+imageFlushImages() noexcept;
+
+void
+imageFlushRects() noexcept;
+
 
 #endif  // SRC_CORE_IMAGES_H_

@@ -818,7 +818,7 @@ getOrtho() noexcept {
     return transformScale(2.0f / ww, -2.0f / wh) * transformTranslate(-1, 1);
 }
 
-static void
+void
 imageFlushImages() noexcept {
     if (ip.attributes.size == 0) {
         return;
@@ -848,7 +848,7 @@ imageFlushImages() noexcept {
     ip.attributes.size = 0;
 }
 
-static void
+void
 imageFlushRects() noexcept {
     if (rp.attributes.size == 0) {
         return;
@@ -880,8 +880,5 @@ imageFlushRects() noexcept {
 
 void
 imageEndFrame() noexcept {
-    imageFlushImages();
-    imageFlushRects();
-
     SDL_GL_SwapWindow(sdl2Window);
 }

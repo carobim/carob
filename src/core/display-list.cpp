@@ -102,6 +102,9 @@ displayListPresent(DisplayList* display) noexcept {
 
         Image pauseInfo = imageLoad("resource/pause_overlay.bmp");
         if (IMAGE_VALID(pauseInfo)) {
+            imageFlushImages();
+            imageFlushRects();
+
             float iw = static_cast<float>(pauseInfo.width);
             float ih = static_cast<float>(pauseInfo.height);
             float top = 768.0f;
@@ -109,4 +112,7 @@ displayListPresent(DisplayList* display) noexcept {
         }
         imageRelease(pauseInfo);
     }
+
+    imageFlushImages();
+    imageFlushRects();
 }
