@@ -96,16 +96,17 @@ imageEndFrame() noexcept {
 }
 
 void
-imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept {
+imageDrawRect(float left, float right, float top, float bottom, float z,
+              uint32_t argb) noexcept {
     uint8_t a = static_cast<uint8_t>((argb >> 24) & 0xFF);
     uint8_t r = static_cast<uint8_t>((argb >> 16) & 0xFF);
     uint8_t g = static_cast<uint8_t>((argb >> 8) & 0xFF);
     uint8_t b = static_cast<uint8_t>((argb >> 0) & 0xFF);
 
-    SDL_Rect rect = {static_cast<int>(x1),
-                     static_cast<int>(y1),
-                     static_cast<int>(x2 - x1),
-                     static_cast<int>(y2 - y1)};
+    SDL_Rect rect = {static_cast<int>(left),
+                     static_cast<int>(top),
+                     static_cast<int>(right - left),
+                     static_cast<int>(bottom - top)};
 
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
@@ -156,8 +157,8 @@ load(StringView path) noexcept {
     {
         TimeMeasure m(String() << "Constructed " << path << " as image");
 
-        SDL_Surface* surface = IMG_Load_RW(ops, 1);
-        //SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
+        //SDL_Surface* surface = IMG_Load_RW(ops, 1);
+        SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
         if (!surface) {
             logFatal("SDL2", String() << "Invalid image: " << path);
             return 0;
@@ -283,3 +284,9 @@ tileAt(TiledImage tiles, uint32_t index) noexcept {
 
 void
 imagesPrune(time_t latestPermissibleUse) noexcept { }
+
+void
+imageFlushImages() noexcept { }
+
+void
+imageFlushRects() noexcept { }
