@@ -9,10 +9,39 @@ project(TsunagariEngine C CXX)
 
 option(AV_NULL "Disable audio and video output")
 option(AV_SDL2 "Use SDL2 for audio and video output")
+option(AV_SDL2_GL "Use SDL2 for audio and window, and OpenGL for graphics")
 option(AV_EM "Use Emscripten for audio and video output")
 
-if(NOT AV_SDL2 AND NOT AV_EM)
+if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM)
     set(AV_NULL ON)
+endif()
+
+if(AV_NULL)
+    set(AUDIO_NULL 1)
+    set(WINDOW_NULL 1)
+    set(RENDERER_NULL 1)
+endif()
+
+if(AV_SDL2)
+    set(AUDIO_SDL2 1)
+    set(WINDOW_SDL2 1)
+    set(RENDERER_SDL2 1)
+endif()
+
+if(AV_SDL2_GL)
+    set(AUDIO_SDL2 1)
+    set(WINDOW_SDL2 1)
+    set(RENDERER_GL 1)
+endif()
+
+if(AV_EM)
+    set(AUDIO_SDL2 1)
+    set(WINDOW_SDL2 1)
+    set(RENDERER_SDL2 1)
+endif()
+
+if(AUDIO_SDL2 OR WINDOW_SDL2 OR RENDERER_SDL2)
+    set(SDL2 ON)
 endif()
 
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
@@ -98,25 +127,50 @@ set(TEST_SOURCES ${TEST_SOURCES}
     ${HERE}/test/main.cpp
 )
 
-if(AV_NULL)
+if(AUDIO_NULL)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
-        ${HERE}/src/av/null/images.cpp
         ${HERE}/src/av/null/music.cpp
         ${HERE}/src/av/null/sounds.cpp
+    )
+endif()
+if(WINDOW_NULL)
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/null/window.cpp
     )
 endif()
+if(RENDERER_NULL)
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/av/null/images.cpp
+    )
+endif()
 
-if(AV_SDL2 OR AV_EM)
+if(SDL2)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/sdl2/error.cpp
         ${HERE}/src/av/sdl2/error.h
-        #${HERE}/src/av/sdl2/images.cpp
-        ${HERE}/src/av/gl/images.cpp
+    )
+endif()
+if(AUDIO_SDL2)
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/sdl2/music.cpp
         ${HERE}/src/av/sdl2/sounds.cpp
+    )
+endif()
+if(WINDOW_SDL2)
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/sdl2/window.cpp
         ${HERE}/src/av/sdl2/window.h
+    )
+endif()
+if(RENDERER_SDL2)
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/av/sdl2/images.cpp
+    )
+endif()
+
+if(RENDERER_GL)
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/av/gl/images.cpp
     )
 endif()
 
@@ -619,14 +673,6 @@ if(NOT DEFINED ENV{CI})
     endif()
 endif()
 
-if(AV_NULL)
-    if(${CMAKE_VERSION} VERSION_LESS 2.8.10)
-        add_definitions(-DAV_NULL)
-    else()
-        target_compile_definitions(tsunagari PUBLIC AV_NULL)
-    endif()
-endif()
-
 # Share variables with parent
 if(IS_SUBPROJECT)
     set(CMAKE_CXX_FLAGS
@@ -765,58 +811,72 @@ if(AV_EM)
     target_link_libraries(tsunagari PUBLIC  pthread)
 endif()
 
-if(AV_SDL2)
+if(SDL2)
     if(USE_SDL2_PKGCONFIG)
         find_package(PkgConfig REQUIRED)
-        pkg_search_module(SDL2       REQUIRED SDL2 sdl2)
-        pkg_search_module(SDL2_image REQUIRED SDL2_image)
-        pkg_search_module(SDL2_mixer REQUIRED SDL2_mixer)
+        pkg_search_module(SDL2 REQUIRED SDL2 sdl2)
     else()
         set(SDL2_INCLUDE_DIRS "" CACHE PATH
             "Directory with SDL2 headers")
-        set(SDL2_image_INCLUDE_DIRS "" CACHE PATH
-            "Directory with SDL2_image headers")
-        set(SDL2_mixer_INCLUDE_DIRS "" CACHE PATH
-            "Directory with SDL2_mixer headers")
-
         set(SDL2_LIBRARY_DIRS "" CACHE PATH
             "Directory with SDL2 library")
-        set(SDL2_image_LIBRARY_DIRS "" CACHE PATH
-            "Directory with SDL2_image library")
-        set(SDL2_mixer_LIBRARY_DIRS "" CACHE PATH
-            "Directory with SDL2_mixer library")
-
         set(SDL2_LIBRARIES "" CACHE STRING
             "Name of SDL2 library")
-        set(SDL2_image_LIBRARIES "" CACHE STRING
-            "Name with SDL2_image library")
-        set(SDL2_mixer_LIBRARIES "" CACHE STRING
-            "Name with SDL2_mixer library")
     endif()
 
     if("${SDL2_LIBRARIES}" STREQUAL "")
         message(SEND_ERROR "When not using pkg-config, please manually set"
-            " SDL2, SDL2_image, and SDL2_mixer include dirs and libraries")
+            " SDL2 include dirs and libraries")
     endif()
 
-    target_include_directories(tsunagari
-        PRIVATE ${SDL2_INCLUDE_DIRS}
-                ${SDL2_image_INCLUDE_DIRS}
-                ${SDL2_mixer_INCLUDE_DIRS}
-    )
-
-    link_directories(
-        ${SDL2_LIBRARY_DIRS}
-        ${SDL2_image_LIBRARY_DIRS}
-        ${SDL2_mixer_LIBRARY_DIRS}
-    )
-
-    target_link_libraries(tsunagari
-        ${SDL2_LIBRARIES}
-        ${SDL2_image_LIBRARIES}
-        ${SDL2_mixer_LIBRARIES}
-    )
+    target_include_directories(tsunagari PRIVATE ${SDL2_INCLUDE_DIRS})
+    link_directories( ${SDL2_LIBRARY_DIRS})
+    target_link_libraries(tsunagari ${SDL2_LIBRARIES})
 endif()
+
+if(AUDIO_SDL2)
+    if(USE_SDL2_PKGCONFIG)
+        pkg_search_module(SDL2_mixer REQUIRED SDL2_mixer)
+    else()
+        set(SDL2_mixer_INCLUDE_DIRS "" CACHE PATH
+            "Directory with SDL2_mixer headers")
+        set(SDL2_mixer_LIBRARY_DIRS "" CACHE PATH
+            "Directory with SDL2_mixer library")
+        set(SDL2_mixer_LIBRARIES "" CACHE STRING
+            "Name with SDL2_mixer library")
+    endif()
+
+    if("${SDL2_mixer_LIBRARIES}" STREQUAL "")
+        message(SEND_ERROR "When not using pkg-config, please manually set"
+            " SDL2_mixer include dirs and libraries")
+    endif()
+
+    target_include_directories(tsunagari PRIVATE ${SDL2_mixer_INCLUDE_DIRS})
+    link_directories(${SDL2_mixer_LIBRARY_DIRS})
+    target_link_libraries(tsunagari ${SDL2_mixer_LIBRARIES})
+endif()
+
+#if(RENDERER_SDL2)
+#    if(USE_SDL2_PKGCONFIG)
+#        pkg_search_module(SDL2_image REQUIRED SDL2_image)
+#    else()
+#        set(SDL2_image_INCLUDE_DIRS "" CACHE PATH
+#            "Directory with SDL2_image headers")
+#        set(SDL2_image_LIBRARY_DIRS "" CACHE PATH
+#            "Directory with SDL2_image library")
+#        set(SDL2_image_LIBRARIES "" CACHE STRING
+#            "Name with SDL2_image library")
+#    endif()
+#
+#    if("${SDL2_image_LIBRARIES}" STREQUAL "")
+#        message(SEND_ERROR "When not using pkg-config, please manually set"
+#            " SDL2_image include dirs and libraries")
+#    endif()
+#
+#    target_include_directories(tsunagari PRIVATE ${SDL2_image_INCLUDE_DIRS})
+#    link_directories(${SDL2_image_LIBRARY_DIRS})
+#    target_link_libraries(tsunagari ${SDL2_image_LIBRARIES})
+#endif()
 
 
 #
