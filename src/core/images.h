@@ -92,7 +92,8 @@ imagesPrune(time_t latestPermissibleUse) noexcept;
  * are in virtual pixels.
  */
 void
-imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept;
+imageDrawRect(float left, float right, float top, float bottom, float z,
+              uint32_t argb) noexcept;
 
 
 #endif  // SRC_CORE_IMAGES_H_

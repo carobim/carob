@@ -193,6 +193,7 @@ GLFN_VOID_4(void, glClearColor, GLfloat, GLfloat, GLfloat, GLfloat)
 GLFN_VOID_1(void, glCompileShader, Shader)
 GLFN_RETURN_0(Program, glCreateProgram)
 GLFN_RETURN_1(Shader, glCreateShader, GLenum)
+GLFN_VOID_1(void, glDisable, GLenum)
 GLFN_VOID_3(void, glDrawArrays, GLenum, GLint, GLsizei)
 GLFN_VOID_1(void, glEnable, GLenum)
 GLFN_VOID_1(void, glEnableVertexAttribArray, Attribute)
@@ -239,6 +240,7 @@ GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 #define GL_BLEND                          0x0BE2
 #define GL_TEXTURE_2D                     0x0DE1
 #define GL_UNSIGNED_BYTE                  0x1401
+#define GL_UNSIGNED_INT                   0x1405
 #define GL_FLOAT                          0x1406
 #define GL_PROJECTION                     0x1701
 #define GL_RGBA                           0x1908
@@ -386,11 +388,19 @@ makeProgram(const char* vertexSource, const char* fragmentSource) noexcept {
 // Tsunagari-specific code
 //
 
+#define ATLAS_WIDTH 2048
+#define ATLAS_HEIGHT 512
+
+static HashVector<TiledImage> images;
+static size_t atlasUsed = 0;
+
+Texture tAtlas;
+
 #define Z_NEAR_MAX "1024.0"
 #define Z_FAR_MAX "-1024.0"
 
 static const char*
-vertexSource =
+imageVertexSource =
     "#version 110\n"
     "\n"
     "uniform mat4 uProjection;\n"
@@ -399,15 +409,15 @@ vertexSource =
     "varying vec2 vTexCoord;\n"
     "\n"
     "void main() {\n"
-    "    vTexCoord = aTexCoord;\n"
     "    float near = " Z_NEAR_MAX ";\n"
     "    float far = " Z_FAR_MAX ";\n"
     "    float z = (aPosition.z - near) / (far - near);\n"
+    "    vTexCoord = aTexCoord;\n"
     "    gl_Position = uProjection * vec4(aPosition.xy, z, 1.0);\n"
     "}\n";
 
 static const char*
-fragmentSource =
+imageFragmentSource =
     "#version 110\n"
     "\n"
     "uniform sampler2D uAtlas;\n"
@@ -417,24 +427,68 @@ fragmentSource =
     "    gl_FragColor = texture2D(uAtlas, vTexCoord);\n"
     "}\n";
 
-#define ATLAS_WIDTH 2048
-#define ATLAS_HEIGHT 512
-
-static HashVector<TiledImage> images;
-static size_t atlasUsed = 0;
-
-static Attribute aPosition;
-static Attribute aTexCoord;
-static Uniform uProjection;
-static VertexBuffer vbAttributes = 1;
-static Texture uAtlas;
-
-struct Vertex {
+struct ImageVertex {
     fvec3 position;
     fvec2 texCoord;
 };
 
-static Vector<Vertex> attributes;
+struct ImageProgram {
+    Program program;
+    Uniform uAtlas;
+    Uniform uProjection;
+    Attribute aPosition;
+    Attribute aTexCoord;
+
+    Vector<ImageVertex> attributes;
+};
+
+static const char*
+rectVertexSource =
+    "#version 110\n"
+    "\n"
+    "uniform mat4 uProjection;\n"
+    "attribute vec3 aPosition;\n"
+    "attribute vec4 aColor;\n"
+    "varying vec4 vColor;\n"
+    "\n"
+    "void main() {\n"
+    "    float near = " Z_NEAR_MAX ";\n"
+    "    float far = " Z_FAR_MAX ";\n"
+    "    float z = (aPosition.z - near) / (far - near);\n"
+    "    vColor = aColor;\n"
+    "    gl_Position = uProjection * vec4(aPosition.xy, z, 1.0);\n"
+    "}\n";
+
+static const char*
+rectFragmentSource =
+    "#version 110\n"
+    "\n"
+    "varying vec4 vColor;\n"
+    "\n"
+    "void main() {\n"
+    "    gl_FragColor = vColor;\n"
+    "}\n";
+
+struct RectVertex {
+    fvec3 position;
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
+};
+
+struct RectProgram {
+    Program program;
+    Uniform uProjection;
+    Attribute aColor;
+    Attribute aPosition;
+
+    Vector<RectVertex> attributes;
+};
+
+static VertexBuffer vertexBuffer = 1;
+static ImageProgram ip;
+static RectProgram rp;
 
 static bool printed = false;
 
@@ -475,6 +529,7 @@ imageInit() noexcept {
     loadFunction(glCompileShader);
     loadFunction(glCreateProgram);
     loadFunction(glCreateShader);
+    loadFunction(glDisable);
     loadFunction(glDrawArrays);
     loadFunction(glEnable);
     loadFunction(glEnableVertexAttribArray);
@@ -510,25 +565,28 @@ imageInit() noexcept {
     glEnable_(GL_ALPHA_TEST);
     glAlphaFunc_(GL_NOTEQUAL, 0.0f);
 
-    Program program = makeProgram(vertexSource, fragmentSource);
-    glUseProgram_(program);
-
-    aPosition = glGetAttribLocation_(program, "aPosition");
-    aTexCoord = glGetAttribLocation_(program, "aTexCoord");
-    uAtlas = glGetUniformLocation_(program, "uAtlas");
-    uProjection = glGetUniformLocation_(program, "uProjection");
-
-    glUniform1i_(uAtlas, 0);
-
-    glGenTextures_(1, &uAtlas);
+    glGenTextures_(1, &tAtlas);
     glActiveTexture_(GL_TEXTURE0);
-    glBindTexture_(GL_TEXTURE_2D, uAtlas);
+    glBindTexture_(GL_TEXTURE_2D, tAtlas);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexImage2D_(GL_TEXTURE_2D, 0, GL_RGBA, ATLAS_WIDTH, ATLAS_HEIGHT, 0,
                   GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+    ip.program = makeProgram(imageVertexSource, imageFragmentSource);
+    ip.uAtlas = glGetUniformLocation_(ip.program, "uAtlas");
+    ip.uProjection = glGetUniformLocation_(ip.program, "uProjection");
+    ip.aPosition = glGetAttribLocation_(ip.program, "aPosition");
+    ip.aTexCoord = glGetAttribLocation_(ip.program, "aTexCoord");
+    glUseProgram_(ip.program);
+    glUniform1i_(ip.uAtlas, 0);
+
+    rp.program = makeProgram(rectVertexSource, rectFragmentSource);
+    rp.aColor = glGetAttribLocation_(rp.program, "aColor");
+    rp.aPosition = glGetAttribLocation_(rp.program, "aPosition");
+    rp.uProjection = glGetUniformLocation_(rp.program, "uProjection");
 }
 
 static TiledImage*
@@ -554,8 +612,8 @@ load(StringView path) noexcept {
     {
         TimeMeasure m(String() << "Constructed " << path << " as image");
 
-        SDL_Surface* surface = IMG_Load_RW(ops, 1);
-        //SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
+        //SDL_Surface* surface = IMG_Load_RW(ops, 1);
+        SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
         if (!surface) {
             logFatal("SDL2", String() << "Invalid image: " << path);
             return 0;
@@ -597,7 +655,7 @@ load(StringView path) noexcept {
     }
 
     tiles.image = {
-        reinterpret_cast<void*>(uAtlas),
+        reinterpret_cast<void*>(tAtlas),
         static_cast<uint32_t>(x),
         static_cast<uint32_t>(y),
         static_cast<uint32_t>(width),
@@ -635,17 +693,17 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     float xLeft   = scale.x * (trans.x + x);
     float xRight  = scale.x * (trans.x + x + image.width);
 
-    size_t offset = attributes.size;
+    size_t offset = ip.attributes.size;
 
     const size_t QUAD_COORDS = 6;
 
-    if (attributes.capacity == 0) {
-        attributes.reserve(QUAD_COORDS * 8);
+    if (ip.attributes.capacity == 0) {
+        ip.attributes.reserve(QUAD_COORDS * 8);
     }
-    else if (attributes.size + QUAD_COORDS > attributes.capacity) {
-        attributes.reserve(attributes.capacity * 2);
+    else if (ip.attributes.size + QUAD_COORDS > ip.attributes.capacity) {
+        ip.attributes.reserve(ip.attributes.capacity * 2);
     }
-    attributes.size += QUAD_COORDS;
+    ip.attributes.size += QUAD_COORDS;
 
     float tWidth = ATLAS_WIDTH;
     float tHeight = ATLAS_HEIGHT;
@@ -655,13 +713,13 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     float uLeft   =  image.x                 / tWidth;
     float uRight  = (image.x + image.width)  / tWidth;
 
-    attributes[offset+0] = { {xLeft,  yBottom, z}, {uLeft,  vBottom} };
-    attributes[offset+1] = { {xRight, yBottom, z}, {uRight, vBottom} };
-    attributes[offset+2] = { {xLeft,  yTop,    z}, {uLeft,  vTop   } };
+    ip.attributes[offset+0] = { {xLeft,  yBottom, z}, {uLeft,  vBottom} };
+    ip.attributes[offset+1] = { {xRight, yBottom, z}, {uRight, vBottom} };
+    ip.attributes[offset+2] = { {xLeft,  yTop,    z}, {uLeft,  vTop   } };
 
-    attributes[offset+3] = { {xRight, yBottom, z}, {uRight, vBottom} };
-    attributes[offset+4] = { {xLeft,  yTop,    z}, {uLeft,  vTop   } };
-    attributes[offset+5] = { {xRight, yTop,    z}, {uRight, vTop   } };
+    ip.attributes[offset+3] = { {xRight, yBottom, z}, {uRight, vBottom} };
+    ip.attributes[offset+4] = { {xLeft,  yTop,    z}, {uLeft,  vTop   } };
+    ip.attributes[offset+5] = { {xRight, yTop,    z}, {uRight, vTop   } };
 }
 
 TiledImage
@@ -708,8 +766,40 @@ void
 imagesPrune(time_t latestPermissibleUse) noexcept {}
 
 void
-imageDrawRect(float x1, float x2, float y1, float y2, uint32_t argb) noexcept {
-    // TODO
+imageDrawRect(float left, float right, float top, float bottom, float z,
+              uint32_t argb) noexcept {
+    fvec2 trans = sdl2Translation;
+    fvec2 scale = sdl2Scaling;
+
+    float yTop    = scale.y * (trans.y + top);
+    float yBottom = scale.y * (trans.y + bottom);
+    float xLeft   = scale.x * (trans.x + left);
+    float xRight  = scale.x * (trans.x + right);
+
+    size_t offset = rp.attributes.size;
+
+    const size_t QUAD_COORDS = 6;
+
+    if (rp.attributes.capacity == 0) {
+        rp.attributes.reserve(QUAD_COORDS * 8);
+    }
+    else if (rp.attributes.size + QUAD_COORDS > rp.attributes.capacity) {
+        rp.attributes.reserve(rp.attributes.capacity * 2);
+    }
+    rp.attributes.size += QUAD_COORDS;
+
+    uint8_t a = (argb >> 24) & 0xFF;
+    uint8_t r = (argb >> 16) & 0xFF;
+    uint8_t g = (argb >>  8) & 0xFF;
+    uint8_t b = (argb >>  0) & 0xFF;
+
+    rp.attributes[offset+0] = { {xLeft,  yBottom, z}, r, g, b, a };
+    rp.attributes[offset+1] = { {xRight, yBottom, z}, r, g, b, a };
+    rp.attributes[offset+2] = { {xLeft,  yTop,    z}, r, g, b, a };
+
+    rp.attributes[offset+3] = { {xRight, yBottom, z}, r, g, b, a };
+    rp.attributes[offset+4] = { {xLeft,  yTop,    z}, r, g, b, a };
+    rp.attributes[offset+5] = { {xRight, yTop,    z}, r, g, b, a };
 }
 
 void
@@ -720,32 +810,78 @@ imageStartFrame() noexcept {
     glClear_(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void
-imageEndFrame() noexcept {
-    glBindBuffer_(GL_ARRAY_BUFFER, vbAttributes);
-    glBufferData_(GL_ARRAY_BUFFER, attributes.size * sizeof(Vertex),
-                  attributes.data, GL_STATIC_DRAW);
-
-    glVertexAttribPointer_(aPosition, 3, GL_FLOAT, false,
-                           sizeof(Vertex),
-                           &static_cast<Vertex*>(0)->position);
-    glEnableVertexAttribArray_(aPosition);
-
-    glVertexAttribPointer_(aTexCoord, 2, GL_FLOAT, false,
-                           sizeof(Vertex),
-                           &static_cast<Vertex*>(0)->texCoord);
-    glEnableVertexAttribArray_(aTexCoord);
-
+static Transform
+getOrtho() noexcept {
     float ww = static_cast<float>(confWindowSize.x);
     float wh = static_cast<float>(confWindowSize.y);
 
-    Transform transform = transformScale(2.0f / ww, -2.0f / wh) *
-                          transformTranslate(-1, 1);
+    return transformScale(2.0f / ww, -2.0f / wh) * transformTranslate(-1, 1);
+}
 
-    glUniformMatrix4fv_(uProjection, 1, false, transform.m);
+static void
+imageFlushImages() noexcept {
+    if (ip.attributes.size == 0) {
+        return;
+    }
 
-    glDrawArrays_(GL_TRIANGLES, 0, attributes.size);
+    glUseProgram_(ip.program);
+
+    glBindBuffer_(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData_(GL_ARRAY_BUFFER, ip.attributes.size * sizeof(ImageVertex),
+                  ip.attributes.data, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray_(ip.aPosition);
+    glEnableVertexAttribArray_(ip.aTexCoord);
+
+    glVertexAttribPointer_(ip.aPosition, 3, GL_FLOAT, false,
+                           sizeof(ImageVertex),
+                           &static_cast<ImageVertex*>(0)->position);
+    glVertexAttribPointer_(ip.aTexCoord, 2, GL_FLOAT, false,
+                           sizeof(ImageVertex),
+                           &static_cast<ImageVertex*>(0)->texCoord);
+
+    glUniformMatrix4fv_(ip.uProjection, 1, false, getOrtho().m);
+
+    glEnable_(GL_DEPTH_TEST);
+    glDrawArrays_(GL_TRIANGLES, 0, ip.attributes.size);
+
+    ip.attributes.size = 0;
+}
+
+static void
+imageFlushRects() noexcept {
+    if (rp.attributes.size == 0) {
+        return;
+    }
+
+    glUseProgram_(rp.program);
+
+    glBindBuffer_(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData_(GL_ARRAY_BUFFER, rp.attributes.size * sizeof(RectVertex),
+                  rp.attributes.data, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray_(rp.aPosition);
+    glEnableVertexAttribArray_(rp.aColor);
+
+    glVertexAttribPointer_(rp.aPosition, 3, GL_FLOAT, false,
+                           sizeof(RectVertex),
+                           &static_cast<RectVertex*>(0)->position);
+    glVertexAttribPointer_(rp.aColor, 4, GL_UNSIGNED_BYTE, true,
+                           sizeof(RectVertex),
+                           &static_cast<RectVertex*>(0)->r);
+
+    glUniformMatrix4fv_(rp.uProjection, 1, false, getOrtho().m);
+
+    glDisable_(GL_DEPTH_TEST);
+    glDrawArrays_(GL_TRIANGLES, 0, rp.attributes.size);
+
+    rp.attributes.size = 0;
+}
+
+void
+imageEndFrame() noexcept {
+    imageFlushImages();
+    imageFlushRects();
+
     SDL_GL_SwapWindow(sdl2Window);
-
-    attributes.size = 0;
 }

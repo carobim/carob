@@ -90,7 +90,7 @@ displayListPresent(DisplayList* display) noexcept {
     if (display->colorOverlayARGB & 0xFF000000) {
         float ww = static_cast<float>(windowWidth());
         float wh = static_cast<float>(windowHeight());
-        imageDrawRect(0, ww, 0, wh, display->colorOverlayARGB);
+        imageDrawRect(0, ww, 0, wh, 500.0f, display->colorOverlayARGB);
     }
 
     popLetterbox();
@@ -98,7 +98,8 @@ displayListPresent(DisplayList* display) noexcept {
     if (display->paused) {
         float ww = static_cast<float>(windowWidth());
         float wh = static_cast<float>(windowHeight());
-        imageDrawRect(0, ww, 0, wh, 0x7F000000);
+        imageDrawRect(0, ww, 0, wh, 512.0f, 0x7F000000);
+
         Image pauseInfo = imageLoad("resource/pause_overlay.bmp");
         if (IMAGE_VALID(pauseInfo)) {
             float iw = static_cast<float>(pauseInfo.width);
