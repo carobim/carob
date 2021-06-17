@@ -460,7 +460,7 @@ JsonDocument::JsonDocument() noexcept : ok(false) { }
 
 JsonDocument::JsonDocument(String text) noexcept
         : text(static_cast<String&&>(text)) {
-    text << '\0';
+    this->text << '\0';
     ok = parse(this->text.data, &root, allocator);
 }
 
