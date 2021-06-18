@@ -43,7 +43,12 @@ typedef struct _IO_FILE FILE;
 typedef int64_t blkcnt_t;
 typedef int64_t off_t;
 typedef int clockid_t;
+#ifdef __aarch64__
+// musl bits/alltypes.h
+typedef int blksize_t;
+#else
 typedef long blksize_t;
+#endif
 typedef uint64_t dev_t;
 typedef uint64_t ino_t;
 struct iovec {
@@ -51,7 +56,12 @@ struct iovec {
     size_t iov_len;
 };
 typedef unsigned gid_t;
+#ifdef __aarch64__
+// musl bits/alltypes.h
+typedef unsigned int nlink_t;
+#else
 typedef unsigned long nlink_t;
+#endif
 typedef unsigned long pthread_t;
 typedef unsigned mode_t;
 struct timespec {
@@ -60,8 +70,8 @@ struct timespec {
 };
 typedef unsigned uid_t;
 
+// include/alltypes.h.in
 #if __LONG_MAX__ == 0x7fffffffffffffffL
-// arch/x86_64/bits/stat.h
 struct pthread_cond_t {
     union {
         int __i[12];
@@ -76,10 +86,7 @@ struct pthread_mutex_t {
         volatile void* volatile __p[5];
     };
 };
-
 #elif __LONG_MAX__ == 0x7fffffff
-// arch/arm/bits/stat.h
-// arch/i386/bits/stat.h
 struct pthread_cond_t {
     union {
         int __i[12];
@@ -141,7 +148,27 @@ struct stat {
     struct timespec st_ctim;
     ino_t st_ino;
 };
-#elif __LONG_MAX__ == 0x7fffffffffffffffL
+#elif defined(__aarch64__)
+// arch/aarch64/bits/stat.h
+struct stat {
+    dev_t st_dev;
+    ino_t st_ino;
+    mode_t st_mode;
+    nlink_t st_nlink;
+    uid_t st_uid;
+    gid_t st_gid;
+    dev_t st_rdev;
+    unsigned long __pad;
+    off_t st_size;
+    blksize_t st_blksize;
+    int __pad2;
+    blkcnt_t st_blocks;
+    struct timespec st_atim;
+    struct timespec st_mtim;
+    struct timespec st_ctim;
+    unsigned __unused[2];
+};
+#elif defined(__x86_64__)
 // arch/x86_64/bits/stat.h
 struct stat {
     dev_t st_dev;
