@@ -61,9 +61,9 @@
 #include "util/string.h"
 
 #define JSON_VALUE_NAN_MASK     0x7FF8000000000000ULL
-#define JSON_VALUE_PAYLOAD_MASK 0x00007FFFFFFFFFFFULL
-#define JSON_VALUE_TAG_MASK     0xF
-#define JSON_VALUE_TAG_SHIFT    47
+#define JSON_VALUE_PAYLOAD_MASK 0x0000FFFFFFFFFFFFULL
+#define JSON_VALUE_TAG_MASK     0x7
+#define JSON_VALUE_TAG_SHIFT    48
 
 enum JsonTag {
     JSON_NUMBER = 0,
@@ -72,7 +72,7 @@ enum JsonTag {
     JSON_OBJECT,
     JSON_TRUE,
     JSON_FALSE,
-    JSON_NULL = 0xF
+    JSON_NULL,
 };
 
 struct JsonNode;
@@ -83,8 +83,7 @@ union JsonValue {
 
     inline JsonValue(double x) noexcept : fval(x) { }
     inline JsonValue(JsonTag tag = JSON_NULL, void* payload = 0) noexcept {
-        // assert_(reinterpret_cast<size_t>(payload) <=
-        // JSON_VALUE_PAYLOAD_MASK);
+        //assert_(reinterpret_cast<size_t>(payload) <= JSON_VALUE_PAYLOAD_MASK);
         ival = JSON_VALUE_NAN_MASK |
                (static_cast<uint64_t>(tag) << JSON_VALUE_TAG_SHIFT) |
                reinterpret_cast<size_t>(payload);
@@ -220,6 +219,7 @@ struct JsonIterator {
 
 inline JsonIterator
 begin(JsonValue object) noexcept {
+    //assert_(object.isNode());
     return JsonIterator(object.toNode());
 }
 
