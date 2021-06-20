@@ -443,6 +443,7 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
 )
 
 set(TEST_SOURCES ${TEST_SOURCES}
+    ${HERE}/src/util/assert.cpp
     ${HERE}/src/util/assert.h
     ${HERE}/src/util/fnv.cpp
     ${HERE}/src/util/fnv.h
