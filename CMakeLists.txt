@@ -519,6 +519,36 @@ endif()
 
 
 #
+# Preprocessor definitions
+#
+
+if(AUDIO_NULL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DAUDIO_NULL")
+endif()
+if(AUDIO_SDL2)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DAUDIO_SDL2")
+endif()
+if(WINDOW_NULL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINDOW_NULL")
+endif()
+if(WINDOW_COCOA)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINDOW_COCOA")
+endif()
+if(WINDOW_SDL2)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINDOW_SDL2")
+endif()
+if(RENDERER_NULL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRENDERER_NULL")
+endif()
+if(RENDERER_SDL2)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRENDERER_SDL2")
+endif()
+if(RENDERER_GL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRENDERER_GL")
+endif()
+
+
+#
 # Compilation options
 #
 
