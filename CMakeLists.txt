@@ -11,12 +11,13 @@ option(AV_NULL "Disable audio and video output")
 option(AV_SDL2 "Use SDL2 for audio and video output")
 option(AV_SDL2_GL "Use SDL2 for audio and window, and OpenGL for graphics")
 option(AV_EM "Use Emscripten for audio and video output")
-
+option(AV_CUSTOM "Select the AV backend options manually")
+option(STATIC_SDL "Use a static SDL2 library at chosen location")
 if(APPLE)
     option(UNIVERSAL "Build an AMD64/ARM64 universal binary")
 endif()
 
-if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM)
+if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM AND NOT AV_CUSTOM)
     set(AV_NULL ON)
 endif()
 
@@ -309,7 +310,7 @@ elseif(APPLE)
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
-    if(NOT WINDOW_NULL AND NOT AUDIO_NULL)
+    if(NOT WINDOW_NULL OR NOT AUDIO_NULL)
         set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
             ${HERE}/src/os/mac-gui.mm
             ${HERE}/src/os/mac-gui.h
@@ -488,6 +489,7 @@ else()
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
 endif()
+
 
 
 #
@@ -712,6 +714,11 @@ if(NOT DEFINED ENV{CI})
     endif()
 endif()
 
+if(APPLE)
+    # Metal is available on 64-bit machines.
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.11")
+endif()
+
 if(UNIVERSAL)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch x86_64 -arch arm64")
 endif()
@@ -801,22 +808,6 @@ if(APPLE)
         "${CMAKE_EXE_LINKER_FLAGS} --no-standard-libraries -lSystem")
 endif()
 
-# Share variables with parent
-if(IS_SUBPROJECT)
-    set(CMAKE_EXE_LINKER_FLAGS
-        ${CMAKE_EXE_LINKER_FLAGS}
-        PARENT_SCOPE)
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE
-        ${CMAKE_EXE_LINKER_FLAGS_RELEASE}
-        PARENT_SCOPE)
-    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
-        ${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL}
-        PARENT_SCOPE)
-    set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
-        ${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}
-        PARENT_SCOPE)
-endif()
-
 if(APPLE AND NOT WINDOW_NULL)
     # FIXME: Change to be target-specific
     set(GUI_TYPE MACOSX_BUNDLE)
@@ -863,7 +854,21 @@ if(AV_EM)
     target_link_libraries(tsunagari PUBLIC  pthread)
 endif()
 
-if(SDL2)
+if(STATIC_SDL)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${STATIC_SDL}")
+    if(APPLE)
+        if(WINDOW_SDL2)
+            # FIXME: Make these specific to libtsunagari.
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lobjc -Wl,-framework,Carbon -Wl,-framework,Cocoa -Wl,-framework,CoreVideo -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore")
+        endif()
+        if(AUDIO_SDL2)
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-framework,AudioToolbox -Wl,-framework,CoreAudio")
+        endif()
+        if(RENDERER_SDL2)
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-weak_framework,Metal")
+        endif()
+    endif()
+elseif(SDL2)
     if(USE_SDL2_PKGCONFIG)
         find_package(PkgConfig REQUIRED)
         pkg_search_module(SDL2 REQUIRED SDL2 sdl2)
@@ -888,6 +893,7 @@ endif()
 
 if(AUDIO_SDL2)
     if(USE_SDL2_PKGCONFIG)
+        find_package(PkgConfig REQUIRED)
         pkg_search_module(SDL2_mixer REQUIRED SDL2_mixer)
     else()
         set(SDL2_mixer_INCLUDE_DIRS "" CACHE PATH
@@ -929,6 +935,22 @@ endif()
 #    link_directories(${SDL2_image_LIBRARY_DIRS})
 #    target_link_libraries(tsunagari ${SDL2_image_LIBRARIES})
 #endif()
+
+# Share variables with parent
+if(IS_SUBPROJECT)
+    set(CMAKE_EXE_LINKER_FLAGS
+        ${CMAKE_EXE_LINKER_FLAGS}
+        PARENT_SCOPE)
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE
+        ${CMAKE_EXE_LINKER_FLAGS_RELEASE}
+        PARENT_SCOPE)
+    set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
+        ${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL}
+        PARENT_SCOPE)
+    set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
+        ${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}
+        PARENT_SCOPE)
+endif()
 
 
 #
