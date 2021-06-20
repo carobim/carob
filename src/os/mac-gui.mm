@@ -33,6 +33,7 @@
 
 extern "C" {
 int chdir(const char *) noexcept;
+}
 
 typedef signed long CFIndex;
 typedef signed char BOOL;
@@ -43,10 +44,12 @@ typedef struct CFBundle *CFBundleRef;
 typedef const __attribute__((objc_bridge(id))) void* CFTypeRef;
 typedef struct __CFURL *CFURLRef;
 
+extern "C" {
 CFURLRef CFBundleCopyBundleURL(CFBundleRef bundle) noexcept;
 CFBundleRef CFBundleGetMainBundle() noexcept;
 void CFRelease(CFTypeRef cf) noexcept;
 Boolean CFURLGetFileSystemRepresentation(CFURLRef url, Boolean resolveAgainstBase, UInt8 *buffer, CFIndex maxBufLen) noexcept;
+}
 
 typedef long NSInteger;
 typedef unsigned long NSUInteger;
@@ -73,7 +76,6 @@ typedef NSUInteger NSStringEncoding;
 //@property (class, readonly, strong) NSFileManager *defaultManager;
 - (BOOL)changeCurrentDirectoryPath:(NSString *)path;
 @end
-}
 
 @interface NSButton
 @end

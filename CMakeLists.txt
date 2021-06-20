@@ -10,7 +10,9 @@ project(TsunagariEngine C CXX)
 option(AV_NULL "Disable audio and video output")
 option(AV_SDL2 "Use SDL2 for audio and video output")
 option(AV_SDL2_GL "Use SDL2 for audio and window, and OpenGL for graphics")
+option(AV_COCOA_GL "Use Cocoa for window and OpenGL for graphics, no audio")
 option(AV_EM "Use Emscripten for audio and video output")
+<<<<<<< Updated upstream
 option(AV_CUSTOM "Select the AV backend options manually")
 option(STATIC_SDL "Use a static SDL2 library at chosen location")
 if(APPLE)
@@ -18,6 +20,10 @@ if(APPLE)
 endif()
 
 if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM AND NOT AV_CUSTOM)
+=======
+
+if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_COCOA_GL AND NOT AV_EM)
+>>>>>>> Stashed changes
     set(AV_NULL ON)
 endif()
 
@@ -69,6 +75,10 @@ if(AV_EM)
     set(NETBSD 0)
 endif()
 
+<<<<<<< Updated upstream
+=======
+# Sub-systems
+>>>>>>> Stashed changes
 if(AV_NULL)
     set(AUDIO_NULL 1)
     set(WINDOW_NULL 1)
@@ -87,6 +97,16 @@ if(AV_SDL2_GL)
     set(RENDERER_GL 1)
 endif()
 
+<<<<<<< Updated upstream
+=======
+if(AV_COCOA_GL)
+    set(AUDIO_NULL 1)
+    set(WINDOW_COCOA 1)
+    #set(RENDERER_GL 1)
+    set(RENDERER_NULL 1)
+endif()
+
+>>>>>>> Stashed changes
 if(AV_EM)
     set(AUDIO_SDL2 1)
     set(WINDOW_SDL2 1)
@@ -170,6 +190,12 @@ endif()
 if(RENDERER_SDL2)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/av/sdl2/images.cpp
+    )
+endif()
+
+if(WINDOW_COCOA)
+    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        ${HERE}/src/av/cocoa/window.mm
     )
 endif()
 
@@ -528,12 +554,15 @@ endif()
 # Preprocessor definitions
 #
 
+<<<<<<< Updated upstream
 if(AUDIO_NULL)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DAUDIO_NULL")
 endif()
 if(AUDIO_SDL2)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DAUDIO_SDL2")
 endif()
+=======
+>>>>>>> Stashed changes
 if(WINDOW_NULL)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINDOW_NULL")
 endif()
@@ -543,6 +572,7 @@ endif()
 if(WINDOW_SDL2)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINDOW_SDL2")
 endif()
+<<<<<<< Updated upstream
 if(RENDERER_NULL)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRENDERER_NULL")
 endif()
@@ -552,6 +582,8 @@ endif()
 if(RENDERER_GL)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DRENDERER_GL")
 endif()
+=======
+>>>>>>> Stashed changes
 
 
 #
@@ -679,7 +711,7 @@ if(${CMAKE_VERSION} VERSION_LESS 2.8.10)
     set(CMAKE_CXX_FLAGS_RELEASE
         "${CMAKE_CXX_FLAGS_RELEASE} -DRELEASE")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
-        "${CMAKE_CXX_FLAGS_MINSIZEREL} -DRELEASE")
+        "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DRELEASE")
 else()
     target_compile_definitions(tsunagari PUBLIC $<${IS_RELEASE}:RELEASE>)
     target_compile_definitions(pack-tool PRIVATE $<${IS_RELEASE}:RELEASE>)
@@ -936,6 +968,7 @@ endif()
 #    target_link_libraries(tsunagari ${SDL2_image_LIBRARIES})
 #endif()
 
+<<<<<<< Updated upstream
 # Share variables with parent
 if(IS_SUBPROJECT)
     set(CMAKE_EXE_LINKER_FLAGS
@@ -950,6 +983,14 @@ if(IS_SUBPROJECT)
     set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
         ${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}
         PARENT_SCOPE)
+=======
+if(WINDOW_COCOA)
+    target_link_libraries(tsunagari
+        /System/Library/Frameworks/Cocoa.framework
+        /System/Library/Frameworks/Quartz.framework
+        /System/Library/Frameworks/OpenGL.framework
+    )
+>>>>>>> Stashed changes
 endif()
 
 

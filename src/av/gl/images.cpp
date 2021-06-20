@@ -98,9 +98,15 @@ typedef GLuint VertexBuffer;
 typedef GLenum (APIENTRY* GlGetErrorProc)();
 static APICALL GlGetErrorProc glGetError;
 
+#if defined(WINDOW_SDL2)
+#    define GL_VISIBILITY static
+#elif defined(WINDOW_COCOA)
+#    define GL_VISIBILITY
+#endif
+
 #define GLFN_VOID_0(rt, fn) \
     typedef rt (APIENTRY* fn##Proc)(); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_() noexcept { \
         fn(); \
         checkError(#fn); \
@@ -108,7 +114,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_VOID_1(rt, fn, t1) \
     typedef rt (APIENTRY* fn##Proc)(t1); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a) noexcept { \
         fn(a); \
         checkError(#fn); \
@@ -116,7 +122,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_VOID_2(rt, fn, t1, t2) \
     typedef rt (APIENTRY* fn##Proc)(t1, t2); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a, t2 b) noexcept { \
         fn(a, b); \
         checkError(#fn); \
@@ -124,7 +130,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_VOID_3(rt, fn, t1, t2, t3) \
     typedef rt (APIENTRY* fn##Proc)(t1, t2, t3); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a, t2 b, t3 c) noexcept { \
         fn(a, b, c); \
         checkError(#fn); \
@@ -132,7 +138,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_VOID_4(rt, fn, t1, t2, t3, t4) \
     typedef rt (APIENTRY* fn##Proc)(t1, t2, t3, t4); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a, t2 b, t3 c, t4 d) noexcept { \
         fn(a, b, c, d); \
         checkError(#fn); \
@@ -140,7 +146,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_VOID_6(rt, fn, t1, t2, t3, t4, t5, t6) \
     typedef rt (APIENTRY* fn##Proc)(t1, t2, t3, t4, t5, t6); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a, t2 b, t3 c, t4 d, t5 e, t6 f) noexcept { \
         fn(a, b, c, d, e, f); \
         checkError(#fn); \
@@ -148,7 +154,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_VOID_9(rt, fn, t1, t2, t3, t4, t5, t6, t7, t8, t9) \
     typedef rt (APIENTRY* fn##Proc)(t1, t2, t3, t4, t5, t6, t7, t8, t9); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a, t2 b, t3 c, t4 d, t5 e, t6 f, t7 g, t8 h, t9 i) noexcept { \
         fn(a, b, c, d, e, f, g, h, i); \
         checkError(#fn); \
@@ -156,7 +162,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_RETURN_0(rt, fn) \
     typedef rt (APIENTRY* fn##Proc)(); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_() noexcept { \
         rt x = fn(); \
         checkError(#fn); \
@@ -165,7 +171,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_RETURN_1(rt, fn, t1) \
     typedef rt (APIENTRY* fn##Proc)(t1); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a) noexcept { \
         rt x = fn(a); \
         checkError(#fn); \
@@ -174,7 +180,7 @@ static APICALL GlGetErrorProc glGetError;
 
 #define GLFN_RETURN_2(rt, fn, t1, t2) \
     typedef rt (APIENTRY* fn##Proc)(t1, t2); \
-    static APICALL fn##Proc fn; \
+    GL_VISIBILITY APICALL fn##Proc fn; \
     static rt fn##_(t1 a, t2 b) noexcept { \
         rt x = fn(a, b); \
         checkError(#fn); \
@@ -308,11 +314,13 @@ checkError(StringView call) noexcept {
 
 static void
 getProcAddress(void** fnAddr, const char* symbolName) noexcept {
+#ifdef WINDOW_SDL2
     // TODO: Remove SDL usage.
     *fnAddr = SDL_GL_GetProcAddress(symbolName);
     if (*fnAddr == 0) {
         logFatal("GL", String() << "Couldn't load GL function: " << symbolName);
     }
+#endif
 }
 
 static void
@@ -387,6 +395,13 @@ makeProgram(const char* vertexSource, const char* fragmentSource) noexcept {
 //
 // Tsunagari-specific code
 //
+
+#ifdef WINDOW_COCOA
+void
+windowLock() noexcept;
+void
+windowUnlock() noexcept;
+#endif
 
 #define ATLAS_WIDTH 2048
 #define ATLAS_HEIGHT 512
@@ -513,9 +528,14 @@ void
 imageInit() noexcept {
     TimeMeasure m("Constructed OpenGL renderer");
 
+#if 0
+#if defined(WINDOW_COCOA)
+    windowLock();
+#elif defined(WINDOW_SDL)
     if (SDL_GL_CreateContext(sdl2Window) == 0) {
         sdlDie("SDL", "SDL_GL_CreateContext");
     }
+#endif
 
     loadFunction(glActiveTexture);
     loadFunction(glAlphaFunc);
@@ -587,6 +607,11 @@ imageInit() noexcept {
     rp.aColor = glGetAttribLocation_(rp.program, "aColor");
     rp.aPosition = glGetAttribLocation_(rp.program, "aPosition");
     rp.uProjection = glGetUniformLocation_(rp.program, "uProjection");
+
+#ifdef WINDOW_COCOA
+    windowUnlock();
+#endif
+#endif
 }
 
 static TiledImage*
@@ -594,24 +619,47 @@ load(StringView path) noexcept {
     TiledImage& tiles = images.allocate(hash_(path));
     tiles = {};
 
+    tiles.image = {
+        reinterpret_cast<void*>(tAtlas),
+        static_cast<uint32_t>(x),
+        static_cast<uint32_t>(y),
+        static_cast<uint32_t>(width),
+        static_cast<uint32_t>(height),
+    };
+
+    atlasUsed += static_cast<uint32_t>(width);
+
+    return &tiles;
+
+#if 0
     String r;
     if (!resourceLoad(path, r)) {
         // Error logged.
         return 0;
     }
 
-    SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
-                          static_cast<int>(r.size));
-
     int x = atlasUsed;
     int y = 0;
     int width;
     int height;
+    void* pixels;
+
+#if defined(WINDOW_COCOA)
+#elif defined(WINDOW_SDL2)
+    SDL_RWops* ops =
+            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                          static_cast<int>(r.size));
+#endif
 
     {
         TimeMeasure m(String() << "Constructed " << path << " as image");
 
+#if defined(WINDOW_COCOA)
+        width = 1;
+        height = 1;
+        static uint8_t red[4] = { 0, 0, 255, 255 };
+        pixels = red;
+#elif defined(WINDOW_SDL2)
         //SDL_Surface* surface = IMG_Load_RW(ops, 1);
         SDL_Surface* surface = SDL_LoadBMP_RW(ops, 1);
         if (!surface) {
@@ -621,6 +669,8 @@ load(StringView path) noexcept {
 
         width = surface->w;
         height = surface->h;
+        pixels = surface->pixels;
+#endif
 
         // Rectangle packing algorithm:
         //
@@ -635,7 +685,7 @@ load(StringView path) noexcept {
             height,  // height
             GL_BGRA,  // format
             GL_UNSIGNED_BYTE,  // type
-            surface->pixels  // data
+            pixels  // data
         );
         /*
         glTexImage2D_(
@@ -647,11 +697,14 @@ load(StringView path) noexcept {
             0,
             GL_RGBA,
             GL_UNSIGNED_BYTE,
-            surface->pixels
+            pixels
         );
         */
 
+#if defined(WINDOW_COCOA)
+#elif defined(WINDOW_SDL2)
         SDL_FreeSurface(surface);
+#endif
     }
 
     tiles.image = {
@@ -665,6 +718,7 @@ load(StringView path) noexcept {
     atlasUsed += static_cast<uint32_t>(width);
 
     return &tiles;
+#endif
 }
 
 Image
@@ -880,5 +934,7 @@ imageFlushRects() noexcept {
 
 void
 imageEndFrame() noexcept {
+#ifdef WINDOW_SDL2
     SDL_GL_SwapWindow(sdl2Window);
+#endif
 }
