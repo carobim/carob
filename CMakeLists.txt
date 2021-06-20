@@ -20,34 +20,6 @@ if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM)
     set(AV_NULL ON)
 endif()
 
-if(AV_NULL)
-    set(AUDIO_NULL 1)
-    set(WINDOW_NULL 1)
-    set(RENDERER_NULL 1)
-endif()
-
-if(AV_SDL2)
-    set(AUDIO_SDL2 1)
-    set(WINDOW_SDL2 1)
-    set(RENDERER_SDL2 1)
-endif()
-
-if(AV_SDL2_GL)
-    set(AUDIO_SDL2 1)
-    set(WINDOW_SDL2 1)
-    set(RENDERER_GL 1)
-endif()
-
-if(AV_EM)
-    set(AUDIO_SDL2 1)
-    set(WINDOW_SDL2 1)
-    set(RENDERER_SDL2 1)
-endif()
-
-if(AUDIO_SDL2 OR WINDOW_SDL2 OR RENDERER_SDL2)
-    set(SDL2 ON)
-endif()
-
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
 
 option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
@@ -94,6 +66,34 @@ if(AV_EM)
     set(LINUX 1)
     set(FREEBSD 0)
     set(NETBSD 0)
+endif()
+
+if(AV_NULL)
+    set(AUDIO_NULL 1)
+    set(WINDOW_NULL 1)
+    set(RENDERER_NULL 1)
+endif()
+
+if(AV_SDL2)
+    set(AUDIO_SDL2 1)
+    set(WINDOW_SDL2 1)
+    set(RENDERER_SDL2 1)
+endif()
+
+if(AV_SDL2_GL)
+    set(AUDIO_SDL2 1)
+    set(WINDOW_SDL2 1)
+    set(RENDERER_GL 1)
+endif()
+
+if(AV_EM)
+    set(AUDIO_SDL2 1)
+    set(WINDOW_SDL2 1)
+    set(RENDERER_SDL2 1)
+endif()
+
+if(AUDIO_SDL2 OR WINDOW_SDL2 OR RENDERER_SDL2)
+    set(SDL2 ON)
 endif()
 
 # Build type
