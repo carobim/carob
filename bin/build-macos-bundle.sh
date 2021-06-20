@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -euo pipefail
 
 help() {
@@ -64,7 +64,8 @@ rm -rf "$dst"
 mv "$staging" "$dst"
 
 
-dmg_staging="$build"/"$app".dmg.tmp
+dmg_staging="$build"/."$app".staging
+dmg_intermediate="$build"/."$app".dmg
 dmg="$build"/"$app".dmg
 
 trap 'rm -rf "$dmg_staging"' ERR
@@ -72,4 +73,89 @@ trap 'rm -rf "$dmg_staging"' ERR
 mkdir -p "$dmg_staging"
 cp -a "$dst" "$dmg_staging"/
 ln -fs /Applications "$dmg_staging"/
-hdiutil create -srcfolder "$dmg_staging" -volname "$app" -fs HFS+ -o "$dmg" -ov
+
+hdiutil create -format UDRW -srcfolder "$dmg_staging" -volname "$app" -fs HFS+ \
+               -o "$dmg_intermediate" -ov >/dev/null
+rm -r "$dmg_staging"
+
+trap 'rm -f "$dmg_intermediate"' ERR
+
+dev=$(hdiutil attach -readwrite -noverify -noautoopen "$dmg_intermediate" |
+      awk '/^\/dev/ { print $1; exit }')
+
+trap 'echo AppleScript failed; hdiutil detach "$dev" >/dev/null; rm -f "$dmg_intermediate"' \
+     ERR
+
+while [ ! -d /Volumes/"$app" ]; do
+    sleep 1
+done
+
+icon_height=152
+icon_width=152
+icon_offsetx=160
+icon_offsety=128
+
+app_x=$((icon_offsetx + 52))
+app_y=$((icon_offsety + 56))
+apps_x=$((app_x + 320))
+
+menu_bar_height=30
+window_width=$((apps_x + icon_offsetx + 58))
+window_height=$((icon_offsety * 2 + icon_height + menu_bar_height))
+
+window_top=128
+window_bottom=$((window_top + window_height))
+window_left=320
+window_right=$((window_left + window_width))
+
+osascript >/dev/null <<EOF
+tell application "Finder"
+    tell disk ("$app")
+        open
+
+        tell the icon view options of container window
+            set arrangement to not arranged
+            set icon size to 128
+            set text size to 16
+        end tell
+
+        tell container window
+            set current view to icon view
+            set statusbar visible to false
+            set toolbar visible to false
+            set the bounds to { \
+                $window_left, \
+                $window_top, \
+                $window_right, \
+                $window_bottom \
+            }
+        end tell
+
+        set position of item "$app.app" to {$app_x, $app_y}
+        set position of item "Applications" to {$apps_x, $app_y}
+
+        set the extension hidden of item "$app.app" to true
+
+        close
+    end tell
+end tell
+EOF
+
+while [ ! -f /Volumes/"$app"/.DS_Store ]; do
+    echo waiting
+    sleep 1
+done
+
+bless --folder /Volumes/"$app" --openfolder /Volumes/"$app"
+
+hdiutil detach "$dev" >/dev/null
+while [ -d /Volumes/"$app" ]; do
+    echo waiting
+    sleep 1
+done
+
+trap 'rm "$dmg_intermediate"' ERR
+
+hdiutil convert "$dmg_intermediate" -format UDRO -o "$dmg_intermediate" -ov \
+    >/dev/null
+mv "$dmg_intermediate" "$dmg"
