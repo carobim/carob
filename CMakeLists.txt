@@ -300,8 +300,6 @@ elseif(APPLE)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/mac-c.h
         ${HERE}/src/os/mac-chrono.cpp
-        ${HERE}/src/os/mac-gui.mm
-        ${HERE}/src/os/mac-gui.h
         ${HERE}/src/os/mac-thread.cpp
         ${HERE}/src/os/mac-thread.h
         ${HERE}/src/os/unix-mapped-file.cpp
@@ -311,6 +309,12 @@ elseif(APPLE)
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
+    if(NOT WINDOW_NULL AND NOT AUDIO_NULL)
+        set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+            ${HERE}/src/os/mac-gui.mm
+            ${HERE}/src/os/mac-gui.h
+        )
+    endif()
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/mac-c.h
         ${HERE}/src/os/mac-thread.cpp

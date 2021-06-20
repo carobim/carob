@@ -39,7 +39,7 @@
 #    include "os/windows.h"
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(WINDOW_NULL) && !defined(AUDIO_NULL)
 #    include "os/mac-gui.h"
 #endif
 
@@ -130,7 +130,7 @@ logErr(StringView domain, StringView msg) noexcept {
 #ifdef _WIN32
         wMessageBox("Tsunagari - Error", s);
 #endif
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(WINDOW_NULL) && !defined(AUDIO_NULL)
         macMessageBox(StringView("Tsunagari - Error"), s);
 #endif
 
@@ -164,7 +164,8 @@ logFatal(StringView domain, StringView msg) noexcept {
 
 #ifdef _WIN32
     wMessageBox("Tsunagari - Fatal", s);
-#elif __APPLE__
+#endif
+#if defined(__APPLE__) && !defined(WINDOW_NULL) && !defined(AUDIO_NULL)
     macMessageBox(StringView("Tsunagari - Fatal"), s);
 #endif
 

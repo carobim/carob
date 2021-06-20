@@ -65,7 +65,7 @@ main() noexcept {
         return 1;
     }
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(WINDOW_NULL) && !defined(AUDIO_NULL)
     macSetWorkingDirectory();
 #endif
 
