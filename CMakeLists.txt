@@ -12,6 +12,10 @@ option(AV_SDL2 "Use SDL2 for audio and video output")
 option(AV_SDL2_GL "Use SDL2 for audio and window, and OpenGL for graphics")
 option(AV_EM "Use Emscripten for audio and video output")
 
+if(APPLE)
+    option(UNIVERSAL "Build an AMD64/ARM64 universal binary")
+endif()
+
 if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM)
     set(AV_NULL ON)
 endif()
@@ -674,6 +678,10 @@ if(NOT DEFINED ENV{CI})
     endif()
 endif()
 
+if(UNIVERSAL)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch x86_64 -arch arm64")
+endif()
+
 # Share variables with parent
 if(IS_SUBPROJECT)
     set(CMAKE_CXX_FLAGS
@@ -747,6 +755,11 @@ elseif(APPLE)
         "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -Wl,-x -Wl,-dead_strip")
     set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
         "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -Wl,-x -Wl,-dead_strip")
+endif()
+
+if(UNIVERSAL)
+    set(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} -arch x86_64 -arch arm64")
 endif()
 
 # Share variables with parent
