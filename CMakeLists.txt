@@ -762,6 +762,11 @@ if(UNIVERSAL)
         "${CMAKE_EXE_LINKER_FLAGS} -arch x86_64 -arch arm64")
 endif()
 
+if(APPLE)
+    set(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} --no-standard-libraries -lSystem")
+endif()
+
 # Share variables with parent
 if(IS_SUBPROJECT)
     set(CMAKE_EXE_LINKER_FLAGS
@@ -778,17 +783,16 @@ if(IS_SUBPROJECT)
         PARENT_SCOPE)
 endif()
 
-if(APPLE)
+if(APPLE AND NOT WINDOW_NULL)
     # FIXME: Change to be target-specific
     set(GUI_TYPE MACOSX_BUNDLE)
+endif()
 
+if(APPLE AND NOT WINDOW_NULL AND NOT AUDIO_NULL)
     target_link_libraries(tsunagari
         /System/Library/Frameworks/Cocoa.framework
         /System/Library/Frameworks/Foundation.framework
     )
-
-    set(CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} --no-standard-libraries -lSystem")
 endif()
 
 if(LINUX AND NOT AV_EM)
