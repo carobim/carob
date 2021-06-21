@@ -142,9 +142,14 @@ haveDebugger() noexcept {
         result = isDebuggerPresent();
 #    elif defined(__linux__)
         result = isDebuggerPresent();
-#    else
-#        warn not sure how to check for debugger
+#    elif defined(__FreeBSD__)
+        // FIXME: Check to see if ptrace(2) works.
         result = false;
+#    elif defined(__NetBSD__)
+        // FIXME: Check to see if ptrace(2) works.
+        result = false;
+#    else
+#        error not sure how to check for debugger
 #    endif
     }
 
