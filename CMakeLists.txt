@@ -627,9 +627,9 @@ if(GCC)
 endif()
 
 # Disable warnings when making old OS X builds since we don't use libstdc++
-if(APPLE AND CLANG)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-stdlibcxx-not-found")
-endif()
+#if(APPLE AND CLANG)
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-stdlibcxx-not-found")
+#endif()
 
 # -fno-implicit-templates
 
