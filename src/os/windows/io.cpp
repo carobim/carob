@@ -120,7 +120,7 @@ File::read(void* buf, size_t len) noexcept {
 
 bool
 File::readOffset(void* buf, size_t len, size_t offset) noexcept {
-    assert_(len <= INT32_MAX);
+    assert_(len <= static_cast<size_t>(INT32_MAX));
     DWORD position = SetFilePointer(handle, static_cast<LONG>(len), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
@@ -154,7 +154,7 @@ FileWriter::operator bool() noexcept {
 
 bool
 FileWriter::resize(size_t size) noexcept {
-    assert_(size <= INT32_MAX);
+    assert_(size <= static_cast<size_t>(INT32_MAX));
     DWORD position = SetFilePointer(handle, static_cast<LONG>(size), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
@@ -174,7 +174,7 @@ FileWriter::resize(size_t size) noexcept {
 
 bool
 FileWriter::writeOffset(const void* buf, size_t len, size_t offset) noexcept {
-    assert_(len <= INT32_MAX);
+    assert_(len <= static_cast<size_t>(INT32_MAX));
     DWORD position = SetFilePointer(handle, static_cast<LONG>(offset), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
@@ -225,7 +225,7 @@ writeStdout(const char* buf, size_t len) noexcept {
         return false;
     }
 
-    assert_(len <= INT32_MAX);
+    assert_(len <= static_cast<size_t>(INT32_MAX));
 
     DWORD written;
     if (!WriteConsoleA(con, buf, static_cast<DWORD>(len), &written, 0)) {
