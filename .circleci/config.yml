@@ -188,8 +188,8 @@ jobs:
       - image: ubuntu:21.04
     steps:
       - run: |
-          apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
+          apt-get --allow-unauthenticated update &&
+          apt-get --allow-unauthenticated install -y --no-install-recommends cmake g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
