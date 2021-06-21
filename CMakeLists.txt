@@ -626,6 +626,11 @@ if(GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-but-set-variable")
 endif()
 
+# Disable warnings when making old OS X builds since we don't use libstdc++
+if(APPLE AND CLANG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-stdlibcxx-not-found")
+endif()
+
 # -fno-implicit-templates
 
 # Reduce code size
@@ -715,8 +720,11 @@ if(NOT DEFINED ENV{CI})
 endif()
 
 if(APPLE)
-    # Metal is available on 64-bit machines.
+    # Metal is available on 64-bit machines from 10.11+.
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.11")
+
+    # Lowest that has an exported _start symbol on Xcode 12.5.
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8")
 endif()
 
 if(UNIVERSAL)
