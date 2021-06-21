@@ -33,19 +33,27 @@ jobs:
           samu
       - run: build/test
 
-  arch:
-    docker:
-      - image: archlinux
-    steps:
-      - run: |
-          pacman -Sy --noconfirm cmake gcc samurai
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
-          samu
-      - run: build/test
+  # Fails with
+  #
+  #   error: failed to initialize alpm library:
+  #   (root: /, dbpath: /var/lib/pacman/)
+  #   could not find or read directory
+  #
+  # on CircleCI as of 2021-06-20.
+  #
+  #arch:
+  #  docker:
+  #    - image: archlinux
+  #  steps:
+  #    - run: |
+  #        pacman -Sy --noconfirm cmake gcc samurai
+  #    - checkout
+  #    - run: |
+  #        mkdir build &&
+  #        cd build &&
+  #        cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+  #        samu
+  #    - run: build/test
 
   # Has CMake 2.8.12, GCC 4.8
   centos_7:
@@ -236,7 +244,7 @@ workflows:
     jobs:
       - alpine_3_1
       - alpine_3_13
-      - arch
+      #- arch
       - centos_7
       - centos_8
       - debian_8_jessie
