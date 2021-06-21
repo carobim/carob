@@ -89,8 +89,10 @@ jobs:
     docker:
       - image: centos:8
     steps:
+      # Install libarchive to solve a build issue due to CMake/libarchive
+      # version mismatch on CentOS 8. (2021-06-20)
       - run: |
-          dnf install -y cmake gcc-c++ make
+          dnf install -y cmake gcc-c++ libarchive make
       - checkout
       - run: |
           mkdir build &&
