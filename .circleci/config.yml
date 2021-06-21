@@ -204,10 +204,10 @@ jobs:
           ninja
       - run: build/test
 
-  # Has CMake 3.16, GCC 10, Ninja 1.10
-  ubuntu_20_10_groovy:
+  # Has CMake 3.18, GCC 10, Ninja 1.10
+  ubuntu_21_04_hirsute:
     docker:
-      - image: ubuntu:20.10
+      - image: ubuntu:21.04
     steps:
       - run: |
           apt-get update &&
@@ -267,6 +267,6 @@ workflows:
       - fedora_34
       - nix_2_3_6
       - ubuntu_14_04_trusty
-      - ubuntu_20_10_groovy
+      - ubuntu_21_04_hirsute
       - void
       - void_musl
