@@ -881,8 +881,6 @@ elseif(SDL2)
         find_package(PkgConfig REQUIRED)
         pkg_search_module(SDL2 REQUIRED SDL2 sdl2)
     else()
-        set(SDL2_INCLUDE_DIRS "" CACHE PATH
-            "Directory with SDL2 headers")
         set(SDL2_LIBRARY_DIRS "" CACHE PATH
             "Directory with SDL2 library")
         set(SDL2_LIBRARIES "" CACHE STRING
@@ -894,7 +892,6 @@ elseif(SDL2)
             " SDL2 include dirs and libraries")
     endif()
 
-    target_include_directories(tsunagari PRIVATE ${SDL2_INCLUDE_DIRS})
     link_directories( ${SDL2_LIBRARY_DIRS})
     target_link_libraries(tsunagari ${SDL2_LIBRARIES})
 endif()
@@ -904,8 +901,6 @@ if(AUDIO_SDL2)
         find_package(PkgConfig REQUIRED)
         pkg_search_module(SDL2_mixer REQUIRED SDL2_mixer)
     else()
-        set(SDL2_mixer_INCLUDE_DIRS "" CACHE PATH
-            "Directory with SDL2_mixer headers")
         set(SDL2_mixer_LIBRARY_DIRS "" CACHE PATH
             "Directory with SDL2_mixer library")
         set(SDL2_mixer_LIBRARIES "" CACHE STRING
@@ -917,7 +912,6 @@ if(AUDIO_SDL2)
             " SDL2_mixer include dirs and libraries")
     endif()
 
-    target_include_directories(tsunagari PRIVATE ${SDL2_mixer_INCLUDE_DIRS})
     link_directories(${SDL2_mixer_LIBRARY_DIRS})
     target_link_libraries(tsunagari ${SDL2_mixer_LIBRARIES})
 endif()
