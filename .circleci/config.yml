@@ -148,10 +148,10 @@ jobs:
           ninja-build
       - run: build/test
 
-  # Has CMake 3.18, GCC 10, Ninja 1.10
-  fedora_33:
+  # Has CMake 3.20, GCC 11, Ninja 1.10
+  fedora_34:
     docker:
-      - image: fedora:33
+      - image: fedora:34
     steps:
       - run: |
           dnf install -y cmake gcc-c++ ninja-build
@@ -264,7 +264,7 @@ workflows:
       - debian_8_jessie
       - debian_10_buster
       - fedora_20
-      - fedora_33
+      - fedora_34
       - nix_2_3_6
       - ubuntu_14_04_trusty
       - ubuntu_20_10_groovy
