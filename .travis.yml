@@ -46,9 +46,13 @@ _script: &script
       for f in $(find bin include lib share -type d 2>/dev/null); do
         mkdir -p ~/"$f"
       done
-      for f in $(find bin include lib share -type f 2>/dev/null); do
-        ln -s "$f" ~/"$f"
-      done
+      (
+        IFS='
+    '
+        for f in $(find bin include lib share -type f 2>/dev/null); do
+          ln -s "$f" ~/"$f"
+        done
+      )
       for f in $(find bin include lib share -type l 2>/dev/null); do
         cp "$f" ~/"$f"
       done
@@ -57,7 +61,7 @@ _script: &script
 
     # Configure dylib install names.
     for dylib in $(find ~/Cellar -name '*.dylib' -type f 2>/dev/null); do
-      otool -L $dylib
+      #otool -L $dylib
       chmod +w $dylib
       install_name_tool -id $dylib $dylib
       for line in $(otool -L $dylib | grep @@HOMEBREW_PREFIX@@); do
@@ -70,7 +74,7 @@ _script: &script
         link=${link#@@HOMEBREW_CELLAR@@/}
         install_name_tool -change @@HOMEBREW_CELLAR@@/$link ~/Cellar/$link $dylib
       done
-      otool -L $dylib
+      #otool -L $dylib
     done
 
     export PATH=~/bin:"$PATH"
@@ -81,13 +85,6 @@ _script: &script
 
     mkdir build
     builtin cd >/dev/null build
-
-    set -x
-
-    for o in $CMAKE_OPTS; do
-        echo $o
-    done
-
     cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
     make
     ./test
