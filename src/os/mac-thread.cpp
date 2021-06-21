@@ -90,9 +90,8 @@ Thread::join() noexcept {
 
 void
 threadDisableTimerCoalescing() noexcept {
-    thread_extended_policy policyInfo = {
-            .timeshare = false,
-    };
+    thread_extended_policy policyInfo = {};
+    policyInfo.timeshare = false;
 
     thread_policy_set(mach_thread_self(),
                       THREAD_EXTENDED_POLICY,
