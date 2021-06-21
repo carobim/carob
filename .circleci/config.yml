@@ -33,41 +33,19 @@ jobs:
           samu
       - run: build/test
 
-  #arch:
-  #  docker:
-  #    # FIXME: From archlinux:base-20210207.0.15200
-  #    #          to archlinux:base-devel-20210214.0.15477 (latest as of 2020-02-20)
-  #    #        cause build errors on CircleCI.
-  #    #
-  #    # The error is:
-  #    #
-  #    #   $ pacman -Sy --noconfirm cmake gcc samurai
-  #    #   error: failed to initialize alpm library
-  #    #   (could not find or read directory: /var/lib/pacman/)
-  #    #
-  #    # Possibly related to https://bugs.archlinux.org/task/69563.
-  #    #
-  #    # The last known version before this happened is base-20210131.0.14634
-  #    # but that too gets an error on CircleCI:
-  #    #
-  #    #   $ cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
-  #    #   cmake: /usr/lib/libc.so.6: version `GLIBC_2.33' not found (required by cmake)
-  #    #   cmake: /usr/lib/libc.so.6: version `GLIBC_2.33' not found (required by /usr/lib/libuv.so.1)
-  #    #   cmake: /usr/lib/libc.so.6: version `GLIBC_2.33' not found (required by /usr/lib/libstdc++.so.6)
-  #    #
-  #    # CMake is now built on the new glibc 2.33, and this version of glibc
-  #    # is related to the first error.
-  #    - image: archlinux
-  #  steps:
-  #    - run: |
-  #        pacman -Sy --noconfirm cmake gcc samurai
-  #    - checkout
-  #    - run: |
-  #        mkdir build &&
-  #        cd build &&
-  #        cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
-  #        samu
-  #    - run: build/test
+  arch:
+    docker:
+      - image: archlinux
+    steps:
+      - run: |
+          pacman -Sy --noconfirm cmake gcc samurai
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          samu
+      - run: build/test
 
   # Has CMake 2.8.12, GCC 4.8
   centos_7:
@@ -258,7 +236,7 @@ workflows:
     jobs:
       - alpine_3_1
       - alpine_3_13
-      #- arch
+      - arch
       - centos_7
       - centos_8
       - debian_8_jessie
