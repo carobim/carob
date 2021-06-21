@@ -880,16 +880,20 @@ elseif(SDL2)
     if(USE_SDL2_PKGCONFIG)
         find_package(PkgConfig REQUIRED)
         pkg_search_module(SDL2 REQUIRED SDL2 sdl2)
+
+        if("${SDL2_LIBRARIES}" STREQUAL "")
+            message(SEND_ERROR "pkg-config could not find SDL2")
+        endif()
     else()
         set(SDL2_LIBRARY_DIRS "" CACHE PATH
             "Directory with SDL2 library")
         set(SDL2_LIBRARIES "" CACHE STRING
             "Name of SDL2 library")
-    endif()
 
-    if("${SDL2_LIBRARIES}" STREQUAL "")
-        message(SEND_ERROR "When not using pkg-config, please manually set"
-            " SDL2 include dirs and libraries")
+        if("${SDL2_LIBRARIES}" STREQUAL "")
+            message(SEND_ERROR "When not using pkg-config, please manually set"
+                " SDL2 libraries")
+        endif()
     endif()
 
     link_directories( ${SDL2_LIBRARY_DIRS})
@@ -909,7 +913,7 @@ if(AUDIO_SDL2)
 
     if("${SDL2_mixer_LIBRARIES}" STREQUAL "")
         message(SEND_ERROR "When not using pkg-config, please manually set"
-            " SDL2_mixer include dirs and libraries")
+            " SDL2_mixer libraries")
     endif()
 
     link_directories(${SDL2_mixer_LIBRARY_DIRS})

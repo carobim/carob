@@ -15,8 +15,6 @@ _script: &script
 
     shopt -s nullglob
 
-    set -x
-
     # Download Homebrew bottles.
     for bottle in $BOTTLES; do
       # if bottle=foo-1.2   then name=foo-1.2 and rebuild=
@@ -28,9 +26,6 @@ _script: &script
       mkdir -p ~/Cellar
       curl -L https://homebrew.bintray.com/bottles/$name.$BOTTLE_TAG.bottle$rebuild.tar.gz | gzip -d | tar x -C ~/Cellar
     done
-
-    IFS='
-    '
 
     # We don't have linker flags appropriate for linking against ar archives
     # at the moment. Ensure the dylibs are chosen by removing the archives.
@@ -45,7 +40,7 @@ _script: &script
       builtin popd >/dev/null
 
       builtin pushd $pkg/* >/dev/null
-      for config in $(find lib/cmake lib/pkgconfig -type f 2>/dev/null); do
+      for config in $(find lib/cmake -type f 2>/dev/null); do
         sed -i '' -e s-@@HOMEBREW_PREFIX@@-$HOME- $config
       done
       for f in $(find bin include lib share -type d 2>/dev/null); do
@@ -83,13 +78,19 @@ _script: &script
     export CXXFLAGS="-I$HOME/include $CXXFLAGS"
     export LDFLAGS="-L$HOME/lib $LDFLAGS"
     export CMAKE_PREFIX_PATH=~/lib/cmake${CMAKE_PREFIX_PATH:+;}"$CMAKE_PREFIX_PATH"
-    export PKG_CONFIG_PATH=~/lib/pkgconfig${PKG_CONFIG_PATH:+:}"$PKG_CONFIG_PATH"
-  - |
+
     mkdir build
     builtin cd >/dev/null build
+
+    set -x
+
+    for o in $CMAKE_OPTS; do
+        echo $o
+    done
+
     cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
-  - make
-  - ./test
+    make
+    ./test
 
 jobs:
   include:
@@ -103,8 +104,8 @@ jobs:
     osx_image: xcode7.3
     env:
     - BOTTLE_TAG=el_capitan
-    - BOTTLES='cmake-3.12.2 libmodplug-0.8.9.0 libogg-1.3.3 libvorbis-1.3.6 pkg-config-0.29.2 sdl2-2.0.8 sdl2_mixer-2.0.2'
-    - CMAKE_OPTS=-DAV_SDL2=On
+    - BOTTLES='cmake-3.12.2 libmodplug-0.8.9.0 libogg-1.3.3 libvorbis-1.3.6 sdl2-2.0.8 sdl2_mixer-2.0.2'
+    - CMAKE_OPTS='-DAV_SDL2=On -DUSE_SDL2_PKGCONFIG=Off -DSDL2_LIBRARY_DIRS=$HOME/lib -DSDL2_LIBRARIES=SDL2 -DSDL2_mixer_LIBRARY_DIRS=$HOME/lib -DSDL2_mixer_LIBRARIES=SDL2_mixer'
     <<: *script
   - name: 10.15 Catalina null
     osx_image: xcode12.2
@@ -113,6 +114,6 @@ jobs:
     osx_image: xcode12.2
     env:
     - BOTTLE_TAG=catalina
-    - BOTTLES='libmodplug-0.8.9.0^1 libogg-1.3.4 libvorbis-1.3.7 pkg-config-0.29.2 sdl2-2.0.12 sdl2_mixer-2.0.4'
-    - CMAKE_OPTS=-DAV_SDL2=On
+    - BOTTLES='libmodplug-0.8.9.0^1 libogg-1.3.4 libvorbis-1.3.7 sdl2-2.0.12 sdl2_mixer-2.0.4'
+    - CMAKE_OPTS='-DAV_SDL2=On -DUSE_SDL2_PKGCONFIG=Off -DSDL2_LIBRARY_DIRS=$HOME/lib -DSDL2_LIBRARIES=SDL2 -DSDL2_mixer_LIBRARY_DIRS=$HOME/lib -DSDL2_mixer_LIBRARIES=SDL2_mixer'
     <<: *script
