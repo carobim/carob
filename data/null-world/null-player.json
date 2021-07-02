@@ -4,6 +4,8 @@
         "sheet": {
             "tile_width": 1,
             "tile_height": 1,
+            "num_across": 1,
+            "num_high": 1,
             "path": "pixel.bmp"
         },
         "phases": {
