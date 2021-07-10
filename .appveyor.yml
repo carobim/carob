@@ -11,6 +11,15 @@ for:
   build_script:
   - mkdir build
   - cd build
+  - cmake .. -G "Visual Studio 11 2012"
+  - cmake --build .
+  - Debug\test.exe
+- matrix:
+    only:
+    - image: Visual Studio 2013
+  build_script:
+  - mkdir build
+  - cd build
   - cmake .. -G "Visual Studio 12 2013"
   - cmake --build .
   - Debug\test.exe
