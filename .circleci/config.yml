@@ -145,19 +145,19 @@ jobs:
           ninja-build
       - run: build/test
 
-  # Has CMake 3.21, GCC 11, Ninja 1.10
+  # Has CMake 3.21, GCC 11, Samurai 1.1
   fedora_35:
     docker:
       - image: fedora:35
     steps:
       - run: |
-          dnf install -y cmake gcc-c++ ninja-build
+          dnf install -y cmake gcc-c++ samurai
       - checkout
       - run: |
           mkdir build &&
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
-          ninja
+          samu
       - run: build/test
 
   # Has CMake 3.3, GCC 4.9, Ninja 1.6
