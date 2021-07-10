@@ -566,7 +566,9 @@ if(GCC)
     endif()
 endif()
 
-if(CLANG OR GCC)
+if (GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
