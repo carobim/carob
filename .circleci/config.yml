@@ -83,20 +83,20 @@ jobs:
           make -j 2
       - run: build/test
 
-  # Has CMake 3.0, GCC 4.9
-  debian_8_jessie:
+  # Has CMake 2.8.9, GCC 4.7
+  debian_7_wheezy:
     docker:
-      - image: debian:8-slim
+      - image: debian:7-slim
     steps:
       - run: |
           apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
+          apt-get install -y --no-install-recommends cmake g++ make
       - checkout
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
-          ninja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          make -j 2
       - run: build/test
 
   # Has CMake 3.13, GCC 8
@@ -260,7 +260,7 @@ workflows:
       - arch
       - centos_7
       - centos_8
-      - debian_8_jessie
+      - debian_7_wheezy
       - debian_10_buster
       - debian_11_bullseye
       - fedora_20
