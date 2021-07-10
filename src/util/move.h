@@ -31,19 +31,17 @@
 #include "util/noexcept.h"
 
 template<typename T>
-struct Refless_ {
+struct Refless {
     typedef T value;
 };
 template<typename T>
-struct Refless_<T&&> {
+struct Refless<T&> {
     typedef T value;
 };
 template<typename T>
-struct Refless_<T&> {
+struct Refless<T&&> {
     typedef T value;
 };
-template<typename T>
-using Refless = typename Refless_<T>::value;
 
 //
 // Forward
@@ -52,13 +50,13 @@ using Refless = typename Refless_<T>::value;
 
 template<typename T>
 inline CONSTEXPR11 T&&
-forward_(Refless<T>& x) noexcept {
+forward_(typename Refless<T>::value& x) noexcept {
     return static_cast<T&&>(x);
 }
 
 template<typename T>
 inline CONSTEXPR11 T&&
-forward_(Refless<T>&& x) noexcept {
+forward_(typename Refless<T>::value&& x) noexcept {
     return static_cast<T&&>(x);
 }
 
