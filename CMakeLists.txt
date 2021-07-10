@@ -407,7 +407,6 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/util/list.h
     ${HERE}/src/util/markable.h
     ${HERE}/src/util/math2.h
-    ${HERE}/src/util/meta.h
     ${HERE}/src/util/move.h
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h
@@ -437,7 +436,6 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/util/io.cpp
     ${HERE}/src/util/io.h
     ${HERE}/src/util/list.h
-    ${HERE}/src/util/meta.h
     ${HERE}/src/util/move.h
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h

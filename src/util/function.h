@@ -29,7 +29,6 @@
 
 #include "util/align.h"
 #include "util/assert.h"
-#include "util/meta.h"
 #include "util/move.h"
 #include "util/new.h"
 #include "util/noexcept.h"
