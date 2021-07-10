@@ -186,13 +186,13 @@ jobs:
           cd build &&
           nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./test'
 
-  # Has CMake 2.8.11, GCC 4.8
-  ubuntu_13_10_saucy:
+  # Has CMake 2.8.10, GCC 4.7
+  ubuntu_13_04_raring:
     docker:
-      - image: ubuntu:saucy
+      - image: ubuntu:raring
     steps:
       - run: |
-          echo 'deb http://old-releases.ubuntu.com/ubuntu saucy main' > /etc/apt/sources.list &&
+          echo 'deb http://old-releases.ubuntu.com/ubuntu raring main' > /etc/apt/sources.list &&
           apt-get update &&
           apt-get install -y --no-install-recommends cmake g++ make
       - checkout
@@ -266,7 +266,7 @@ workflows:
       - fedora_20
       - fedora_35
       - nix_2_3_6
-      - ubuntu_13_10_saucy
+      - ubuntu_13_04_raring
       - ubuntu_21_04_hirsute
       - void
       - void_musl
