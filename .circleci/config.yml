@@ -89,6 +89,7 @@ jobs:
       - image: debian:7-slim
     steps:
       - run: |
+          echo 'deb http://archive.debian.org/debian wheezy main' > /etc/apt/sources.list &&
           apt-get update &&
           apt-get install -y --no-install-recommends cmake g++ make
       - checkout
