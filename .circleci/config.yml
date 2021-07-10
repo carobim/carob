@@ -14,7 +14,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
-          make -j `grep processor /proc/cpuinfo | wc -l`
+          make -j 2
       - run: build/test
 
   # Has CMake 3.20, GCC 10, Samurai 1.2
@@ -63,7 +63,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
-          make -j `grep processor /proc/cpuinfo | wc -l`
+          make -j 2
       - run: build/test
 
   # Has CMake 3.11, GCC 8
@@ -80,7 +80,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
-          make -j `grep processor /proc/cpuinfo | wc -l`
+          make -j 2
       - run: build/test
 
   # Has CMake 3.0, GCC 4.9
@@ -200,7 +200,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
-          make -j `nproc`
+          make -j 2
       - run: build/test
 
   # Has CMake 3.18, GCC 10, Ninja 1.10
