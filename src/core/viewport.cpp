@@ -35,7 +35,7 @@
 
 enum TrackingMode {
     TM_MANUAL,
-    TM_FOLLOW_ENTITY,
+    TM_FOLLOW_ENTITY
 };
 
 static float aspectRatio;

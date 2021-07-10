@@ -130,8 +130,8 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     String pathsSection;
     pathsSection.reserve(nextPathOffset);
 
-    for (Blob& blob : blobs) {
-        pathsSection << blob.path;
+    for (Blob* blob = blobs.begin(); blob != blobs.end(); blob++) {
+        pathsSection << blob->path;
     }
 
     //

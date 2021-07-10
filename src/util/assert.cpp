@@ -114,7 +114,7 @@ isDebuggerPresent(void) {
 #    ifdef __linux__
 enum ptrace_request {
     PTRACE_TRACEME = 0,
-    PTRACE_DETACH = 17,
+    PTRACE_DETACH = 17
 };
 extern "C" long
 ptrace(enum ptrace_request, ...) noexcept;

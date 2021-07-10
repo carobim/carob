@@ -357,12 +357,12 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
     splitStr(tokens, format, ",");
 
     String buf;
-    for (StringView range : tokens) {
-        StringPosition dash = range.find('-');
+    for (StringView* range = tokens.begin(); range != tokens.end(); range++) {
+        StringPosition dash = range->find('-');
 
         if (dash == SV_NOT_FOUND) {
             buf.clear();
-            buf = range;
+            buf = *range;
 
             int i;
             if (!parseInt(i, buf)) {
@@ -372,8 +372,8 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
             out.push_back(i);
         }
         else {
-            StringView rngstart = range.substr(0, dash);
-            StringView rngend = range.substr(dash + 1);
+            StringView rngstart = range->substr(0, dash);
+            StringView rngend = range->substr(dash + 1);
 
             buf.clear();
             buf = rngstart;

@@ -72,7 +72,7 @@ enum JsonTag {
     JSON_OBJECT,
     JSON_TRUE,
     JSON_FALSE,
-    JSON_NULL,
+    JSON_NULL
 };
 
 struct JsonNode;

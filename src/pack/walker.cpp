@@ -38,8 +38,8 @@ walk(Vector<StringView> paths,
      void (*op)(void* userData, StringView path)) noexcept {
     Queue<String> files;
 
-    for (StringView& path : paths) {
-        files.push(path);
+    for (StringView* path = paths.begin(); path != paths.end(); path++) {
+        files.push(*path);
     }
 
     while (files.size) {
@@ -50,9 +50,9 @@ walk(Vector<StringView> paths,
         //       will save a stat(), as readdir() returns a file's type already.
         if (isDir(path)) {
             Vector<String> names = listDir(path);
-            for (String& name : names) {
+            for (String* name = names.begin(); name != names.end(); name++) {
                 String child;
-                child << path << dirSeparator << name;
+                child << path << dirSeparator << *name;
                 files.push(static_cast<String&&>(child));
             }
         }

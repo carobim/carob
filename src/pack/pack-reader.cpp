@@ -35,7 +35,9 @@
 #include "util/noexcept.h"
 
 struct PackReader {
-    PackReader(File file) : file(static_cast<File&&>(file)) { }
+    PackReader(File file)
+        : file(static_cast<File&&>(file)),
+          lookupsConstructed(false) { }
 
     File file;
 
@@ -43,7 +45,7 @@ struct PackReader {
     BlobMetadata* metadata;
     char* paths;
 
-    bool lookupsConstructed = false;
+    bool lookupsConstructed;
     Hashmap<StringView, uint32_t> lookups;
 };
 

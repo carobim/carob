@@ -58,7 +58,7 @@ class Mutex {
     Mutex&
     operator=(const Mutex&) = delete;
 
-    pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+    pthread_mutex_t m;
 };
 
 #endif  // SRC_OS_UNIX_MUTEX_H_

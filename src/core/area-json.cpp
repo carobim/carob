@@ -495,9 +495,9 @@ AreaJSON::processTileType(JsonValue obj,
 
     // Add frames to our animation.
     // We already have one from TileType's constructor.
-    for (StringView& frame : frames) {
+    for (StringView* frame = frames.begin(); frame != frames.end(); frame++) {
         buf.clear();
-        buf = frame;
+        buf = *frame;
 
         unsigned idx_;
         if (!parseUInt(idx_, buf)) {
@@ -979,18 +979,18 @@ AreaJSON::splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept {
     Vector<StringView> flagStrs;
     splitStr(flagStrs, strOfFlags, ",");
 
-    for (StringView flagStr : flagStrs) {
-        if (flagStr == "nowalk") {
+    for (StringView* flagStr = flagStrs.begin(); flagStr != flagStrs.end(); flagStr++) {
+        if (*flagStr == "nowalk") {
             *flags |= TILE_NOWALK;
         }
-        else if (flagStr == "nowalk_player") {
+        else if (*flagStr == "nowalk_player") {
             *flags |= TILE_NOWALK_PLAYER;
         }
-        else if (flagStr == "nowalk_npc") {
+        else if (*flagStr == "nowalk_npc") {
             *flags |= TILE_NOWALK_NPC;
         }
         else {
-            logErr(descriptor, String() << "Invalid tile flag: " << flagStr);
+            logErr(descriptor, String() << "Invalid tile flag: " << *flagStr);
             return false;
         }
     }
@@ -1009,9 +1009,9 @@ isIntegerOrPlus(StringView s) noexcept {
 
     int state = space;
 
-    for (char c : s) {
+    for (const char* c = s.begin(); c != s.end(); c++) {
         if (state == space) {
-            if (c == ' ') {
+            if (*c == ' ') {
                 continue;
             }
             else {
@@ -1019,7 +1019,7 @@ isIntegerOrPlus(StringView s) noexcept {
             }
         }
         if (state == digit) {
-            if ('0' <= c && c <= '9') {
+            if ('0' <= *c && *c <= '9') {
                 continue;
             }
             else {
@@ -1027,7 +1027,7 @@ isIntegerOrPlus(StringView s) noexcept {
             }
         }
         if (state == sign) {
-            return c == '+';
+            return *c == '+';
         }
     }
     return true;

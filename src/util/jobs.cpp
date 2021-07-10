@@ -136,8 +136,8 @@ JobsFlush() noexcept {
     jobAvailable.notifyAll();
 
     // Wait for workers to quit.
-    for (Thread& worker : workers) {
-        worker.join();
+    for (Thread* worker = workers.begin(); worker != workers.end(); worker++) {
+        worker->join();
     }
 
     // Reset.

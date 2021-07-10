@@ -453,15 +453,15 @@ Entity::isDead() noexcept {
 
 void
 Entity::tick(time_t dt) noexcept {
-    for (OnTickFn& fn : onTickFns) {
-        fn(dt);
+    for (OnTickFn* fn = onTickFns.begin(); fn != onTickFns.end(); fn++) {
+        (*fn)(dt);
     }
 }
 
 void
 Entity::turn() noexcept {
-    for (OnTurnFn& fn : onTurnFns) {
-        fn();
+    for (OnTurnFn* fn = onTurnFns.begin(); fn != onTurnFns.end(); fn++) {
+        (*fn)();
     }
 }
 

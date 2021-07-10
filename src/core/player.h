@@ -40,7 +40,7 @@ class Player : public Character {
 
     Player() noexcept;
     void
-    destroy() noexcept final;
+    destroy() noexcept;
 
     //! Smooth continuous movement.
     void
@@ -58,11 +58,11 @@ class Player : public Character {
     useTile() noexcept;
 
     void
-    setFrozen(bool b) noexcept final;
+    setFrozen(bool b) noexcept;
 
  protected:
     void
-    arrived() noexcept final;
+    arrived() noexcept;
 
     void
     takeExit(Exit& exit) noexcept;
