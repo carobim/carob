@@ -27,34 +27,18 @@
 #ifndef SRC_UTIL_ALIGN_H_
 #define SRC_UTIL_ALIGN_H_
 
-#if defined(__GNUC__) && !defined(__clang__)
-#    define IS_GCC
-#endif
-
-#if defined(_MSC_VER) && _MSC_VER < 1900
-#    define MSVC_NEEDS_CONSTANT
-#endif
-
-#if defined(IS_GCC) && __GNUC__ == 4 && __GNUC_MINOR__ <= 8
-#    define GCC_NEEDS_CONSTANT
-#endif
-
 template<typename T>
 struct Align {
-#if defined(MSVC_NEEDS_CONSTANT) && defined(_WIN64)
-    // - 64-bit MSVC 2013 and lower
-    __declspec(align(8)) char storage[sizeof(T)];
-#elif defined(MSVC_NEEDS_CONSTANT)
-    // - 32-bit MSVC 2013 and lower
-    __declspec(align(4)) char storage[sizeof(T)];
-#elif defined(GCC_NEEDS_CONSTANT) && defined(__amd64__)
-    // - 64-bit GCC 4.8 and lower
-    alignas(8) char storage[sizeof(T)];
-#elif defined(GCC_NEEDS_CONSTANT)
-    // - 32-bit GCC 4.8 and lower
-    alignas(4) char storage[sizeof(T)];
-#else
+#if (defined(_MSC_VER) && _MSC_VER >= 1900) || defined(__clang__) || (defined(__GNUC__) && __GNUC__ == 4 && __GNUC_MINOR__ >= 9)
     alignas(alignof(T)) char storage[sizeof(T)];
+#elif defined(_MSC_VER) && defined(_WIN64)
+    __declspec(align(8)) char storage[sizeof(T)];
+#elif defined(_MSC_VER)
+    __declspec(align(4)) char storage[sizeof(T)];
+#elif defined(__x86_64__)
+    __attribute__((aligned(8))) char storage[sizeof(T)];
+#elif defined(__i386__)
+    __attribute__((aligned(4))) char storage[sizeof(T)];
 #endif
 };
 
