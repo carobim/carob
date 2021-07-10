@@ -92,7 +92,7 @@ namespace function {
     class func;
 
     template<class F, class R, class... ArgTypes>
-    class func<F, R(ArgTypes...) noexcept> final
+    class func<F, R(ArgTypes...) noexcept>
             : public base<R(ArgTypes...) noexcept> {
         F f;
 
