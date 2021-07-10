@@ -200,7 +200,7 @@ jobs:
           mkdir build &&
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
-          make `nproc`
+          make -j `nproc`
       - run: build/test
 
   # Has CMake 3.18, GCC 10, Ninja 1.10
