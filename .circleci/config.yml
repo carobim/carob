@@ -190,30 +190,30 @@ jobs:
           cd build &&
           nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./test'
 
-  # Has CMake 2.8.12, GCC 4.9, Ninja 1.3
-  ubuntu_14_04_trusty:
+  # Has CMake 2.8.11, GCC 4.8
+  ubuntu_13_10_saucy:
     docker:
-      - image: ubuntu:14.04
+      - image: ubuntu:saucy
     steps:
       - run: |
           apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
+          apt-get install -y --no-install-recommends cmake g++ make
       - checkout
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
-          ninja
+          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          make `nproc`
       - run: build/test
 
-  # Has CMake 3.16, GCC 10, Ninja 1.10
-  ubuntu_20_10_groovy:
+  # Has CMake 3.18, GCC 10, Ninja 1.10
+  ubuntu_21_04_hirsute:
     docker:
-      - image: ubuntu:20.10
+      - image: ubuntu:21.04
     steps:
       - run: |
-          apt-get --allow-unauthenticated update &&
-          apt-get --allow-unauthenticated install -y --no-install-recommends cmake g++ ninja-build
+          apt-get update &&
+          apt-get install -y --no-install-recommends cmake g++ ninja-build
       - checkout
       - run: |
           mkdir build &&
@@ -269,7 +269,7 @@ workflows:
       - fedora_20
       - fedora_34
       - nix_2_3_6
-      - ubuntu_14_04_trusty
-      - ubuntu_20_10_groovy
+      - ubuntu_13_10_saucy
+      - ubuntu_21_04_hirsute
       - void
       - void_musl
