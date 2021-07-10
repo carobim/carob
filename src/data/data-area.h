@@ -43,10 +43,10 @@ class DataArea {
     typedef void (DataArea::*TileScript)(Entity& triggeredBy, ivec3 tile);
 
  public:
-    DataArea() noexcept { }
+    DataArea() noexcept : area(0) { }
     virtual ~DataArea() noexcept { }
 
-    Area* area = 0;  // borrowed reference
+    Area* area;  // borrowed reference
 
     virtual void
     onLoad() noexcept;

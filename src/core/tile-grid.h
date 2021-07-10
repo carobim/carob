@@ -177,7 +177,7 @@ class TileGrid {
 
     enum LayerType {
         TILE_LAYER,
-        OBJECT_LAYER,
+        OBJECT_LAYER
     };
     Vector<LayerType> layerTypes;
 
@@ -203,7 +203,7 @@ class TileGrid {
         SCRIPT_TYPE_ENTER,
         SCRIPT_TYPE_LEAVE,
         SCRIPT_TYPE_USE,
-        SCRIPT_TYPE_LAST,
+        SCRIPT_TYPE_LAST
     };
 
     Hashmap<ivec3, DataArea::TileScript, EmptyIcoord> scripts[SCRIPT_TYPE_LAST];

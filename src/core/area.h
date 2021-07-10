@@ -61,27 +61,29 @@ class Player;
 */
 class Area {
  public:
+     Area() noexcept;
+
     //! Prepare game state for this Area to be in focus.
     void
-    focus();
+    focus() noexcept;
 
     //! Processes keyboard input, calling the Player object when necessary.
     void
-    buttonDown(Key key);
+    buttonDown(Key key) noexcept;
     void
-    buttonUp(Key key);
+    buttonUp(Key key) noexcept;
 
     //! Renders all visible Tiles and Entities within this Area.
     void
-    draw(DisplayList* display);
+    draw(DisplayList* display) noexcept;
 
     //! If false, drawing might be skipped. Saves CPU cycles when idle.
     bool
-    needsRedraw();
+    needsRedraw() noexcept;
 
     //! Inform the Area that a redraw is needed.
     void
-    requestRedraw();
+    requestRedraw() noexcept;
 
     /**
      * Update the game state within this Area as if dt milliseconds had
@@ -89,41 +91,41 @@ class Area {
      * checks for Tile animation updates.
      */
     void
-    tick(time_t dt);
+    tick(time_t dt) noexcept;
 
     /**
      * Updates Entities, runs scripts, and checks for Tile animation
      * updates.
      */
     void
-    turn();
+    turn() noexcept;
 
     uint32_t
-    getColorOverlay();
+    getColorOverlay() noexcept;
     void
-    setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b);
+    setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b) noexcept;
 
     TileSet*
-    getTileSet(StringView imagePath);
+    getTileSet(StringView imagePath) noexcept;
 
     //! Returns a physical cubic range of Tiles that are visible on-screen.
     //! Takes actual map size into account.
     icube
-    visibleTiles();
+    visibleTiles() noexcept;
 
     //! Returns true if a Tile exists at the specified coordinate.
     bool
-    inBounds(Entity* ent);
+    inBounds(Entity* ent) noexcept;
 
     // Create an NPC and insert it into the Area. Returns a borrowed ref.
     Character*
-    spawnNPC(StringView descriptor, vicoord coord, StringView phase);
+    spawnNPC(StringView descriptor, vicoord coord, StringView phase) noexcept;
     // Create an Overlay and insert it into the Area. Returns a borrowed ref.
     Overlay*
-    spawnOverlay(StringView descriptor, vicoord coord, StringView phase);
+    spawnOverlay(StringView descriptor, vicoord coord, StringView phase) noexcept;
 
     DataArea*
-    getDataArea();
+    getDataArea() noexcept;
 
     void
     runScript(TileGrid::ScriptType type,
@@ -133,14 +135,14 @@ class Area {
  public:
     TileGrid grid;
 
-    bool ok = true;
+    bool ok;
 
  protected:
     //! Calculate frame to show for each type of tile
     void
-    drawTiles(DisplayList* display, icube& tiles, int z);
+    drawTiles(DisplayList* display, icube& tiles, int z) noexcept;
     void
-    drawEntities(DisplayList* display, icube& tiles, int z);
+    drawEntities(DisplayList* display, icube& tiles, int z) noexcept;
 
  protected:
     Hashmap<String, TileSet> tileSets;
@@ -152,9 +154,9 @@ class Area {
     Vector<Character*> characters;
     Vector<Overlay*> overlays;
 
-    bool beenFocused = false;
-    bool redraw = true;
-    uint32_t colorOverlayARGB = 0x00000000;
+    bool beenFocused;
+    bool redraw;
+    uint32_t colorOverlayARGB;
 
     DataArea* dataArea;
 
@@ -167,7 +169,7 @@ class Area {
     String author;
     String musicPath;
 
-    friend AreaJSON;
+    friend class AreaJSON;
 };
 
 #endif  // SRC_CORE_AREA_H_

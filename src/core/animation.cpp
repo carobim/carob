@@ -114,8 +114,8 @@ Animation::Animation(Image frame) noexcept {
 Animation::Animation(Vector<Image> frames, time_t frameTime) noexcept {
     assert_(frames.size > 0);
     assert_(frameTime > 0);
-    for (Image frame : frames) {
-        assert_(IMAGE_VALID(frame));
+    for (Image* frame = frames.begin(); frame != frames.end(); frame++) {
+        assert_(IMAGE_VALID(*frame));
         (void)frame;
     }
 

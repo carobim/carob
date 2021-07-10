@@ -140,7 +140,7 @@ class Hashmap {
 
         Hashmap* h;
         uint32_t i;
-        friend Hashmap;
+        friend class Hashmap;
     };
 
  public:

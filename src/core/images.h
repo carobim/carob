@@ -57,7 +57,7 @@ imageInit() noexcept;
 Image
 imageLoad(StringView path) noexcept;
 
-#define IMAGE_VALID(image) (image.texture != 0)
+#define IMAGE_VALID(image) ((image).texture != 0)
 
 void
 imageDraw(Image image, float x, float y, float z) noexcept;

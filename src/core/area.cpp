@@ -47,8 +47,14 @@
 #include "util/hashtable.h"
 #include "util/math2.h"
 
+Area::Area() noexcept
+    : ok(true),
+      beenFocused(false),
+      redraw(true),
+      colorOverlayARGB(0) { }
+
 void
-Area::focus() {
+Area::focus() noexcept {
     if (!beenFocused) {
         beenFocused = true;
         if (dataArea) {
@@ -66,7 +72,7 @@ Area::focus() {
 }
 
 void
-Area::buttonDown(Key key) {
+Area::buttonDown(Key key) noexcept {
     switch (key) {
     case KEY_LEFT_ARROW:
         player->startMovement({-1, 0});
@@ -89,7 +95,7 @@ Area::buttonDown(Key key) {
 }
 
 void
-Area::buttonUp(Key key) {
+Area::buttonUp(Key key) noexcept {
     switch (key) {
     case KEY_LEFT_ARROW:
         player->stopMovement({-1, 0});
@@ -109,7 +115,7 @@ Area::buttonUp(Key key) {
 }
 
 void
-Area::draw(DisplayList* display) {
+Area::draw(DisplayList* display) noexcept {
     icube tiles = visibleTiles();
     int maxZ = grid.dim.z;
 
@@ -131,7 +137,7 @@ Area::draw(DisplayList* display) {
 }
 
 bool
-Area::needsRedraw() {
+Area::needsRedraw() noexcept {
     if (redraw) {
         return true;
     }
@@ -197,12 +203,12 @@ Area::needsRedraw() {
 }
 
 void
-Area::requestRedraw() {
+Area::requestRedraw() noexcept {
     redraw = true;
 }
 
 void
-Area::tick(time_t dt) {
+Area::tick(time_t dt) noexcept {
     if (dataArea) {
         dataArea->tick(dt);
     }
@@ -231,7 +237,7 @@ Area::tick(time_t dt) {
 }
 
 void
-Area::turn() {
+Area::turn() noexcept {
     if (dataArea) {
         dataArea->turn();
     }
@@ -254,12 +260,12 @@ Area::turn() {
 
 
 uint32_t
-Area::getColorOverlay() {
+Area::getColorOverlay() noexcept {
     return colorOverlayARGB;
 }
 
 void
-Area::setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b) {
+Area::setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b) noexcept {
     colorOverlayARGB = (uint32_t)(a << 24u) + (uint32_t)(r << 16u) +
                        (uint32_t)(g << 8u) + (uint32_t)b;
     redraw = true;
@@ -267,7 +273,7 @@ Area::setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b) {
 
 
 TileSet*
-Area::getTileSet(StringView imagePath) {
+Area::getTileSet(StringView imagePath) noexcept {
     if (!tileSets.contains(imagePath)) {
         logErr("Area", String() << "tileset " << imagePath << " not found");
         return 0;
@@ -277,7 +283,7 @@ Area::getTileSet(StringView imagePath) {
 
 
 icube
-Area::visibleTiles() {
+Area::visibleTiles() noexcept {
     fvec2 screen = viewportGetVirtRes();
     fvec2 off = viewportGetMapOffset();
 
@@ -299,13 +305,15 @@ Area::visibleTiles() {
 }
 
 bool
-Area::inBounds(Entity* ent) {
-    return grid.inBounds(ent->getPixelCoord());
+    Area::inBounds(Entity* ent) {
+        return grid.inBounds(ent->getPixelCoord());
 }
 
 
 Character*
-Area::spawnNPC(StringView descriptor, vicoord coord, StringView phase) {
+Area::spawnNPC(StringView descriptor,
+               vicoord coord,
+               StringView phase) noexcept {
     Character* c = new Character;
     if (!c->init(descriptor, phase)) {
         logErr("Area", String() << "Failed to load entity " << descriptor);
@@ -318,7 +326,9 @@ Area::spawnNPC(StringView descriptor, vicoord coord, StringView phase) {
 }
 
 Overlay*
-Area::spawnOverlay(StringView descriptor, vicoord coord, StringView phase) {
+Area::spawnOverlay(StringView descriptor,
+                   vicoord coord,
+                   StringView phase) noexcept {
     Overlay* o = new Overlay;
     if (!o->init(descriptor, phase)) {
         logErr("Area", String() << "Failed to load entity " << descriptor);
@@ -333,7 +343,7 @@ Area::spawnOverlay(StringView descriptor, vicoord coord, StringView phase) {
 
 
 DataArea*
-Area::getDataArea() {
+Area::getDataArea() noexcept {
     return dataArea;
 }
 
@@ -349,7 +359,7 @@ Area::runScript(TileGrid::ScriptType type,
 
 
 void
-Area::drawTiles(DisplayList* display, icube& tiles, int z) {
+Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
     Vector<DisplayItem>& items = display->items;
 
     time_t now = worldTime();
@@ -409,7 +419,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) {
 }
 
 void
-Area::drawEntities(DisplayList* display, icube& tiles, int z) {
+Area::drawEntities(DisplayList* display, icube& tiles, int z) noexcept {
     float depth = grid.idx2depth[(size_t)z];
 
     for (Character* character : characters) {
