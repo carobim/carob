@@ -17,10 +17,10 @@ jobs:
           make -j `grep processor /proc/cpuinfo | wc -l`
       - run: build/test
 
-  # Has CMake 3.18, GCC 10, Samurai 1.2
-  alpine_3_13:
+  # Has CMake 3.20, GCC 10, Samurai 1.2
+  alpine_3_14:
     docker:
-      - image: alpine:3.13
+      - image: alpine:3.14
     steps:
       - run: |
           apk update &&
@@ -255,7 +255,7 @@ workflows:
   build_all:
     jobs:
       - alpine_3_1
-      - alpine_3_13
+      - alpine_3_14
       - arch
       - centos_7
       - centos_8
