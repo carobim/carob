@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 2.8.9...3.19)
+cmake_minimum_required(VERSION 2.8.2...3.19)
 project(TsunagariEngine C CXX)
-#https://cmake.org/cmake/help/v2.8.9/cmake.html
+#https://cmake.org/cmake/help/v2.8.2/cmake.html
 
 
 #
@@ -108,7 +108,7 @@ set(IS_RELEASE
 # Sources
 #
 
-set(HERE ${CMAKE_CURRENT_LIST_DIR})
+get_filename_component(HERE "${CMAKE_CURRENT_LIST_FILE}" PATH)
 
 
 #
