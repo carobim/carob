@@ -46,8 +46,15 @@ typedef signed __int64 ssize_t;
 typedef signed int ssize_t;
 #    endif
 #elif defined(__clang__) || defined(__GNUC__)
-typedef __INT64_TYPE__ int64_t;
-typedef __UINT64_TYPE__ uint64_t;
+#    ifdef __x86_64__
+typedef long long int64_t;
+typedef unsigned long long uint64_t;
+#    elif __i386__
+typedef long int64_t;
+typedef unsigned long uint64_t;
+#    else
+#    error Not implemented yet
+#    endif
 typedef __SIZE_TYPE__ size_t;
 typedef __INTPTR_TYPE__ ssize_t;
 #else
