@@ -65,7 +65,7 @@ enum TermColor {
     TC_RESET,
     TC_GREEN,
     TC_YELLOW,
-    TC_RED,
+    TC_RED
 };
 
 void
