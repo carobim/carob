@@ -1086,7 +1086,10 @@ AreaJSON::parseExit(StringView dest,
     buf = z;
     CHECK(parseFloat(z_, buf));
 
-    exit = {area, x_, y_, z_};
+    exit.area = static_cast<String&&>(area);
+    exit.coords.x = x_;
+    exit.coords.y = y_;
+    exit.coords.z = z_;
 
     *wwide = x.find('+') != SV_NOT_FOUND;
     *hwide = y.find('+') != SV_NOT_FOUND;
