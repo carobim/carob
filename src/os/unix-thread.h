@@ -69,7 +69,7 @@ class Thread {
         t = 0;
     }
 
-    pthread_t t = 0;
+    pthread_t t;
 };
 
 static inline unsigned
