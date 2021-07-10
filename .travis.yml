@@ -86,7 +86,7 @@ _script: &script
     mkdir build
     builtin cd >/dev/null build
     cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
-    make
+    make -j `sysctl -n hw.ncpu`
     ./test
 
 jobs:
