@@ -92,8 +92,7 @@ jobs:
           dpkg -l &&
           echo 'deb http://archive.debian.org/debian wheezy main' > /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends --force-yes cmake g++ libc6=2.13-38+deb7u10 libc-bin=2.13-38+deb7u10 make &&
-          aptitude install -y g++
+          apt-get install -y --no-install-recommends --force-yes cmake g++ libc6=2.13-38+deb7u10 libc-bin=2.13-38+deb7u10 make
       - checkout
       - run: |
           mkdir build &&
