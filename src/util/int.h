@@ -54,8 +54,6 @@ typedef __INTPTR_TYPE__ ssize_t;
 #    error Not implemented yet
 #endif
 
-typedef size_t uintptr_t;
-
 #if defined(__APPLE__) || defined(__EMSCRIPTEN__)
 typedef long time_t;
 #else
