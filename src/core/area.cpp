@@ -305,8 +305,8 @@ Area::visibleTiles() noexcept {
 }
 
 bool
-    Area::inBounds(Entity* ent) {
-        return grid.inBounds(ent->getPixelCoord());
+Area::inBounds(Entity* ent) noexcept {
+    return grid.inBounds(ent->getPixelCoord());
 }
 
 
