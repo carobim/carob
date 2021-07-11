@@ -188,13 +188,13 @@ jobs:
           cd build &&
           nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./test'
 
-  # Has CMake 2.8.3, GCC 4.5
-  ubuntu_11_04_natty:
+  # Has CMake 2.8.5, GCC 4.6
+  ubuntu_11_10_oneiric:
     docker:
-      - image: ubuntu:natty
+      - image: ubuntu:oneiric
     steps:
       - run: |
-          echo 'deb http://old-releases.ubuntu.com/ubuntu natty main' > /etc/apt/sources.list &&
+          echo 'deb http://old-releases.ubuntu.com/ubuntu oneiric main' > /etc/apt/sources.list &&
           apt-get update &&
           apt-get install -y --no-install-recommends cmake g++ make
       - checkout
@@ -268,7 +268,7 @@ workflows:
       - fedora_20
       - fedora_35
       - nix_2_3_6
-      - ubuntu_11_04_natty
+      - ubuntu_11_10_oneiric
       - ubuntu_21_04_hirsute
       - void
       - void_musl
