@@ -92,9 +92,9 @@ jobs:
           dpkg -l &&
           echo 'deb http://archive.debian.org/debian wheezy main' > /etc/apt/sources.list &&
           apt-get update &&
+          apt-get install -y --no-install-recommends cmake make &&
           apt-get install -y --no-install-recommends aptitude &&
-          aptitude why-not g++ &&
-          apt-get install -y --no-install-recommends cmake g++ make
+          aptitude install -y --no-install-recommends g++
       - checkout
       - run: |
           mkdir build &&
