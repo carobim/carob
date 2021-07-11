@@ -94,6 +94,7 @@ jobs:
           apt-get update &&
           apt-get install -y --no-install-recommends cmake make &&
           apt-get install -y --no-install-recommends aptitude &&
+          apt-get install -y --no-install-recommends libc6=2.13-38+deb7u10 &&
           aptitude install -y g++
       - checkout
       - run: |
