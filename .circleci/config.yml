@@ -92,9 +92,7 @@ jobs:
           dpkg -l &&
           echo 'deb http://archive.debian.org/debian wheezy main' > /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends cmake make &&
-          apt-get install -y --no-install-recommends aptitude &&
-          apt-get install -y --no-install-recommends --force-yes libc6=2.13-38+deb7u10 libc-bin=2.13-38+deb7u10 &&
+          apt-get install -y --no-install-recommends --force-yes cmake g++ libc6=2.13-38+deb7u10 libc-bin=2.13-38+deb7u10 make &&
           aptitude install -y g++
       - checkout
       - run: |
@@ -260,18 +258,18 @@ workflows:
   version: 2
   build_all:
     jobs:
-      #- alpine_3_1
-      #- alpine_3_14
-      #- arch
-      #- centos_7
-      #- centos_8
+      - alpine_3_1
+      - alpine_3_14
+      - arch
+      - centos_7
+      - centos_8
       - debian_7_wheezy
-      #- debian_10_buster
-      #- debian_11_bullseye
-      #- fedora_20
-      #- fedora_35
-      #- nix_2_3_6
-      #- ubuntu_13_04_raring
-      #- ubuntu_21_04_hirsute
-      #- void
-      #- void_musl
+      - debian_10_buster
+      - debian_11_bullseye
+      - fedora_20
+      - fedora_35
+      - nix_2_3_6
+      - ubuntu_13_04_raring
+      - ubuntu_21_04_hirsute
+      - void
+      - void_musl
