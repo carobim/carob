@@ -48,7 +48,15 @@ typedef I64 SSize;
 typedef I32 SSize;
 #endif
 
-#if defined(__APPLE__) || defined(__EMSCRIPTEN__)
+// TODO: Check the definition of time_t on Unix compilers:
+//       - glibc
+//         /usr/include/<triple>/bits/typesizes.h
+//         arm-linux-gnueabihf is long
+//         x86_64-linux-gnu is long
+//       - Check Apple again
+//       - Who has I64?
+//       - Try other 32-bit platforms
+#if defined(__APPLE__) || defined(__EMSCRIPTEN__) || defined(GCC) || defined(CLANG)
 typedef long Time;
 #else
 typedef I64 Time;
