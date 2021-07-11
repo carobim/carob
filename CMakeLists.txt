@@ -559,7 +559,7 @@ endif()
 if(GCC)
     # Fix warning that happens in util/function.h because GCC cannot statically
     # analyze that the code is safe.
-    if(NOT ${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS 6.0)
+    if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.0)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-placement-new")
     endif()
 endif()
@@ -608,7 +608,7 @@ if(CLANG OR GCC)
 endif()
 
 # Don't allow enum values outside enum range
-if(CLANG OR GCC)
+if(CLANG OR GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-enums")
 endif()
 
@@ -622,11 +622,11 @@ if(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif()
-if(GCC)
+if(GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-but-set-variable")
 endif()
 # On GCC 4.6 this warns about unused constants in int.h
-if(GCC AND "${CMAKE_CXX_COMPILER_VERSION}" VERSION_GREATER 4.7)
+if(GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.7)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-variable")
 endif()
 
