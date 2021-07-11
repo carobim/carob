@@ -31,28 +31,88 @@
 Transform
 transformIdentity() noexcept {
     Transform result;
-    result.m = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+    result.m[0] = 1;
+    result.m[1] = 0;
+    result.m[2] = 0;
+    result.m[3] = 0;
+    result.m[4] = 0;
+    result.m[5] = 1;
+    result.m[6] = 0;
+    result.m[7] = 0;
+    result.m[8] = 0;
+    result.m[9] = 0;
+    result.m[10] = 1;
+    result.m[11] = 0;
+    result.m[12] = 0;
+    result.m[13] = 0;
+    result.m[14] = 0;
+    result.m[15] = 1;
     return result;
 }
 
 Transform
 transformScale(float factor) noexcept {
     Transform result;
-    result.m = {factor, 0, 0, 0, 0, factor, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    result.m[0] = factor;
+    result.m[1] = 0;
+    result.m[2] = 0;
+    result.m[3] = 0;
+    result.m[4] = 0;
+    result.m[5] = factor;
+    result.m[6] = 0;
+    result.m[7] = 0;
+    result.m[8] = 0;
+    result.m[9] = 0;
+    result.m[10] = 1;
+    result.m[11] = 0;
+    result.m[12] = 0;
+    result.m[13] = 0;
+    result.m[14] = 0;
+    result.m[15] = 1;
     return result;
 }
 
 Transform
 transformScale(float x, float y) noexcept {
     Transform result;
-    result.m = {x, 0, 0, 0, 0, y, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    result.m[0] = x;
+    result.m[1] = 0;
+    result.m[2] = 0;
+    result.m[3] = 0;
+    result.m[4] = 0;
+    result.m[5] = y;
+    result.m[6] = 0;
+    result.m[7] = 0;
+    result.m[8] = 0;
+    result.m[9] = 0;
+    result.m[10] = 1;
+    result.m[11] = 0;
+    result.m[12] = 0;
+    result.m[13] = 0;
+    result.m[14] = 0;
+    result.m[15] = 1;
     return result;
 }
 
 Transform
 transformTranslate(float x, float y) noexcept {
     Transform result;
-    result.m = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1};
+    result.m[0] = 1;
+    result.m[1] = 0;
+    result.m[2] = 0;
+    result.m[3] = 0;
+    result.m[4] = 0;
+    result.m[5] = 1;
+    result.m[6] = 0;
+    result.m[7] = 0;
+    result.m[8] = 0;
+    result.m[9] = 0;
+    result.m[10] = 1;
+    result.m[11] = 0;
+    result.m[12] = x;
+    result.m[13] = y;
+    result.m[14] = 0;
+    result.m[15] = 1;
     return result;
 }
 

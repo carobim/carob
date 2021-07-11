@@ -33,7 +33,7 @@
 
 class Mutex {
  public:
-    inline Mutex() noexcept : m(PTHREAD_MUTEX_INITIALIZER) { }
+    inline Mutex() noexcept : m PTHREAD_MUTEX_INITIALIZER { }
 
     inline ~Mutex() noexcept {
         int err = pthread_mutex_destroy(&m);
