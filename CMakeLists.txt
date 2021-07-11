@@ -420,7 +420,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/util/string.h
     ${HERE}/src/util/string2.cpp
     ${HERE}/src/util/string2.h
-    ${HERE}/src/util/transform.cpp
+    ${HERE}/src/util/transform.c
     ${HERE}/src/util/transform.h
     ${HERE}/src/util/vector.h
 )

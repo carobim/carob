@@ -30,29 +30,29 @@
 #include "util/int.h"
 #include "util/noexcept.h"
 
-// An affine transformation.
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* An affine transformation. */
 struct Transform {
     float m[16];
-
-    inline float&
-    operator[](size_t i) noexcept {
-        return m[i];
-    }
 };
 
-Transform
+struct Transform
 transformIdentity() noexcept;
 
-Transform
-transformScale(float factor) noexcept;
-
-Transform
+struct Transform
 transformScale(float x, float y) noexcept;
 
-Transform
+struct Transform
 transformTranslate(float x, float y) noexcept;
 
-Transform
-operator*(Transform a, Transform b) noexcept;
+struct Transform
+transformMultiply(struct Transform a, struct Transform b) noexcept;
 
+#ifdef __cplusplus
+}  /* extern "C" */
 #endif
+
+#endif  /* SRC_UTIL_TRANSFORM_H_ */

@@ -815,7 +815,7 @@ getOrtho() noexcept {
     float ww = static_cast<float>(confWindowSize.x);
     float wh = static_cast<float>(confWindowSize.y);
 
-    return transformScale(2.0f / ww, -2.0f / wh) * transformTranslate(-1, 1);
+    return transformMultiply(transformScale(2.0f / ww, -2.0f / wh), transformTranslate(-1, 1));
 }
 
 void

@@ -27,6 +27,8 @@
 #ifndef SRC_UTIL_NOEXCEPT_H_
 #define SRC_UTIL_NOEXCEPT_H_
 
+#ifdef __cplusplus
+
 #if defined(_MSC_VER) && _MSC_VER == 1900  // Visual Studio 2015
      // 'noexcept' used but no exception handling is enabled.
 #    pragma warning(disable : 4577)  
@@ -37,5 +39,9 @@
     (defined(__GNUC__) && !defined(__clang__) && __GNUC__ == 4 && __GNUC_MINOR__ <= 5)
 #    define noexcept throw()
 #endif
+
+#else  /* __cplusplus */
+#define noexcept
+#endif  /* __cplusplus */
 
 #endif  // SRC_UTIL_NOEXCEPT_H_

@@ -303,7 +303,7 @@ windowPushScale(float x, float y) noexcept {
     float factor = static_cast<float>(x);
     Transform transform = transformStack[transformCount - 1];
 
-    transformStack[transformCount++] = transformScale(factor) * transform;
+    transformStack[transformCount++] = transformScale(factor, factor) * transform;
     updateTransform();
 }
 

@@ -1,6 +1,6 @@
 /*************************************
 ** Tsunagari Tile Engine            **
-** transform.cpp                    **
+** transform.c                      **
 ** Copyright 2017-2021 Paul Merrill **
 *************************************/
 
@@ -26,11 +26,9 @@
 
 #include "transform.h"
 
-#include "util/noexcept.h"
-
-Transform
-transformIdentity() noexcept {
-    Transform result;
+struct Transform
+transformIdentity() {
+    struct Transform result;
     result.m[0] = 1;
     result.m[1] = 0;
     result.m[2] = 0;
@@ -50,31 +48,9 @@ transformIdentity() noexcept {
     return result;
 }
 
-Transform
-transformScale(float factor) noexcept {
-    Transform result;
-    result.m[0] = factor;
-    result.m[1] = 0;
-    result.m[2] = 0;
-    result.m[3] = 0;
-    result.m[4] = 0;
-    result.m[5] = factor;
-    result.m[6] = 0;
-    result.m[7] = 0;
-    result.m[8] = 0;
-    result.m[9] = 0;
-    result.m[10] = 1;
-    result.m[11] = 0;
-    result.m[12] = 0;
-    result.m[13] = 0;
-    result.m[14] = 0;
-    result.m[15] = 1;
-    return result;
-}
-
-Transform
-transformScale(float x, float y) noexcept {
-    Transform result;
+struct Transform
+transformScale(float x, float y) {
+    struct Transform result;
     result.m[0] = x;
     result.m[1] = 0;
     result.m[2] = 0;
@@ -94,9 +70,9 @@ transformScale(float x, float y) noexcept {
     return result;
 }
 
-Transform
-transformTranslate(float x, float y) noexcept {
-    Transform result;
+struct Transform
+transformTranslate(float x, float y) {
+    struct Transform result;
     result.m[0] = 1;
     result.m[1] = 0;
     result.m[2] = 0;
@@ -116,9 +92,9 @@ transformTranslate(float x, float y) noexcept {
     return result;
 }
 
-Transform
-operator*(Transform a, Transform b) noexcept {
-    Transform result;
+struct Transform
+transformMultiply(struct Transform a, struct Transform b) {
+    struct Transform result;
     for (int i = 0; i < 16; i++) {
         result.m[i] = a.m[(i & ~3)    ] * b.m[(i & 3)     ] +
                       a.m[(i & ~3) | 1] * b.m[(i & 3) |  4] +
