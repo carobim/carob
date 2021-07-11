@@ -39,11 +39,17 @@ typedef unsigned int uint32_t;
 #if defined(_MSC_VER)
 typedef __int64 int64_t;
 typedef unsigned __int64 uint64_t;
-// size_t already defined.
 #    ifdef _WIN64
 typedef signed __int64 ssize_t;
 #    else
 typedef signed int ssize_t;
+#    endif
+#    if !defined(__cplusplus) && defined(_WIN64)
+typedef uint64_t size_t;
+#    elif !defined(__cplusplus)
+typedef uint32_t size_t;
+#    else
+// size_t already defined.
 #    endif
 #elif defined(__clang__) || defined(__GNUC__)
 typedef long long int64_t;
@@ -60,25 +66,25 @@ typedef long time_t;
 typedef int64_t time_t;
 #endif
 
-static CONSTEXPR11 int32_t INT32_MIN = 0x80000000;
-static CONSTEXPR11 int32_t INT32_MAX = 0x7fffffff;
-static CONSTEXPR11 int64_t INT64_MAX = 0x7fffffffffffffff;
-static CONSTEXPR11 int64_t INT64_MIN = 0x8000000000000000;
-static CONSTEXPR11 uint32_t UINT32_MAX = 0xffffffff;
-static CONSTEXPR11 uint64_t UINT64_MAX = 0xffffffffffffffff;
+#define INT32_MIN ((int32_t)0x80000000)
+#define INT32_MAX ((int32_t)0x7fffffff)
+#define INT64_MAX ((int64_t)0x7fffffffffffffff)
+#define INT64_MIN ((int64_t)0x8000000000000000)
+#define UINT32_MAX ((uint32_t)0xffffffff)
+#define UINT64_MAX ((uint64_t)0xffffffffffffffff)
 
-#if defined(_WIN64)
-static CONSTEXPR11 size_t SIZE_MAX = 0xffffffffffffffff;
-#elif defined(_WIN32)
-static CONSTEXPR11 size_t SIZE_MAX = 0xffffffff;
+#if defined(_MSC_VER) && defined(_M_X64)
+#define SIZE_MAX ((size_t)0xffffffffffffffff)
+#elif defined(_MSC_VER)
+#define SIZE_MAX ((size_t)0xffffffff)
 #else
-static CONSTEXPR11 size_t SIZE_MAX = __SIZE_MAX__;
+#define SIZE_MAX __SIZE_MAX__
 #endif
 
-static CONSTEXPR11 float FLT_MIN = 1.17549435082228750796873653722224568e-38f;
-static CONSTEXPR11 float FLT_MAX = 3.402823466e+38f;
+#define FLT_MIN ((float)1.17549435082228750796873653722224568e-38f)
+#define FLT_MAX ((float)3.402823466e+38f)
 
-static CONSTEXPR11 float M_PI = 3.14159265358979323846;
+#define M_PI ((float)3.14159265358979323846)
 
 #if defined(__EMSCRIPTEN__)
 #    define __DEFINED_time_t

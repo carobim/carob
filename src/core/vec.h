@@ -103,7 +103,7 @@ size_t hash_(fvec3) noexcept;
 static const CONSTEXPR11 ivec3 IVEC3_MIN = {
     INT32_MIN,
     INT32_MIN,
-    INT32_MIN,
+    INT32_MIN
 };
 
 // clang-format on
