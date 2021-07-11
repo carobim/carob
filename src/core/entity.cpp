@@ -156,9 +156,9 @@ parseSprite(Entity* e, JsonValue sprite) noexcept {
 
 static bool
 parsePhases(Entity* e, JsonValue phases, TiledImage tiles) noexcept {
-    for (JsonNode& node : phases) {
-        CHECK(node.value.isObject());
-        CHECK(parsePhase(e, node.key, node.value, tiles));
+    for (JsonIterator node = begin(phases); node != end(phases); ++node) {
+        CHECK(node->value.isObject());
+        CHECK(parsePhase(e, node->key, node->value, tiles));
     }
     return true;
 }
@@ -209,8 +209,10 @@ parsePhase(Entity* e,
         assert_(fps != 0.0f);
 
         Vector<Image> images;
-        for (JsonNode& node : framesValue) {
-            JsonValue frameValue = node.value;
+        for (JsonIterator node = begin(framesValue);
+             node != end(framesValue);
+             ++node) {
+            JsonValue frameValue = node->value;
 
             CHECK(frameValue.isNumber());
             int frame = frameValue.toInt();
@@ -271,9 +273,9 @@ parsePhase(Entity* e,
 
 static bool
 parseSounds(Entity* e, JsonValue sounds) noexcept {
-    for (JsonNode& node : sounds) {
-        CHECK(node.value.isString());
-        CHECK(parseSound(e, node.key, node.value.toString()));
+    for (JsonIterator node = begin(sounds); node != end(sounds); ++node) {
+        CHECK(node->value.isString());
+        CHECK(parseSound(e, node->key, node->value.toString()));
     }
     return true;
 }
@@ -297,9 +299,9 @@ parseSound(Entity* e, StringView name, StringView path) noexcept {
 
 static bool
 parseScripts(Entity* e, JsonValue scripts) noexcept {
-    for (JsonNode& node : scripts) {
-        CHECK(node.value.isString());
-        CHECK(parseScript(e, node.key, node.value.toString()));
+    for (JsonIterator node = begin(scripts); node != end(scripts); ++node) {
+        CHECK(node->value.isString());
+        CHECK(parseScript(e, node->key, node->value.toString()));
     }
     return true;
 }

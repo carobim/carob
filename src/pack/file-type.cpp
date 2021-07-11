@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** file-type.cpp                    **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -40,13 +40,19 @@ determineFileType(StringView path) noexcept {
         return FT_UNKNOWN;
     }
     StringView extension = path.substr(dot);
-    for (StringView textExtension : textExtensions) {
-        if (extension == textExtension) {
+    for (const StringView* text = &textExtensions[0];
+         text !=
+            &textExtensions[sizeof(textExtensions)/sizeof(textExtensions[0])];
+         text++) {
+        if (extension == *text) {
             return FT_TEXT;
         }
     }
-    for (StringView mediaExtension : mediaExtensions) {
-        if (extension == mediaExtension) {
+    for (const StringView* text = &mediaExtensions[0];
+         text !=
+            &mediaExtensions[sizeof(mediaExtensions)/sizeof(mediaExtensions[0])];
+         text++) {
+        if (extension == *text) {
             return FT_MEDIA;
         }
     }

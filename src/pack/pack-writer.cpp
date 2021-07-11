@@ -84,7 +84,8 @@ packWriterAddBlob(PackWriter* writer,
                   StringView path,
                   BlobSize size,
                   const void* data) noexcept {
-    writer->blobs.push_back({path, size, data});
+    Blob blob{path, size, data};
+    writer->blobs.push_back(blob);
 }
 
 bool

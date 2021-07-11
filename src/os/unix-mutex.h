@@ -29,6 +29,7 @@
 
 #include "os/c.h"
 #include "util/assert.h"
+#include "util/noexcept.h"
 
 class Mutex {
  public:

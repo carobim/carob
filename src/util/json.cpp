@@ -441,9 +441,9 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
 
 JsonValue
 JsonValue::operator[](StringView key) noexcept {
-    for (JsonNode& node : *this) {
-        if (key == node.key) {
-            return node.value;
+    for (JsonNode* node = toNode(); node != 0; node = node->next) {
+        if (key == node->key) {
+            return node->value;
         }
     }
 

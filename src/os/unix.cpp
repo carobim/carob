@@ -119,7 +119,8 @@ writeFileVec(StringView path,
     ios.reserve(count);
     for (size_t i = 0; i < count; i++) {
         total += lengths[i];
-        ios.push_back({datas[i], lengths[i]});
+        iovec io{datas[i], lengths[i]};
+        ios.push_back(io);
     }
 
     ssize_t written = writev(fd, ios.data, static_cast<int>(ios.size));

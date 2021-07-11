@@ -33,6 +33,7 @@
 // Note: Prefer sourcing types from musl.
 
 #include "util/int.h"
+#include "util/noexcept.h"
 
 // arch/x86_64/bits/stat.h
 // arch/arm/bits/stat.h
@@ -72,36 +73,12 @@ typedef unsigned uid_t;
 
 // include/alltypes.h.in
 #if __LONG_MAX__ == 0x7fffffffffffffffL
-struct pthread_cond_t {
-    union {
-        int __i[12];
-        volatile int __vi[12];
-        void* __p[6];
-    };
-};
-struct pthread_mutex_t {
-    union {
-        int __i[10];
-        volatile int __vi[10];
-        volatile void* volatile __p[5];
-    };
-};
+typedef volatile int pthread_cond_t[12];
+typedef volatile int pthread_mutex_t[10];
 #elif __LONG_MAX__ == 0x7fffffff
-struct pthread_cond_t {
-    union {
-        int __i[12];
-        volatile int __vi[12];
-        void* __p[12];
-    };
-};
-struct pthread_mutex_t {
-    union {
-        int __i[6];
-        volatile int __vi[6];
-        volatile void* volatile __p[6];
-    };
-};
-
+typedef volatile int pthread_cond_t[12];
+// Is this 13 ints on gcc-4.5 w/libc6-2.13?
+typedef volatile int pthread_mutex_t[6];
 #else
 #    error unknown system
 #endif
@@ -261,18 +238,8 @@ double
 sqrt(double) noexcept;
 
 // pthread.h
-#define PTHREAD_MUTEX_INITIALIZER \
-    {                             \
-        {                         \
-            { 0 }                 \
-        }                         \
-    }
-#define PTHREAD_COND_INITIALIZER \
-    {                            \
-        {                        \
-            { 0 }                \
-        }                        \
-    }
+#define PTHREAD_MUTEX_INITIALIZER { 0 }
+#define PTHREAD_COND_INITIALIZER { 0 }
 int
 pthread_mutex_destroy(pthread_mutex_t*) noexcept;
 int

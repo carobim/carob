@@ -202,7 +202,7 @@ struct JsonIterator {
     }
 
     inline bool
-    operator!=(JsonIterator& other) noexcept {
+    operator!=(JsonIterator other) noexcept {
         return node != other.node;
     }
 
@@ -211,9 +211,9 @@ struct JsonIterator {
         return *node;
     }
 
-    inline JsonNode&
+    inline JsonNode*
     operator->() noexcept {
-        return *node;
+        return node;
     }
 };
 

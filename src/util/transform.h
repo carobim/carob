@@ -40,10 +40,8 @@ struct Transform {
     }
 };
 
-#define transformIdentity                                  \
-    {                                                      \
-        { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 } \
-    }
+Transform
+transformIdentity() noexcept;
 
 Transform
 transformScale(float factor) noexcept;

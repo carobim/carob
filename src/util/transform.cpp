@@ -29,18 +29,31 @@
 #include "util/noexcept.h"
 
 Transform
+transformIdentity() noexcept {
+    Transform result;
+    result.m = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+    return result;
+}
+
+Transform
 transformScale(float factor) noexcept {
-    return {{factor, 0, 0, 0, 0, factor, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+    Transform result;
+    result.m = {factor, 0, 0, 0, 0, factor, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    return result;
 }
 
 Transform
 transformScale(float x, float y) noexcept {
-    return {{x, 0, 0, 0, 0, y, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1}};
+    Transform result;
+    result.m = {x, 0, 0, 0, 0, y, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    return result;
 }
 
 Transform
 transformTranslate(float x, float y) noexcept {
-    return {{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1}};
+    Transform result;
+    result.m = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, x, y, 0, 1};
+    return result;
 }
 
 Transform

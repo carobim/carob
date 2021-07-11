@@ -173,8 +173,10 @@ AreaJSON::processDescriptor() noexcept {
 
     CHECK(tilesetsValue.toNode());
 
-    for (JsonNode& tilesetNode : tilesetsValue) {
-        JsonValue tilesetValue = tilesetNode.value;
+    for (JsonIterator tilesetNode = begin(tilesetsValue);
+         tilesetNode != end(tilesetsValue);
+         ++tilesetNode) {
+        JsonValue tilesetValue = tilesetNode->value;
         CHECK(tilesetValue.isObject());
 
         CHECK(processTileSet(tilesetValue));
@@ -183,8 +185,10 @@ AreaJSON::processDescriptor() noexcept {
     CHECK(layersValue.toNode());
 
     size_t numLayers = 0;
-    for (JsonNode& layerNode : layersValue) {
-        JsonValue layerValue = layerNode.value;
+    for (JsonIterator layerNode = begin(layersValue);
+         layerNode != end(layersValue);
+         ++layerNode) {
+        JsonValue layerValue = layerNode->value;
         CHECK(layerValue.isObject());
 
         JsonValue typeValue = layerValue["type"];
@@ -198,8 +202,10 @@ AreaJSON::processDescriptor() noexcept {
 
     preallocateMapLayers(grid, numLayers);
 
-    for (JsonNode& layerNode : layersValue) {
-        JsonValue layerValue = layerNode.value;
+    for (JsonIterator layerNode = begin(layersValue);
+         layerNode != end(layersValue);
+         ++layerNode) {
+        JsonValue layerValue = layerNode->value;
         CHECK(layerValue.isObject());
 
         JsonValue typeValue = layerValue["type"];
@@ -409,13 +415,15 @@ AreaJSON::processTileSetFile(JsonValue obj,
     // Handle explicitly declared "non-vanilla" types.
 
     String buf;
-    for (JsonNode& tilepropertiesNode : tilespropertiesNode) {
-        CHECK(tilepropertiesNode.value.isObject());
+    for (JsonIterator tilepropertiesNode = begin(tilespropertiesNode);
+         tilepropertiesNode != end(tilespropertiesNode);
+         ++tilepropertiesNode) {
+        CHECK(tilepropertiesNode->value.isObject());
 
         // "id" is 0-based index of a tile in the current
         // tileset, if the tileset were a flat array.
         buf.clear();
-        buf = tilepropertiesNode.key;
+        buf = tilepropertiesNode->key;
         unsigned id;
         if (!parseUInt(id, buf)) {
             logErr(descriptor, "Tile type id is invalid");
@@ -435,7 +443,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
         int gid = id_ + firstGid;
 
         Animation& graphic = tileGraphics[gid];
-        if (!processTileType(tilepropertiesNode.value,
+        if (!processTileType(tilepropertiesNode->value,
                              graphic,
                              images,
                              static_cast<int>(id_))) {
@@ -620,10 +628,10 @@ AreaJSON::processLayerData(JsonValue arr) noexcept {
 
     size_t x = 0, y = 0;
 
-    for (JsonNode& node : arr) {
-        CHECK(node.value.isNumber());
+    for (JsonIterator node = begin(arr); node != end(arr); ++node) {
+        CHECK(node->value.isNumber());
 
-        unsigned gid = node.value.toInt();
+        unsigned gid = node->value.toInt();
 
         if (gid >= tileGraphics.size) {
             logErr(descriptor, "Invalid tile gid");
@@ -665,9 +673,11 @@ AreaJSON::processObjectGroup(JsonValue obj) noexcept {
         CHECK(processObjectGroupProperties(propertiesValue));
     }
 
-    for (JsonNode& objectNode : objectsValue) {
-        CHECK(objectNode.value.isObject());
-        CHECK(processObject(objectNode.value));
+    for (JsonIterator objectNode = begin(objectsValue);
+         objectNode != end(objectsValue);
+         ++objectNode) {
+        CHECK(objectNode->value.isObject());
+        CHECK(processObject(objectNode->value));
     }
 
     return true;
