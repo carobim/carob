@@ -91,7 +91,8 @@ jobs:
       - run: |
           echo 'deb http://archive.debian.org/debian wheezy main' > /etc/apt/sources.list &&
           apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ make
+          dpkg --configure -a &&
+          apt-get install -y --no-install-recommends cmake g++ g++-4.7 libstdc++6-4.7-dev make
       - checkout
       - run: |
           mkdir build &&
