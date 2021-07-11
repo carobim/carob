@@ -32,7 +32,9 @@
 #    pragma warning(disable : 4577)  
 #endif
 
-#if defined(_MSC_VER) && _MSC_VER < 1900  // Visual Studio 2013 or lower
+// Visual Studio 2013 or lower, GCC 4.5 or lower
+#if (defined(_MSC_VER) && _MSC_VER < 1900) || \
+    (defined(__GNUC__) && !defined(__clang__) && __GNUC__ == 4 && __GNUC_MINOR__ <= 5)
 #    define noexcept throw()
 #endif
 

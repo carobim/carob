@@ -32,6 +32,7 @@
 #include "util/assert.h"
 #include "util/function.h"
 #include "util/int.h"
+#include "util/noexcept.h"
 
 static void*
 run(void* f) noexcept {
