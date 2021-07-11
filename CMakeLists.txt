@@ -626,7 +626,7 @@ if(GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-but-set-variable")
 endif()
 # On GCC 4.6 this warns about unused constants in int.h
-if(GCC AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER 4.7)
+if(GCC AND "${CMAKE_CXX_COMPILER_VERSION}" VERSION_GREATER 4.7)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-variable")
 endif()
 
