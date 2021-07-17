@@ -1,16 +1,17 @@
 /notes.txt
-/doc/notes/
+/doc/notes
 
-/data/*.zip
+# Data artifacts
 /data/*.world
 
 # Mac
 .DS_Store
 
-# vim
+# Vim & IDEs
 *.swp
-
 /.idea
 /.vs
+
+# Build directories
+/b*
 /cmake-build*
-/build*
