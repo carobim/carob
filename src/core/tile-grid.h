@@ -1,35 +1,9 @@
-/***************************************
-** Tsunagari Tile Engine              **
-** tile-grid.h                        **
-** Copyright 2011-2015 Michael Reiley **
-** Copyright 2011-2021 Paul Merrill   **
-***************************************/
-
-// **********
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to
-// deal in the Software without restriction, including without limitation the
-// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-// **********
-
 #ifndef SRC_CORE_TILE_GRID_H_
 #define SRC_CORE_TILE_GRID_H_
 
 #include "core/vec.h"
 #include "data/data-area.h"
+#include "util/compiler.h"
 #include "util/hashtable.h"
 #include "util/string.h"
 #include "util/vector.h"
@@ -97,14 +71,14 @@ typedef void (*TileScript)(Entity& triggeredBy, ivec3 tile);
 
 struct EmptyFloat {
     static constexpr11 float
-    value() {
+    value() noexcept {
         return FLT_MIN;
     }
 };
 
 struct EmptyIcoord {
     static constexpr11 ivec3
-    value() {
+    value() noexcept {
         return IVEC3_MIN;
     }
 };
@@ -214,9 +188,9 @@ class TileGrid {
     Hashmap<ivec3, float, EmptyIcoord> layermods[EXITS_LENGTH];
 
  private:
-    TileGrid(const TileGrid&);
+    TileGrid(const TileGrid&) noexcept;
     void
-    operator=(const TileGrid&);
+    operator=(const TileGrid&) noexcept;
 };
 
 #endif  // SRC_CORE_TILE_GRID_H_
