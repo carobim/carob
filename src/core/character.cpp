@@ -54,7 +54,8 @@ void
 Character::setTileCoords(int x, int y) noexcept {
     leaveTile();
     redraw = true;
-    r = area->grid.virt2virt(vicoord{x, y, r.z});
+    vicoord virt = {x, y, r.z};
+    r = area->grid.virt2virt(virt);
     enterTile();
 }
 
@@ -164,7 +165,8 @@ Character::moveDest(ivec2 facing) noexcept {
         return area->grid.moveDest(here, facing);
     }
     else {
-        return here + ivec3{facing.x, facing.y, 0};
+        ivec3 facing3 = {facing.x, facing.y, 0};
+        return here + facing3;
     }
 }
 

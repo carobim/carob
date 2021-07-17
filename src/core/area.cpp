@@ -129,12 +129,16 @@ Area::needsRedraw() noexcept {
     if (player->needsRedraw(pixels)) {
         return true;
     }
-    for (Character** character = characters.begin(); character != characters.end(); character++) {
+    for (Character** character = characters.begin();
+         character != characters.end();
+         character++) {
         if ((*character)->needsRedraw(pixels)) {
             return true;
         }
     }
-    for (Overlay** overlay = overlays.begin(); overlay != overlays.end(); overlay++) {
+    for (Overlay** overlay = overlays.begin();
+         overlay != overlays.end();
+         overlay++) {
         if ((*overlay)->needsRedraw(pixels)) {
             return true;
         }
@@ -144,9 +148,7 @@ Area::needsRedraw() noexcept {
     if (tileGraphics.size > checkedForAnimation.size) {
         checkedForAnimation.resize(tileGraphics.size);
     }
-    for (bool* checked = checkedForAnimation.begin(); checked != checkedForAnimation.end(); checked++) {
-        *checked = false;
-    }
+    memset(checkedForAnimation.data, 0, checkedForAnimation.size);
 
     time_t now = worldTime();
 
@@ -156,7 +158,8 @@ Area::needsRedraw() noexcept {
         }
         for (int y = tiles.y1; y < tiles.y2; y++) {
             for (int x = tiles.x1; x < tiles.x2; x++) {
-                int type = grid.getTileType(ivec3{x, y, z});
+                ivec3 coord = {x, y, z};
+                int type = grid.getTileType(coord);
 
                 if (type == 0) {
                     continue;
@@ -181,30 +184,42 @@ Area::requestRedraw() noexcept {
     redraw = true;
 }
 
+static bool
+isCharacterDead(Character* c) noexcept {
+    bool dead = c->isDead();
+    if (dead) {
+        c->setArea(0, {0, 0, 0.0});
+    }
+    return dead;
+}
+
+static bool
+isOverlayDead(Overlay* o) noexcept {
+    return o->isDead();
+}
+
 void
 Area::tick(time_t dt) noexcept {
     if (dataArea) {
         dataArea->tick(dt);
     }
 
-    for (Overlay** overlay = overlays.begin(); overlay != overlays.end(); overlay++) {
+    for (Overlay** overlay = overlays.begin();
+         overlay != overlays.end();
+         overlay++) {
         (*overlay)->tick(dt);
     }
-    erase_if(overlays, [](Overlay* o) { return o->isDead(); });
+    erase_if(overlays, isOverlayDead);
 
     if (confMoveMode != MoveMode::TURN) {
         player->tick(dt);
 
-        for (Character** character = characters.begin(); character != characters.end(); character++) {
+        for (Character** character = characters.begin();
+             character != characters.end();
+             character++) {
             (*character)->tick(dt);
         }
-        erase_if(characters, [](Character* c) -> bool {
-            bool dead = c->isDead();
-            if (dead) {
-                c->setArea(0, {0, 0, 0.0});
-            }
-            return dead;
-        });
+        erase_if(characters, isCharacterDead);
     }
 
     viewportTick(dt);
@@ -218,16 +233,12 @@ Area::turn() noexcept {
 
     player->turn();
 
-    for (Character** character = characters.begin(); character != characters.end(); character++) {
+    for (Character** character = characters.begin();
+         character != characters.end();
+         character++) {
         (*character)->turn();
     }
-    erase_if(characters, [](Character* c) -> bool {
-        bool dead = c->isDead();
-        if (dead) {
-            c->setArea(0, {0, 0, 0.0});
-        }
-        return dead;
-    });
+    erase_if(characters, isCharacterDead);
 
     viewportTurn();
 }
@@ -275,7 +286,8 @@ Area::visibleTiles() noexcept {
         y2 = bound(y2, 0, grid.dim.y);
     }
 
-    return icube{x1, y1, 0, x2, y2, grid.dim.z};
+    icube cube = {x1, y1, 0, x2, y2, grid.dim.z};
+    return cube;
 }
 
 bool
@@ -344,9 +356,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
     }
 
     // FIXME: Only do this once per draw() call. Don't do it per drawTiles.
-    for (bool* animated = tilesAnimated.begin(); animated != tilesAnimated.end(); animated++) {
-        *animated = false;
-    }
+    memset(tilesAnimated.data, 0, tilesAnimated.size);
 
     size_t maxTiles = (tiles.y2 - tiles.y1) * (tiles.x2 - tiles.x1);
     size_t itemCount = items.size;
@@ -363,7 +373,8 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
     for (int y = tiles.y1; y < tiles.y2; y++) {
         for (int x = tiles.x1; x < tiles.x2; x++) {
             // We are certain the Tile exists.
-            int type = grid.getTileType(ivec3{x, y, z});
+            ivec3 coord = {x, y, z};
+            int type = grid.getTileType(coord);
 
             if (type == 0) {
                 continue;
@@ -385,7 +396,8 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
             fvec3 drawPos{float(x * width), float(y * height), depth};
             // drawPos.z = depth + drawPos.y / tileDimY *
             // ISOMETRIC_ZOFF_PER_TILE;
-            items[itemCount++] = DisplayItem{img, drawPos};
+            DisplayItem item = {img, drawPos};
+            items[itemCount++] = item;
         }
     }
 
@@ -396,13 +408,17 @@ void
 Area::drawEntities(DisplayList* display, icube& tiles, int z) noexcept {
     float depth = grid.idx2depth[(size_t)z];
 
-    for (Character** character = characters.begin(); character != characters.end(); character++) {
+    for (Character** character = characters.begin();
+         character != characters.end();
+         character++) {
         if ((*character)->getTileCoords_i().z == z) {
             (*character)->draw(display);
         }
     }
 
-    for (Overlay** overlay = overlays.begin(); overlay != overlays.end(); overlay++) {
+    for (Overlay** overlay = overlays.begin();
+         overlay != overlays.end();
+         overlay++) {
         if ((*overlay)->getPixelCoord().z == depth) {
             (*overlay)->draw(display);
         }

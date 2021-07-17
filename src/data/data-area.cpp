@@ -5,6 +5,11 @@
 #include "util/compiler.h"
 #include "util/random.h"
 
+static bool
+isOver(InProgress* ip) noexcept {
+    return ip->isOver();
+}
+
 void
 DataArea::onLoad() noexcept { }
 
@@ -23,10 +28,12 @@ DataArea::tick(time_t dt) noexcept {
     // beginning of the loop.  Also, iterate by index instead of by
     // iterator because iterators are invalidated if the vector is
     // pushed_back.
-    for (InProgress** inProgress = inProgresses.begin(); inProgresses.end(); inProgress++) {
+    for (InProgress** inProgress = inProgresses.begin();
+         inProgresses.end();
+         inProgress++) {
         (*inProgress)->tick(dt);
     }
-    erase_if(inProgresses, [](InProgress* ip) { return ip->isOver(); });
+    erase_if(inProgresses, isOver);
     onTick(dt);
 }
 

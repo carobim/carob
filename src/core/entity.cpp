@@ -379,8 +379,9 @@ Entity::draw(DisplayList* display) noexcept {
     float maxY = area->grid.tileDim.y + r.y;
     float minY = maxY - imgsz.y;
 
-    display->items.push_back(
-            DisplayItem{phase->setFrame(now), fvec3{minX, minY, r.z}});
+    fvec3 destination = {minX, minY, r.z};
+    DisplayItem item = {phase->setFrame(now), destination};
+    display->items.push_back(item);
 }
 
 bool

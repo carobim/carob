@@ -78,12 +78,14 @@ getLetterbox() noexcept {
     if (physAspect > virtAspect) {
         // Letterbox cuts off left-right.
         float cut = 1 - virtAspect / physAspect;
-        return fvec2{cut, 0};
+        fvec2 letterbox = {cut, 0};
+        return letterbox;
     }
     else {
         // Letterbox cuts off top-bottom.
         float cut = 1 - physAspect / virtAspect;
-        return {0, cut};
+        fvec2 letterbox = {0, cut};
+        return letterbox;
     }
 }
 
@@ -133,7 +135,8 @@ viewportGetMapOffset() noexcept {
 
 fvec2
 viewportGetLetterboxOffset() noexcept {
-    return addLetterboxOffset(fvec2{0.0, 0.0});
+    fvec2 offset = {0.0f, 0.0f};
+    return addLetterboxOffset(offset);
 }
 
 fvec2

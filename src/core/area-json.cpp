@@ -357,13 +357,14 @@ AreaJSON::processTileSetFile(JsonValue obj,
         logErr(descriptor, "Tileset's width/height contradict earlier <layer>");
         return false;
     }
-    grid.tileDim = ivec2{
-            static_cast<int>(tileWidth),
-            static_cast<int>(tileHeight),
-    };
+
+    grid.tileDim.x = static_cast<int>(tileWidth);
+    grid.tileDim.y = static_cast<int>(tileHeight);
 
     String imgSource = String() << dirname(source) << imageNode.toString();
-    tileSets[imgSource] = TileSet{firstGid, numAcross, numHigh};
+
+    TileSet tileSet = {firstGid, numAcross, numHigh};
+    tileSets[imgSource] = tileSet;
 
     // Load tileset image.
     TiledImage images =
@@ -1070,7 +1071,7 @@ AreaJSON::parseExit(StringView dest,
     buf = z;
     CHECK(parseFloat(z_, buf));
 
-    exit.area = static_cast<String&&>(area);
+    exit.area = area;
     exit.coords.x = x_;
     exit.coords.y = y_;
     exit.coords.z = z_;

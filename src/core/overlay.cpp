@@ -18,13 +18,15 @@ Overlay::teleport(vicoord coord) noexcept {
 
 void
 Overlay::drift(ivec2 xy) noexcept {
-    driftTo(ivec2{static_cast<int>(r.x) + xy.x, static_cast<int>(r.y) + xy.y});
+    ivec2 dest = {static_cast<int>(r.x) + xy.x, static_cast<int>(r.y) + xy.y};
+    driftTo(dest);
 }
 
 void
 Overlay::driftTo(ivec2 xy) noexcept {
-    setDestinationCoordinate(
-            fvec3{static_cast<float>(xy.x), static_cast<float>(xy.y), r.z});
+    fvec3 destCoord = {static_cast<float>(xy.x), static_cast<float>(xy.y), r.z};
+    setDestinationCoordinate(destCoord);
+
     pickFacingForAngle();
     moving = true;
     setAnimationMoving();

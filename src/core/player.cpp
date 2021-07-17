@@ -70,7 +70,8 @@ Player::stopMovement(ivec2 delta) noexcept {
             moveByTile(velocity);
         }
         else {
-            velocity = {0, 0};
+            velocity.x = 0;
+            velocity.y = 0;
         }
         break;
     case MoveMode::NOTILE:
