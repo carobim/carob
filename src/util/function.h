@@ -155,7 +155,7 @@ class Function<R(ArgTypes...) noexcept> {
     void
     swap(Function&) noexcept;
 
-    inline explicit operator bool() const noexcept { return f != 0; }
+    inline operator bool() const noexcept { return f != 0; }
 
     R
     operator()(ArgTypes...) const noexcept;

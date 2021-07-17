@@ -21,6 +21,13 @@ struct Refless<T&&> {
 //   forward_()  same as std::forward
 //
 
+#if 0 < GCC && GCC < 45
+template<typename T>
+inline constexpr11 T&&
+forward_(typename Refless<T>::value&& x) noexcept {
+    return x;
+}
+#else
 template<typename T>
 inline constexpr11 T&&
 forward_(typename Refless<T>::value& x) noexcept {
@@ -32,6 +39,7 @@ inline constexpr11 T&&
 forward_(typename Refless<T>::value&& x) noexcept {
     return static_cast<T&&>(x);
 }
+#endif
 
 //
 // Swap

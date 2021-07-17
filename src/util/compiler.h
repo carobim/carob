@@ -52,7 +52,7 @@
 #endif
 
 #if CXX
-#    if MSVC == 2013
+#    if MSVC == 2013 || GCC < 46
 #        define constexpr
 #    endif
 #    if __cplusplus >= 201103L || MSVC >= 2015
@@ -71,10 +71,10 @@
 #    define constexpr14
 #endif
 
-#if CLANG || GCC
+#if CLANG || GCC >= 45
 #    define unreachable __builtin_unreachable()
 #else
-#    define unreachable (void)
+#    define unreachable (void)0
 #endif
 
 #endif
