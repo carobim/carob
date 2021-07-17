@@ -35,7 +35,7 @@
 #include "util/io.h"
 #include "util/math2.h"
 
-#ifdef _WIN32
+#if MSVC
 #    include "os/windows.h"
 #endif
 
@@ -127,7 +127,7 @@ logErr(StringView domain, StringView msg) noexcept {
 
         String s = String() << "Error [" << domain << "] - " << chomp(msg);
 
-#ifdef _WIN32
+#if MSVC
         wMessageBox("Tsunagari - Error", s);
 #endif
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
@@ -138,7 +138,7 @@ logErr(StringView domain, StringView msg) noexcept {
     }
 }
 
-#ifdef _WIN32
+#if MSVC
 extern "C" {
 __declspec(dllimport) int __stdcall IsDebuggerPresent();
 }
@@ -162,7 +162,7 @@ logFatal(StringView domain, StringView msg) noexcept {
 
     String s = String() << "Fatal [" << domain << "] - " << chomp(msg);
 
-#ifdef _WIN32
+#if MSVC
     wMessageBox("Tsunagari - Fatal", s);
 #endif
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))

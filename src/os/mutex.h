@@ -27,13 +27,13 @@
 #ifndef SRC_OS_MUTEX_H_
 #define SRC_OS_MUTEX_H_
 
-#ifdef _WIN32
+#if MSVC
 #    include "os/windows-mutex.h"
 #else
 #    include "os/unix-mutex.h"
 #endif
 
-#include "util/noexcept.h"
+#include "util/compiler.h"
 
 class LockGuard {
  public:

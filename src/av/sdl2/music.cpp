@@ -31,9 +31,9 @@
 #include "core/music-worker.h"
 #include "core/resources.h"
 #include "util/assert.h"
+#include "util/compiler.h"
 #include "util/hashvector.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
 

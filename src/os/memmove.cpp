@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** memmove.cpp                      **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -50,8 +50,8 @@
 // **********
 
 #include "os/c.h"
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 extern "C" {
 

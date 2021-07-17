@@ -29,7 +29,7 @@
 #define SRC_UTIL_STRING2_H_
 
 #include "os/io.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/vector.h"

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine            **
 ** cooldown.h                       **
 ** Copyright 2014 Michael Reiley    **
-** Copyright 2014-2020 Paul Merrill **
+** Copyright 2014-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -28,8 +28,8 @@
 #ifndef SRC_CORE_COOLDOWN_H_
 #define SRC_CORE_COOLDOWN_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 /**
  * Cooldown is a timer that repeatedly expires after a specified number of

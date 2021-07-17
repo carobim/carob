@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** tile.h                             **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -28,8 +28,8 @@
 #ifndef SRC_CORE_TILE_H_
 #define SRC_CORE_TILE_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 struct TileSet {
     int firstGid;

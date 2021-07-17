@@ -32,10 +32,10 @@
 #include "core/resources.h"
 #include "core/world.h"
 #include "os/mutex.h"
+#include "util/compiler.h"
 #include "util/hashtable.h"
 #include "util/int.h"
 #include "util/markable.h"
-#include "util/noexcept.h"
 #include "util/pool.h"
 #include "util/vector.h"
 

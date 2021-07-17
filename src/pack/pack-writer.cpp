@@ -31,10 +31,10 @@
 #include "pack/file-type.h"
 #include "pack/layout.h"
 #include "pack/pack-reader.h"
+#include "util/compiler.h"
 #include "util/int.h"
 #include "util/math2.h"
 #include "util/move.h"
-#include "util/noexcept.h"
 #include "util/sort.h"
 #include "util/string.h"
 #include "util/vector.h"
@@ -142,11 +142,11 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     uint32_t offset = 0;
 
     uint32_t headerOffset = offset;
-    uint32_t headerSize = sizeof32(HeaderSection);
+    uint32_t headerSize = static_cast<uint32_t>(sizeof(HeaderSection));
     offset += headerSize;
 
     uint32_t metadataOffset = offset;
-    uint32_t metadataSize = sizeof32(BlobMetadata) * blobCount;
+    uint32_t metadataSize = static_cast<uint32_t>(sizeof(BlobMetadata)) * blobCount;
     offset += metadataSize;
 
     uint32_t pathsOffset = offset;

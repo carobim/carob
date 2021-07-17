@@ -29,10 +29,10 @@
 #    include "util/assert.h"
 
 #    include "os/os.h"
+#    include "util/compiler.h"
 #    include "util/io.h"
-#    include "util/noexcept.h"
 
-#    ifdef _WIN32
+#    if MSVC
 extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
 void __cdecl __debugbreak();  // Cannot be noexcept.
 #    endif
@@ -43,7 +43,7 @@ typedef uint32_t mach_port_t;
 
 // mach/arm/exception.h
 // mach/i386/exception.h
-#define EXC_TYPES_COUNT 14
+#        define EXC_TYPES_COUNT 14
 
 // mach/arm/kern_return.h
 // mach/i386/kern_return.h
@@ -59,14 +59,14 @@ typedef int32_t exception_behavior_t;
 typedef exception_behavior_t* exception_behavior_array_t;
 typedef exception_mask_t* exception_mask_array_t;
 typedef thread_state_flavor_t* exception_flavor_array_t;
-#define EXC_BREAKPOINT (1 << 6)
+#        define EXC_BREAKPOINT (1 << 6)
 
 // mach/kern_return.h
-#define KERN_SUCCESS 0
+#        define KERN_SUCCESS 0
 
 // mach/mach_init.h
 extern mach_port_t mach_task_self_;
-#define mach_task_self() mach_task_self_
+#        define mach_task_self() mach_task_self_
 
 // mach/mach_types.h
 typedef mach_port_t task_t;
@@ -77,7 +77,7 @@ typedef exception_handler_t* exception_handler_array_t;
 typedef uint32_t mach_msg_type_number_t;
 
 // mach/port.h
-#define MACH_PORT_VALID(name) ((name) != 0 && (name) != ((uint32_t)~0))
+#        define MACH_PORT_VALID(name) ((name) != 0 && (name) != ((uint32_t)~0))
 
 // mach/task.h
 extern "C" kern_return_t

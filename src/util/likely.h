@@ -27,7 +27,9 @@
 #ifndef SRC_UTIL_LIKELY_H_
 #define SRC_UTIL_LIKELY_H_
 
-#if defined(__GNUC__) && (__GNUC__ >= 3)
+#include "util/compiler.h"
+
+#if CLANG || GCC
 #    define likely(x)   __builtin_expect(!!(x), true)
 #    define unlikely(x) __builtin_expect(!!(x), false)
 #else

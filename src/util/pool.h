@@ -27,9 +27,9 @@
 #ifndef SRC_UTIL_POOL_H_
 #define SRC_UTIL_POOL_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
 #include "util/new.h"
-#include "util/noexcept.h"
 
 #define POOL_END UINT32_MAX
 

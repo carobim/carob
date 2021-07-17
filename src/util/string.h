@@ -27,8 +27,8 @@
 #ifndef SRC_UTIL_STRING_H_
 #define SRC_UTIL_STRING_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 
 class String {

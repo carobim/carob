@@ -27,8 +27,8 @@
 #include "os/unix/io.h"
 
 #include "os/c.h"
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
 

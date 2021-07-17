@@ -28,8 +28,8 @@
 
 #include "os/c.h"
 #include "util/assert.h"
+#include "util/compiler.h"
 #include "util/fnv.h"
-#include "util/noexcept.h"
 
 StringView::StringView() noexcept : data(0), size(0) { }
 StringView::StringView(const char* data) noexcept

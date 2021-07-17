@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** random.cpp                         **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2019 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -28,8 +28,8 @@
 #include "util/random.h"
 
 #include "os/c.h"
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 int
 randInt(int min, int max) noexcept {

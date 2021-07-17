@@ -27,7 +27,7 @@
 #ifndef SRC_PACK_WALKER_H_
 #define SRC_PACK_WALKER_H_
 
-#include "util/noexcept.h"
+#include "util/compiler.h"
 #include "util/string-view.h"
 #include "util/vector.h"
 

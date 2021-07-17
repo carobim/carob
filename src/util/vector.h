@@ -29,9 +29,9 @@
 
 #include "os/c.h"
 #include "util/assert.h"
+#include "util/compiler.h"
 #include "util/int.h"
 #include "util/new.h"
-#include "util/noexcept.h"
 
 // Does not call move constructors in its own move constructor or when growing.
 template<typename X>

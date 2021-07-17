@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** hash.h                           **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,8 +27,8 @@
 #ifndef SRC_UTIL_HASH_H_
 #define SRC_UTIL_HASH_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 template<typename T>
 size_t

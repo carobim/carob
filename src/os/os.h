@@ -27,9 +27,9 @@
 #ifndef SRC_OS_OS_H_
 #define SRC_OS_OS_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
 #include "util/io.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/vector.h"
@@ -74,7 +74,7 @@ setTermColor(TermColor color, Output& out) noexcept;
 void
 exitProcess(int code) noexcept;
 
-#ifdef _WIN32
+#if MSVC
 #    include "windows.h"
 #endif
 

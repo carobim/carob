@@ -28,9 +28,8 @@
 #ifndef SRC_CORE_VEC_H_
 #define SRC_CORE_VEC_H_
 
-#include "util/constexpr.h"
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 // clang-format off
 
@@ -100,7 +99,7 @@ size_t hash_(ivec3) noexcept;
 size_t hash_(fvec2) noexcept;
 size_t hash_(fvec3) noexcept;
 
-static const CONSTEXPR11 ivec3 IVEC3_MIN = {
+static const constexpr11 ivec3 IVEC3_MIN = {
     INT32_MIN,
     INT32_MIN,
     INT32_MIN

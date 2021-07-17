@@ -28,9 +28,9 @@
 #include "core/vec.h"
 
 #include "os/c.h"
+#include "util/compiler.h"
 #include "util/fnv.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 ivec2
 operator+(ivec2 a, ivec2 b) noexcept {

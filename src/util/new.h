@@ -27,11 +27,11 @@
 #ifndef SRC_UTIL_NEW_H_
 #define SRC_UTIL_NEW_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 extern "C" {
-#ifdef _WIN32
+#if MSVC
 __declspec(dllimport) void free(void*) noexcept;
 __declspec(dllimport) __declspec(restrict) void* malloc(size_t) noexcept;
 #else
@@ -46,7 +46,7 @@ operator new(size_t, void* p) noexcept {
     return p;
 }
 
-// The cast to uint32_t fixes a Walloc-size-larger-than on GCC 8.3.0.
+// The cast to uint32_t fixes a Walloc-size-larger-than on GCC 8.
 #define xmalloc(T, count) \
     static_cast<T*>(malloc(static_cast<uint32_t>(sizeof(T) * (count))))
 

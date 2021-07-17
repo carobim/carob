@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress.h                       **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -28,8 +28,8 @@
 #ifndef SRC_DATA_INPROGRESS_H_
 #define SRC_DATA_INPROGRESS_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 /**
  * InProgress objects contain logic that is to be evaluated over time from

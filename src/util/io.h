@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** io.h                        **
-** Copyright 2020 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** io.h                             **
+** Copyright 2020-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,8 +27,8 @@
 #ifndef SRC_UTIL_IO_H_
 #define SRC_UTIL_IO_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 
 class Output {

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** windows-mapped-file.h            **
-** Copyright 2019-2020 Paul Merrill **
+** Copyright 2019-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -28,7 +28,7 @@
 #define SRC_OS_WINDOWS_MAPPED_FILE_H_
 
 #include "os/c.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 #include "util/string-view.h"
 
 struct MappedFile {

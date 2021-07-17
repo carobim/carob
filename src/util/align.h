@@ -29,15 +29,15 @@
 
 template<typename T>
 struct Align {
-#if (defined(_MSC_VER) && _MSC_VER >= 1900) || defined(__clang__) || (defined(__GNUC__) && __GNUC__ == 4 && __GNUC_MINOR__ >= 9)
+#if MSVC >= 2015 || CLANG || GCC >= 49
     alignas(alignof(T)) char storage[sizeof(T)];
-#elif defined(_MSC_VER) && defined(_WIN64)
+#elif MSVC && SIZE == 64
     __declspec(align(8)) char storage[sizeof(T)];
-#elif defined(_MSC_VER)
+#elif MSVC
     __declspec(align(4)) char storage[sizeof(T)];
-#elif defined(__x86_64__)
+#elif SIZE == 64
     __attribute__((aligned(8))) char storage[sizeof(T)];
-#elif defined(__i386__)
+#else
     __attribute__((aligned(4))) char storage[sizeof(T)];
 #endif
 };

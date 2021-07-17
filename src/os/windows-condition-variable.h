@@ -30,7 +30,7 @@
 #include "os/c.h"
 #include "os/mutex.h"
 #include "util/assert.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 
 extern "C" {
 typedef struct {

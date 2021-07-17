@@ -27,10 +27,10 @@
 #ifndef SRC_UTIL_TRANSFORM_H_
 #define SRC_UTIL_TRANSFORM_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
-#ifdef __cplusplus
+#if CXX
 extern "C" {
 #endif
 
@@ -51,7 +51,7 @@ transformTranslate(float x, float y) noexcept;
 struct Transform
 transformMultiply(struct Transform a, struct Transform b) noexcept;
 
-#ifdef __cplusplus
+#if CXX
 }  /* extern "C" */
 #endif
 

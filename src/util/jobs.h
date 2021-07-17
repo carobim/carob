@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** jobs.h                           **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,8 +27,8 @@
 #ifndef SRC_UTIL_JOBS_H_
 #define SRC_UTIL_JOBS_H_
 
+#include "util/compiler.h"
 #include "util/function.h"
-#include "util/noexcept.h"
 
 typedef Function<void() noexcept> Job;
 

@@ -27,9 +27,8 @@
 #ifndef SRC_UTIL_LIST_H_
 #define SRC_UTIL_LIST_H_
 
-#include "util/constexpr.h"
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 template<typename T>
 class List {
@@ -40,11 +39,11 @@ class List {
         Links* next;
         Links* prev;
 
-        inline CONSTEXPR14 Node*
+        inline constexpr14 Node*
         toNode() noexcept {
             return reinterpret_cast<Node*>(this);
         }
-        inline CONSTEXPR14 const Node*
+        inline constexpr14 const Node*
         toNode() const noexcept {
             return reinterpret_cast<const Node*>(this);
         }
@@ -62,11 +61,11 @@ class List {
         friend List;
 
      public:
-        inline CONSTEXPR14 T&
+        inline constexpr14 T&
         operator*() const noexcept {
             return links->toNode()->x;
         }
-        inline CONSTEXPR14 T*
+        inline constexpr14 T*
         operator->() const noexcept {
             return &links->toNode()->x;
         }
@@ -84,7 +83,7 @@ class List {
         }
 
      private:
-        CONSTEXPR11
+        constexpr11
         Iterator(Links* links) noexcept : links(links) { }
         Links* links;
     };
@@ -119,7 +118,7 @@ class List {
         const Links* links;
     };
 
-    inline CONSTEXPR14
+    inline constexpr14
     List() noexcept {
         head = {&head, &head};
         n = 0;
@@ -177,19 +176,19 @@ class List {
         return *this;
     }
 
-    inline CONSTEXPR14 Iterator
+    inline constexpr14 Iterator
     begin() noexcept {
         return Iterator(head.next);
     }
-    inline CONSTEXPR14 ConstIterator
+    inline constexpr14 ConstIterator
     begin() const noexcept {
         return ConstIterator(head.next);
     }
-    inline CONSTEXPR14 Iterator
+    inline constexpr14 Iterator
     end() noexcept {
         return Iterator(&head);
     }
-    inline CONSTEXPR14 ConstIterator
+    inline constexpr14 ConstIterator
     end() const noexcept {
         return ConstIterator(&head);
     }
@@ -221,11 +220,11 @@ class List {
         }
     }
 
-    inline CONSTEXPR11 size_t
+    inline constexpr11 size_t
     size() const noexcept {
         return n;
     }
-    inline CONSTEXPR11 bool
+    inline constexpr11 bool
     empty() const noexcept {
         return n == 0;
     }

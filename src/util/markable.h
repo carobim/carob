@@ -28,8 +28,7 @@
 #define SRC_UTIL_MARKABLE_H_
 
 #include "util/assert.h"
-#include "util/constexpr.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 
 struct M { };
 
@@ -42,20 +41,20 @@ class Markable {
     T x;
 
  public:
-    explicit CONSTEXPR11
+    explicit constexpr11
     Markable() noexcept
             : x(MarkedValue) { }
-    explicit CONSTEXPR11
+    explicit constexpr11
     Markable(T&& x) noexcept
             : x(static_cast<T&&>(x)) { }
-    explicit CONSTEXPR11
+    explicit constexpr11
     Markable(const T& x) noexcept
             : x(x) { }
-    CONSTEXPR11
+    constexpr11
     Markable(M) noexcept : x(MarkedValue) { }
-    CONSTEXPR11
+    constexpr11
     Markable(Markable&& other) noexcept : x(static_cast<T&&>(other.x)) { }
-    CONSTEXPR11
+    constexpr11
     Markable(const Markable& other) noexcept : x(other.x) { }
 
     inline void
@@ -79,19 +78,19 @@ class Markable {
         x = MarkedValue;
     }
 
-    inline CONSTEXPR11 bool
+    inline constexpr11 bool
     exists() const noexcept {
         return x != MarkedValue;
     }
-    inline CONSTEXPR11 operator bool() const noexcept { return exists(); }
+    inline constexpr11 operator bool() const noexcept { return exists(); }
 
-    inline CONSTEXPR14 T*
+    inline constexpr14 T*
     operator->() noexcept {
         assert_(exists());
         return &x;
     }
 
-    inline CONSTEXPR14 T&
+    inline constexpr14 T&
     operator*() noexcept {
         assert_(exists());
         return x;

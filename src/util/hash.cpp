@@ -1,8 +1,8 @@
-/********************************
-** Tsunagari Tile Engine       **
-** hash.cpp                    **
-** Copyright 2019 Paul Merrill **
-********************************/
+/*************************************
+** Tsunagari Tile Engine            **
+** hash.cpp                         **
+** Copyright 2019-2021 Paul Merrill **
+*************************************/
 
 // **********
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,7 +26,8 @@
 
 #include "util/hash.h"
 
-#include "util/noexcept.h"
+#include "util/compiler.h"
+#include "util/int.h"
 
 size_t
 hash_(float d) noexcept {

@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress-timer.h                 **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -29,9 +29,9 @@
 #define SRC_DATA_INPROGRESS_TIMER_H_
 
 #include "data/inprogress.h"
+#include "util/compiler.h"
 #include "util/function.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 /**
  * InProgressTimer can call a function every tick during its timer as well as

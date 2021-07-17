@@ -28,9 +28,9 @@
 
 #include "os/c.h"
 #include "util/assert.h"
+#include "util/compiler.h"
 #include "util/fnv.h"
 #include "util/new.h"
-#include "util/noexcept.h"
 
 static size_t
 grow1(size_t current) noexcept {
@@ -238,7 +238,7 @@ String::operator<<(unsigned int u) noexcept {
 
 String&
 String::operator<<(long l) noexcept {
-#ifdef _WIN32
+#if MSVC
     return *this << static_cast<int>(l);
 #else
     return *this << static_cast<long long>(l);
@@ -247,7 +247,7 @@ String::operator<<(long l) noexcept {
 
 String&
 String::operator<<(unsigned long ul) noexcept {
-#ifdef _WIN32
+#if MSVC
     return *this << static_cast<unsigned int>(ul);
 #else
     return *this << static_cast<unsigned long long>(ul);

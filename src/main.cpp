@@ -37,9 +37,10 @@
 #include "os/c.h"
 #include "os/chrono.h"
 #include "os/thread.h"
+#include "util/compiler.h"
 #include "util/int.h"
 
-#ifdef _WIN32
+#if MSVC
 #    include "os/windows.h"
 #endif
 
@@ -55,7 +56,7 @@
  */
 int
 main() noexcept {
-#if defined(_WIN32) && !defined(NDEBUG)
+#if MSVC && !defined(NDEBUG)
     wFixConsole();
 #endif
 
@@ -100,7 +101,7 @@ main() noexcept {
     return 0;
 }
 
-#ifdef _WIN32
+#if MSVC
 int __stdcall WinMain(void*, void*, void*, int) {
     return main();
 }

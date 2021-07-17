@@ -27,10 +27,10 @@
 
 #include "os/windows-c.h"
 
-#include "util/noexcept.h"
+#include "util/compiler.h"
 
-#if _MSC_VER >= 1900
-// MSVC 2015 and above
+
+#if MSVC >= 2015
 
 __pragma(pack(push, 8));
 extern "C" {
@@ -52,7 +52,7 @@ _ACRTIMP int __cdecl __stdio_common_vsprintf(unsigned __int64,
                                              _locale_t,
                                              va_list) noexcept;
 
-#    ifdef _WIN64
+#    if SIZE == 64
 #        define _VA_ALIGN       8
 #        define _SLOTSIZEOF(t)  ((sizeof(t) + _VA_ALIGN - 1) & ~(_VA_ALIGN - 1))
 #        define _APALIGN(t, ap) (((va_list)0 - (ap)) & (__alignof(t) - 1))
@@ -155,4 +155,4 @@ sprintf(char* const _Buffer, char const* const _Format, ...) noexcept {
     return _Result;
 }
 
-#endif  // _MSC_VER >= 1900
+#endif

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** error.h                          **
-** Copyright 2016-2020 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -27,7 +27,7 @@
 #ifndef SRC_AV_SDL2_ERROR_H_
 #define SRC_AV_SDL2_ERROR_H_
 
-#include "util/noexcept.h"
+#include "util/compiler.h"
 #include "util/string-view.h"
 
 void

@@ -27,8 +27,8 @@
 #ifndef SRC_AV_SDL2_SDL2_H_
 #define SRC_AV_SDL2_SDL2_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 extern "C" {
 

@@ -27,7 +27,7 @@
 #include "core/measure.h"
 
 #include "core/log.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
 #    include "util/hashtable.h"

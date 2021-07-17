@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** inprogress-sound.h                 **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -30,9 +30,9 @@
 
 #include "core/sounds.h"
 #include "data/inprogress.h"
+#include "util/compiler.h"
 #include "util/function.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 
 /**

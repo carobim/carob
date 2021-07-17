@@ -27,37 +27,47 @@
 #ifndef SRC_UTIL_INT_H_
 #define SRC_UTIL_INT_H_
 
-#include "util/constexpr.h"
+#include "util/compiler.h"
 
 typedef signed char int8_t;
 typedef signed short int16_t;
 typedef signed int int32_t;
+typedef signed long long int64_t;
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
-
-#if defined(_MSC_VER)
-typedef __int64 int64_t;
-typedef unsigned __int64 uint64_t;
-#    ifdef _WIN64
-typedef signed __int64 ssize_t;
-#    else
-typedef signed int ssize_t;
-#    endif
-#    if !defined(__cplusplus) && defined(_WIN64)
-typedef uint64_t size_t;
-#    elif !defined(__cplusplus)
-typedef uint32_t size_t;
-#    else
-// size_t already defined.
-#    endif
-#elif defined(__clang__) || defined(__GNUC__)
-typedef long long int64_t;
 typedef unsigned long long uint64_t;
-typedef __SIZE_TYPE__ size_t;
-typedef __INTPTR_TYPE__ ssize_t;
+#define INT32_MIN ((int32_t)0x80000000)
+#define INT32_MAX ((int32_t)0x7fffffff)
+#define UINT32_MAX ((uint32_t)0xffffffff)
+#define INT64_MAX ((int64_t)0x7fffffffffffffff)
+#define INT64_MIN ((int64_t)0x8000000000000000)
+#define UINT64_MAX ((uint64_t)0xffffffffffffffff)
+
+#if SIZE == 64
+#    if MSVC
+#        if CXX == 0
+typedef uint64_t size_t;
+#        endif
+#    else
+typedef unsigned long size_t;
+#    endif
+#    define SIZE_MAX ((size_t)0xffffffffffffffff)
 #else
-#    error Not implemented yet
+#    if MSVC
+#        if CXX == 0
+typedef uint32_t size_t;
+#        endif
+#    else
+typedef unsigned long size_t;
+#    endif
+#    define SIZE_MAX ((size_t)0xffffffff)
+#endif
+
+#if SIZE == 64
+typedef int64_t ssize_t;
+#else
+typedef int32_t ssize_t;
 #endif
 
 #if defined(__APPLE__) || defined(__EMSCRIPTEN__)
@@ -66,19 +76,11 @@ typedef long time_t;
 typedef int64_t time_t;
 #endif
 
-#define INT32_MIN ((int32_t)0x80000000)
-#define INT32_MAX ((int32_t)0x7fffffff)
-#define INT64_MAX ((int64_t)0x7fffffffffffffff)
-#define INT64_MIN ((int64_t)0x8000000000000000)
-#define UINT32_MAX ((uint32_t)0xffffffff)
-#define UINT64_MAX ((uint64_t)0xffffffffffffffff)
+/* Raspberry Pi OS - Buster */
+#define __time_t_defined
 
-#if defined(_MSC_VER) && defined(_M_X64)
-#define SIZE_MAX ((size_t)0xffffffffffffffff)
-#elif defined(_MSC_VER)
-#define SIZE_MAX ((size_t)0xffffffff)
-#else
-#define SIZE_MAX __SIZE_MAX__
+#if defined(__EMSCRIPTEN__)
+#    define __DEFINED_time_t
 #endif
 
 #define FLT_MIN ((float)1.17549435082228750796873653722224568e-38f)
@@ -86,13 +88,4 @@ typedef int64_t time_t;
 
 #define M_PI ((float)3.14159265358979323846)
 
-#if defined(__EMSCRIPTEN__)
-#    define __DEFINED_time_t
 #endif
-
-// Raspberry Pi OS - Buster
-#define __time_t_defined
-
-#define sizeof32(x) static_cast<uint32_t>(sizeof(x))
-
-#endif  // SRC_UTIL_INT_H_

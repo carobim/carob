@@ -28,7 +28,7 @@
 #define SRC_PACK_PACK_READER_H_
 
 #include "util/int.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 #include "util/string-view.h"
 
 #define BLOB_NOT_FOUND UINT32_MAX

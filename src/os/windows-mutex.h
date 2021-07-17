@@ -28,8 +28,7 @@
 #define SRC_OS_WINDOWS_MUTEX_H_
 
 #include "os/c.h"
-#include "util/constexpr.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 
 extern "C" {
 typedef struct {

@@ -28,9 +28,9 @@
 #define SRC_UTIL_HASHVECTOR_H_
 
 #include "os/c.h"
+#include "util/compiler.h"
 #include "util/int.h"
 #include "util/new.h"
-#include "util/noexcept.h"
 
 // HashVector
 //

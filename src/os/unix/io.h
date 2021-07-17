@@ -27,8 +27,8 @@
 #ifndef SRC_OS_UNIX_IO_H_
 #define SRC_OS_UNIX_IO_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 
 class File {

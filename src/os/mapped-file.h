@@ -27,7 +27,7 @@
 #ifndef SRC_OS_MAPPED_FILE_H_
 #define SRC_OS_MAPPED_FILE_H_
 
-#ifdef _WIN32
+#if MSVC
 #    include "os/windows-mapped-file.h"
 #else
 #    include "os/unix-mapped-file.h"

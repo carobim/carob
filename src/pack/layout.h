@@ -27,7 +27,7 @@
 #ifndef SRC_PACK_LAYOUT_H_
 #define SRC_PACK_LAYOUT_H_
 
-#include "util/constexpr.h"
+#include "util/compiler.h"
 #include "util/int.h"
 
 // Pack file layout:

@@ -1,7 +1,7 @@
 /*************************************
 ** Tsunagari Tile Engine            **
 ** error.cpp                        **
-** Copyright 2016-2019 Paul Merrill **
+** Copyright 2016-2021 Paul Merrill **
 *************************************/
 
 // **********
@@ -28,7 +28,7 @@
 
 #include "av/sdl2/sdl2.h"
 #include "core/log.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 #include "util/string.h"
 
 void

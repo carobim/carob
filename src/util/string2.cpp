@@ -29,11 +29,10 @@
 
 #include "os/c.h"
 #include "os/os.h"
-#include "util/constexpr.h"
+#include "util/compiler.h"
 #include "util/int.h"
 #include "util/io.h"
 #include "util/math2.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
 

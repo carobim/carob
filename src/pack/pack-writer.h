@@ -27,8 +27,8 @@
 #ifndef SRC_PACK_PACK_WRITER_H_
 #define SRC_PACK_PACK_WRITER_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 
 typedef struct PackWriter PackWriter;

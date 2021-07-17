@@ -27,15 +27,15 @@
 #ifndef SRC_UTIL_ASSERT_H_
 #define SRC_UTIL_ASSERT_H_
 
+#include "util/compiler.h"
 #include "util/likely.h"
-#include "util/noexcept.h"
 
 #ifndef NDEBUG
-#    if defined(__GNUC__)
+#    if CLANG || GCC
 #        define assert_(expr)       \
             (likely(expr) ? (void)0 \
                           : assert__(__func__, __FILE__, __LINE__, #expr))
-#    elif defined(_MSC_VER)
+#    else
 #        define assert_(expr)       \
             (likely(expr) ? (void)0 \
                           : assert__(__FUNCTION__, __FILE__, __LINE__, #expr))

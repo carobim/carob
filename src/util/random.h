@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** random.h                           **
 ** Copyright 2011-2013 Michael Reiley **
-** Copyright 2011-2020 Paul Merrill   **
+** Copyright 2011-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -28,7 +28,8 @@
 #ifndef SRC_UTIL_RANDOM_H_
 #define SRC_UTIL_RANDOM_H_
 
-#include "util/noexcept.h"
+#include "util/compiler.h"
+
 
 //! Produce a random integer.
 /*!

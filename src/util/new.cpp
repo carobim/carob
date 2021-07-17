@@ -30,8 +30,8 @@
 #    include "util/new.h"
 
 #    include "util/assert.h"
+#    include "util/compiler.h"
 #    include "util/int.h"
-#    include "util/noexcept.h"
 
 // Note: Do not add noexcept.
 void*

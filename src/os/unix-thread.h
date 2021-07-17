@@ -30,9 +30,9 @@
 #include "os/c.h"
 #include "os/thread.h"
 #include "util/assert.h"
+#include "util/compiler.h"
 #include "util/function.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 static void*
 run(void* f) noexcept {

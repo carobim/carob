@@ -27,8 +27,8 @@
 #ifndef SRC_OS_WINDOWS_C_H_
 #define SRC_OS_WINDOWS_C_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 #define VOID void
 
@@ -53,7 +53,7 @@ typedef struct {
     long long QuadPart;
 } LARGE_INTEGER, *PLARGE_INTEGER;
 
-#if defined(_WIN64)
+#if SIZE == 64
 typedef long long INT_PTR, *PINT_PTR;
 typedef unsigned long long UINT_PTR, *PUINT_PTR;
 typedef long long LONG_PTR, *PLONG_PTR;
@@ -83,15 +83,13 @@ typedef __int64 __time64_t;
 
 __pragma(pack(push, 8));
 extern "C" {
-#if _MSC_VER < 1900
-// MSVC 2013 and below
+#if MSVC == 2013
 _CRTIMP FILE*
 __iob_func() noexcept;
 #    define stdin  (&__iob_func()[0])
 #    define stdout (&__iob_func()[1])
 #    define stderr (&__iob_func()[2])
-#else
-// MSVC 2015 and above
+#elif MSVC >= 2015
 _ACRTIMP_ALT FILE*
 __acrt_iob_func(unsigned) noexcept;
 #    define stdin  (__acrt_iob_func(0))
@@ -122,7 +120,7 @@ double
 atan2(double, double) noexcept;
 _ACRTIMP double
 ceil(double) noexcept;
-#if defined _M_X64
+#if SIZE == 64
 _ACRTIMP float
 ceilf(float) noexcept;
 #else
@@ -161,8 +159,7 @@ void*
 memmove(void*, const void*, size_t) noexcept;
 }  // extern "C"
 
-#if _MSC_VER < 1900
-// MSVC 2013 and below
+#if MSVC == 2013
 extern "C" {
 _ACRTIMP int
 printf(const char*, ...) noexcept;
@@ -171,8 +168,7 @@ fprintf(FILE*, const char*, ...) noexcept;
 _ACRTIMP int
 sprintf(char*, const char*, ...) noexcept;
 }  // extern "C"
-#else
-// MSVC 2015 and above
+#elif MSVC >= 2015
 int
 printf(char const* const, ...) noexcept;
 int

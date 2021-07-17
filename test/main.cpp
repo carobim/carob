@@ -24,7 +24,7 @@
 // IN THE SOFTWARE.
 // **********
 
-#include "util/noexcept.h"
+#include "util/compiler.h"
 
 void
 testUtilStringView() noexcept;

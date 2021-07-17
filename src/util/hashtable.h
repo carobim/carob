@@ -52,11 +52,11 @@
 #define SRC_UTIL_HASHTABLE_H_
 
 #include "util/assert.h"
+#include "util/compiler.h"
 #include "util/hash.h"
 #include "util/int.h"
 #include "util/math2.h"
 #include "util/new.h"
-#include "util/noexcept.h"
 
 /*
  * HashMap

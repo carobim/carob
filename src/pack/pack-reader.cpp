@@ -29,13 +29,13 @@
 #include "os/c.h"
 #include "os/io.h"
 #include "pack/layout.h"
+#include "util/compiler.h"
 #include "util/hashtable.h"
 #include "util/int.h"
 #include "util/new.h"
-#include "util/noexcept.h"
 
 struct PackReader {
-    PackReader(File file)
+    PackReader(File file) noexcept
         : file(static_cast<File&&>(file)),
           lookupsConstructed(false) { }
 

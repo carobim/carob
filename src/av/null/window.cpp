@@ -81,7 +81,7 @@ windowMainLoop() noexcept {
     // NOTE:  Not too important for the null av port, but for other ports yes.
     Nanoseconds nextFrameStart = frameStart + idealFrameTime;
 
-#ifdef __clang__
+#if CLANG
 #    pragma clang diagnostic push
 #    pragma clang diagnostic ignored "-Wmissing-noreturn"
 #endif
@@ -132,7 +132,7 @@ windowMainLoop() noexcept {
                     String() << "Dropped " << framesDropped << " frames");
         }
     }
-#ifdef __clang__
+#if CLANG
 #    pragma clang diagnostic pop
 #endif
 }

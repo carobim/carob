@@ -30,6 +30,7 @@
 #include "os/mutex.h"
 #include "os/thread.h"
 #include "util/assert.h"
+#include "util/compiler.h"
 #include "util/function.h"
 #include "util/int.h"
 #include "util/queue.h"

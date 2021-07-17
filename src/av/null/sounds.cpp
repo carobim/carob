@@ -26,8 +26,8 @@
 
 #include "core/sounds.h"
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 
 SoundID

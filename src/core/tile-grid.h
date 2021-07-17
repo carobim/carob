@@ -96,14 +96,14 @@ struct Exit {
 typedef void (*TileScript)(Entity& triggeredBy, ivec3 tile);
 
 struct EmptyFloat {
-    static CONSTEXPR11 float
+    static constexpr11 float
     value() {
         return FLT_MIN;
     }
 };
 
 struct EmptyIcoord {
-    static CONSTEXPR11 ivec3
+    static constexpr11 ivec3
     value() {
         return IVEC3_MIN;
     }

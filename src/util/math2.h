@@ -2,7 +2,7 @@
 ** Tsunagari Tile Engine              **
 ** math2.h                            **
 ** Copyright 2014      Michael Reiley **
-** Copyright 2014-2020 Paul Merrill   **
+** Copyright 2014-2021 Paul Merrill   **
 ***************************************/
 
 // **********
@@ -42,8 +42,8 @@
 #ifndef SRC_UTIL_MATH2_H_
 #define SRC_UTIL_MATH2_H_
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 template<typename T>
 static T

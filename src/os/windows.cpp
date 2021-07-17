@@ -29,8 +29,8 @@
 
 #include "os/c.h"
 #include "os/os.h"
+#include "util/compiler.h"
 #include "util/io.h"
-#include "util/noexcept.h"
 #include "util/string-view.h"
 #include "util/string.h"
 #include "util/vector.h"

@@ -27,7 +27,7 @@
 #include "os/windows-mapped-file.h"
 
 #include "os/c.h"
-#include "util/noexcept.h"
+#include "util/compiler.h"
 #include "util/string-view.h"
 #include "util/string.h"
 

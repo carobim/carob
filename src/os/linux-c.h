@@ -32,8 +32,8 @@
 
 // Note: Prefer sourcing types from musl.
 
+#include "util/compiler.h"
 #include "util/int.h"
-#include "util/noexcept.h"
 
 // arch/x86_64/bits/stat.h
 // arch/arm/bits/stat.h
