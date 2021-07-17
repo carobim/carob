@@ -353,6 +353,7 @@ wMessageBox(StringView title, StringView text) noexcept {
 void
 exitProcess(int code) noexcept {
     ExitProcess(code);
+    unreachable;
 }
 
 #ifndef NDEBUG

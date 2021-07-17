@@ -212,4 +212,5 @@ setTermColor(TermColor color, Output& out) noexcept {
 void
 exitProcess(int code) noexcept {
     _exit(code);
+    unreachable;
 }
