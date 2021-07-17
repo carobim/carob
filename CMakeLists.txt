@@ -4,6 +4,36 @@ project(TsunagariEngine C CXX)
 
 
 #
+# Compiler
+#
+
+if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
+    set(CLANG 1)
+endif()
+if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+    set(GCC 1)
+endif()
+if(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
+    set(MSVC 1)
+endif()
+
+
+#
+# OS
+#
+
+if(CMAKE_SYSTEM_NAME MATCHES Linux)
+    set(LINUX 1)
+endif()
+if(CMAKE_SYSTEM_NAME MATCHES FreeBSD)
+    set(FREEBSD 1)
+endif()
+if(CMAKE_SYSTEM_NAME MATCHES NetBSD)
+    set(NETBSD 1)
+endif()
+
+
+#
 # Options
 #
 
@@ -15,6 +45,9 @@ option(AV_CUSTOM "Select the AV backend options manually")
 option(STATIC_SDL "Use a static SDL2 library at chosen location")
 if(APPLE)
     option(UNIVERSAL "Build an AMD64/ARM64 universal binary")
+endif()
+if(CLANG)
+    option(NO_LTO "Disable link time optimization")
 endif()
 
 if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM AND NOT AV_CUSTOM)
@@ -37,28 +70,6 @@ get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 # Project generator
 if(CMAKE_GENERATOR MATCHES Ninja)
     set(NINJA 1)
-endif()
-
-# Compiler
-if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-    set(CLANG 1)
-endif()
-if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-    set(GCC 1)
-endif()
-if(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
-    set(MSVC 1)
-endif()
-
-# OS
-if(CMAKE_SYSTEM_NAME MATCHES Linux)
-    set(LINUX 1)
-endif()
-if(CMAKE_SYSTEM_NAME MATCHES FreeBSD)
-    set(FREEBSD 1)
-endif()
-if(CMAKE_SYSTEM_NAME MATCHES NetBSD)
-    set(NETBSD 1)
 endif()
 
 if(AV_EM)
@@ -660,7 +671,7 @@ if(CLANG OR GCC)
 endif()
 
 # Optimize at link time
-if(CLANG OR GCC)
+if(CLANG AND NOT NO_LTO OR GCC VERSION_GREATER_EQUAL 4.6)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -flto")
     set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -flto")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
@@ -775,7 +786,7 @@ if(STATIC_LINK)
 endif()
 
 # Optimize at link time
-if(CLANG OR GCC)
+if(CLANG AND NOT NO_LTO OR GCC VERSION_GREATER_EQUAL 4.6)
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE
         "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -flto=full")
     set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL

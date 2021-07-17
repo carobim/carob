@@ -48,10 +48,11 @@ operator delete[](void* ptr, size_t) noexcept {
 //   MinSizeRel: function
 
 #    ifdef RELEASE
-void
+extern "C" void
 __cxa_pure_virtual() { }
 #    else
-void* __cxa_pure_virtual = 0;
+void*
+__cxa_pure_virtual = 0;
 #    endif
 
 #endif  // defined(__APPLE__) || defined(__linux__) || defined(__FreeBSD__) || \
