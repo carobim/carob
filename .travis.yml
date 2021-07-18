@@ -87,7 +87,7 @@ _script: &script
     builtin cd >/dev/null build
     cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
     make -j `sysctl -n hw.ncpu`
-    ./test
+    ./units
 
 jobs:
   include:

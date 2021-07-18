@@ -19,4 +19,4 @@ jobs:
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
           ninja
       - name: Test
-        run: build/test
+        run: build/units

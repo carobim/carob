@@ -503,7 +503,7 @@ endif()
 add_library(tsunagari ${TSUNAGARI_SOURCES})
 add_executable(null-world ${NULL_WORLD_SOURCES})
 add_executable(pack-tool ${PACK_TOOL_SOURCES})
-add_executable(test ${TEST_SOURCES})
+add_executable(units ${TEST_SOURCES})
 
 target_link_libraries(null-world tsunagari)
 
@@ -518,7 +518,7 @@ if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8.0)
     get_target_property(TSUNAGARI_SOURCES tsunagari SOURCES)
     get_target_property(NULL_WORLD_SOURCES null-world SOURCES)
     get_target_property(PACK_TOOL_SOURCES pack-tool SOURCES)
-    get_target_property(TEST_SOURCES test SOURCES)
+    get_target_property(TEST_SOURCES units SOURCES)
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
         FILES ${TSUNAGARI_SOURCES}
               ${NULL_WORLD_SOURCES}

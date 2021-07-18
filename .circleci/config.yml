@@ -15,7 +15,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j 2
-      - run: build/test
+      - run: build/units
 
   # Has CMake 3.20, GCC 10, Samurai 1.2
   alpine_3_14:
@@ -31,7 +31,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: build/test
+      - run: build/units
 
   arch:
     docker:
@@ -49,7 +49,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: build/test
+      - run: build/units
 
   # Has CMake 2.8.12, GCC 4.8
   centos_7:
@@ -64,7 +64,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j 2
-      - run: build/test
+      - run: build/units
 
   # Has CMake 3.11, GCC 8
   centos_8:
@@ -81,7 +81,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j 2
-      - run: build/test
+      - run: build/units
 
   # Has CMake 2.8.9, GCC 4.7
   debian_7_wheezy:
@@ -99,7 +99,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j 2
-      - run: build/test
+      - run: build/units
 
   # Has CMake 3.13, GCC 8
   debian_10_buster:
@@ -115,7 +115,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: build/test
+      - run: build/units
 
   # Has CMake 3.18, GCC 10, Ninja 1.10
   debian_11_bullseye:
@@ -131,7 +131,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: build/test
+      - run: build/units
 
   # Has CMake 2.8.12, GCC 4.8, Ninja 1.4
   fedora_20:
@@ -146,7 +146,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja-build
-      - run: build/test
+      - run: build/units
 
   # Has CMake 3.21, GCC 11, Samurai 1.1
   fedora_35:
@@ -161,7 +161,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: build/test
+      - run: build/units
 
   # Has CMake 3.3, GCC 4.9, Ninja 1.6
   #nix_1_1_0:
@@ -174,7 +174,7 @@ jobs:
   #        nix-env -i bash &&
   #        mkdir build &&
   #        cd build &&
-  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja && ./test'
+  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja && ./units'
 
   # Has CMake 3.17, GCC 9.3, Samurai 1.1
   nix_2_3_6:
@@ -186,7 +186,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./test'
+          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./units'
 
   # Has CMake 2.8.7, GCC 4.6
   ubuntu_12_04_precise:
@@ -203,7 +203,7 @@ jobs:
           cd build &&
           cmake .. -DCMAKE_BUILD_TYPE=Debug &&
           make -j 2
-      - run: build/test
+      - run: build/units
 
   # Has CMake 3.18, GCC 10, Ninja 1.10
   ubuntu_21_04_hirsute:
@@ -219,7 +219,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           ninja
-      - run: build/test
+      - run: build/units
 
   void:
     shell: /bin/sh
@@ -235,7 +235,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: build/test
+      - run: build/units
 
   void_musl:
     shell: /bin/sh
@@ -251,7 +251,7 @@ jobs:
           cd build &&
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
           samu
-      - run: build/test
+      - run: build/units
 
 workflows:
   version: 2
