@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.2...3.19)
-project(TsunagariEngine C CXX)
 #https://cmake.org/cmake/help/v2.8.2/cmake.html
+
+project(TsunagariEngine C CXX)
 
 
 #
@@ -775,6 +776,11 @@ endif()
 #
 # Linking and externally-managed dependencies
 #
+
+if(CMAKE_OSX_SYSROOT)
+    set(CMAKE_EXE_LINKER_FLAGS
+        "${CMAKE_EXE_LINKER_FLAGS} -L${CMAKE_OSX_SYSROOT}/usr/lib")
+endif()
 
 if(STATIC_LINK)
     if(CLANG OR GCC)
