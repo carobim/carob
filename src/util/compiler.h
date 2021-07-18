@@ -52,7 +52,7 @@
 #endif
 
 #if CXX
-#    if MSVC == 2013 || GCC < 46
+#    if MSVC == 2013 || (0 < GCC && GCC < 46)
 #        define constexpr
 #    endif
 #    if __cplusplus >= 201103L || MSVC >= 2015
