@@ -15,4 +15,4 @@ tasks:
     cd Tsunagari
     cd build
     ninja
-- test: Tsunagari/build/test
+- test: Tsunagari/build/units
