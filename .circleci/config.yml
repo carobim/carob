@@ -176,11 +176,11 @@ jobs:
   #        cd build &&
   #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja && ./units'
 
-  # Has CMake 3.17, GCC 9.3, Samurai 1.1
-  nix_2_3_6:
+  # Has CMake 3.19, GCC 10, Samurai 1.2
+  nix_2_3_12:
     shell: /bin/sh
     docker:
-      - image: nixos/nix:2.3.6
+      - image: nixos/nix:2.3.12
     steps:
       - checkout
       - run: |
@@ -267,7 +267,7 @@ workflows:
       - debian_11_bullseye
       - fedora_20
       - fedora_35
-      - nix_2_3_6
+      - nix_2_3_12
       - ubuntu_12_04_precise
       - ubuntu_21_04_hirsute
       - void
