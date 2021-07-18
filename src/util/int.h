@@ -11,12 +11,12 @@ typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
 typedef unsigned long long uint64_t;
-#define INT32_MIN ((int32_t)0x80000000)
+#define INT32_MIN ((int32_t)-1)
 #define INT32_MAX ((int32_t)0x7fffffff)
 #define UINT32_MAX ((uint32_t)0xffffffff)
-#define INT64_MAX ((int64_t)0x7fffffffffffffff)
-#define INT64_MIN ((int64_t)0x8000000000000000)
-#define UINT64_MAX ((uint64_t)0xffffffffffffffff)
+#define INT64_MAX ((int64_t)0x7fffffffffffffffLL)
+#define INT64_MIN ((int64_t)-1)
+#define UINT64_MAX ((uint64_t)0xffffffffffffffffULL)
 
 #if SIZE == 64
 #    if MSVC
@@ -33,7 +33,7 @@ typedef unsigned long size_t;
 typedef uint32_t size_t;
 #        endif
 #    else
-typedef unsigned long size_t;
+typedef unsigned int size_t;
 #    endif
 #    define SIZE_MAX ((size_t)0xffffffff)
 #endif
