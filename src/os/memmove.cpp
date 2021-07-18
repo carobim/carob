@@ -217,3 +217,5 @@ memmem(const void* h0, size_t k, const void* n0, size_t l) noexcept {
 
     return twoway_memmem(h, h + k, n, l);
 }
+
+}
