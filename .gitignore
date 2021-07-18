@@ -1,9 +1,6 @@
 /doc/notes
 /notes.txt
 
-# Data artifacts
-/data/*.world
-
 # Mac
 .DS_Store
 
@@ -16,3 +13,6 @@ tags
 # Build directories
 /b*
 /cmake-build*
+
+# Data artifacts
+*.world
