@@ -1,5 +1,5 @@
-/notes.txt
 /doc/notes
+/notes.txt
 
 # Data artifacts
 /data/*.world
@@ -8,9 +8,10 @@
 .DS_Store
 
 # Vim & IDEs
-*.swp
 /.idea
 /.vs
+*.swp
+tags
 
 # Build directories
 /b*
