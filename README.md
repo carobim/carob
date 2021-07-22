@@ -8,6 +8,7 @@
 | Linux       | [![CircleCI](https://circleci.com/gh/TsunagariEngine/Tsunagari.svg?style=shield)](https://circleci.com/gh/TsunagariEngine/Tsunagari)                                  |
 | FreeBSD 11  | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-11.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-11.yml) |
 | FreeBSD 13  | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-13.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/freebsd-13.yml) |
+| NetBSD 9    | [![builds.sr.ht](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/netbsd-9.yml.svg)](https://builds.sr.ht/~tsunagariengine/tsunagari/commits/netbsd-9.yml) |
 
 [![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari?category=code)](https://github.com/XAMPPRocky/tokei)
 
