@@ -1,0 +1,18 @@
+# Sourcehut manifest.
+image: netbsd/9.x
+packages:
+- cmake
+- samurai
+sources:
+- https://github.com/TsunagariEngine/Tsunagari.git
+tasks:
+- cmake: |
+    cd Tsunagari
+    mkdir build
+    cd build
+    cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+- samu: |
+    cd Tsunagari
+    cd build
+    samu
+- test: Tsunagari/build/units

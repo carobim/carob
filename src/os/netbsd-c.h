@@ -4,10 +4,13 @@
 #include "util/compiler.h"
 #include "util/int.h"
 
+#ifdef CXX
+extern "C" {
+#endif
+
 // amd64/types.h
 // sys/ansi.h
 // sys/types.h
-extern "C" {
 typedef int64_t blkcnt_t;
 typedef int32_t blksize_t;
 typedef int clockid_t;
@@ -19,10 +22,8 @@ typedef uint32_t nlink_t;
 typedef int64_t off_t;
 typedef int32_t pid_t;
 typedef uint32_t uid_t;
-}
 
 // sys/dirent.h
-extern "C" {
 struct dirent {
     ino_t d_fileno;
     uint16_t d_reclen;
@@ -32,47 +33,37 @@ struct dirent {
 };
 #define DT_DIR 4
 #define DT_REG 8
-}
 
 // sys/timespec.h
-extern "C" {
 struct timespec {
     time_t tv_sec;
     long tv_nsec;
 };
-}
 
 // sys/uio.h
-extern "C" {
 struct iovec {
     void* iov_base;
     size_t iov_len;
 };
 ssize_t
 writev(int, const struct iovec*, int) noexcept;
-}
 
 // sys/errno.h
 // errno.h
-extern "C" {
 int*
 __errno() noexcept;
 #define errno (*__errno())
 #define EINTR 4
-}
 
 // fcntl.h
-extern "C" {
 int
 open(const char*, int, ...) noexcept;
 #define O_RDONLY 0x00000000
 #define O_WRONLY 0x00000001
 #define O_CREAT  0x00000200
 #define O_TRUNC  0x00000400
-}
 
 // sys/mman.h
-extern "C" {
 void*
 mmap(void*, size_t, int, int, int, off_t) noexcept;
 int
@@ -80,10 +71,8 @@ munmap(void*, size_t) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x0001
 #define PROT_READ  0x01
-}
 
 // sys/stat.h
-extern "C" {
 struct stat {
     dev_t st_dev;
     mode_t st_mode;
@@ -112,10 +101,8 @@ stat(const char*, struct stat*) noexcept __asm("__stat50");
 #define S_IFMT     0170000
 #define S_IFDIR    0040000
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
-}
 
 // dirent.h
-extern "C" {
 struct _dirdesc;
 typedef struct _dirdesc DIR;
 int
@@ -125,10 +112,8 @@ opendir(const char*) noexcept __asm("__opendir30");
 struct dirent*
 readdir(DIR*) noexcept __asm("__readdir30");
 #define d_ino d_fileno
-}
 
 // math.h
-extern "C" {
 double
 atan2(double, double) noexcept;
 double
@@ -143,12 +128,10 @@ double
 sin(double) noexcept;
 double
 sqrt(double) noexcept;
-}
 
 // amd64/types.h
 // pthread_types.h
 // pthread.h
-extern "C" {
 typedef unsigned char __pthread_spin_t;
 struct __pthread_st;
 typedef struct __pthread_st* pthread_t;
@@ -206,10 +189,8 @@ pthread_join(pthread_t, void**) noexcept;
 #define pthread_cond_signal    __libc_cond_signal
 #define pthread_cond_broadcast __libc_cond_broadcast
 #define pthread_cond_wait      __libc_cond_wait
-}
 
 // stdio.h
-extern "C" {
 struct __sbuf {
     unsigned char* _base;
     int _size;
@@ -253,10 +234,8 @@ extern FILE __sF[3];
 #define stdin  (&__sF[0])
 #define stdout (&__sF[1])
 #define stderr (&__sF[2])
-}
 
 // stdlib.h
-extern "C" {
 int
 abs(int) noexcept;
 int
@@ -273,10 +252,8 @@ long
 strtol(const char*, char**, int) noexcept;
 unsigned long
 strtoul(const char*, char**, int) noexcept;
-}
 
 // string.h
-extern "C" {
 void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
 void*
@@ -287,33 +264,40 @@ strlen(char const*) noexcept;
 #define memcmp __builtin_memcmp
 #define memcpy __builtin_memcpy
 #define memset __builtin_memset
-}
 
 // sys/time.h
 // time.h
-extern "C" {
 int
 clock_gettime(clockid_t, struct timespec*) noexcept __asm("__clock_gettime50");
 int
 nanosleep(const struct timespec*, struct timespec*) noexcept
         __asm("__nanosleep50");
 #define CLOCK_MONOTONIC 3
-}
 
 // sys/unistd.h
 // unistd.h
-extern "C" {
 int
 close(int) noexcept;
 void
 _exit(int) noexcept __attribute__((noreturn));
 int
+ftruncate(int, off_t) noexcept;
+int
 isatty(int) noexcept;
+ssize_t
+pread(int, void*, size_t, off_t) noexcept;
+ssize_t
+pwrite(int, const void*, size_t, off_t) noexcept;
+ssize_t
+read(int, void*, size_t) noexcept;
 long
 sysconf(int) noexcept;
 ssize_t
 write(int, const void*, size_t) noexcept;
 #define _SC_NPROCESSORS_ONLN 1002
+
+#ifdef CXX
 }
+#endif
 
 #endif  // SRC_OS_NETBSD_C_H_
