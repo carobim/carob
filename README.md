@@ -41,7 +41,7 @@ Tsunagari works on many common PC operating systems. It requires Clang 3.0+,
 GCC 4.4+, or MSVC 2013+, CMake 2.8.2, and SDL2, SDL2\_image, and SDL2\_mixer.
 It has support for Windows 10 1809+, Mac OS X 10.11+, Alpine Linux 3.1+, Arch
 Linux, Debian 7+, Fedora 20+, every version of NixOS, Ubuntu 11.04+, and Void
-Linux, FreeBSD 11+ and NetBSD 8+, and the Raspberry Pi 1.
+Linux, FreeBSD 11+ and NetBSD 7+, and the Raspberry Pi 1.
 
 Specifically for GNU Linux, it has first class support for x86\_64, and
 best-effort support for i386 and armelhf architectures with glibc 2.13+ or musl
