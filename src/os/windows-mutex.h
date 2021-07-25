@@ -9,9 +9,6 @@ typedef struct {
     PVOID Ptr;
 } SRWLOCK, *PSRWLOCK;
 
-#define SRWLOCK_INIT \
-    { 0 }
-
 WINBASEAPI VOID WINAPI
 AcquireSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
 WINBASEAPI BOOLEAN WINAPI
@@ -22,7 +19,9 @@ ReleaseSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
 
 class Mutex {
  public:
-    constexpr Mutex() noexcept : m(SRWLOCK_INIT) { }
+    constexpr Mutex() noexcept {
+        m.Ptr = 0;
+    }
 
     inline void
     lock() noexcept {
@@ -40,9 +39,9 @@ class Mutex {
     SRWLOCK m;
 
  private:
-    Mutex(const Mutex&) = delete;
+    Mutex(const Mutex&);
     Mutex&
-    operator=(const Mutex&) = delete;
+    operator=(const Mutex&);
 };
 
 #endif  // SRC_OS_WINDOWS_MUTEX_H_

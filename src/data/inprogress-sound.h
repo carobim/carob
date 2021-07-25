@@ -16,16 +16,16 @@
  */
 class InProgressSound : public InProgress {
  public:
-    typedef Function<void()> ThenFn;
+    typedef Function ThenFn;
 
-    InProgressSound(StringView sound, ThenFn then) noexcept;
+    InProgressSound(StringView sound, ThenFn onThen) noexcept;
 
     void
     tick(time_t dt) noexcept;
 
  private:
     PlayingSoundID sound;
-    ThenFn then;
+    ThenFn onThen;
 };
 
 #endif  // SRC_DATA_INPROGRESS_SOUND_H_

@@ -102,8 +102,11 @@ class Entity {
     setFrozen(bool b) noexcept;
 
 
-    typedef Function<void(time_t)> OnTickFn;
-    typedef Function<void()> OnTurnFn;
+    struct OnTickFn {
+        void (*fn)(void* data, time_t);
+        void* data;
+    };
+    typedef Function OnTurnFn;
 
     void
     attach(OnTickFn fn) noexcept;

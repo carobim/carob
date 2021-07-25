@@ -4,10 +4,8 @@
 #include "util/compiler.h"
 #include "util/function.h"
 
-typedef Function<void() noexcept> Job;
-
 void
-JobsEnqueue(Job job) noexcept;
+JobsEnqueue(Function fn) noexcept;
 void
 JobsFlush() noexcept;
 

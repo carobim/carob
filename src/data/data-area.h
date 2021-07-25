@@ -49,9 +49,9 @@ class DataArea {
     Hashmap<StringView, TileScript> scripts;
 
  private:
-    DataArea(const DataArea&) = delete;
+    DataArea(const DataArea&);
     DataArea&
-    operator=(const DataArea&) = delete;
+    operator=(const DataArea&);
 
     Vector<InProgress*> inProgresses;
 };

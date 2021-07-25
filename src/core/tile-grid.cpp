@@ -30,11 +30,10 @@ ivec2_to_dir(ivec2 v) noexcept {
     }
 }
 
-TileGrid::TileGrid() noexcept
-        : dim({0, 0, 0}),
-          tileDim({0, 0}),
-          loopX(false),
-          loopY(false) { }
+TileGrid::TileGrid() noexcept : loopX(false), loopY(false) {
+    dim.x = dim.y = dim.z = 0;
+    tileDim.x = tileDim.y = 0;
+}
 
 int
 TileGrid::getTileType(ivec3 phys) noexcept {

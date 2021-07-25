@@ -47,18 +47,27 @@ Area::focus() noexcept {
 
 void
 Area::buttonDown(Key key) noexcept {
+    ivec2 delta;
     switch (key) {
     case KEY_LEFT_ARROW:
-        player->startMovement({-1, 0});
+        delta.x = -1;
+        delta.y = 0;
+        player->startMovement(delta);
         break;
     case KEY_RIGHT_ARROW:
-        player->startMovement({1, 0});
+        delta.x = 1;
+        delta.y = 0;
+        player->startMovement(delta);
         break;
     case KEY_UP_ARROW:
-        player->startMovement({0, -1});
+        delta.x = 0;
+        delta.y = -1;
+        player->startMovement(delta);
         break;
     case KEY_DOWN_ARROW:
-        player->startMovement({0, 1});
+        delta.x = 0;
+        delta.y = 1;
+        player->startMovement(delta);
         break;
     case KEY_SPACE:
         player->useTile();
@@ -70,18 +79,27 @@ Area::buttonDown(Key key) noexcept {
 
 void
 Area::buttonUp(Key key) noexcept {
+    ivec2 delta;
     switch (key) {
     case KEY_LEFT_ARROW:
-        player->stopMovement({-1, 0});
+        delta.x = -1;
+        delta.y = 0;
+        player->stopMovement(delta);
         break;
     case KEY_RIGHT_ARROW:
-        player->stopMovement({1, 0});
+        delta.x = 1;
+        delta.y = 0;
+        player->stopMovement(delta);
         break;
     case KEY_UP_ARROW:
-        player->stopMovement({0, -1});
+        delta.x = 0;
+        delta.y = -1;
+        player->stopMovement(delta);
         break;
     case KEY_DOWN_ARROW:
-        player->stopMovement({0, 1});
+        delta.x = 0;
+        delta.y = 1;
+        player->stopMovement(delta);
         break;
     default:
         break;
@@ -188,7 +206,8 @@ static bool
 isCharacterDead(Character* c) noexcept {
     bool dead = c->isDead();
     if (dead) {
-        c->setArea(0, {0, 0, 0.0});
+        vicoord coord = {0, 0, 0.0};
+        c->setArea(0, coord);
     }
     return dead;
 }
@@ -393,7 +412,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
             // ImageID.
             Image img = tileGraphics[type].getFrame();
 
-            fvec3 drawPos{float(x * width), float(y * height), depth};
+            fvec3 drawPos = {float(x * width), float(y * height), depth};
             // drawPos.z = depth + drawPos.y / tileDimY *
             // ISOMETRIC_ZOFF_PER_TILE;
             DisplayItem item = {img, drawPos};

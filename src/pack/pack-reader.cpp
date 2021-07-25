@@ -111,10 +111,8 @@ readerDetails(PackReader* r, uint32_t index) noexcept {
     StringView path(r->paths + meta.pathOffset, meta.pathSize);
     uint32_t size = meta.uncompressedSize;
 
-    return {
-            path,
-            size,
-    };
+    BlobDetails details = {path, size};
+    return details;
 }
 
 bool

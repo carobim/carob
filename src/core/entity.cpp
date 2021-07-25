@@ -337,11 +337,15 @@ Entity::Entity() noexcept
         : dead(false),
           redraw(true),
           area(0),
-          r({0.0, 0.0, 0.0}),
           frozen(false),
           moving(false),
-          phase(0),
-          facing({0, 0}) { }
+          phase(0) {
+    r.x = 0.0;
+    r.y = 0.0;
+    r.z = 0.0;
+    facing.x = 0;
+    facing.y = 0;
+}
 
 Entity::~Entity() noexcept { }
 
@@ -431,14 +435,14 @@ Entity::isDead() noexcept {
 void
 Entity::tick(time_t dt) noexcept {
     for (OnTickFn* fn = onTickFns.begin(); fn != onTickFns.end(); fn++) {
-        (*fn)(dt);
+        fn->fn(fn->data, dt);
     }
 }
 
 void
 Entity::turn() noexcept {
     for (OnTurnFn* fn = onTurnFns.begin(); fn != onTurnFns.end(); fn++) {
-        (*fn)();
+        fn->fn(fn->data);
     }
 }
 

@@ -38,9 +38,9 @@ class InProgress {
     bool over;
 
  private:
-    InProgress(const InProgress&) = delete;
+    InProgress(const InProgress&);
     InProgress&
-    operator=(const InProgress&) = delete;
+    operator=(const InProgress&);
 };
 
 #endif  // SRC_DATA_INPROGRESS_H_

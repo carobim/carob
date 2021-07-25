@@ -12,13 +12,13 @@ typedef int BOOL;
 typedef long LONG, *PLONG;
 typedef size_t SIZE_T, *PSIZE_T;
 typedef void *LPVOID, *HANDLE, *HWND, *PVOID;
-typedef __int64 LONGLONG;
+typedef int64_t LONGLONG;
 
 typedef unsigned char BOOLEAN, BYTE;
 typedef unsigned int UINT;
 typedef unsigned long DWORD, *DWORD_PTR, ULONG, *LPDWORD;
 typedef unsigned short WORD;
-typedef unsigned __int64 ULONGLONG;
+typedef uint64_t ULONGLONG;
 
 typedef const char *LPCSTR, *LPCSTR;
 typedef const void* LPCVOID;
@@ -39,46 +39,50 @@ typedef long LONG_PTR, *PLONG_PTR;
 typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #endif
 
-#define __CRTDECL    __cdecl
-#define _ACRTIMP     __declspec(dllimport)
-#define _ACRTIMP_ALT __declspec(dllimport)
-#define _CRTIMP      __declspec(dllimport)
-#define _CRTRESTRICT __declspec(restrict)
+#define CRTIMP       __declspec(dllimport)
 #define WINAPI       __stdcall
 #define WINBASEAPI   __declspec(dllimport)
 #define WINUSERAPI   __declspec(dllimport)
 
+// 2012 stdlib.h
 #define errno (*_errno())
 
+// 2012 stdio.h
 typedef struct _iobuf {
     void* _Placeholder;
 } FILE;
-typedef __int64 __time64_t;
+// 2012 time.h
+typedef int64_t __time64_t;
 
 __pragma(pack(push, 8));
 extern "C" {
-#if MSVC == 2013
-_CRTIMP FILE*
+#if MSVC == 2012 || MSVC == 2013
+// 2012 stdio.h
+CRTIMP FILE*
 __iob_func() noexcept;
 #    define stdin  (&__iob_func()[0])
 #    define stdout (&__iob_func()[1])
 #    define stderr (&__iob_func()[2])
 #elif MSVC >= 2015
-_ACRTIMP_ALT FILE*
+CRTIMP FILE*
 __acrt_iob_func(unsigned) noexcept;
 #    define stdin  (__acrt_iob_func(0))
 #    define stdout (__acrt_iob_func(1))
 #    define stderr (__acrt_iob_func(2))
 #endif
 
-_ACRTIMP __time64_t
+// 2012 time.h
+CRTIMP __time64_t
 _time64(__time64_t*) noexcept;
-//_ACRTIMP __declspec(noreturn) void exit(int) noexcept;
-_ACRTIMP int
+
+// 2012 stdlib.h
+//CRTIMP __declspec(noreturn) void exit(int) noexcept;
+CRTIMP int
 rand(void) noexcept;
-_ACRTIMP void
+CRTIMP void
 srand(unsigned int) noexcept;
 
+// 2012 string.h
 void*
 memchr(const void*, int, size_t) noexcept;
 int
@@ -88,14 +92,15 @@ memcpy(void*, void const*, size_t) noexcept;
 size_t
 strlen(char const*) noexcept;
 
+// 2012 math.h
 int
 abs(int) noexcept;
 double
 atan2(double, double) noexcept;
-_ACRTIMP double
+CRTIMP double
 ceil(double) noexcept;
 #if SIZE == 64
-_ACRTIMP float
+CRTIMP float
 ceilf(float) noexcept;
 #else
 inline float
@@ -105,23 +110,25 @@ ceilf(float x) noexcept {
 #endif
 double
 cos(double) noexcept;
-_ACRTIMP double
+CRTIMP double
 floor(double) noexcept;
 double
 sin(double) noexcept;
 double
 sqrt(double) noexcept;
 
-_ACRTIMP double
+// 2012 stdlib.h
+CRTIMP double
 strtod(char const*, char**) noexcept;
-_ACRTIMP long
+CRTIMP long
 strtol(char const*, char**, int) noexcept;
-_ACRTIMP unsigned long
+CRTIMP unsigned long
 strtoul(char const*, char**, int) noexcept;
-_ACRTIMP int
+CRTIMP int
 atoi(char const*) noexcept;
 
-_ACRTIMP int*
+// 2012 stdlib.h
+CRTIMP int*
 _errno(void);
 }  // extern "C"
 __pragma(pack(pop));
@@ -129,17 +136,22 @@ __pragma(pack(pop));
 extern "C" {
 void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
+}  // extern "C"
+
+// 2012 string.h
+extern "C" {
 void*
 memmove(void*, const void*, size_t) noexcept;
 }  // extern "C"
 
-#if MSVC == 2013
+// 2012 stdio.h
+#if MSVC == 2012 || MSVC == 2013
 extern "C" {
-_ACRTIMP int
+CRTIMP int
 printf(const char*, ...) noexcept;
-_ACRTIMP int
+CRTIMP int
 fprintf(FILE*, const char*, ...) noexcept;
-_ACRTIMP int
+CRTIMP int
 sprintf(char*, const char*, ...) noexcept;
 }  // extern "C"
 #elif MSVC >= 2015
@@ -151,7 +163,8 @@ int
 sprintf(char* const, char const* const, ...) noexcept;
 #endif
 
-// vcruntime_string.h
+// 2012 string.h
+// 2019 vcruntime_string.h
 extern "C" {
 void*
 memset(void*, int, size_t);

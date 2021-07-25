@@ -31,11 +31,9 @@ SleepConditionVariableSRW(PCONDITION_VARIABLE ConditionVariable,
 
 class ConditionVariable {
  public:
-    inline ConditionVariable() noexcept : cv(CONDITION_VARIABLE_INIT) { }
-
-    ConditionVariable(const ConditionVariable&) = delete;
-    ConditionVariable&
-    operator=(const ConditionVariable&) = delete;
+    inline ConditionVariable() noexcept {
+        cv.Ptr = 0;
+    }
 
     inline void
     notifyOne() noexcept {
@@ -53,6 +51,12 @@ class ConditionVariable {
         assert_(ok);  // GetLastError();
     }
 
+ private:
+    ConditionVariable(const ConditionVariable&);
+    ConditionVariable&
+    operator=(const ConditionVariable&);
+
+ public:
     CONDITION_VARIABLE cv;
 };
 

@@ -6,6 +6,11 @@
 #include "util/function.h"
 #include "util/int.h"
 
+struct ProgressFn {
+    void (*fn)(void* data, float progress);
+    void* data;
+};
+
 /**
  * InProgressTimer can call a function every tick during its timer as well as
  * once its timer finishes.
@@ -18,19 +23,18 @@
  */
 class InProgressTimer : public InProgress {
  public:
-    typedef Function<void(float)> ProgressFn;
-    typedef Function<void()> ThenFn;
+    typedef Function ThenFn;
 
     InProgressTimer(time_t duration, ThenFn then) noexcept;
-    InProgressTimer(time_t duration, ProgressFn progress, ThenFn then) noexcept;
+    InProgressTimer(time_t duration, ProgressFn onProgress, ThenFn onThen) noexcept;
 
     void
     tick(time_t dt) noexcept;
 
  private:
     time_t duration, passed;
-    ProgressFn progress;
-    ThenFn then;
+    ProgressFn onProgress;
+    ThenFn onThen;
 };
 
 #endif  // SRC_DATA_INPROGRESS_TIMER_H_

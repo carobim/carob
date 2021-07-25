@@ -9,7 +9,8 @@ imageInit() noexcept { }
 
 Image
 imageLoad(StringView path) noexcept {
-    return {NULL_TEXTURE, 0, 0, 1, 1};
+    Image image = {NULL_TEXTURE, 0, 0, 1, 1};
+    return image;
 }
 
 void
@@ -31,7 +32,8 @@ tilesLoad(StringView path,
             tileWidth * numAcross,
             tileHeight * numWide,
     };
-    return {image, tileWidth, tileHeight, numAcross * numWide};
+    TiledImage tiles = {image, tileWidth, tileHeight, numAcross * numWide};
+    return tiles;
 }
 
 void
@@ -39,13 +41,14 @@ tilesRelease(TiledImage tiles) noexcept { }
 
 Image
 tileAt(TiledImage tiles, uint32_t index) noexcept {
-    return {
+    Image image = {
             NULL_TEXTURE,
             0,
             0,
             tiles.tileWidth,
             tiles.tileHeight,
     };
+    return image;
 }
 
 void

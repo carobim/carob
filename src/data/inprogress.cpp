@@ -1,9 +1,9 @@
 #include "data/inprogress.h"
 
-#include "core/log.h"
 #include "core/sounds.h"
 #include "data/inprogress-sound.h"
 #include "data/inprogress-timer.h"
+#include "util/assert.h"
 #include "util/compiler.h"
 
 InProgress::InProgress() noexcept : over(false) { }
@@ -15,15 +15,13 @@ InProgress::isOver() noexcept {
 }
 
 
-InProgressSound::InProgressSound(StringView sound, ThenFn then) noexcept
-        : then(static_cast<ThenFn&&>(then)) {
+InProgressSound::InProgressSound(StringView sound, ThenFn onThen) noexcept
+        : onThen(onThen) {
     SoundID sid = soundLoad(sound);
     this->sound = soundPlay(sid);
     soundRelease(sid);
 
-    if (!this->then) {
-        logErr("InProgressSound", "invalid 'then'");
-    }
+    assert_(this->onThen.fn);
 }
 
 void
@@ -35,29 +33,20 @@ InProgressSound::tick(time_t) noexcept {
     if (!playingSoundIsPlaying(sound)) {
         playingSoundRelease(sound);
         over = true;
-        then();
+        onThen.fn(onThen.data);
     }
 }
 
-InProgressTimer::InProgressTimer(time_t duration, ThenFn then) noexcept
-        : duration(duration),
-          passed(0),
-          then(static_cast<ThenFn&&>(then)) {
-    if (!this->then) {
-        logErr("InProgressTimer", "invalid 'then'");
-    }
+InProgressTimer::InProgressTimer(time_t duration, ThenFn onThen) noexcept
+        : duration(duration), passed(0), onThen(onThen) {
+    assert_(this->onThen.fn);
 }
 
 InProgressTimer::InProgressTimer(time_t duration,
-                                 ProgressFn progress,
-                                 ThenFn then) noexcept
-        : duration(duration),
-          passed(0),
-          progress(static_cast<ProgressFn&&>(progress)),
-          then(static_cast<ThenFn&&>(then)) {
-    if (!this->progress) {
-        logErr("InProgressTimer", "invalid 'progress'");
-    }
+                                 ProgressFn onProgress,
+                                 ThenFn onThen) noexcept
+        : duration(duration), passed(0), onProgress(onProgress), onThen(onThen) {
+    assert_(this->onProgress.fn);
     // then can be empty
 }
 
@@ -70,15 +59,15 @@ InProgressTimer::tick(time_t dt) noexcept {
     passed += dt;
 
     if (passed < duration) {
-        if (progress) {
+        if (onProgress.fn) {
             // Range is [0.0, 1.0)
-            progress((float)passed / (float)duration);
+            onProgress.fn(onProgress.data, (float)passed / (float)duration);
         }
     }
     else {
         over = true;
-        if (then) {
-            then();
+        if (onThen.fn) {
+            onThen.fn(onThen.data);
         }
     }
 }

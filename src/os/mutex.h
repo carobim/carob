@@ -14,10 +14,12 @@ class LockGuard {
     inline explicit LockGuard(Mutex& m) noexcept : m(m) { m.lock(); }
     inline ~LockGuard() noexcept { m.unlock(); }
 
-    LockGuard(const LockGuard&) = delete;
+ private:
+    LockGuard(const LockGuard&);
     LockGuard&
-    operator=(const LockGuard&) = delete;
+    operator=(const LockGuard&);
 
+ public:
     Mutex& m;
 };
 

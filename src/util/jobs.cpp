@@ -5,7 +5,6 @@
 #include "os/thread.h"
 #include "util/assert.h"
 #include "util/compiler.h"
-#include "util/function.h"
 #include "util/int.h"
 #include "util/queue.h"
 #include "util/vector.h"
@@ -15,7 +14,7 @@ static Vector<Thread> workers;
 static int jobsRunning = 0;
 
 // Empty jobs are the signal to quit.
-static Queue<Job> jobs;
+static Queue<Function> jobs;
 
 // Whether the destructor has been called,
 static bool tearingDown = false;
@@ -31,7 +30,7 @@ static ConditionVariable jobsDone;
 
 static void
 work() noexcept {
-    Job job;
+    Function fn;
 
     do {
         {
@@ -41,14 +40,14 @@ work() noexcept {
                 jobAvailable.wait(lock);
             }
 
-            job = static_cast<Job&&>(jobs.front());
+            fn = jobs.front();
             jobs.pop();
 
             jobsRunning += 1;
         }
 
-        if (job) {
-            job();
+        if (fn.fn) {
+            fn.fn(fn.data);
         }
 
         {
@@ -60,23 +59,23 @@ work() noexcept {
                 jobsDone.notifyOne();
             }
         }
-    } while (job);
+    } while (fn.fn);
 }
 
 void
-JobsEnqueue(Job job) noexcept {
+JobsEnqueue(Function fn) noexcept {
     LockGuard lock(jobsMutex);
 
     assert_(!tearingDown);
 
-    jobs.push(static_cast<Job&&>(job));
+    jobs.push(fn);
 
     if (workerLimit == 0) {
         workerLimit = threadHardwareConcurrency();
     }
 
     if (workers.size < workerLimit) {
-        workers.push_back(Thread(Job(work)));
+        workers.push_back(Thread(fn));
     }
 
     jobAvailable.notifyOne();
@@ -102,7 +101,10 @@ JobsFlush() noexcept {
 
         // Send over empty jobs.
         for (size_t i = 0; i < workers.size; i++) {
-            jobs.push(Job());
+            Function fn;
+            fn.fn = 0;
+            fn.data = 0;
+            jobs.push(fn);
         }
 
         tearingDown = true;

@@ -211,10 +211,6 @@ struct JsonAllocator {
     void
     operator=(JsonAllocator&& other) noexcept;
 
-    JsonAllocator(const JsonAllocator&) = delete;
-    void
-    operator=(const JsonAllocator&) = delete;
-
     void*
     allocate(size_t size) noexcept;
 

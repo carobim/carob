@@ -22,10 +22,12 @@ Player::instance() noexcept {
 }
 
 
-Player::Player() noexcept : Character(), velocity({0, 0}), numMovements(0) {
-    globalPlayer = this;
+Player::Player() noexcept : numMovements(0) {
     nowalkFlags = TILE_NOWALK | TILE_NOWALK_PLAYER;
     nowalkExempt = TILE_NOWALK_EXIT;
+    velocity.x = 0;
+    velocity.y = 0;
+    globalPlayer = this;
 }
 
 void

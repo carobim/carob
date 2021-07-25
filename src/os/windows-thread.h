@@ -2,9 +2,10 @@
 #define SRC_OS_WINDOWS_THREAD_H_
 
 #include "os/c.h"
+#include "util/assert.h"
 #include "util/compiler.h"
-#include "util/function.h"
 #include "util/int.h"
+#include "util/new.h"
 
 extern "C" {
 typedef struct _SYSTEM_INFO {
@@ -34,13 +35,13 @@ WINBASEAPI DWORD WINAPI
 WaitForSingleObjectEx(HANDLE hHandle,
                       DWORD dwMilliseconds,
                       BOOL bAlertable) noexcept;
-_ACRTIMP
-size_t __cdecl _beginthreadex(void* security,
-                              unsigned stack_size,
-                              unsigned(WINAPI* start_address)(void*),
-                              void* arglist,
-                              unsigned initflag,
-                              unsigned* thrdaddr) noexcept;
+CRTIMP
+size_t _beginthreadex(void* security,
+                      unsigned stack_size,
+                      unsigned(WINAPI* start_address)(void*),
+                      void* arglist,
+                      unsigned initflag,
+                      unsigned* thrdaddr) noexcept;
 
 #define INFINITE    0xFFFFFFFF  // Infinite timeout.
 #define WAIT_FAILED 0xFFFFFFFF
@@ -48,17 +49,18 @@ size_t __cdecl _beginthreadex(void* security,
 
 static unsigned WINAPI
 beginthreadex_thunk(void* data) noexcept {
-    Function<void()>* f = static_cast<Function<void()>*>(data);
-    (*f)();
-    delete f;
+    Function f = *static_cast<Function*>(data);
+    free(data);
+    f.fn(f.data);
     return 0;
 }
 
 class Thread {
  public:
-    inline explicit Thread(Function<void()> f) noexcept {
-        Function<void()>* data =
-                new Function<void()>(static_cast<Function<void()>&&>(f));
+    inline explicit Thread(Function f) noexcept {
+        Function* data = xmalloc(Function, 1);
+        data->fn = f.fn;
+        data->data = f.data;
         id = reinterpret_cast<HANDLE>(_beginthreadex(0,
                                                      0,
                                                      beginthreadex_thunk,
@@ -69,10 +71,6 @@ class Thread {
     }
     Thread(Thread&& other) noexcept : id(other.id) { other.id = 0; }
     inline ~Thread() noexcept { assert_(id == 0); }
-
-    Thread(const Thread&) = delete;
-    Thread&
-    operator=(const Thread&) = delete;
 
     inline void
     join() noexcept {
@@ -89,7 +87,12 @@ class Thread {
         id = 0;
     }
 
-    HANDLE id = 0;
+    HANDLE id;
+
+ private:
+    Thread(const Thread&);
+    Thread&
+    operator=(const Thread&);
 };
 
 static inline unsigned

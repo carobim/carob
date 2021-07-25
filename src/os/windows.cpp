@@ -82,7 +82,7 @@ FormatMessageA(DWORD dwFlags,
                LPSTR lpBuffer,
                DWORD nSize,
                va_list* Arguments);
-_ACRTIMP FILE*
+CRTIMP FILE*
 freopen(const char*, const char*, FILE*) noexcept;
 WINBASEAPI DWORD WINAPI GetFileAttributesA(LPCSTR) noexcept;
 WINBASEAPI BOOL WINAPI

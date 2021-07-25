@@ -401,6 +401,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/util/align.h
     ${HERE}/src/util/assert.h
+    ${HERE}/src/util/compiler.h
     ${HERE}/src/util/fnv.cpp
     ${HERE}/src/util/fnv.h
     ${HERE}/src/util/function.h
@@ -438,6 +439,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
 set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/util/align.h
     ${HERE}/src/util/assert.h
+    ${HERE}/src/util/compiler.h
     ${HERE}/src/util/fnv.cpp
     ${HERE}/src/util/fnv.h
     ${HERE}/src/util/hashtable.h
@@ -460,6 +462,7 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
 set(TEST_SOURCES ${TEST_SOURCES}
     ${HERE}/src/util/assert.cpp
     ${HERE}/src/util/assert.h
+    ${HERE}/src/util/compiler.h
     ${HERE}/src/util/fnv.cpp
     ${HERE}/src/util/fnv.h
     ${HERE}/src/util/int.h

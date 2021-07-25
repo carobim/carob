@@ -1,6 +1,8 @@
 #ifndef SRC_OS_THREAD_H_
 #define SRC_OS_THREAD_H_
 
+#include "util/function.h"
+
 #if defined(_WIN32)
 #    include "os/windows-thread.h"
 #elif defined(__APPLE__)

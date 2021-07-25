@@ -7,78 +7,96 @@
 
 ivec2
 operator+(ivec2 a, ivec2 b) noexcept {
-    return {a.x + b.x, a.y + b.y};
+    ivec2 result = {a.x + b.x, a.y + b.y};
+    return result;
 }
 ivec3
 operator+(ivec3 a, ivec3 b) noexcept {
-    return {a.x + b.x, a.y + b.y, a.z + b.z};
+    ivec3 result = {a.x + b.x, a.y + b.y, a.z + b.z};
+    return result;
 }
 fvec2
 operator+(fvec2 a, fvec2 b) noexcept {
-    return {a.x + b.x, a.y + b.y};
+    fvec2 result = {a.x + b.x, a.y + b.y};
+    return result;
 }
 fvec3
 operator+(fvec3 a, fvec3 b) noexcept {
-    return {a.x + b.x, a.y + b.y, a.z + b.z};
+    fvec3 result = {a.x + b.x, a.y + b.y, a.z + b.z};
+    return result;
 }
 
 ivec2
 operator-(ivec2 a, ivec2 b) noexcept {
-    return {a.x - b.x, a.y - b.y};
+    ivec2 result = {a.x - b.x, a.y - b.y};
+    return result;
 }
 ivec3
 operator-(ivec3 a, ivec3 b) noexcept {
-    return {a.x - b.x, a.y - b.y, a.z - b.z};
+    ivec3 result = {a.x - b.x, a.y - b.y, a.z - b.z};
+    return result;
 }
 fvec2
 operator-(fvec2 a, fvec2 b) noexcept {
-    return {a.x - b.x, a.y - b.y};
+    fvec2 result = {a.x - b.x, a.y - b.y};
+    return result;
 }
 fvec3
 operator-(fvec3 a, fvec3 b) noexcept {
-    return {a.x - b.x, a.y - b.y, a.z - b.z};
+    fvec3 result = {a.x - b.x, a.y - b.y, a.z - b.z};
+    return result;
 }
 
 ivec2
 operator*(ivec2 a, ivec2 b) noexcept {
-    return {a.x * b.x, a.y * b.y};
+    ivec2 result = {a.x * b.x, a.y * b.y};
+    return result;
 }
 ivec2
 operator*(int co, ivec2 a) noexcept {
-    return {a.x * co, a.y * co};
+    ivec2 result = {a.x * co, a.y * co};
+    return result;
 }
 ivec3
 operator*(int co, ivec3 a) noexcept {
-    return {a.x * co, a.y * co, a.z * co};
+    ivec3 result = {a.x * co, a.y * co, a.z * co};
+    return result;
 }
 fvec2
 operator*(fvec2 a, fvec2 b) noexcept {
-    return {a.x * b.x, a.y * b.y};
+    fvec2 result = {a.x * b.x, a.y * b.y};
+    return result;
 }
 fvec2
 operator*(float co, fvec2 a) noexcept {
-    return {a.x * co, a.y * co};
+    fvec2 result = {a.x * co, a.y * co};
+    return result;
 }
 fvec3
 operator*(float co, fvec3 a) noexcept {
-    return {a.x * co, a.y * co, a.z * co};
+    fvec3 result = {a.x * co, a.y * co, a.z * co};
+    return result;
 }
 
 ivec2
 operator/(ivec2 a, int co) noexcept {
-    return {a.x / co, a.y / co};
+    ivec2 result = {a.x / co, a.y / co};
+    return result;
 }
 ivec3
 operator/(ivec3 a, int co) noexcept {
-    return {a.x / co, a.y / co, a.z / co};
+    ivec3 result = {a.x / co, a.y / co, a.z / co};
+    return result;
 }
 fvec2
 operator/(fvec2 a, float co) noexcept {
-    return {a.x / co, a.y / co};
+    fvec2 result = {a.x / co, a.y / co};
+    return result;
 }
 fvec3
 operator/(fvec3 a, float co) noexcept {
-    return {a.x / co, a.y / co, a.z / co};
+    fvec3 result = {a.x / co, a.y / co, a.z / co};
+    return result;
 }
 
 bool
