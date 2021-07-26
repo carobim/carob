@@ -16,10 +16,6 @@ class ConditionVariable {
         assert_(err == 0);
     }
 
-    ConditionVariable(const ConditionVariable&) = delete;
-    ConditionVariable&
-    operator=(const ConditionVariable&) = delete;
-
     inline void
     notifyOne() noexcept {
         int err = pthread_cond_signal(&cv);
@@ -41,6 +37,12 @@ class ConditionVariable {
         assert_(err == 0);
     }
 
+ private:
+    ConditionVariable(const ConditionVariable&);
+    ConditionVariable&
+    operator=(const ConditionVariable&);
+
+ public:
     pthread_cond_t cv;
 };
 

@@ -29,10 +29,12 @@ class Mutex {
         assert_(err == 0);
     }
 
-    Mutex(const Mutex&) = delete;
+ private:
+    Mutex(const Mutex&);
     Mutex&
-    operator=(const Mutex&) = delete;
+    operator=(const Mutex&);
 
+ public:
     pthread_mutex_t m;
 };
 
