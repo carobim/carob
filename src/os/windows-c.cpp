@@ -13,17 +13,17 @@ typedef struct {
 } * _locale_t;
 typedef char* va_list;
 
-_ACRTIMP int __cdecl __stdio_common_vfprintf(unsigned __int64,
-                                             FILE*,
-                                             char const*,
-                                             _locale_t,
-                                             va_list) noexcept;
-_ACRTIMP int __cdecl __stdio_common_vsprintf(unsigned __int64,
-                                             char*,
-                                             size_t,
-                                             char const*,
-                                             _locale_t,
-                                             va_list) noexcept;
+CRTIMP int __cdecl __stdio_common_vfprintf(unsigned __int64,
+                                           FILE*,
+                                           char const*,
+                                           _locale_t,
+                                           va_list) noexcept;
+CRTIMP int __cdecl __stdio_common_vsprintf(unsigned __int64,
+                                           char*,
+                                           size_t,
+                                           char const*,
+                                           _locale_t,
+                                           va_list) noexcept;
 
 #    if SIZE == 64
 #        define _VA_ALIGN       8
