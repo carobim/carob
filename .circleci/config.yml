@@ -148,10 +148,10 @@ jobs:
           ninja-build
       - run: build/units
 
-  # Has CMake 3.21, GCC 11, Samurai 1.1
-  fedora_35:
+  # Has CMake 3.20, GCC 11, Ninja 1.10
+  fedora_34:
     docker:
-      - image: fedora:35
+      - image: fedora:34
     steps:
       - run: |
           dnf install -y cmake gcc-c++ samurai
@@ -266,7 +266,7 @@ workflows:
       - debian_10_buster
       - debian_11_bullseye
       - fedora_20
-      - fedora_35
+      - fedora_34
       - nix_2_3_12
       - ubuntu_12_04_precise
       - ubuntu_21_04_hirsute
