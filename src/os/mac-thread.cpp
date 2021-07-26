@@ -6,14 +6,12 @@
 #include "util/int.h"
 #include "util/new.h"
 
-// mach/thread_act.h
 extern "C" {
+// mach/thread_act.h
 int32_t
 thread_policy_set(uint32_t, uint32_t, uint32_t*, uint32_t) noexcept;
-}
 
 // mach/mach_init.h
-extern "C" {
 uint32_t
 mach_thread_self() noexcept;
 }
@@ -26,20 +24,18 @@ struct thread_extended_policy {
 };
 
 static void*
-run(void* f) noexcept {
-    Function<void() noexcept>* fun =
-            reinterpret_cast<Function<void() noexcept>*>(f);
-    (*fun)();
+run(void* data) noexcept {
+    Function fn = *static_cast<Function*>(data);
+    free(data);
+    fn->fn(fn->data);
     return 0;
 }
 
-Thread::Thread(Function<void() noexcept> f) noexcept {
-    using F = Function<void() noexcept>;
+Thread::Thread(Function fn) noexcept {
+    Function* data = xmalloc(Function, 1);
+    *data = fn;
 
-    void* fun = malloc(sizeof(F));
-    new (fun) F(static_cast<F&&>(f));
-
-    int err = pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, fun);
+    int err = pthread_create(static_cast<pthread_t*>(&t), 0, run, data);
     (void)err;
     assert_(err == 0);
 }
