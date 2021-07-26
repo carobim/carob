@@ -19,7 +19,7 @@ ReleaseSRWLockExclusive(PSRWLOCK SRWLock) noexcept;
 
 class Mutex {
  public:
-    constexpr Mutex() noexcept {
+    inline Mutex() noexcept {
         m.Ptr = 0;
     }
 
