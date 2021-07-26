@@ -13,24 +13,24 @@ typedef struct {
 } * _locale_t;
 typedef char* va_list;
 
-CRTIMP int __cdecl __stdio_common_vfprintf(unsigned __int64,
-                                           FILE*,
-                                           char const*,
-                                           _locale_t,
-                                           va_list) noexcept;
-CRTIMP int __cdecl __stdio_common_vsprintf(unsigned __int64,
-                                           char*,
-                                           size_t,
-                                           char const*,
-                                           _locale_t,
-                                           va_list) noexcept;
+CRTIMP int __stdio_common_vfprintf(unsigned __int64,
+                                   FILE*,
+                                   char const*,
+                                   _locale_t,
+                                   va_list) noexcept;
+CRTIMP int __stdio_common_vsprintf(unsigned __int64,
+                                   char*,
+                                   size_t,
+                                   char const*,
+                                   _locale_t,
+                                   va_list) noexcept;
 
 #    if SIZE == 64
 #        define _VA_ALIGN       8
 #        define _SLOTSIZEOF(t)  ((sizeof(t) + _VA_ALIGN - 1) & ~(_VA_ALIGN - 1))
 #        define _APALIGN(t, ap) (((va_list)0 - (ap)) & (__alignof(t) - 1))
 
-void __cdecl __va_start(va_list*, ...);
+void __va_start(va_list*, ...);
 #        define __crt_va_start_a(ap, v) \
             ((void)(__va_start(&ap, &v, _SLOTSIZEOF(v), __alignof(v), &v)))
 #        define __crt_va_arg(ap, t)                                       \
@@ -54,13 +54,13 @@ __pragma(pack(pop));
 #    define __crt_va_start(ap, x)                                 __crt_va_start_a(ap, x)
 #    define _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION (1ULL << 0)
 
-__declspec(noinline) __inline unsigned __int64* __CRTDECL
+__declspec(noinline) __inline unsigned __int64*
         __local_stdio_printf_options(void) noexcept {
     static unsigned __int64 _OptionsStorage;
     return &_OptionsStorage;
 }
 
-inline int __CRTDECL
+inline int
 _vfprintf_l(FILE* const _Stream,
             char const* const _Format,
             _locale_t const _Locale,
@@ -72,7 +72,7 @@ _vfprintf_l(FILE* const _Stream,
                                    _ArgList);
 }
 
-inline int __CRTDECL
+inline int
 _vsnprintf_l(char* const _Buffer,
              size_t const _BufferCount,
              char const* const _Format,
@@ -90,7 +90,7 @@ _vsnprintf_l(char* const _Buffer,
     return _Result < 0 ? -1 : _Result;
 }
 
-inline int __CRTDECL
+inline int
 _vsprintf_l(char* const _Buffer,
             char const* const _Format,
             _locale_t const _Locale,
@@ -98,7 +98,7 @@ _vsprintf_l(char* const _Buffer,
     return _vsnprintf_l(_Buffer, (size_t)-1, _Format, _Locale, _ArgList);
 }
 
-int __CRTDECL
+int
 fprintf(FILE* const _Stream, char const* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
@@ -108,7 +108,7 @@ fprintf(FILE* const _Stream, char const* const _Format, ...) noexcept {
     return _Result;
 }
 
-int __CRTDECL
+int
 printf(char const* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
@@ -118,7 +118,7 @@ printf(char const* const _Format, ...) noexcept {
     return _Result;
 }
 
-int __CRTDECL
+int
 sprintf(char* const _Buffer, char const* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
