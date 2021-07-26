@@ -27,7 +27,7 @@ static void*
 run(void* data) noexcept {
     Function fn = *static_cast<Function*>(data);
     free(data);
-    fn->fn(fn->data);
+    fn.fn(fn.data);
     return 0;
 }
 
@@ -35,7 +35,7 @@ Thread::Thread(Function fn) noexcept {
     Function* data = xmalloc(Function, 1);
     *data = fn;
 
-    int err = pthread_create(static_cast<pthread_t*>(&t), 0, run, data);
+    int err = pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, data);
     (void)err;
     assert_(err == 0);
 }
