@@ -8,7 +8,7 @@
 
 class ConditionVariable {
  public:
-    inline ConditionVariable() : cv PTHREAD_COND_INITIALIZER { }
+    inline ConditionVariable() noexcept : cv PTHREAD_COND_INITIALIZER { }
 
     inline ~ConditionVariable() noexcept {
         int err = pthread_cond_destroy(&cv);

@@ -315,9 +315,9 @@ elseif(APPLE)
         ${HERE}/src/os/mac-chrono.cpp
         ${HERE}/src/os/mac-thread.cpp
         ${HERE}/src/os/mac-thread.h
-        ${HERE}/src/os/unix-mapped-file.cpp
-        ${HERE}/src/os/unix-mapped-file.h
-        ${HERE}/src/os/unix-mutex.h
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mapped-file.h
+        ${HERE}/src/os/unix/mutex.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
@@ -332,10 +332,10 @@ elseif(APPLE)
         ${HERE}/src/os/mac-c.h
         ${HERE}/src/os/mac-thread.cpp
         ${HERE}/src/os/mac-thread.h
-        ${HERE}/src/os/unix-condition-variable.h
-        ${HERE}/src/os/unix-mapped-file.cpp
-        ${HERE}/src/os/unix-mapped-file.h
-        ${HERE}/src/os/unix-mutex.h
+        ${HERE}/src/os/unix/condition-variable.h
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mapped-file.h
+        ${HERE}/src/os/unix/mutex.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
@@ -349,21 +349,21 @@ elseif(APPLE)
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/linux-c.h
-        ${HERE}/src/os/unix-chrono.cpp
-        ${HERE}/src/os/unix-mapped-file.cpp
-        ${HERE}/src/os/unix-mutex.h
-        ${HERE}/src/os/unix-thread.h
+        ${HERE}/src/os/unix/chrono.cpp
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mutex.h
+        ${HERE}/src/os/unix/thread.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/linux-c.h
-        ${HERE}/src/os/unix-condition-variable.h
-        ${HERE}/src/os/unix-mapped-file.cpp
-        ${HERE}/src/os/unix-mapped-file.h
-        ${HERE}/src/os/unix-mutex.h
-        ${HERE}/src/os/unix-thread.h
+        ${HERE}/src/os/unix/condition-variable.h
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mapped-file.h
+        ${HERE}/src/os/unix/mutex.h
+        ${HERE}/src/os/unix/thread.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
@@ -507,9 +507,11 @@ endif()
 add_library(tsunagari ${TSUNAGARI_SOURCES})
 add_executable(null-world ${NULL_WORLD_SOURCES})
 add_executable(pack-tool ${PACK_TOOL_SOURCES})
+add_executable(lang ${HERE}/src/lang/main.cpp)
 add_executable(units ${TEST_SOURCES})
 
 target_link_libraries(null-world tsunagari)
+target_link_libraries(lang tsunagari)
 
 include_directories(src)
 

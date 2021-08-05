@@ -4,7 +4,7 @@
 #if MSVC
 #    include "os/windows-mutex.h"
 #else
-#    include "os/unix-mutex.h"
+#    include "os/unix/mutex.h"
 #endif
 
 #include "util/compiler.h"
