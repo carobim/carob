@@ -1,11 +1,14 @@
 #ifndef SRC_UTIL_VECTOR_H_
 #define SRC_UTIL_VECTOR_H_
 
-#include "os/c.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/int.h"
 #include "util/new.h"
+
+/* #include "os/c.h" */
+extern "C" void*
+memmove(void*, const void*, size_t) noexcept;
 
 // Does not call move constructors in its own move constructor or when growing.
 template<typename X>

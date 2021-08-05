@@ -1,6 +1,7 @@
 #ifndef SRC_UTIL_POOL_H_
 #define SRC_UTIL_POOL_H_
 
+#include "os/c.h"
 #include "util/compiler.h"
 #include "util/int.h"
 #include "util/new.h"
