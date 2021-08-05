@@ -2,7 +2,7 @@
 #define SRC_OS_C_H_
 
 #if defined(_WIN32)
-#    include "os/windows-c.h"
+#    include "os/windows/c.h"
 #elif defined(__APPLE__)
 #    include "os/mac/c.h"
 #elif defined(__linux__) || defined(__EMSCRIPTEN__)

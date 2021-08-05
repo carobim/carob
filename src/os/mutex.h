@@ -2,7 +2,7 @@
 #define SRC_OS_MUTEX_H_
 
 #if MSVC
-#    include "os/windows-mutex.h"
+#    include "os/windows/mutex.h"
 #else
 #    include "os/unix/mutex.h"
 #endif

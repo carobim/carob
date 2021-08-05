@@ -1,4 +1,4 @@
-#include "os/windows-mapped-file.h"
+#include "os/windows/mapped-file.h"
 
 #include "os/c.h"
 #include "util/compiler.h"

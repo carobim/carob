@@ -275,12 +275,12 @@ if (WIN32)
 
         # On MSVC2013 including this file results in a warning. In MSVC2015+
         # omitting it results in an error.
-        ${HERE}/src/os/windows-c.cpp
+        ${HERE}/src/os/windows/c.cpp
         
-        ${HERE}/src/os/windows-c.h
-        ${HERE}/src/os/windows-chrono.cpp
-        ${HERE}/src/os/windows-mapped-file.cpp
-        ${HERE}/src/os/windows-mapped-file.h
+        ${HERE}/src/os/windows/c.h
+        ${HERE}/src/os/windows/chrono.cpp
+        ${HERE}/src/os/windows/mapped-file.cpp
+        ${HERE}/src/os/windows/mapped-file.h
         ${HERE}/src/os/windows.cpp
         ${HERE}/src/os/windows.h
         ${HERE}/src/os/windows/io.cpp
@@ -288,13 +288,13 @@ if (WIN32)
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/memmove.cpp
-        ${HERE}/src/os/windows-c.cpp
-        ${HERE}/src/os/windows-c.h
-        ${HERE}/src/os/windows-condition-variable.h
-        ${HERE}/src/os/windows-mapped-file.cpp
-        ${HERE}/src/os/windows-mapped-file.h
-        ${HERE}/src/os/windows-mutex.h
-        ${HERE}/src/os/windows-thread.h
+        ${HERE}/src/os/windows/c.cpp
+        ${HERE}/src/os/windows/c.h
+        ${HERE}/src/os/windows/condition-variable.h
+        ${HERE}/src/os/windows/mapped-file.cpp
+        ${HERE}/src/os/windows/mapped-file.h
+        ${HERE}/src/os/windows/mutex.h
+        ${HERE}/src/os/windows/thread.h
         ${HERE}/src/os/windows.cpp
         ${HERE}/src/os/windows.h
         ${HERE}/src/os/windows/io.cpp
@@ -302,8 +302,8 @@ if (WIN32)
     )
     set(TEST_SOURCES ${TEST_SOURCES}
         ${HERE}/src/os/memmove.cpp
-        ${HERE}/src/os/windows-c.cpp
-        ${HERE}/src/os/windows-c.h
+        ${HERE}/src/os/windows/c.cpp
+        ${HERE}/src/os/windows/c.h
         ${HERE}/src/os/windows.cpp
         ${HERE}/src/os/windows.h
         ${HERE}/src/os/windows/io.cpp

@@ -4,7 +4,7 @@
 #include "util/function.h"
 
 #if defined(_WIN32)
-#    include "os/windows-thread.h"
+#    include "os/windows/thread.h"
 #elif defined(__APPLE__)
 #    include "os/mac/thread.h"
 #elif defined(__linux__) || defined(__EMSCRIPTEN__)

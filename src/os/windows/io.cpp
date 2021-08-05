@@ -1,6 +1,6 @@
 #include "os/windows/io.h"
 
-#include "os/windows-c.h"
+#include "os/windows/c.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/int.h"

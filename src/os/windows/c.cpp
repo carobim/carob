@@ -1,4 +1,4 @@
-#include "os/windows-c.h"
+#include "os/windows/c.h"
 
 #include "util/compiler.h"
 
