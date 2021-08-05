@@ -7,11 +7,11 @@
 #include "core/window.h"
 #include "core/world.h"
 #include "data/data-world.h"
-#include "os/c.h"
 #include "os/chrono.h"
 #include "os/thread.h"
 #include "util/compiler.h"
 #include "util/int.h"
+#include "util/random.h"
 
 #if MSVC
 #    include "os/windows.h"
@@ -33,7 +33,7 @@ main() noexcept {
     wFixConsole();
 #endif
 
-    srand(static_cast<unsigned>(chronoNow()));
+    initRandom();
 
     if (!logInit()) {
         return 1;

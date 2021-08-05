@@ -2,6 +2,10 @@
 #define SRC_UTIL_RANDOM_H_
 
 #include "util/compiler.h"
+#include "util/int.h"
+
+void
+initRandom() noexcept;
 
 //! Produce a random integer.
 /*!
@@ -9,8 +13,8 @@
     @param max Maximum value.
     @return random integer between min and max.
 */
-int
-randInt(int min, int max) noexcept;
+uint32_t
+randInt(uint32_t min, uint32_t max) noexcept;
 
 //! Produce a random float floating point number.
 /*!
