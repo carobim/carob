@@ -218,8 +218,6 @@ extern FILE* __stderrp;
 extern "C" {
 int
 abs(int) noexcept;
-int
-atoi(const char*) noexcept;
 void
 exit(int) noexcept;
 int

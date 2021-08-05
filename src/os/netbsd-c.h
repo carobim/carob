@@ -238,8 +238,6 @@ extern FILE __sF[3];
 // stdlib.h
 int
 abs(int) noexcept;
-int
-atoi(const char*) noexcept;
 void
 exit(int) noexcept;
 int

@@ -229,8 +229,6 @@ extern FILE* __stderrp;
 
 // stdlib.h
 int
-atoi(const char*) noexcept;
-int
 rand() noexcept;
 void
 srand(unsigned) noexcept;

@@ -124,8 +124,6 @@ CRTIMP long
 strtol(char const*, char**, int) noexcept;
 CRTIMP unsigned long
 strtoul(char const*, char**, int) noexcept;
-CRTIMP int
-atoi(char const*) noexcept;
 
 // 2012 stdlib.h
 CRTIMP int*

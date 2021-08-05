@@ -266,12 +266,6 @@ parseFloat(float& out, String& s) noexcept {
     return true;
 }
 
-int
-parseInt100(char* s) noexcept {
-    int i = atoi(s);
-    return bound(i, 0, 100);
-}
-
 void
 splitStr(Vector<StringView>& out,
          StringView input,
