@@ -18,7 +18,7 @@
 #endif
 
 #ifdef __APPLE__
-#    include "os/mac-gui.h"
+#    include "os/mac/gui.h"
 #endif
 
 /**

@@ -6,7 +6,7 @@
 #if defined(_WIN32)
 #    include "os/windows-thread.h"
 #elif defined(__APPLE__)
-#    include "os/mac-thread.h"
+#    include "os/mac/thread.h"
 #elif defined(__linux__) || defined(__EMSCRIPTEN__)
 #    include "os/unix/thread.h"
 #elif defined(__FreeBSD__)

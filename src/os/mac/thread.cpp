@@ -1,4 +1,4 @@
-#include "os/mac-thread.h"
+#include "os/mac/thread.h"
 
 #include "os/c.h"
 #include "util/assert.h"

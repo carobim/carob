@@ -14,7 +14,7 @@
 #endif
 
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
-#    include "os/mac-gui.h"
+#    include "os/mac/gui.h"
 #endif
 
 static LogVerbosity verb = LogVerbosity::NORMAL;

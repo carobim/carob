@@ -1,4 +1,4 @@
-#include "os/mac-gui.h"
+#include "os/mac/gui.h"
 
 #include "core/world.h"
 #include "util/assert.h"
