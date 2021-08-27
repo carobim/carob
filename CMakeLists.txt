@@ -268,6 +268,14 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/os/os.h
     ${HERE}/src/os/thread.h
 )
+set(UTIL_SOURCES ${UTIL_SOURCES}
+    ${HERE}/src/os/c.h
+    ${HERE}/src/os/chrono.h
+    ${HERE}/src/os/mapped-file.h
+    ${HERE}/src/os/mutex.h
+    ${HERE}/src/os/thread.h
+    ${HERE}/src/os/os.h
+)
 
 if (WIN32)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
@@ -304,6 +312,22 @@ if (WIN32)
         ${HERE}/src/os/memmove.cpp
         ${HERE}/src/os/windows/c.cpp
         ${HERE}/src/os/windows/c.h
+        ${HERE}/src/os/windows.cpp
+        ${HERE}/src/os/windows.h
+        ${HERE}/src/os/windows/io.cpp
+        ${HERE}/src/os/windows/io.h
+    )
+    set(UTIL_SOURCES ${UTIL_SOURCES}
+        ${HERE}/src/os/memmove.cpp
+
+        # On MSVC2013 including this file results in a warning. In MSVC2015+
+        # omitting it results in an error.
+        ${HERE}/src/os/windows/c.cpp
+
+        ${HERE}/src/os/windows/c.h
+        ${HERE}/src/os/windows/chrono.cpp
+        ${HERE}/src/os/windows/mapped-file.cpp
+        ${HERE}/src/os/windows/mapped-file.h
         ${HERE}/src/os/windows.cpp
         ${HERE}/src/os/windows.h
         ${HERE}/src/os/windows/io.cpp
@@ -346,6 +370,18 @@ elseif(APPLE)
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
+    set(UTIL_SOURCES ${UTIL_SOURCES}
+        ${HERE}/src/os/mac/c.h
+        ${HERE}/src/os/mac/chrono.cpp
+        ${HERE}/src/os/mac/thread.cpp
+        ${HERE}/src/os/mac/thread.h
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mapped-file.h
+        ${HERE}/src/os/unix/mutex.h
+        ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
+    )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/linux-c.h
@@ -370,6 +406,16 @@ else()
     )
     set(TEST_SOURCES ${TEST_SOURCES}
         ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
+    )
+    set(UTIL_SOURCES ${UTIL_SOURCES}
+        ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/unix/chrono.cpp
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mutex.h
+        ${HERE}/src/os/unix/thread.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
@@ -474,6 +520,44 @@ set(TEST_SOURCES ${TEST_SOURCES}
     ${HERE}/src/util/string.h
 )
 
+set(UTIL_SOURCES ${UTIL_SOURCES}
+    ${HERE}/src/util/align.h
+    ${HERE}/src/util/assert.h
+    ${HERE}/src/util/compiler.h
+    ${HERE}/src/util/fnv.cpp
+    ${HERE}/src/util/fnv.h
+    ${HERE}/src/util/function.h
+    ${HERE}/src/util/hash.cpp
+    ${HERE}/src/util/hash.h
+    ${HERE}/src/util/hashtable.h
+    ${HERE}/src/util/int.h
+    ${HERE}/src/util/io.cpp
+    ${HERE}/src/util/io.h
+    ${HERE}/src/util/jobs.cpp
+    ${HERE}/src/util/jobs.h
+    ${HERE}/src/util/json.cpp
+    ${HERE}/src/util/json.h
+    ${HERE}/src/util/likely.h
+    ${HERE}/src/util/list.h
+    ${HERE}/src/util/markable.h
+    ${HERE}/src/util/math2.h
+    ${HERE}/src/util/move.h
+    ${HERE}/src/util/new.cpp
+    ${HERE}/src/util/new.h
+    ${HERE}/src/util/pool.h
+    ${HERE}/src/util/random.cpp
+    ${HERE}/src/util/random.h
+    ${HERE}/src/util/string-view.cpp
+    ${HERE}/src/util/string-view.h
+    ${HERE}/src/util/string.cpp
+    ${HERE}/src/util/string.h
+    ${HERE}/src/util/string2.cpp
+    ${HERE}/src/util/string2.h
+    ${HERE}/src/util/transform.c
+    ${HERE}/src/util/transform.h
+    ${HERE}/src/util/vector.h
+)
+
 if(MSVC OR ${CMAKE_VERSION} VERSION_LESS 3.1)
     # MSVC 2017 and below, and CMake 3.0 and below cannot vary source files by
     # configuration.
@@ -497,6 +581,9 @@ else()
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
 endif()
+set(UTIL_SOURCES ${UTIL_SOURCES}
+    ${HERE}/src/util/assert.cpp
+)
 
 
 
@@ -504,12 +591,16 @@ endif()
 # Targets
 #
 
-add_library(tsunagari ${TSUNAGARI_SOURCES})
-add_executable(null-world ${NULL_WORLD_SOURCES})
-add_executable(pack-tool ${PACK_TOOL_SOURCES})
-add_executable(units ${TEST_SOURCES})
+if(UTIL_ONLY)
+    add_library(tsutil ${UTIL_SOURCES})
+else()
+    add_library(tsunagari ${TSUNAGARI_SOURCES})
+    add_executable(null-world ${NULL_WORLD_SOURCES})
+    add_executable(pack-tool ${PACK_TOOL_SOURCES})
+    add_executable(units ${TEST_SOURCES})
 
-target_link_libraries(null-world tsunagari)
+    target_link_libraries(null-world tsunagari)
+endif()
 
 include_directories(src)
 
@@ -519,16 +610,16 @@ include_directories(src)
 #
 
 if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8.0)
-    get_target_property(TSUNAGARI_SOURCES tsunagari SOURCES)
-    get_target_property(NULL_WORLD_SOURCES null-world SOURCES)
-    get_target_property(PACK_TOOL_SOURCES pack-tool SOURCES)
-    get_target_property(TEST_SOURCES units SOURCES)
-    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES ${TSUNAGARI_SOURCES}
-              ${NULL_WORLD_SOURCES}
-              ${PACK_TOOL_SOURCES}
-              ${TEST_SOURCES}
-    )
+    if(UTIL_ONLY)
+        set(ALL_SOURCES ${UTIL_SOURCES})
+    else()
+        set(ALL_SOURCES ${TSUNAGARI_SOURCES}
+                      ${NULL_WORLD_SOURCES}
+                      ${PACK_TOOL_SOURCES}
+                      ${TEST_SOURCES}
+      )
+    endif()
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ALL_SOURCES})
 endif()
 
 
@@ -683,7 +774,7 @@ if(CLANG AND NOT NO_LTO OR GCC VERSION_GREATER 4.5)
 endif()
 
 # Enable NDEBUG anything not a debug build.
-if(${CMAKE_VERSION} VERSION_LESS 2.8.11)
+if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
     set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -DNDEBUG")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG")
 else()
@@ -692,7 +783,7 @@ else()
 endif()
 
 # Enable RELEASE in anything with optimizations.
-if(${CMAKE_VERSION} VERSION_LESS 2.8.11)
+if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
     set(CMAKE_CXX_FLAGS_MINSIZEREL
         "${CMAKE_CXX_FLAGS_MINSIZEREL} -DRELEASE")
     set(CMAKE_CXX_FLAGS_RELEASE
@@ -866,19 +957,31 @@ if(LINUX AND NOT AV_EM)
     endif()
 
     if("${GLIBC_VERSION}" VERSION_LESS "2.17")
-        target_link_libraries(tsunagari rt)
+        if(UTIL_ONLY)
+            target_link_libraries(tsutil rt)
+        else()
+            target_link_libraries(tsunagari rt)
+        endif()
     endif()
 
     if(GLIBC_VERSION)
-        target_link_libraries(tsunagari m pthread)
+        if(UTIL_ONLY)
+            target_link_libraries(tsutil m pthread)
+        else()
+            target_link_libraries(tsunagari m pthread)
+        endif()
     endif()
 endif()
 
 if(FREEBSD OR NETBSD)
-    target_link_libraries(tsunagari PUBLIC  m pthread)
+    if(UTIL_ONLY)
+        target_link_libraries(tsutil PUBLIC m pthread)
+    else()
+        target_link_libraries(tsunagari PUBLIC m pthread)
+    endif()
 endif()
 if(AV_EM)
-    target_link_libraries(tsunagari PUBLIC  pthread)
+    target_link_libraries(tsunagari PUBLIC pthread)
 endif()
 
 if(STATIC_SDL)
@@ -974,6 +1077,9 @@ if(IS_SUBPROJECT)
         PARENT_SCOPE)
     set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
         ${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO}
+        PARENT_SCOPE)
+    set(CMAKE_CXX_LINK_EXECUTABLE
+        ${CMAKE_CXX_LINK_EXECUTABLE}
         PARENT_SCOPE)
 endif()
 
