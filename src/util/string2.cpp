@@ -238,12 +238,36 @@ parseInt(int& out, String& s) noexcept {
         // Overflow.
         return false;
     }
-    if (l > static_cast<long>(UINT32_MAX)) {
+    if (l > static_cast<long>(INT32_MAX) || l < static_cast<long>(INT32_MIN)) {
         // Overflow.
         return false;
     }
 
     out = static_cast<int>(l);
+    return true;
+}
+
+bool
+parseInt0(int* out, StringView s) noexcept {
+    errno = 0;
+
+    char* end;
+    long l = strtol(s.data, &end, 10);
+
+    if (end != s.data + s.size) {
+        return false;
+    }
+
+    if (errno != 0) {
+        // Overflow.
+        return false;
+    }
+    if (l > static_cast<long>(INT32_MAX) || l < static_cast<long>(INT32_MIN)) {
+        // Overflow.
+        return false;
+    }
+
+    *out = static_cast<int>(l);
     return true;
 }
 

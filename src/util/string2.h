@@ -33,6 +33,8 @@ parseBool(bool& out, StringView s) noexcept;
 bool
 parseInt(int& out, String& s) noexcept;
 bool
+parseInt0(int* out, StringView s) noexcept;
+bool
 parseUInt(unsigned& out, String& s) noexcept;
 bool
 parseFloat(float& out, String& s) noexcept;
