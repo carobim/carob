@@ -265,6 +265,10 @@ readFile(StringView path, String& data) noexcept {
 
     DWORD read;
     BOOL ok = ReadFile(file, data.data, size, &read, 0);
+    if (!CloseHandle(file)) {
+        printWin32Error();
+        return false;
+    }
     if (!ok) {
         printWin32Error();
         return false;
