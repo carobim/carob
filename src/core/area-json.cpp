@@ -545,7 +545,7 @@ AreaJSON::processLayer(JsonValue obj) noexcept {
         return false;
     }
 
-    allocateMapLayer(TileGrid::LayerType::TILE_LAYER);
+    allocateMapLayer(TileGrid::TILE_LAYER);
 
     if (propertiesValue.isObject()) {
         CHECK(processLayerProperties(propertiesValue));
@@ -685,7 +685,7 @@ AreaJSON::processObjectGroupProperties(JsonValue obj) noexcept {
         return false;
     }
 
-    allocateMapLayer(TileGrid::LayerType::OBJECT_LAYER);
+    allocateMapLayer(TileGrid::OBJECT_LAYER);
     grid.depth2idx[depth] = grid.dim.z - 1;
 
     // Effectively idx2depth[dim.z - 1] = depth;

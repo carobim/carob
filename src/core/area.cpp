@@ -116,10 +116,10 @@ Area::draw(DisplayList* display) noexcept {
 
     for (int z = 0; z < maxZ; z++) {
         switch (grid.layerTypes[z]) {
-        case TILE_LAYER:
+        case TileGrid::TILE_LAYER:
             drawTiles(display, tiles, z);
             break;
-        case OBJECT_LAYER:
+        case TileGrid::OBJECT_LAYER:
             drawEntities(display, tiles, z);
             break;
         }
@@ -171,7 +171,7 @@ Area::needsRedraw() noexcept {
     time_t now = worldTime();
 
     for (int z = tiles.z1; z < tiles.z2; z++) {
-        if (grid.layerTypes[z] != TILE_LAYER) {
+        if (grid.layerTypes[z] != TileGrid::TILE_LAYER) {
             continue;
         }
         for (int y = tiles.y1; y < tiles.y2; y++) {
