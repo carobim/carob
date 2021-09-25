@@ -161,20 +161,18 @@ struct dirent*
 readdir(DIR*) noexcept __DARWIN_INODE64(readdir);
 
 // math.h
-double
-atan2(double, double) noexcept;
-double
-ceil(double) noexcept;
+float
+atan2f(float, float) noexcept;
 float
 ceilf(float) noexcept;
-double
-cos(double) noexcept;
-double
-floor(double) noexcept;
-double
-sin(double) noexcept;
-double
-sqrt(double) noexcept;
+float
+cosf(float) noexcept;
+float
+floorf(float) noexcept;
+float
+sinf(float) noexcept;
+float
+sqrtf(float) noexcept;
 
 // pthread/pthread.h
 // pthread/pthread_impl.h
