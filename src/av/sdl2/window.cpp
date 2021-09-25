@@ -113,10 +113,10 @@ updateTransform(void) noexcept {
 
     struct Transform transform = transformStack[transformTop];
 
-    float xScale = transform[0];
-    float yScale = transform[5];
-    float x = transform[12];
-    float y = transform[13];
+    float xScale = transform.m[0];
+    float yScale = transform.m[5];
+    float x = transform.m[12];
+    float y = transform.m[13];
 
     sdl2Translation = {x / xScale, y / yScale};
     sdl2Scaling = {xScale, yScale};
