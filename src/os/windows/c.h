@@ -39,27 +39,39 @@ typedef long LONG_PTR, *PLONG_PTR;
 typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #endif
 
+// 2010 crtdefs.h
+#if MSVC == 2010
+// Only defined as __declspec(dllimport) when building a DLL?
+#define CRTIMP
+#else
+// TODO: Verify the source and definitions for the other MSVCs.
 #define CRTIMP       __declspec(dllimport)
+#endif
+
 #define WINAPI       __stdcall
 #define WINBASEAPI   __declspec(dllimport)
 #define WINUSERAPI   __declspec(dllimport)
 
+// 2010 stdlib.h
 // 2012 stdlib.h
 #define errno (*_errno())
 
+// 2010 stdio.h
 // 2012 stdio.h
 typedef struct _iobuf {
-    void* _Placeholder;
+    void* reserved;
 } FILE;
+// 2010 time.h
 // 2012 time.h
 typedef int64_t __time64_t;
 
 __pragma(pack(push, 8));
 extern "C" {
-#if MSVC == 2012 || MSVC == 2013
+#if MSVC == 2010 || MSVC == 2012 || MSVC == 2013
+// 2010 stdio.h
 // 2012 stdio.h
 CRTIMP FILE*
-__iob_func() noexcept;
+__iob_func(void) noexcept;
 #    define stdin  (&__iob_func()[0])
 #    define stdout (&__iob_func()[1])
 #    define stderr (&__iob_func()[2])
@@ -71,19 +83,21 @@ __acrt_iob_func(unsigned) noexcept;
 #    define stderr (__acrt_iob_func(2))
 #endif
 
+// 2010 time.h
 // 2012 time.h
 CRTIMP __time64_t
 _time64(__time64_t*) noexcept;
 
+// 2010 stdlib.h
 // 2012 stdlib.h
-//CRTIMP __declspec(noreturn) void exit(int) noexcept;
 CRTIMP int
 rand(void) noexcept;
 CRTIMP void
 srand(unsigned int) noexcept;
 
+// 2010 string.h
 // 2012 string.h
-void*
+CRTIMP void*
 memchr(const void*, int, size_t) noexcept;
 int
 memcmp(void const*, void const*, size_t) noexcept;
@@ -92,22 +106,26 @@ memcpy(void*, void const*, size_t) noexcept;
 size_t
 strlen(char const*) noexcept;
 
+// 2010 math.h
 // 2012 math.h
-int
-abs(int) noexcept;
+#if SIZE == 64
+CRTIMP double
+atan2f(float, float) noexcept;
+CRTIMP float
+ceilf(float) noexcept;
+CRTIMP float
+cosf(float) noexcept;
+CRTIMP double
+floorf(double) noexcept;
+CRTIMP float
+sinf(float) noexcept;
+CRTIMP float
+sqrt(float) noexcept;
+#else
 double
 atan2(double, double) noexcept;
 CRTIMP double
 ceil(double) noexcept;
-#if SIZE == 64
-CRTIMP float
-ceilf(float) noexcept;
-#else
-inline float
-ceilf(float x) noexcept {
-    return (float)ceil(x);
-}
-#endif
 double
 cos(double) noexcept;
 CRTIMP double
@@ -116,7 +134,33 @@ double
 sin(double) noexcept;
 double
 sqrt(double) noexcept;
+inline float
+atan2f(float y, float x) noexcept {
+    return (float)atan2(y, x);
+}
+inline float
+ceilf(float x) noexcept {
+    return (float)ceil(x);
+}
+inline float
+cosf(float x) noexcept {
+    return (float)cos(x);
+}
+inline float
+floorf(float x) noexcept {
+    return (float)floor(x);
+}
+inline float
+sinf(float x) noexcept {
+    return (float)sin(x);
+}
+inline float
+sqrtf(float x) noexcept {
+    return (float)sqrt(x);
+}
+#endif
 
+// 2010 stdlib.h
 // 2012 stdlib.h
 CRTIMP double
 strtod(char const*, char**) noexcept;
@@ -125,25 +169,29 @@ strtol(char const*, char**, int) noexcept;
 CRTIMP unsigned long
 strtoul(char const*, char**, int) noexcept;
 
+// 2010 stdlib.h
 // 2012 stdlib.h
 CRTIMP int*
-_errno(void);
+_errno(void) noexcept;
 }  // extern "C"
 __pragma(pack(pop));
 
+// os/memmove.cpp
 extern "C" {
 void*
 memmem(const void*, size_t, const void*, size_t) noexcept;
 }  // extern "C"
 
+// 2010 string.h
 // 2012 string.h
 extern "C" {
 void*
 memmove(void*, const void*, size_t) noexcept;
 }  // extern "C"
 
+// 2010 stdio.h
 // 2012 stdio.h
-#if MSVC == 2012 || MSVC == 2013
+#if MSVC == 2010 || MSVC == 2012 || MSVC == 2013
 extern "C" {
 CRTIMP int
 printf(const char*, ...) noexcept;
@@ -161,6 +209,7 @@ int
 sprintf(char* const, char const* const, ...) noexcept;
 #endif
 
+// 2010 string.h
 // 2012 string.h
 // 2019 vcruntime_string.h
 extern "C" {
