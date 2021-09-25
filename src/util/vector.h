@@ -111,7 +111,7 @@ class Vector {
         // FIXME: Does not call move constructors.
         assert_(i <= size);
         grow();
-        memmove(data + i, data + i + 1, sizeof(X) * size);
+        memmove(data + i, data + i + 1, sizeof(X) * (size - i));
         new (data + i) X(x);
         size++;
     }
@@ -120,7 +120,7 @@ class Vector {
         // FIXME: Does not call move constructors.
         assert_(i <= size);
         grow();
-        memmove(data + i, data + i + 1, sizeof(X) * size);
+        memmove(data + i, data + i + 1, sizeof(X) * (size - i));
         new (data + i) X(static_cast<X&&>(x));
         size++;
     }
@@ -170,7 +170,7 @@ class Vector {
         }
         if (n > size) {
             for (size_t i = size; i < n; i++) {
-                new (data + i) X();
+                new (data + i) X;
             }
         }
         else if (n < size) {
