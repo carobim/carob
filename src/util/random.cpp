@@ -8,7 +8,7 @@ uint32_t state;
 
 void
 initRandom() noexcept {
-    state = chronoNow();
+    state = static_cast<uint32_t>(chronoNow());
 }
 
 /* https://en.wikipedia.org/wiki/Lehmer_random_number_generator */
