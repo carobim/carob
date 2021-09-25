@@ -25,8 +25,11 @@ _script: &script
       rebuild=${bottle#$name}
       rebuild=${rebuild:+.}${rebuild#^}
 
+      url=https://homebrew.bintray.com/bottles/$name.$BOTTLE_TAG.bottle$rebuild.tar.gz
+      echo "Downloading $url..."
+
       mkdir -p ~/Cellar
-      curl -L https://homebrew.bintray.com/bottles/$name.$BOTTLE_TAG.bottle$rebuild.tar.gz | gzip -d | tar x -C ~/Cellar
+      curl -sS -L "$url" | gzip -d | tar x -C ~/Cellar
     done
 
     # We don't have linker flags appropriate for linking against ar archives
