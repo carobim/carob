@@ -13,6 +13,8 @@ _script: &script
     #          builds to take ~4 minutes, which is 90% of the build time.
     # Fix:     Download & install Homebrew bottles manually.
 
+    (
+    set -e
     shopt -s nullglob
 
     # Download Homebrew bottles.
@@ -88,6 +90,7 @@ _script: &script
     cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
     make -j `sysctl -n hw.ncpu`
     ./units
+    )
 
 jobs:
   include:
