@@ -17,7 +17,7 @@ typedef struct CFBundle *CFBundleRef;
 typedef const __attribute__((objc_bridge(id))) void* CFTypeRef;
 typedef struct __CFURL *CFURLRef;
 
-CFURLRes
+CFURLRef
 CFBundleCopyBundleURL(CFBundleRef bundle) noexcept;
 CFBundleRef
 CFBundleGetMainBundle() noexcept;
