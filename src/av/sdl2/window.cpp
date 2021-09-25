@@ -19,8 +19,13 @@ fvec2 sdl2Scaling = {0.0, 0.0};
 
 static Nanoseconds start = 0;
 
-static Transform transformStack[10] = {transformIdentity};
-static size_t transformCount = 1;
+static struct Transform transformStack[10];
+static size_t transformTop = 1;
+
+static void
+init(void) noexcept {
+    transformStack[0] = transformIdentity();
+}
 
 static int
 getRefreshRate(SDL_Window* window) noexcept {
@@ -92,7 +97,7 @@ handleEvent(const SDL_Event& event) noexcept {
 }
 
 static void
-handleEvents() noexcept {
+handleEvents(void) noexcept {
     SDL_Event event;
 
     while (SDL_PollEvent(&event)) {
@@ -101,12 +106,12 @@ handleEvents() noexcept {
 }
 
 static void
-updateTransform() noexcept {
+updateTransform(void) noexcept {
     int w, h;
 
     SDL_GetWindowSize(sdl2Window, &w, &h);
 
-    Transform transform = transformStack[transformCount - 1];
+    struct Transform transform = transformStack[transformTop];
 
     float xScale = transform[0];
     float yScale = transform[5];
@@ -118,7 +123,7 @@ updateTransform() noexcept {
 }
 
 time_t
-windowTime() noexcept {
+windowTime(void) noexcept {
     if (start == 0) {
         start = chronoNow();
     }
@@ -126,7 +131,9 @@ windowTime() noexcept {
 }
 
 void
-windowCreate() noexcept {
+windowCreate(void) noexcept {
+    init();
+
     {
         TimeMeasure m("Initialized SDL2 video subsystem");
         if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -159,14 +166,14 @@ windowCreate() noexcept {
 }
 
 int
-windowWidth() noexcept {
+windowWidth(void) noexcept {
     int w, h;
     SDL_GetWindowSize(sdl2Window, &w, &h);
     return w;
 }
 
 int
-windowHeight() noexcept {
+windowHeight(void) noexcept {
     int w, h;
     SDL_GetWindowSize(sdl2Window, &w, &h);
     return h;
@@ -178,7 +185,7 @@ windowSetCaption(StringView caption) noexcept {
 }
 
 void
-windowMainLoop() noexcept {
+windowMainLoop(void) noexcept {
     SDL_ShowWindow(sdl2Window);
 
     DisplayList display = {};
@@ -275,30 +282,30 @@ windowPushScale(float x, float y) noexcept {
     assert_(x == y);
 
     float factor = static_cast<float>(x);
-    Transform transform = transformStack[transformCount - 1];
+    struct Transform transform = transformStack[transformTop];
 
-    transformStack[transformCount++] = transformScale(factor, factor) * transform;
+    transformStack[++transformTop] = transformScale(factor, factor) * transform;
     updateTransform();
 }
 
 void
-windowPopScale() noexcept {
-    transformCount--;
+windowPopScale(void) noexcept {
+    --transformTop;
     updateTransform();
 }
 
 void
 windowPushTranslate(float x, float y) noexcept {
-    Transform transform = transformStack[transformCount - 1];
-    transformStack[transformCount++] =
+    struct Transform transform = transformStack[transformTop];
+    transformStack[++transformTop] =
             transformTranslate(static_cast<float>(x), static_cast<float>(y)) *
             transform;
     updateTransform();
 }
 
 void
-windowPopTranslate() noexcept {
-    transformCount--;
+windowPopTranslate(void) noexcept {
+    --transformTop;
     updateTransform();
 }
 
@@ -306,10 +313,10 @@ void
 windowPushClip(float x, float y, float width, float height) noexcept { }
 
 void
-windowPopClip() noexcept { }
+windowPopClip(void) noexcept { }
 
 void
-windowClose() noexcept {
+windowClose(void) noexcept {
     SDL_HideWindow(sdl2Window);
     sdl2Window = 0;
 }

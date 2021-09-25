@@ -784,7 +784,7 @@ imageStartFrame() noexcept {
     glClear_(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-static Transform
+static struct Transform
 getOrtho() noexcept {
     float ww = static_cast<float>(confWindowSize.x);
     float wh = static_cast<float>(confWindowSize.y);

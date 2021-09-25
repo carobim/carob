@@ -14,7 +14,7 @@ struct Transform {
 };
 
 struct Transform
-transformIdentity() noexcept;
+transformIdentity(void) noexcept;
 
 struct Transform
 transformScale(float x, float y) noexcept;

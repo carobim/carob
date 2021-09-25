@@ -12,20 +12,20 @@
 #include "util/string.h"
 
 void
-windowCreate() noexcept { }
+windowCreate(void) noexcept { }
 
 time_t
-windowTime() noexcept {
+windowTime(void) noexcept {
     return ns_to_ms(chronoNow());
 }
 
 int
-windowWidth() noexcept {
+windowWidth(void) noexcept {
     return confWindowSize.x;
 }
 
 int
-windowHeight() noexcept {
+windowHeight(void) noexcept {
     return confWindowSize.y;
 }
 
@@ -33,7 +33,7 @@ void
 windowSetCaption(StringView) noexcept { }
 
 void
-windowMainLoop() noexcept {
+windowMainLoop(void) noexcept {
     DisplayList dl = {};
 
     const Nanoseconds idealFrameTime = s_to_ns(1) / 60;
@@ -118,15 +118,15 @@ windowDrawRect(float, float, float, float, uint32_t) noexcept { }
 void
 windowPushScale(float, float) noexcept { }
 void
-windowPopScale() noexcept { }
+windowPopScale(void) noexcept { }
 void
 windowPushTranslate(float, float) noexcept { }
 void
-windowPopTranslate() noexcept { }
+windowPopTranslate(void) noexcept { }
 void
 windowPushClip(float, float, float, float) noexcept { }
 void
-windowPopClip() noexcept { }
+windowPopClip(void) noexcept { }
 
 void
-windowClose() noexcept { }
+windowClose(void) noexcept { }

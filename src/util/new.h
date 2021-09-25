@@ -23,10 +23,10 @@ operator new(size_t, void* p) noexcept {
     return p;
 }
 
-/* The cast to uint32_t fixes a Walloc-size-larger-than on GCC 8. */
+/* Staying with size_t here ensures we do not receive a -Wstringop-overflow on GCC 10. */
 #define xmalloc(T, count) \
-    ((T*)malloc((uint32_t)(sizeof(T) * (count))))
+    ((T*)malloc(sizeof(T) * (count)))
 #define xrealloc(ptr, T, count) \
-    ((T*)realloc(ptr, (uint32_t)(sizeof(T) * (count))))
+    ((T*)realloc(ptr, sizeof(T) * (count)))
 
 #endif

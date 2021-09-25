@@ -21,19 +21,19 @@ typedef uint32_t Keys;
 // This module is handles input and drawing.
 
 void
-windowCreate() noexcept;
+windowCreate(void) noexcept;
 
 //! Time since epoch.
 time_t
-windowTime() noexcept;
+windowTime(void) noexcept;
 
 //! Width of the window in pixels.
 int
-windowWidth() noexcept;
+windowWidth(void) noexcept;
 
 //! Height of the window in pixels.
 int
-windowHeight() noexcept;
+windowHeight(void) noexcept;
 
 //! Set window manager caption.
 void
@@ -41,27 +41,27 @@ windowSetCaption(StringView caption) noexcept;
 
 //! Show the window and start the main loop.
 void
-windowMainLoop() noexcept;
+windowMainLoop(void) noexcept;
 
 void
 windowPushScale(float x, float y) noexcept;
 void
-windowPopScale() noexcept;
+windowPopScale(void) noexcept;
 void
 windowPushTranslate(float x, float y) noexcept;
 void
-windowPopTranslate() noexcept;
+windowPopTranslate(void) noexcept;
 void
 windowPushClip(float x, float y, float width, float height) noexcept;
 void
-windowPopClip() noexcept;
+windowPopClip(void) noexcept;
 
 void
 windowEmitKeyDown(Key key) noexcept;
 void
 windowEmitKeyUp(Key key) noexcept;
 void
-windowClose() noexcept;
+windowClose(void) noexcept;
 
 extern Keys windowKeysDown;
 
