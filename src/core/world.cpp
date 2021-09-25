@@ -136,7 +136,7 @@ worldTick(time_t dt) noexcept {
 
 void
 worldTurn() noexcept {
-    if (confMoveMode == MoveMode::TURN) {
+    if (confMoveMode == TURN) {
         worldArea->turn();
     }
 }

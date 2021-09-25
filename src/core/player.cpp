@@ -38,15 +38,15 @@ Player::destroy() noexcept {
 void
 Player::startMovement(ivec2 delta) noexcept {
     switch (confMoveMode) {
-    case MoveMode::TURN:
+    case TURN:
         moveByTile(delta);
         break;
-    case MoveMode::TILE:
+    case TILE:
         movements[numMovements++] = delta;
         velocity = delta;
         moveByTile(velocity);
         break;
-    case MoveMode::NOTILE:
+    case NOTILE:
         // TODO
         break;
     }
@@ -55,9 +55,9 @@ Player::startMovement(ivec2 delta) noexcept {
 void
 Player::stopMovement(ivec2 delta) noexcept {
     switch (confMoveMode) {
-    case MoveMode::TURN:
+    case TURN:
         break;
-    case MoveMode::TILE:
+    case TILE:
         for (size_t i = 0; i < numMovements; i++) {
             if (movements[i] == delta) {
                 // Erase movement.
@@ -76,7 +76,7 @@ Player::stopMovement(ivec2 delta) noexcept {
             velocity.y = 0;
         }
         break;
-    case MoveMode::NOTILE:
+    case NOTILE:
         // TODO
         break;
     }
@@ -135,7 +135,7 @@ Player::arrived() noexcept {
     }
 
     // If we have a velocity, keep moving.
-    if (confMoveMode == MoveMode::TILE && (velocity.x || velocity.y)) {
+    if (confMoveMode == TILE && (velocity.x || velocity.y)) {
         moveByTile(velocity);
     }
 }

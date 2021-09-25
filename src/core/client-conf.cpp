@@ -13,7 +13,7 @@
         return false; \
     }
 
-LogVerbosity confVerbosity = LogVerbosity::VERBOSE;
+LogVerbosity confVerbosity = VERBOSE;
 MoveMode confMoveMode;
 ivec2 confWindowSize = {640, 480};
 bool confFullscreen = false;
@@ -61,13 +61,13 @@ confParse(StringView filename) noexcept {
         if (verbosityValue.isString()) {
             StringView verbosity = verbosityValue.toString();
             if (verbosity == "quiet") {
-                confVerbosity = LogVerbosity::QUIET;
+                confVerbosity = QUIET;
             }
             else if (verbosity == "normal") {
-                confVerbosity = LogVerbosity::NORMAL;
+                confVerbosity = NORMAL;
             }
             else if (verbosity == "verbose") {
-                confVerbosity = LogVerbosity::VERBOSE;
+                confVerbosity = VERBOSE;
             }
             else {
                 logErr(filename,

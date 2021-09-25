@@ -17,7 +17,7 @@
 #    include "os/mac/gui.h"
 #endif
 
-static LogVerbosity verb = LogVerbosity::NORMAL;
+static LogVerbosity verb = NORMAL;
 
 static time_t startTime;
 
@@ -68,7 +68,7 @@ logSetVerbosity(LogVerbosity v) noexcept {
 
 void
 logInfo(StringView domain, StringView msg) noexcept {
-    if (verb > LogVerbosity::NORMAL) {
+    if (verb > NORMAL) {
         LockGuard lock(stdoutMutex);
 
         //setTermColor(TC_GREEN, Stdout);
@@ -84,7 +84,7 @@ logInfo(StringView domain, StringView msg) noexcept {
 
 void
 logErr(StringView domain, StringView msg) noexcept {
-    if (verb > LogVerbosity::QUIET) {
+    if (verb > QUIET) {
         {
             LockGuard lock(stdoutMutex);
 
@@ -154,13 +154,13 @@ logReportVerbosityOnStartup() noexcept {
 
     StringView verbString;
     switch (confVerbosity) {
-    case LogVerbosity::QUIET:
+    case QUIET:
         verbString = "QUIET";
         break;
-    case LogVerbosity::NORMAL:
+    case NORMAL:
         verbString = "NORMAL";
         break;
-    case LogVerbosity::VERBOSE:
+    case VERBOSE:
         verbString = "VERBOSE";
         break;
     }

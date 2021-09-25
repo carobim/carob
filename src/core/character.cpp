@@ -21,13 +21,13 @@ Character::tick(time_t dt) noexcept {
     Entity::tick(dt);
 
     switch (confMoveMode) {
-    case MoveMode::TURN:
+    case TURN:
         // Characters don't do anything on tick() for TURN mode.
         break;
-    case MoveMode::TILE:
+    case TILE:
         moveTowardDestination(dt);
         break;
-    case MoveMode::NOTILE:
+    case NOTILE:
         assert_(false && "not implemented");
         break;
     }
@@ -142,7 +142,7 @@ Character::moveByTile(ivec2 delta) noexcept {
     }
 
     switch (confMoveMode) {
-    case MoveMode::TURN:
+    case TURN:
         // Movement is instantaneous.
         redraw = true;
         r = destCoord;
@@ -150,8 +150,8 @@ Character::moveByTile(ivec2 delta) noexcept {
         setAnimationStanding();
         arrived();
         break;
-    case MoveMode::TILE:
-    case MoveMode::NOTILE:
+    case TILE:
+    case NOTILE:
         // Movement happens in Entity::moveTowardDestination() during
         // tick().
         break;
