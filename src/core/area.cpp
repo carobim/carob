@@ -291,10 +291,10 @@ Area::visibleTiles() noexcept {
     fvec2 screen = viewportGetVirtRes();
     fvec2 off = viewportGetMapOffset();
 
-    int x1 = static_cast<int>(floor(off.x / grid.tileDim.x));
-    int y1 = static_cast<int>(floor(off.y / grid.tileDim.y));
-    int x2 = static_cast<int>(ceil((screen.x + off.x) / grid.tileDim.x));
-    int y2 = static_cast<int>(ceil((screen.y + off.y) / grid.tileDim.y));
+    int x1 = static_cast<int>(floorf(off.x / grid.tileDim.x));
+    int y1 = static_cast<int>(floorf(off.y / grid.tileDim.y));
+    int x2 = static_cast<int>(ceilf((screen.x + off.x) / grid.tileDim.x));
+    int y2 = static_cast<int>(ceilf((screen.y + off.y) / grid.tileDim.y));
 
     if (!grid.loopX) {
         x1 = bound(x1, 0, grid.dim.x);

@@ -601,8 +601,7 @@ Entity::setDestinationCoordinate(fvec3 destCoord) noexcept {
     r.z = destCoord.z;
 
     this->destCoord = destCoord;
-    angleToDest =
-            static_cast<float>(atan2(destCoord.y - r.y, destCoord.x - r.x));
+    angleToDest = atan2f(destCoord.y - r.y, destCoord.x - r.x);
 }
 
 void
@@ -617,8 +616,8 @@ Entity::moveTowardDestination(time_t dt) noexcept {
     float toDestPixels = distanceTo(r, destCoord);
     if (toDestPixels > traveledPixels) {
         // The destination has not been reached yet.
-        r.x += static_cast<float>(cos(angleToDest)) * traveledPixels;
-        r.y += static_cast<float>(sin(angleToDest)) * traveledPixels;
+        r.x += cosf(angleToDest) * traveledPixels;
+        r.y += sinf(angleToDest) * traveledPixels;
     }
     else {
         // We have arrived at the destination.
