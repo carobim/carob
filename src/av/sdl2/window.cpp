@@ -301,7 +301,8 @@ windowPushTranslate(float x, float y) noexcept {
             transformMultiply(
                     transformTranslate(
                         static_cast<float>(x),
-                        static_cast<float>(y))
+                        static_cast<float>(y)),
+                    transform
             );
     updateTransform();
 }
