@@ -284,7 +284,7 @@ windowPushScale(float x, float y) noexcept {
     float factor = static_cast<float>(x);
     struct Transform transform = transformStack[transformTop];
 
-    transformStack[++transformTop] = transformScale(factor, factor) * transform;
+    transformStack[++transformTop] = transformMultiply(transformScale(factor, factor), transform);
     updateTransform();
 }
 
