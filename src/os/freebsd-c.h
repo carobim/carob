@@ -149,22 +149,12 @@ readdir(DIR*) noexcept;
 }
 
 // math.h
-extern "C" {
-double
-atan2(double, double) noexcept;
-double
-ceil(double) noexcept;
-float
-ceilf(float) noexcept;
-double
-cos(double) noexcept;
-double
-floor(double) noexcept;
-double
-sin(double) noexcept;
-double
-sqrt(double) noexcept;
-}
+#define atan2f __builtin_atan2f
+#define ceilf __builtin_ceilf
+#define cosf __builtin_cosf
+#define floorf __builtin_floorf
+#define sinf __builtin_sinf
+#define sqrtf __builtin_sqrtf
 
 // pthread.h
 extern "C" {
