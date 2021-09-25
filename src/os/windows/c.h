@@ -39,13 +39,13 @@ typedef long LONG_PTR, *PLONG_PTR;
 typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #endif
 
-// 2010 crtdefs.h
+// Defined as __declspec(dllimport) when building a DLL.
 #if MSVC == 2010
-// Only defined as __declspec(dllimport) when building a DLL?
+// 2010 crtdefs.h
 #define CRTIMP
 #else
-// TODO: Verify the source and definitions for the other MSVCs.
-#define CRTIMP       __declspec(dllimport)
+// 2019 corecrt.h
+#define CRTIMP
 #endif
 
 #define WINAPI       __stdcall
@@ -108,6 +108,7 @@ strlen(char const*) noexcept;
 
 // 2010 math.h
 // 2012 math.h
+// 2019 corecrt_math.h
 #if SIZE == 64
 CRTIMP double
 atan2f(float, float) noexcept;
@@ -120,7 +121,7 @@ floorf(double) noexcept;
 CRTIMP float
 sinf(float) noexcept;
 CRTIMP float
-sqrt(float) noexcept;
+sqrtf(float) noexcept;
 #else
 double
 atan2(double, double) noexcept;
