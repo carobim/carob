@@ -11,12 +11,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Build
         run: |
-          curl -LOsS https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-mac.zip
-          unzip ninja-mac.zip >/dev/null && rm ninja-mac.zip
           PATH=$PATH:$PWD
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug
-          ninja
+          cmake .. -G Xcode
+          cmake --build .
       - name: Test
         run: build/units
