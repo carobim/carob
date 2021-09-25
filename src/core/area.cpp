@@ -116,10 +116,10 @@ Area::draw(DisplayList* display) noexcept {
 
     for (int z = 0; z < maxZ; z++) {
         switch (grid.layerTypes[z]) {
-        case TileGrid::LayerType::TILE_LAYER:
+        case TILE_LAYER:
             drawTiles(display, tiles, z);
             break;
-        case TileGrid::LayerType::OBJECT_LAYER:
+        case OBJECT_LAYER:
             drawEntities(display, tiles, z);
             break;
         }
@@ -171,7 +171,7 @@ Area::needsRedraw() noexcept {
     time_t now = worldTime();
 
     for (int z = tiles.z1; z < tiles.z2; z++) {
-        if (grid.layerTypes[z] != TileGrid::LayerType::TILE_LAYER) {
+        if (grid.layerTypes[z] != TILE_LAYER) {
             continue;
         }
         for (int y = tiles.y1; y < tiles.y2; y++) {
@@ -230,7 +230,7 @@ Area::tick(time_t dt) noexcept {
     }
     erase_if(overlays, isOverlayDead);
 
-    if (confMoveMode != MoveMode::TURN) {
+    if (confMoveMode != TURN) {
         player->tick(dt);
 
         for (Character** character = characters.begin();
