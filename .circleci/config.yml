@@ -101,22 +101,6 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.13, GCC 8
-  debian_10_buster:
-    docker:
-      - image: debian:10-slim
-    steps:
-      - run: |
-          apt-get update &&
-          apt-get install -y --no-install-recommends cmake g++ ninja-build
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
-          ninja
-      - run: build/units
-
   # Has CMake 3.18, GCC 10, Ninja 1.10
   debian_11_bullseye:
     docker:
@@ -263,7 +247,6 @@ workflows:
       - centos_7
       - centos_8
       - debian_7_wheezy
-      - debian_10_buster
       - debian_11_bullseye
       - fedora_20
       - fedora_34
