@@ -14,7 +14,7 @@ jobs:
           PATH=$PATH:$PWD
           mkdir build
           cd build
-          cmake .. -G Xcode -DCMAKE_BUILD_TYPE=Debug
+          cmake .. -G Xcode
           cmake --build .
       - name: Test
         run: build/units
