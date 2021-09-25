@@ -12,7 +12,7 @@ StringView dataWorldName = "Null World";
 StringView dataWorldAuthor = "Paul Merrill";
 StringView dataWorldVersion = "1";
 
-enum MoveMode dataWorldMoveMode = MoveMode::TILE;
+enum MoveMode dataWorldMoveMode = TILE;
 fvec2 dataWorldViewportResolution = {240, 160};
 int dataWorldInputPersistDelayInitial = 300;
 int dataWorldInputPersistDelayConsecutive = 100;
