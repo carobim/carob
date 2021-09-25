@@ -298,8 +298,11 @@ void
 windowPushTranslate(float x, float y) noexcept {
     struct Transform transform = transformStack[transformTop];
     transformStack[++transformTop] =
-            transformTranslate(static_cast<float>(x), static_cast<float>(y)) *
-            transform;
+            transformMultiply(
+                    transformTranslate(
+                        static_cast<float>(x),
+                        static_cast<float>(y))
+            );
     updateTransform();
 }
 
