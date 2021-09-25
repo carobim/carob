@@ -66,23 +66,6 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.11, GCC 8
-  centos_8:
-    docker:
-      - image: centos:8
-    steps:
-      # Install libarchive to solve a build issue due to CMake/libarchive
-      # version mismatch on CentOS 8. (2021-06-20)
-      - run: |
-          dnf install -y cmake gcc-c++ libarchive make
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
-          make -j 2
-      - run: build/units
-
   # Has CMake 2.8.9, GCC 4.7
   debian_7_wheezy:
     docker:
@@ -172,6 +155,21 @@ jobs:
           cd build &&
           nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./units'
 
+  # Has CMake 3.18, GCC 8
+  rocky_8:
+    docker:
+      - image: rockylinux/rockylinux:8
+    steps:
+      - run: |
+          dnf install -y cmake gcc-c++ make
+      - checkout
+      - run: |
+          mkdir build &&
+          cd build &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          make -j 2
+      - run: build/units
+
   # Has CMake 2.8.7, GCC 4.6
   ubuntu_12_04_precise:
     docker:
@@ -245,12 +243,12 @@ workflows:
       - alpine_3_14
       - arch
       - centos_7
-      - centos_8
       - debian_7_wheezy
       - debian_11_bullseye
       - fedora_20
       - fedora_34
       - nix_2_3_12
+      - rocky_8
       - ubuntu_12_04_precise
       - ubuntu_21_04_hirsute
       - void
