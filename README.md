@@ -6,7 +6,7 @@
 | macOS 10.11 | [![TravisCI](https://api.travis-ci.com/TsunagariEngine/Tsunagari.svg)](https://app.travis-ci.com/github/TsunagariEngine/Tsunagari)                                                |
 | macOS 11    | [![GitHub Actions](https://github.com/TsunagariEngine/Tsunagari/actions/workflows/build.yml/badge.svg)](https://github.com/TsunagariEngine/Tsunagari/actions/workflows/build.yml) |
 | Linux       | [![CircleCI](https://circleci.com/gh/TsunagariEngine/Tsunagari.svg?style=shield)](https://circleci.com/gh/TsunagariEngine/Tsunagari)                                              |
-| FreeBSD 11  | [![builds.sr.ht](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-11.yml.svg)](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-11.yml)                                     |
+| FreeBSD 12  | [![builds.sr.ht](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-12.yml.svg)](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-12.yml)                                     |
 | FreeBSD 13  | [![builds.sr.ht](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-13.yml.svg)](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-13.yml)                                     |
 | NetBSD 9    | [![builds.sr.ht](https://builds.sr.ht/~pdm/tsunagari/commits/netbsd-9.yml.svg)](https://builds.sr.ht/~pdm/tsunagari/commits/netbsd-9.yml)                                         |
 
