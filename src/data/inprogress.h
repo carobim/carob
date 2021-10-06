@@ -28,7 +28,7 @@ class InProgress {
     virtual ~InProgress() noexcept;
 
     virtual void
-    tick(time_t dt) noexcept = 0;
+    tick(Time dt) noexcept = 0;
     bool
     isOver() noexcept;
 

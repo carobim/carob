@@ -80,9 +80,9 @@ class AreaJSON : public Area {
 };
 
 static void
-preallocateMapLayers(TileGrid& grid, size_t n) noexcept {
+preallocateMapLayers(TileGrid& grid, Size n) noexcept {
     ivec3 dim = grid.dim;
-    size_t layerSize = dim.x * dim.y;
+    Size layerSize = dim.x * dim.y;
     grid.graphics.reserve(layerSize * n);
 }
 
@@ -158,7 +158,7 @@ AreaJSON::processDescriptor() noexcept {
 
     CHECK(layersValue.toNode());
 
-    size_t numLayers = 0;
+    Size numLayers = 0;
     for (JsonIterator layerNode = begin(layersValue);
          layerNode != end(layersValue);
          ++layerNode) {
@@ -242,8 +242,8 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
     if (coloroverlayValue.isString()) {
         unsigned char a, r, g, b;
         CHECK(parseARGB(coloroverlayValue.toString(), a, r, g, b));
-        colorOverlayARGB = (uint32_t)(a << 24) + (uint32_t)(r << 16) +
-                           (uint32_t)(g << 8) + (uint32_t)b;
+        colorOverlayARGB = (U32)(a << 24) + (U32)(r << 16) +
+                           (U32)(g << 8) + (U32)b;
     }
 
     return true;
@@ -321,9 +321,9 @@ AreaJSON::processTileSetFile(JsonValue obj,
 
     assert_(firstGid == tileGraphics.size);
 
-    uint32_t tileWidth, tileHeight;
-    uint32_t pixelWidth, pixelHeight;
-    uint32_t numAcross, numHigh;
+    U32 tileWidth, tileHeight;
+    U32 pixelWidth, pixelHeight;
+    U32 numAcross, numHigh;
 
     JsonValue imageNode = obj["image"];
     JsonValue imagewidthNode = obj["imagewidth"];
@@ -352,8 +352,8 @@ AreaJSON::processTileSetFile(JsonValue obj,
     CHECK(tileWidth <= 0x7FFF && tileHeight <= 0x7FFF);  // Reasonable limit?
 
     if ((grid.tileDim.x || grid.tileDim.y) &&
-        static_cast<uint32_t>(grid.tileDim.x) != tileWidth &&
-        static_cast<uint32_t>(grid.tileDim.y) != tileHeight) {
+        static_cast<U32>(grid.tileDim.x) != tileWidth &&
+        static_cast<U32>(grid.tileDim.y) != tileHeight) {
         logErr(descriptor, "Tileset's width/height contradict earlier <layer>");
         return false;
     }
@@ -507,7 +507,7 @@ AreaJSON::processTileType(JsonValue obj,
     frameLen = static_cast<int>(1000.0f / hertz);
 
     // Add 'now' to Animation constructor??
-    time_t now = worldTime();
+    Time now = worldTime();
     graphic = Animation(static_cast<Vector<Image>&&>(framesvec), frameLen);
     graphic.restart(now);
 
@@ -596,12 +596,12 @@ AreaJSON::processLayerData(JsonValue arr) noexcept {
      [9, 9, 9, ..., 3, 9, 9]
     */
 
-    const size_t z = static_cast<size_t>(grid.dim.z) - 1;
+    const Size z = static_cast<Size>(grid.dim.z) - 1;
 
     // If we ever allow finding layers out of order.
     // assert_(0 <= z && z < dim.z);
 
-    size_t x = 0, y = 0;
+    Size x = 0, y = 0;
 
     for (JsonIterator node = begin(arr); node != end(arr); ++node) {
         CHECK(node->value.isNumber());
@@ -613,13 +613,13 @@ AreaJSON::processLayerData(JsonValue arr) noexcept {
             return false;
         }
 
-        size_t idx = (z * grid.dim.y + y) * grid.dim.x + x;
+        Size idx = (z * grid.dim.y + y) * grid.dim.x + x;
 
         // A gid of zero means there is no tile at this
         // position on this layer.
         grid.graphics[idx] = gid;
 
-        if (++x == static_cast<size_t>(grid.dim.x)) {
+        if (++x == static_cast<Size>(grid.dim.x)) {
             x = 0;
             y++;
         }
@@ -801,7 +801,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
         CHECK(layermodrightValue.isNull());
     }
 
-    const size_t z = static_cast<size_t>(grid.dim.z) - 1;
+    const Size z = static_cast<Size>(grid.dim.z) - 1;
 
     // If we ever allow finding layers out of order.
     // assert_(0 <= z && z < dim.z);
@@ -925,7 +925,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
             ivec3 tile = {X, Y, static_cast<int>(z)};
 
             grid.flags[tile] |= flags;
-            for (size_t i = 0; i < EXITS_LENGTH; i++) {
+            for (Size i = 0; i < EXITS_LENGTH; i++) {
                 if (haveExit[i]) {
                     int dx = X - x;
                     int dy = Y - y;
@@ -938,7 +938,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
                     grid.exits[i][tile] = static_cast<Exit&&>(exit[i]);
                 }
             }
-            for (size_t i = 0; i < EXITS_LENGTH; i++) {
+            for (Size i = 0; i < EXITS_LENGTH; i++) {
                 if (haveLayermod[i]) {
                     grid.layermods[i][tile] = layermod[i];
                 }
@@ -1099,7 +1099,7 @@ AreaJSON::parseARGB(StringView str,
     }
 
     String buf;
-    for (size_t i = 0; i < 4; i++) {
+    for (Size i = 0; i < 4; i++) {
         buf.clear();
         buf = strs[i];
         int v;

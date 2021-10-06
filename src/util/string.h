@@ -8,8 +8,8 @@
 class String {
  public:
     char* data;
-    size_t size;
-    size_t capacity;
+    Size size;
+    Size capacity;
 
  public:
     String() noexcept;
@@ -30,7 +30,7 @@ class String {
     operator=(String&& s) noexcept;
 
     char&
-    operator[](size_t i) noexcept;
+    operator[](Size i) noexcept;
 
     String&
     operator<<(char c) noexcept;
@@ -57,9 +57,9 @@ class String {
     operator<<(float f) noexcept;
 
     void
-    resize(size_t n) noexcept;
+    resize(Size n) noexcept;
     void
-    reserve(size_t n) noexcept;
+    reserve(Size n) noexcept;
     void
     clear() noexcept;
     void
@@ -78,7 +78,7 @@ operator<(const String& a, const String& b) noexcept;
 bool
 operator>(const String& a, const String& b) noexcept;
 
-size_t
+Size
 hash_(const String& s) noexcept;
 
 #endif  // SRC_UTIL_STRING_H_

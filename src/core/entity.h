@@ -48,7 +48,7 @@ class Entity {
     isDead() noexcept;
 
     virtual void
-    tick(time_t dt) noexcept;
+    tick(Time dt) noexcept;
     virtual void
     turn() noexcept;
 
@@ -103,7 +103,7 @@ class Entity {
 
 
     struct OnTickFn {
-        void (*fn)(void* data, time_t);
+        void (*fn)(void* data, Time);
         void* data;
     };
     typedef Function OnTurnFn;
@@ -134,7 +134,7 @@ class Entity {
     setDestinationCoordinate(fvec3 destCoord) noexcept;
 
     void
-    moveTowardDestination(time_t dt) noexcept;
+    moveTowardDestination(Time dt) noexcept;
 
     // arrived() is called when an Entity arrives at its destination.  If
     // it is ordered to begin moving again from within arrived(), then the

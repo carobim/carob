@@ -26,7 +26,7 @@ worldInit() noexcept;
 /**
  * Syncronized time value used throughout the engine.
  */
-time_t
+Time
 worldTime() noexcept;
 
 /**
@@ -60,7 +60,7 @@ worldNeedsRedraw() noexcept;
  * Overlay         yes      yes      yes
  */
 void
-worldTick(time_t dt) noexcept;
+worldTick(Time dt) noexcept;
 
 /**
  * Update the game world when the turn is over (Player moves).

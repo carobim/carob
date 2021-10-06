@@ -13,8 +13,8 @@ initRandom() noexcept;
     @param max Maximum value.
     @return random integer between min and max.
 */
-uint32_t
-randInt(uint32_t min, uint32_t max) noexcept;
+U32
+randInt(U32 min, U32 max) noexcept;
 
 //! Produce a random float floating point number.
 /*!

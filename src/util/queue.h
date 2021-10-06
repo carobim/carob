@@ -12,11 +12,11 @@ class Queue {
     Queue() noexcept : data(0), offset(0), size(0), capacity(0) { }
     ~Queue() noexcept {
         // Items at head of ring buffer.
-        for (size_t i = offset; i < offset + size && i < capacity; i++) {
+        for (Size i = offset; i < offset + size && i < capacity; i++) {
             data[i].~T();
         }
         // Items at tail of ring buffer.
-        for (size_t i = 0;
+        for (Size i = 0;
              offset + size > capacity && i < offset + size - capacity;
              i++) {
             data[i].~T();
@@ -49,7 +49,7 @@ class Queue {
         return data[offset];
     }
     T&
-    operator[](size_t i) noexcept {
+    operator[](Size i) noexcept {
         assert_(i < size);
         return data[(offset + i) % capacity];
     }
@@ -57,15 +57,15 @@ class Queue {
  private:
     void
     resize() noexcept {
-        size_t newCapacity = capacity ? capacity * 2 : 4;
+        Size newCapacity = capacity ? capacity * 2 : 4;
         T* newData = xmalloc(T, newCapacity);
 
         // Realign data items at offset 0 in the new array.
-        for (size_t i = offset; i < offset + size && i < capacity; i++) {
+        for (Size i = offset; i < offset + size && i < capacity; i++) {
             new (&newData[i - offset]) T(static_cast<T&&>(data[i]));
             data[i].~T();
         }
-        for (size_t i = 0;
+        for (Size i = 0;
              offset + size > capacity && i < offset + size - capacity;
              i++) {
             new (&newData[i + capacity - offset]) T(static_cast<T&&>(data[i]));
@@ -81,9 +81,9 @@ class Queue {
 
  public:
     T* data;
-    size_t offset;
-    size_t size;
-    size_t capacity;
+    Size offset;
+    Size size;
+    Size capacity;
 };
 
 #endif  // SRC_UTIL_QUEUE_H_

@@ -54,8 +54,8 @@ wrap(T min, T value, T max) noexcept {
 }
 
 // Rounds a number up to the nearest power of 2, or to 0, whichever is lower.
-static inline uint32_t
-pow2(uint32_t i) noexcept {
+static inline U32
+pow2(U32 i) noexcept {
     i--;
     i |= i >> 1;
     i |= i >> 2;
@@ -65,8 +65,8 @@ pow2(uint32_t i) noexcept {
     i++;
     return i;
 }
-static inline uint64_t
-pow2(uint64_t i) noexcept {
+static inline U64
+pow2(U64 i) noexcept {
     i--;
     i |= i >> 1;
     i |= i >> 2;
@@ -80,9 +80,9 @@ pow2(uint64_t i) noexcept {
 
 // FIXME: Why does Apple need this?
 #if defined(__APPLE__)
-static inline size_t
-pow2(size_t i) noexcept {
-    return pow2(static_cast<uint64_t>(i));
+static inline Size
+pow2(Size i) noexcept {
+    return pow2(static_cast<U64>(i));
 }
 #endif
 

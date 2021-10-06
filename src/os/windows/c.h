@@ -10,15 +10,15 @@
 typedef char CHAR, *LPSTR, *LPTSTR, *NPSTR, *PSTR, TCHAR;
 typedef int BOOL;
 typedef long LONG, *PLONG;
-typedef size_t SIZE_T, *PSIZE_T;
+typedef Size SIZE_T, *PSIZE_T;
 typedef void *LPVOID, *HANDLE, *HWND, *PVOID;
-typedef int64_t LONGLONG;
+typedef I64 LONGLONG;
 
 typedef unsigned char BOOLEAN, BYTE;
 typedef unsigned int UINT;
 typedef unsigned long DWORD, *DWORD_PTR, ULONG, *LPDWORD;
 typedef unsigned short WORD;
-typedef uint64_t ULONGLONG;
+typedef U64 ULONGLONG;
 
 typedef const char *LPCSTR, *LPCSTR;
 typedef const void* LPCVOID;
@@ -63,7 +63,7 @@ typedef struct _iobuf {
 } FILE;
 // 2010 time.h
 // 2012 time.h
-typedef int64_t __time64_t;
+typedef I64 __time64_t;
 
 __pragma(pack(push, 8));
 extern "C" {
@@ -98,12 +98,12 @@ srand(unsigned int) noexcept;
 // 2010 string.h
 // 2012 string.h
 CRTIMP void*
-memchr(const void*, int, size_t) noexcept;
+memchr(const void*, int, Size) noexcept;
 int
-memcmp(void const*, void const*, size_t) noexcept;
+memcmp(void const*, void const*, Size) noexcept;
 void*
-memcpy(void*, void const*, size_t) noexcept;
-size_t
+memcpy(void*, void const*, Size) noexcept;
+Size
 strlen(char const*) noexcept;
 
 // 2010 math.h
@@ -180,14 +180,14 @@ __pragma(pack(pop));
 // os/memmove.cpp
 extern "C" {
 void*
-memmem(const void*, size_t, const void*, size_t) noexcept;
+memmem(const void*, Size, const void*, Size) noexcept;
 }  // extern "C"
 
 // 2010 string.h
 // 2012 string.h
 extern "C" {
 void*
-memmove(void*, const void*, size_t) noexcept;
+memmove(void*, const void*, Size) noexcept;
 }  // extern "C"
 
 // 2010 stdio.h
@@ -215,7 +215,7 @@ sprintf(char* const, char const* const, ...) noexcept;
 // 2019 vcruntime_string.h
 extern "C" {
 void*
-memset(void*, int, size_t);
+memset(void*, int, Size) noexcept;
 }  // extern "C"
 
 #endif  // SRC_OS_WINDOWS_C_H_

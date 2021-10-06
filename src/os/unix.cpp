@@ -64,12 +64,12 @@ listDir(StringView path) noexcept {
 }
 
 bool
-writeFile(StringView path, uint32_t length, void* data) noexcept {
+writeFile(StringView path, U32 length, void* data) noexcept {
     int fd = open(String(path).null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
     if (fd == -1) {
         return false;
     }
-    ssize_t written = write(fd, data, length);
+    SSize written = write(fd, data, length);
     if (written != length) {
         close(fd);
         return false;
@@ -79,26 +79,24 @@ writeFile(StringView path, uint32_t length, void* data) noexcept {
 }
 
 bool
-writeFileVec(StringView path,
-             uint32_t count,
-             uint32_t* lengths,
+writeFileVec(StringView path, U32 count, U32* lengths,
              void** datas) noexcept {
     int fd = open(String(path).null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
     if (fd == -1) {
         return false;
     }
 
-    ssize_t total = 0;
+    SSize total = 0;
     Vector<iovec> ios;
 
     ios.reserve(count);
-    for (size_t i = 0; i < count; i++) {
+    for (Size i = 0; i < count; i++) {
         total += lengths[i];
         iovec io{datas[i], lengths[i]};
         ios.push_back(io);
     }
 
-    ssize_t written = writev(fd, ios.data, static_cast<int>(ios.size));
+    SSize written = writev(fd, ios.data, static_cast<int>(ios.size));
     if (written != total) {
         close(fd);
         return false;
@@ -126,12 +124,12 @@ readFile(StringView path, String& data) noexcept {
         return false;
     }
 
-    size_t size = status.st_size;
+    Size size = status.st_size;
     data.reserve(size + 1);
     data.resize(size);
 
-    ssize_t nbytes = read(fd, data.data, size);
-    if (nbytes < 0 || static_cast<size_t>(nbytes) != size) {
+    SSize nbytes = read(fd, data.data, size);
+    if (nbytes < 0 || static_cast<Size>(nbytes) != size) {
         close(fd);
         return false;
     }

@@ -7,7 +7,7 @@
 
 struct MappedFile {
     char* data;
-    size_t size;
+    Size size;
     int fd;
 };
 

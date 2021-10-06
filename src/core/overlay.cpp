@@ -5,7 +5,7 @@
 #include "util/compiler.h"
 
 void
-Overlay::tick(time_t dt) noexcept {
+Overlay::tick(Time dt) noexcept {
     Entity::tick(dt);
     moveTowardDestination(dt);
 }

@@ -18,7 +18,7 @@ soundLoad(StringView path) noexcept;
 
 // Free destroyed Sounds that were not recently played.
 void
-soundsPrune(time_t latestPermissibleUse) noexcept;
+soundsPrune(Time latestPermissibleUse) noexcept;
 
 //
 // Sound

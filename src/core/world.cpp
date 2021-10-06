@@ -29,14 +29,14 @@ static Player player;
 /**
  * Total unpaused game run time.
  */
-static time_t total = 0;
+static Time total = 0;
 
 static bool alive = false;
 static bool redraw = false;
 static int paused = 0;
 
 static Keys keyStates[10];
-static size_t numKeyStates = 0;
+static Size numKeyStates = 0;
 
 bool
 worldInit() noexcept {
@@ -60,7 +60,7 @@ worldInit() noexcept {
     return true;
 }
 
-time_t
+Time
 worldTime() noexcept {
     assert_(total >= 0);
     return total;
@@ -124,7 +124,7 @@ worldNeedsRedraw() noexcept {
 }
 
 void
-worldTick(time_t dt) noexcept {
+worldTick(Time dt) noexcept {
     if (paused) {
         return;
     }
@@ -223,7 +223,7 @@ worldRestoreKeys() noexcept {
     Keys now = windowKeysDown;
     Keys then = keyStates[--numKeyStates];
 
-    for (size_t i = 0; i < sizeof(Keys) * 8; i++) {
+    for (Size i = 0; i < sizeof(Keys) * 8; i++) {
         Key key = (now ^ then) & (1 << i);
         if (key) {
             if (now & key) {
@@ -238,7 +238,7 @@ worldRestoreKeys() noexcept {
 
 void
 worldGarbageCollect() noexcept {
-    time_t latestPermissibleUse = total - confCacheTTL * 1000;
+    Time latestPermissibleUse = total - confCacheTTL * 1000;
 
     imagesPrune(latestPermissibleUse);
     musicGarbageCollect();

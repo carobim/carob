@@ -9,21 +9,21 @@ extern "C" {
 __declspec(dllimport) void
 free(void*) noexcept;
 __declspec(dllimport) __declspec(restrict) void*
-malloc(size_t) noexcept;
+malloc(Size) noexcept;
 #else
 void*
-malloc(size_t) noexcept;
+malloc(Size) noexcept;
 void
 free(void*) noexcept;
 #endif
 }
 
 inline void*
-operator new(size_t, void* p) noexcept {
+operator new(Size, void* p) noexcept {
     return p;
 }
 
-/* Staying with size_t here ensures we do not receive a -Wstringop-overflow on GCC 10. */
+/* Staying with Size here ensures we do not receive a -Wstringop-overflow on GCC 10. */
 #define xmalloc(T, count) \
     ((T*)malloc(sizeof(T) * (count)))
 #define xrealloc(ptr, T, count) \

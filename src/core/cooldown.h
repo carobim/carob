@@ -12,21 +12,21 @@
 class Cooldown {
  public:
     Cooldown() noexcept;
-    Cooldown(time_t duration) noexcept;
+    Cooldown(Time duration) noexcept;
 
     /**
      * Sets a new duration for the Cooldown and resets any current
      * expirations.
      */
     void
-    setDuration(time_t duration) noexcept;
+    setDuration(Time duration) noexcept;
 
     /**
      * Let the Cooldown know that the specified number of milliseconds have
      * passed.
      */
     void
-    advance(time_t dt) noexcept;
+    advance(Time dt) noexcept;
 
     /**
      * Whether enough time has passed that the Cooldown has expired at
@@ -50,7 +50,7 @@ class Cooldown {
     wrapAll() noexcept;
 
  private:
-    time_t duration, passed;
+    Time duration, passed;
 };
 
 #endif  // SRC_CORE_COOLDOWN_H_

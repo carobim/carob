@@ -52,7 +52,7 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
     if (dirSeparator != '/') {
         standardizedPath = path;
 
-        for (size_t i = 0; i < path.size; i++) {
+        for (Size i = 0; i < path.size; i++) {
             if (standardizedPath[i] == dirSeparator) {
                 standardizedPath[i] = '/';
             }
@@ -63,7 +63,7 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
 
     packWriterAddBlob(ctx->pack,
                       path,
-                      static_cast<uint32_t>(data.size),
+                      static_cast<U32>(data.size),
                       data.data);
 
     data.reset();  // Don't delete data pointer.
@@ -104,11 +104,11 @@ listArchive(StringView archivePath) noexcept {
 
     String output;
 
-    uint32_t numEntries = readerSize(pack);
-    for (uint32_t i = 0; i < numEntries; i++) {
+    U32 numEntries = readerSize(pack);
+    for (U32 i = 0; i < numEntries; i++) {
         BlobDetails details = readerDetails(pack, i);
         StringView path = details.path;
-        uint32_t size = details.size;
+        U32 size = details.size;
 
         // Print file paths with '\\' Windows.
         String standardizedPath;
@@ -116,7 +116,7 @@ listArchive(StringView archivePath) noexcept {
         if (dirSeparator != '/') {
             standardizedPath = path;
 
-            for (size_t i = 0; i < path.size; i++) {
+            for (Size i = 0; i < path.size; i++) {
                 if (standardizedPath[i] == '/') {
                     standardizedPath[i] = dirSeparator;
                 }
@@ -158,7 +158,7 @@ createDirs(StringView path) noexcept {
 }
 
 static void
-putFile(StringView path, uint32_t size, void* data) noexcept {
+putFile(StringView path, U32 size, void* data) noexcept {
     createDirs(path);
 
     // TODO: Propagate error up.
@@ -175,28 +175,28 @@ extractArchive(StringView archivePath) noexcept {
         return false;
     }
 
-    uint32_t numEntries = readerSize(pack);
+    U32 numEntries = readerSize(pack);
 
-    uint32_t maxSize = 0;
-    for (uint32_t i = 0; i < numEntries; i++) {
+    U32 maxSize = 0;
+    for (U32 i = 0; i < numEntries; i++) {
         BlobDetails details = readerDetails(pack, i);
-        uint32_t size = details.size;
+        U32 size = details.size;
         maxSize = size > maxSize ? size : maxSize;
     }
 
     String standardizedPath;
     void* buf = malloc(maxSize);
 
-    for (uint32_t i = 0; i < numEntries; i++) {
+    for (U32 i = 0; i < numEntries; i++) {
         BlobDetails details = readerDetails(pack, i);
         StringView path = details.path;
-        uint32_t size = details.size;
+        U32 size = details.size;
 
         // Change file paths to use '\\' on Windows.
         if (dirSeparator != '/') {
             standardizedPath = path;
 
-            for (size_t i = 0; i < path.size; i++) {
+            for (Size i = 0; i < path.size; i++) {
                 if (standardizedPath[i] == '/') {
                     standardizedPath[i] = dirSeparator;
                 }

@@ -15,7 +15,7 @@
 
 struct SDL2Sound {
     int numUsers;
-    time_t lastUse;
+    Time lastUse;
 
     String frames;     // Audio frames.
     Mix_Chunk* chunk;  // Decoding configuration.
@@ -140,7 +140,7 @@ soundLoad(StringView path) noexcept {
 }
 
 void
-soundsPrune(time_t latestPermissibleUse) noexcept {
+soundsPrune(Time latestPermissibleUse) noexcept {
     // Mix_FreeChunk(chunk);
 }
 

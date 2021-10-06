@@ -5,15 +5,15 @@
 
 #if SIZE == 64
 
-size_t
-fnvHash(const char* data, size_t size) noexcept {
-    size_t hash = 0xcbf29ce484222325;
+Size
+fnvHash(const char* data, Size size) noexcept {
+    Size hash = 0xcbf29ce484222325;
 
-    const uint8_t* begin = (const uint8_t*)data;
-    const uint8_t* end = begin + size;
+    const U8* begin = (const U8*)data;
+    const U8* end = begin + size;
 
     while (begin < end) {
-        hash ^= (size_t)*begin++;
+        hash ^= (Size)*begin++;
         hash += (hash << 1) + (hash << 4) + (hash << 5) + (hash << 7) +
                 (hash << 8) + (hash << 40);
     }
@@ -22,15 +22,15 @@ fnvHash(const char* data, size_t size) noexcept {
 
 #else
 
-size_t
-fnvHash(const char* data, size_t size) noexcept {
-    size_t hash = 0x811c9dc5;
+Size
+fnvHash(const char* data, Size size) noexcept {
+    Size hash = 0x811c9dc5;
 
-    const uint8_t* begin = (const uint8_t*)data;
-    const uint8_t* end = begin + size;
+    const U8* begin = (const U8*)data;
+    const U8* end = begin + size;
 
     while (begin < end) {
-        hash ^= (size_t)*begin++;
+        hash ^= (Size)*begin++;
         hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) +
                 (hash << 24);
     }

@@ -77,7 +77,7 @@ class Splits {
     StringView
     next() noexcept {
         const char* data = buf.data;
-        size_t size = buf.find(c);
+        Size size = buf.find(c);
         if (size == SV_NOT_FOUND) {
             size = buf.size;
             buf.data = 0;
@@ -125,7 +125,7 @@ class ReadLines {
 
  public:
     FileStream file;
-    size_t offset;
+    Size offset;
     String joiner;
 };
 

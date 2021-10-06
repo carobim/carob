@@ -65,7 +65,7 @@ class Area {
      * checks for Tile animation updates.
      */
     void
-    tick(time_t dt) noexcept;
+    tick(Time dt) noexcept;
 
     /**
      * Updates Entities, runs scripts, and checks for Tile animation
@@ -74,10 +74,10 @@ class Area {
     void
     turn() noexcept;
 
-    uint32_t
+    U32
     getColorOverlay() noexcept;
     void
-    setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b) noexcept;
+    setColorOverlay(U8 a, U8 r, U8 g, U8 b) noexcept;
 
     TileSet*
     getTileSet(StringView imagePath) noexcept;
@@ -130,7 +130,7 @@ class Area {
 
     bool beenFocused;
     bool redraw;
-    uint32_t colorOverlayARGB;
+    U32 colorOverlayARGB;
 
     DataArea* dataArea;
 

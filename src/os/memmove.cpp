@@ -31,9 +31,9 @@ extern "C" {
 
 static char*
 twobyte_memmem(const unsigned char* h,
-               size_t k,
+               Size k,
                const unsigned char* n) noexcept {
-    uint16_t nw = n[0] << 8 | n[1], hw = h[0] << 8 | h[1];
+    U16 nw = n[0] << 8 | n[1], hw = h[0] << 8 | h[1];
     for (h += 2, k -= 2; k; k--, hw = hw << 8 | *h++)
         if (hw == nw)
             return (char*)h - 2;
@@ -42,10 +42,10 @@ twobyte_memmem(const unsigned char* h,
 
 static char*
 threebyte_memmem(const unsigned char* h,
-                 size_t k,
+                 Size k,
                  const unsigned char* n) noexcept {
-    uint32_t nw = n[0] << 24 | n[1] << 16 | n[2] << 8;
-    uint32_t hw = h[0] << 24 | h[1] << 16 | h[2] << 8;
+    U32 nw = n[0] << 24 | n[1] << 16 | n[2] << 8;
+    U32 hw = h[0] << 24 | h[1] << 16 | h[2] << 8;
     for (h += 3, k -= 3; k; k--, hw = (hw | *h++) << 8)
         if (hw == nw)
             return (char*)h - 3;
@@ -54,10 +54,10 @@ threebyte_memmem(const unsigned char* h,
 
 static char*
 fourbyte_memmem(const unsigned char* h,
-                size_t k,
+                Size k,
                 const unsigned char* n) noexcept {
-    uint32_t nw = n[0] << 24 | n[1] << 16 | n[2] << 8 | n[3];
-    uint32_t hw = h[0] << 24 | h[1] << 16 | h[2] << 8 | h[3];
+    U32 nw = n[0] << 24 | n[1] << 16 | n[2] << 8 | n[3];
+    U32 hw = h[0] << 24 | h[1] << 16 | h[2] << 8 | h[3];
     for (h += 4, k -= 4; k; k--, hw = hw << 8 | *h++)
         if (hw == nw)
             return (char*)h - 4;
@@ -68,17 +68,17 @@ fourbyte_memmem(const unsigned char* h,
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 #define BITOP(a, b, op)                                \
-    ((a)[(size_t)(b) / (8 * sizeof *(a))] op(size_t) 1 \
-     << ((size_t)(b) % (8 * sizeof *(a))))
+    ((a)[(Size)(b) / (8 * sizeof *(a))] op(Size) 1 \
+     << ((Size)(b) % (8 * sizeof *(a))))
 
 static char*
 twoway_memmem(const unsigned char* h,
               const unsigned char* z,
               const unsigned char* n,
-              size_t l) noexcept {
-    size_t i, ip, jp, k, p, ms, p0, mem, mem0;
-    size_t byteset[32 / sizeof(size_t)] = {0};
-    size_t shift[256];
+              Size l) noexcept {
+    Size i, ip, jp, k, p, ms, p0, mem, mem0;
+    Size byteset[32 / sizeof(Size)] = {0};
+    Size shift[256];
 
     /* Computing length of needle and fill shift table */
     for (i = 0; i < l; i++)
@@ -150,7 +150,7 @@ twoway_memmem(const unsigned char* h,
     /* Search loop */
     for (;;) {
         /* If remainder of haystack is shorter than needle, done */
-        if (static_cast<size_t>(z - h) < l)
+        if (static_cast<Size>(z - h) < l)
             return 0;
 
         /* Check last byte first; advance by shift on mismatch */
@@ -189,7 +189,7 @@ twoway_memmem(const unsigned char* h,
 }
 
 void*
-memmem(const void* h0, size_t k, const void* n0, size_t l) noexcept {
+memmem(const void* h0, Size k, const void* n0, Size l) noexcept {
     const unsigned char* h = reinterpret_cast<const unsigned char*>(h0);
     const unsigned char* n = reinterpret_cast<const unsigned char*>(n0);
 

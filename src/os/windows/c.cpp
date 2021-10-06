@@ -20,7 +20,7 @@ CRTIMP int __stdio_common_vfprintf(unsigned __int64,
                                    va_list) noexcept;
 CRTIMP int __stdio_common_vsprintf(unsigned __int64,
                                    char*,
-                                   size_t,
+                                   Size,
                                    char const*,
                                    _locale_t,
                                    va_list) noexcept;
@@ -74,7 +74,7 @@ _vfprintf_l(FILE* const _Stream,
 
 inline int
 _vsnprintf_l(char* const _Buffer,
-             size_t const _BufferCount,
+             Size const _BufferCount,
              char const* const _Format,
              _locale_t const _Locale,
              va_list _ArgList) noexcept {
@@ -95,7 +95,7 @@ _vsprintf_l(char* const _Buffer,
             char const* const _Format,
             _locale_t const _Locale,
             va_list _ArgList) noexcept {
-    return _vsnprintf_l(_Buffer, (size_t)-1, _Format, _Locale, _ArgList);
+    return _vsnprintf_l(_Buffer, (Size)-1, _Format, _Locale, _ArgList);
 }
 
 int

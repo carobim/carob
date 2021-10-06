@@ -8,22 +8,14 @@
 
 // sys/kdebug_signpost.h
 extern "C" {
-int kdebug_signpost_start(uint32_t,
-                          size_t,
-                          size_t,
-                          size_t,
-                          size_t) noexcept;
-int kdebug_signpost_end(uint32_t,
-                        size_t,
-                        size_t,
-                        size_t,
-                        size_t) noexcept;
+int kdebug_signpost_start(U32, Size, Size, Size, Size) noexcept;
+int kdebug_signpost_end(U32, Size, Size, Size, Size) noexcept;
 }
 
-static uint32_t nextSignpost = 0;
-static Hashmap<String, uint32_t> signposts;
+static U32 nextSignpost = 0;
+static Hashmap<String, U32> signposts;
 
-static uint32_t
+static U32
 getSignpost(String description) noexcept {
     if (signposts.find(description) != signposts.end()) {
         return signposts[description];

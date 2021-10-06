@@ -8,11 +8,11 @@
 
 extern "C" {
 // mach/thread_act.h
-int32_t
-thread_policy_set(uint32_t, uint32_t, uint32_t*, uint32_t) noexcept;
+I32
+thread_policy_set(U32, U32, U32*, U32) noexcept;
 
 // mach/mach_init.h
-uint32_t
+U32
 mach_thread_self() noexcept;
 }
 
@@ -20,7 +20,7 @@ mach_thread_self() noexcept;
 #define THREAD_EXTENDED_POLICY       1
 #define THREAD_EXTENDED_POLICY_COUNT 1
 struct thread_extended_policy {
-    int32_t timeshare;
+    I32 timeshare;
 };
 
 static void*
@@ -66,7 +66,7 @@ threadDisableTimerCoalescing() noexcept {
 
     thread_policy_set(mach_thread_self(),
                       THREAD_EXTENDED_POLICY,
-                      reinterpret_cast<uint32_t*>(&policyInfo),
+                      reinterpret_cast<U32*>(&policyInfo),
                       THREAD_EXTENDED_POLICY_COUNT);
 }
 
@@ -74,7 +74,7 @@ unsigned
 threadHardwareConcurrency() noexcept {
     unsigned n;
     int mib[2] = {CTL_HW, HW_NCPU};
-    size_t s = sizeof(n);
+    Size s = sizeof(n);
     sysctl(mib, 2, &n, &s, 0, 0);
     return n;
 }

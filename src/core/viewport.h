@@ -14,7 +14,7 @@ void
 viewportSetSize(fvec2 virtRes) noexcept;
 
 void
-viewportTick(time_t dt) noexcept;
+viewportTick(Time dt) noexcept;
 void
 viewportTurn() noexcept;
 

@@ -9,7 +9,7 @@
 #include "util/queue.h"
 #include "util/vector.h"
 
-static size_t workerLimit = 0;
+static Size workerLimit = 0;
 static Vector<Thread> workers;
 static int jobsRunning = 0;
 
@@ -100,7 +100,7 @@ JobsFlush() noexcept {
         LockGuard lock(jobsMutex);
 
         // Send over empty jobs.
-        for (size_t i = 0; i < workers.size; i++) {
+        for (Size i = 0; i < workers.size; i++) {
             Function fn;
             fn.fn = 0;
             fn.data = 0;

@@ -9,7 +9,7 @@
 
 struct BlobDetails {
     StringView path;
-    uint32_t size;
+    U32 size;
 };
 
 struct PackReader;
@@ -19,14 +19,14 @@ makePackReader(StringView path) noexcept;
 void
 destroyReader(PackReader* r) noexcept;
 
-uint32_t
+U32
 readerSize(PackReader* r) noexcept;
-uint32_t
+U32
 readerIndex(PackReader* r, StringView path) noexcept;
 BlobDetails
-readerDetails(PackReader* r, uint32_t index) noexcept;
+readerDetails(PackReader* r, U32 index) noexcept;
 
 bool
-readerRead(PackReader* r, void* buf, uint32_t index) noexcept;
+readerRead(PackReader* r, void* buf, U32 index) noexcept;
 
 #endif  // SRC_PACK_PACK_READER_H_

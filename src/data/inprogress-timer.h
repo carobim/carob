@@ -25,14 +25,14 @@ class InProgressTimer : public InProgress {
  public:
     typedef Function ThenFn;
 
-    InProgressTimer(time_t duration, ThenFn then) noexcept;
-    InProgressTimer(time_t duration, ProgressFn onProgress, ThenFn onThen) noexcept;
+    InProgressTimer(Time duration, ThenFn then) noexcept;
+    InProgressTimer(Time duration, ProgressFn onProgress, ThenFn onThen) noexcept;
 
     void
-    tick(time_t dt) noexcept;
+    tick(Time dt) noexcept;
 
  private:
-    time_t duration, passed;
+    Time duration, passed;
     ProgressFn onProgress;
     ThenFn onThen;
 };

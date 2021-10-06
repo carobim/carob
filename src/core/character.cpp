@@ -17,7 +17,7 @@ Character::Character() noexcept
 }
 
 void
-Character::tick(time_t dt) noexcept {
+Character::tick(Time dt) noexcept {
     Entity::tick(dt);
 
     switch (confMoveMode) {

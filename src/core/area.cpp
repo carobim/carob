@@ -168,7 +168,7 @@ Area::needsRedraw() noexcept {
     }
     memset(checkedForAnimation.data, 0, checkedForAnimation.size);
 
-    time_t now = worldTime();
+    Time now = worldTime();
 
     for (int z = tiles.z1; z < tiles.z2; z++) {
         if (grid.layerTypes[z] != TileGrid::TILE_LAYER) {
@@ -218,7 +218,7 @@ isOverlayDead(Overlay* o) noexcept {
 }
 
 void
-Area::tick(time_t dt) noexcept {
+Area::tick(Time dt) noexcept {
     if (dataArea) {
         dataArea->tick(dt);
     }
@@ -263,15 +263,15 @@ Area::turn() noexcept {
 }
 
 
-uint32_t
+U32
 Area::getColorOverlay() noexcept {
     return colorOverlayARGB;
 }
 
 void
-Area::setColorOverlay(uint8_t a, uint8_t r, uint8_t g, uint8_t b) noexcept {
-    colorOverlayARGB = (uint32_t)(a << 24u) + (uint32_t)(r << 16u) +
-                       (uint32_t)(g << 8u) + (uint32_t)b;
+Area::setColorOverlay(U8 a, U8 r, U8 g, U8 b) noexcept {
+    colorOverlayARGB = (U32)(a << 24u) + (U32)(r << 16u) +
+                       (U32)(g << 8u) + (U32)b;
     redraw = true;
 }
 
@@ -367,7 +367,7 @@ void
 Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
     Vector<DisplayItem>& items = display->items;
 
-    time_t now = worldTime();
+    Time now = worldTime();
 
     // FIXME: Same.
     if (tileGraphics.size > tilesAnimated.size) {
@@ -377,14 +377,14 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
     // FIXME: Only do this once per draw() call. Don't do it per drawTiles.
     memset(tilesAnimated.data, 0, tilesAnimated.size);
 
-    size_t maxTiles = (tiles.y2 - tiles.y1) * (tiles.x2 - tiles.x1);
-    size_t itemCount = items.size;
+    Size maxTiles = (tiles.y2 - tiles.y1) * (tiles.x2 - tiles.x1);
+    Size itemCount = items.size;
 
     // FIXME: Resize once before any drawTiles calls.
     //        Do maxTiles * count(TILE_LAYERS).
     items.resize(maxTiles + itemCount);
 
-    float depth = grid.idx2depth[(size_t)z];
+    float depth = grid.idx2depth[(Size)z];
 
     int width = 16;
     int height = 16;
@@ -425,7 +425,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
 
 void
 Area::drawEntities(DisplayList* display, icube& tiles, int z) noexcept {
-    float depth = grid.idx2depth[(size_t)z];
+    float depth = grid.idx2depth[(Size)z];
 
     for (Character** character = characters.begin();
          character != characters.end();

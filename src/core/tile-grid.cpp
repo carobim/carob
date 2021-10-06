@@ -127,7 +127,7 @@ TileGrid::depthIndex(float depth) noexcept {
 float
 TileGrid::indexDepth(int idx) noexcept {
     assert_(0 <= idx && idx <= dim.z);
-    return idx2depth[(size_t)idx];
+    return idx2depth[(Size)idx];
 }
 
 ivec3

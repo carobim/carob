@@ -25,7 +25,7 @@ InProgressSound::InProgressSound(StringView sound, ThenFn onThen) noexcept
 }
 
 void
-InProgressSound::tick(time_t) noexcept {
+InProgressSound::tick(Time) noexcept {
     if (over) {
         return;
     }
@@ -37,12 +37,12 @@ InProgressSound::tick(time_t) noexcept {
     }
 }
 
-InProgressTimer::InProgressTimer(time_t duration, ThenFn onThen) noexcept
+InProgressTimer::InProgressTimer(Time duration, ThenFn onThen) noexcept
         : duration(duration), passed(0), onThen(onThen) {
     assert_(this->onThen.fn);
 }
 
-InProgressTimer::InProgressTimer(time_t duration,
+InProgressTimer::InProgressTimer(Time duration,
                                  ProgressFn onProgress,
                                  ThenFn onThen) noexcept
         : duration(duration), passed(0), onProgress(onProgress), onThen(onThen) {
@@ -51,7 +51,7 @@ InProgressTimer::InProgressTimer(time_t duration,
 }
 
 void
-InProgressTimer::tick(time_t dt) noexcept {
+InProgressTimer::tick(Time dt) noexcept {
     if (over) {
         return;
     }

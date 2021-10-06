@@ -15,8 +15,8 @@
 // include/alltypes.h.in
 extern "C" {
 typedef struct _IO_FILE FILE;
-typedef int64_t blkcnt_t;
-typedef int64_t off_t;
+typedef I64 blkcnt_t;
+typedef I64 off_t;
 typedef int clockid_t;
 #ifdef __aarch64__
 // musl bits/alltypes.h
@@ -24,11 +24,11 @@ typedef int blksize_t;
 #else
 typedef long blksize_t;
 #endif
-typedef uint64_t dev_t;
-typedef uint64_t ino_t;
+typedef U64 dev_t;
+typedef U64 ino_t;
 struct iovec {
     void* iov_base;
-    size_t iov_len;
+    Size iov_len;
 };
 typedef unsigned gid_t;
 #ifdef __aarch64__
@@ -40,7 +40,7 @@ typedef unsigned long nlink_t;
 typedef unsigned long pthread_t;
 typedef unsigned mode_t;
 struct timespec {
-    time_t tv_sec;
+    Time tv_sec;
     long tv_nsec;
 };
 typedef unsigned uid_t;
@@ -74,9 +74,9 @@ open(const char*, int, ...) noexcept;
 
 // sys/mman.h
 void*
-mmap(void*, size_t, int, int, int, off_t) noexcept;
+mmap(void*, Size, int, int, int, off_t) noexcept;
 int
-munmap(void*, size_t) noexcept;
+munmap(void*, Size) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x01
 #define PROT_READ  1
@@ -174,7 +174,7 @@ stat(const char*, struct stat*) noexcept;
 #define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 
 // sys/uio.h
-ssize_t
+SSize
 writev(int, const struct iovec*, int) noexcept;
 
 // dirent.h
@@ -232,8 +232,8 @@ FILE*
 fopen(const char*, const char*) noexcept;
 int
 fprintf(FILE*, const char*, ...) noexcept;
-size_t
-fread(void*, size_t, size_t, FILE*) noexcept;
+Size
+fread(void*, Size, Size, FILE*) noexcept;
 int
 printf(const char*, ...) noexcept;
 int
@@ -260,17 +260,17 @@ strtoul(const char*, char**, int) noexcept;
 
 // string.h
 void*
-memchr(const void*, int, size_t) noexcept;
+memchr(const void*, int, Size) noexcept;
 int
-memcmp(const void*, const void*, size_t) noexcept;
+memcmp(const void*, const void*, Size) noexcept;
 #define memcpy __builtin_memcpy
 void*
-memmem(const void*, size_t, const void*, size_t) noexcept;
+memmem(const void*, Size, const void*, Size) noexcept;
 void*
-memmove(void*, const void*, size_t) noexcept;
+memmove(void*, const void*, Size) noexcept;
 void*
-memset(void*, int, size_t) noexcept;
-size_t
+memset(void*, int, Size) noexcept;
+Size
 strlen(char const*) noexcept;
 
 // time.h
@@ -289,16 +289,16 @@ int
 ftruncate(int, off_t) noexcept;
 int
 isatty(int) noexcept;
-ssize_t
-pread(int, void*, size_t, off_t) noexcept;
-ssize_t
-pwrite(int, const void*, size_t, off_t) noexcept;
-ssize_t
-read(int, void*, size_t) noexcept;
+SSize
+pread(int, void*, Size, off_t) noexcept;
+SSize
+pwrite(int, const void*, Size, off_t) noexcept;
+SSize
+read(int, void*, Size) noexcept;
 long
 sysconf(int) noexcept;
-ssize_t
-write(int, const void*, size_t) noexcept;
+SSize
+write(int, const void*, Size) noexcept;
 #define _SC_NPROCESSORS_ONLN 84
 
 }  // extern "C"

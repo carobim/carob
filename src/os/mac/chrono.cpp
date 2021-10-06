@@ -10,16 +10,16 @@ typedef int kern_return_t;
 
 // mach/mach_time.h
 struct mach_timebase_info {
-    uint32_t numer;
-    uint32_t denom;
+    U32 numer;
+    U32 denom;
 };
 extern "C" {
-uint64_t
+U64
 mach_absolute_time() noexcept;
 kern_return_t
 mach_timebase_info(mach_timebase_info*) noexcept;
 kern_return_t
-mach_wait_until(uint64_t deadline) noexcept;
+mach_wait_until(U64 deadline) noexcept;
 }
 
 #define KERN_SUCCESS 0
@@ -27,18 +27,18 @@ mach_wait_until(uint64_t deadline) noexcept;
 static struct mach_timebase_info timebase = {0, 0};
 
 static Nanoseconds
-fromAbsolute(uint64_t machTime) noexcept {
-    uint64_t ns = machTime *
-        static_cast<uint64_t>(timebase.numer) /
-        static_cast<uint64_t>(timebase.denom);
+fromAbsolute(U64 machTime) noexcept {
+    U64 ns = machTime *
+        static_cast<U64>(timebase.numer) /
+        static_cast<U64>(timebase.denom);
     return static_cast<Nanoseconds>(ns);
 }
 
-static uint64_t
+static U64
 toAbsolute(Nanoseconds ns) noexcept {
-    return static_cast<uint64_t>(ns) *
-        static_cast<uint64_t>(timebase.denom) /
-        static_cast<uint64_t>(timebase.numer);
+    return static_cast<U64>(ns) *
+        static_cast<U64>(timebase.denom) /
+        static_cast<U64>(timebase.numer);
 }
 
 static void
@@ -63,7 +63,7 @@ chronoSleep(Nanoseconds ns) noexcept {
     }
 
     initTimebase();
-    uint64_t deadline = mach_absolute_time() + toAbsolute(ns);
+    U64 deadline = mach_absolute_time() + toAbsolute(ns);
 
     kern_return_t err;
     do {

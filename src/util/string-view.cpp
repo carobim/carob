@@ -9,7 +9,7 @@ StringView::StringView() noexcept : data(0), size(0) { }
 StringView::StringView(const char* data) noexcept
         : data(data),
           size(strlen(data)) { }
-StringView::StringView(const char* data, size_t size) noexcept
+StringView::StringView(const char* data, Size size) noexcept
         : data(data),
           size(size) { }
 StringView::StringView(const StringView& s) noexcept
@@ -23,7 +23,7 @@ StringView::operator=(const StringView& s) noexcept {
 }
 
 char
-StringView::operator[](size_t i) noexcept {
+StringView::operator[](Size i) noexcept {
     return data[i];
 }
 
@@ -56,7 +56,7 @@ StringView::find(char needle) const noexcept {
 }
 
 StringPosition
-StringView::find(char needle, size_t start) const noexcept {
+StringView::find(char needle, Size start) const noexcept {
     if (data == 0) {
         return SV_NOT_FOUND;
     }
@@ -84,7 +84,7 @@ StringView::find(StringView needle) const noexcept {
 }
 
 StringPosition
-StringView::find(StringView needle, size_t start) const noexcept {
+StringView::find(StringView needle, Size start) const noexcept {
     assert_(size >= start);
 
     if (data == 0) {
@@ -105,7 +105,7 @@ StringView::rfind(char needle) const noexcept {
         return SV_NOT_FOUND;
     }
 
-    size_t i = size;
+    Size i = size;
     do {
         i--;
         if (data[i] == needle) {
@@ -117,12 +117,12 @@ StringView::rfind(char needle) const noexcept {
 }
 
 StringView
-StringView::substr(const size_t from) const noexcept {
+StringView::substr(const Size from) const noexcept {
     assert_(from <= this->size);
     return StringView(data + from, size - from);
 }
 StringView
-StringView::substr(const size_t from, const size_t span) const noexcept {
+StringView::substr(const Size from, const Size span) const noexcept {
     assert_(from <= size);
     assert_(from + span <= size);
     return StringView(data + from, span);
@@ -140,7 +140,7 @@ operator!=(const StringView& a, const StringView& b) noexcept {
 
 bool
 operator>(const StringView& a, const StringView& b) noexcept {
-    size_t s = a.size < b.size ? a.size : b.size;
+    Size s = a.size < b.size ? a.size : b.size;
     const char* ad = a.data;
     const char* bd = b.data;
 
@@ -159,7 +159,7 @@ operator>(const StringView& a, const StringView& b) noexcept {
 
 bool
 operator<(const StringView& a, const StringView& b) noexcept {
-    size_t s = a.size < b.size ? a.size : b.size;
+    Size s = a.size < b.size ? a.size : b.size;
     const char* ad = a.data;
     const char* bd = b.data;
 
@@ -176,12 +176,12 @@ operator<(const StringView& a, const StringView& b) noexcept {
     return false;
 }
 
-size_t
+Size
 hash_(StringView s) noexcept {
     return fnvHash(s.data, s.size);
 }
 
-size_t
+Size
 hash_(const char* s) noexcept {
     return hash_(StringView(s));
 }

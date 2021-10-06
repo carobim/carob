@@ -21,7 +21,7 @@ struct Song {
 static bool initalized = false;
 static int paused = 0;
 static HashVector<Song> songs;
-static uint32_t songHash = 0;
+static U32 songHash = 0;
 static Song* song = 0;
 
 static Song*
@@ -88,7 +88,7 @@ musicWorkerPlay(StringView path) noexcept {
         return;
     }
 
-    uint32_t pathHash = hash_(path);
+    U32 pathHash = hash_(path);
 
     if (songHash == pathHash) {
         return;

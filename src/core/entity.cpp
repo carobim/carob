@@ -112,10 +112,10 @@ parseSprite(Entity* e, JsonValue sprite) noexcept {
     CHECK(numhighValue.isNumber());
     CHECK(pathValue.isString());
 
-    uint32_t tileWidth = tilewidthValue.toInt();
-    uint32_t tileHeight = tileheightValue.toInt();
-    uint32_t numAcross = numacrossValue.toInt();
-    uint32_t numHigh = numhighValue.toInt();
+    U32 tileWidth = tilewidthValue.toInt();
+    U32 tileHeight = tileheightValue.toInt();
+    U32 numAcross = numacrossValue.toInt();
+    U32 numHigh = numhighValue.toInt();
 
     e->imgsz.x = tileWidth;
     e->imgsz.y = tileHeight;
@@ -200,7 +200,7 @@ parsePhase(Entity* e,
         }
         assert_(images.size > 0);
 
-        time_t frameTime = static_cast<time_t>(1000.0 / fps);
+        Time frameTime = static_cast<Time>(1000.0 / fps);
         animation = Animation(static_cast<Vector<Image>&&>(images), frameTime);
     }
     else {
@@ -372,7 +372,7 @@ Entity::draw(DisplayList* display) noexcept {
         return;
     }
 
-    time_t now = worldTime();
+    Time now = worldTime();
 
     // TODO: Don't add to DisplayList if not on-screen.
 
@@ -398,7 +398,7 @@ Entity::needsRedraw(icube& visiblePixels) noexcept {
 
     if (!redraw) {
         // Entity has not moved and has not changed phase.
-        time_t now = worldTime();
+        Time now = worldTime();
         if (!phase->needsRedraw(now)) {
             // Entity's animation does not need an update.
             return false;
@@ -433,7 +433,7 @@ Entity::isDead() noexcept {
 
 
 void
-Entity::tick(time_t dt) noexcept {
+Entity::tick(Time dt) noexcept {
     for (OnTickFn* fn = onTickFns.begin(); fn != onTickFns.end(); fn++) {
         fn->fn(fn->data, dt);
     }
@@ -584,7 +584,7 @@ Entity::_setPhase(StringView name) noexcept {
     }
 
     if (phase != newPhase) {
-        time_t now = worldTime();
+        Time now = worldTime();
         phase = newPhase;
         phase->restart(now);
         phaseName = name;
@@ -605,7 +605,7 @@ Entity::setDestinationCoordinate(fvec3 destCoord) noexcept {
 }
 
 void
-Entity::moveTowardDestination(time_t dt) noexcept {
+Entity::moveTowardDestination(Time dt) noexcept {
     if (!moving) {
         return;
     }
@@ -629,7 +629,7 @@ Entity::moveTowardDestination(time_t dt) noexcept {
         // pixels and leave the the moving animation.
         if (moving) {
             float percent = 1.0f - toDestPixels / traveledPixels;
-            time_t rem = static_cast<time_t>(percent * static_cast<float>(dt));
+            Time rem = static_cast<Time>(percent * static_cast<float>(dt));
             moveTowardDestination(rem);
         }
         else {

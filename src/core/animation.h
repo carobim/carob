@@ -6,7 +6,7 @@
 #include "util/int.h"
 #include "util/vector.h"
 
-typedef uint32_t AnimationID;
+typedef U32 AnimationID;
 
 // Value of .id when default constructed. Do not use these objects.
 #define NO_ANIMATION UINT32_MAX
@@ -46,7 +46,7 @@ class Animation {
      * @param frameTime length of time in milliseconds that each frame
      *        will display for
      */
-    Animation(Vector<Image> frames, time_t frameTime) noexcept;
+    Animation(Vector<Image> frames, Time frameTime) noexcept;
 
     Animation(Animation& other) noexcept;
     Animation(Animation&& other) noexcept;
@@ -63,7 +63,7 @@ class Animation {
      * @now current time in milliseconds
      */
     void
-    restart(time_t now) noexcept;
+    restart(Time now) noexcept;
 
     /**
      * Has this Animation switched frames since frame() was last called?
@@ -71,7 +71,7 @@ class Animation {
      * @now current time in milliseconds
      */
     bool
-    needsRedraw(time_t now) noexcept;
+    needsRedraw(Time now) noexcept;
 
     /**
      * Returns the image that should be displayed at this time.
@@ -79,7 +79,7 @@ class Animation {
      * @now current time in milliseconds
      */
     Image
-    setFrame(time_t now) noexcept;
+    setFrame(Time now) noexcept;
 
     /**
      * Returns the last image that should have been displayed.

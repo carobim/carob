@@ -10,7 +10,7 @@ class Overlay : public Entity {
     virtual ~Overlay() noexcept { }
 
     void
-    tick(time_t dt) noexcept;
+    tick(Time dt) noexcept;
 
     void
     teleport(vicoord coord) noexcept;

@@ -4,9 +4,9 @@
 #include "util/compiler.h"
 #include "util/int.h"
 
-typedef int64_t Seconds;
-typedef int64_t Milliseconds;
-typedef int64_t Nanoseconds;
+typedef I64 Seconds;
+typedef I64 Milliseconds;
+typedef I64 Nanoseconds;
 
 inline Milliseconds
 ns_to_ms(Nanoseconds d) noexcept {

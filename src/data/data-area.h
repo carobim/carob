@@ -27,7 +27,7 @@ class DataArea {
     virtual void
     onFocus() noexcept;
     virtual void
-    onTick(time_t dt) noexcept;
+    onTick(Time dt) noexcept;
     virtual void
     onTurn() noexcept;
 
@@ -42,7 +42,7 @@ class DataArea {
 
     // For engine
     void
-    tick(time_t dt) noexcept;
+    tick(Time dt) noexcept;
     void
     turn() noexcept;
 

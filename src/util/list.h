@@ -194,7 +194,7 @@ class List {
         }
     }
 
-    inline constexpr11 size_t
+    inline constexpr11 Size
     size() const noexcept {
         return n;
     }
@@ -205,7 +205,7 @@ class List {
 
  private:
     Links head;
-    size_t n;
+    Size n;
 };
 
 #endif  // SRC_UTIL_LIST_H_

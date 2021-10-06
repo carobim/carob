@@ -28,7 +28,7 @@ static void
 flush(State& state) noexcept {
     String& buf = state.buf;
     char* data = buf.data;
-    size_t size = buf.size;
+    Size size = buf.size;
 
     if (data[size - 1] == '\n') {
         if (state.err) {
@@ -40,7 +40,7 @@ flush(State& state) noexcept {
         buf.clear();
     }
     else {
-        size_t len = state.buf.view().rfind('\n') + 1;
+        Size len = state.buf.view().rfind('\n') + 1;
         if (state.err) {
             writeStderr(data, len);
         }

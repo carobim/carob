@@ -9,20 +9,20 @@ struct AnimationData {
     Vector<Image> frames;
 
     /** Length of each frame in animation in milliseconds. */
-    time_t frameTime;
+    Time frameTime;
 
     /** Length of one complete cycle through animation in milliseconds. */
-    time_t cycleTime;
+    Time cycleTime;
 
     /** Time offset to find current animation frame. */
-    time_t offset;
+    Time offset;
 
     /** Index of frame currently displaying on screen. */
-    uint32_t currentIndex;
+    U32 currentIndex;
 
     Image currentImage;
 
-    uint32_t refCnt;
+    U32 refCnt;
 };
 
 static Pool<AnimationData> pool;
@@ -85,7 +85,7 @@ Animation::Animation(Image frame) noexcept {
     data.refCnt = 1;
 }
 
-Animation::Animation(Vector<Image> frames, time_t frameTime) noexcept {
+Animation::Animation(Vector<Image> frames, Time frameTime) noexcept {
     assert_(frames.size > 0);
     assert_(frameTime > 0);
     for (Image* frame = frames.begin(); frame != frames.end(); frame++) {
@@ -99,7 +99,7 @@ Animation::Animation(Vector<Image> frames, time_t frameTime) noexcept {
     new (&data.frames) Vector<Image>();
     data.frames = static_cast<Vector<Image>&&>(frames);
     data.frameTime = frameTime;
-    data.cycleTime = frameTime * static_cast<time_t>(data.frames.size);
+    data.cycleTime = frameTime * static_cast<Time>(data.frames.size);
     data.offset = 0;
     data.currentIndex = 0;
     data.currentImage = data.frames[0];
@@ -131,7 +131,7 @@ Animation::operator=(Animation&& other) noexcept {
 }
 
 void
-Animation::restart(time_t now) noexcept {
+Animation::restart(Time now) noexcept {
     assert_(id != NO_ANIMATION);
 
     if (isSingleFrame(id)) {
@@ -146,7 +146,7 @@ Animation::restart(time_t now) noexcept {
 }
 
 bool
-Animation::needsRedraw(time_t now) noexcept {
+Animation::needsRedraw(Time now) noexcept {
     assert_(id != NO_ANIMATION);
 
     if (isSingleFrame(id)) {
@@ -155,22 +155,22 @@ Animation::needsRedraw(time_t now) noexcept {
 
     AnimationData& data = pool[id];
 
-    time_t pos = now - data.offset;
-    size_t index = static_cast<size_t>((pos % data.cycleTime) / data.frameTime);
+    Time pos = now - data.offset;
+    Size index = static_cast<Size>((pos % data.cycleTime) / data.frameTime);
 
     return index != data.currentIndex;
 }
 
 Image
-Animation::setFrame(time_t now) noexcept {
+Animation::setFrame(Time now) noexcept {
     assert_(id != NO_ANIMATION);
 
     AnimationData& data = pool[id];
 
     if (!isSingleFrame(id)) {
-        time_t pos = now - data.offset;
-        uint32_t index =
-                static_cast<uint32_t>((pos % data.cycleTime) / data.frameTime);
+        Time pos = now - data.offset;
+        U32 index =
+                static_cast<U32>((pos % data.cycleTime) / data.frameTime);
         Image image = data.frames[index];
 
         data.currentIndex = index;

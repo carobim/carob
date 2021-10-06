@@ -3,8 +3,8 @@
 #include "util/compiler.h"
 #include "util/int.h"
 
-size_t
+Size
 hash_(float d) noexcept {
     char* bits = reinterpret_cast<char*>(&d);
-    return *reinterpret_cast<size_t*>(bits);
+    return *reinterpret_cast<Size*>(bits);
 }

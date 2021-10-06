@@ -7,24 +7,24 @@
 extern "C" {
 
 // sys/_types.h
-typedef int64_t blkcnt_t;
-typedef int32_t blksize_t;
-typedef int32_t dev_t;
-typedef uint32_t gid_t;
-typedef uint64_t ino64_t;
-typedef uint16_t mode_t;
+typedef I64 blkcnt_t;
+typedef I32 blksize_t;
+typedef I32 dev_t;
+typedef U32 gid_t;
+typedef U64 ino64_t;
+typedef U16 mode_t;
 // In sys/_type/_nlink_t.h on Xcode 12.5/macOS 11
-typedef uint16_t nlink_t;
-typedef int64_t off_t;
-typedef uint32_t uid_t;
+typedef U16 nlink_t;
+typedef I64 off_t;
+typedef U32 uid_t;
 // In sys/_type/_iovec_t.h on Xcode 12.5/macOS 11
 struct iovec {
     void* iov_base;
-    size_t iov_len;
+    Size iov_len;
 };
 // In sys/_type/_timespec.h on Xcode 12.5/macOS 11
 struct timespec {
-    time_t tv_sec;
+    Time tv_sec;
     long tv_nsec;
 };
 
@@ -61,11 +61,11 @@ typedef _pthread_t* pthread_t;
 // sys/dirent.h
 #define __DARWIN_MAXPATHLEN 1024
 struct dirent {
-    uint64_t d_ino;
-    uint64_t d_seekoff;
-    uint16_t d_reclen;
-    uint16_t d_namlen;
-    uint8_t d_type;
+    U64 d_ino;
+    U64 d_seekoff;
+    U16 d_reclen;
+    U16 d_namlen;
+    U8 d_type;
     char d_name[__DARWIN_MAXPATHLEN];
 };
 #define DT_DIR 4
@@ -87,9 +87,9 @@ open(const char*, int, ...) noexcept;
 
 // sys/mman.h
 void*
-mmap(void*, size_t, int, int, int, off_t) noexcept;
+mmap(void*, Size, int, int, int, off_t) noexcept;
 int
-munmap(void*, size_t) noexcept;
+munmap(void*, Size) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x1
 #define PROT_READ  0x1
@@ -110,10 +110,10 @@ struct stat {
     off_t st_size;
     blkcnt_t st_blocks;
     blksize_t st_blksize;
-    uint32_t st_flags;
-    uint32_t st_gen;
-    int32_t st_lspare;
-    int64_t st_qspare[2];
+    U32 st_flags;
+    U32 st_gen;
+    I32 st_lspare;
+    I64 st_qspare[2];
 };
 int
 fstat(int, struct stat*) noexcept __DARWIN_INODE64(fstat);
@@ -129,12 +129,12 @@ stat(const char*, struct stat*) noexcept __DARWIN_INODE64(stat);
 
 // sys/sysctl.h
 int
-sysctl(int*, unsigned int, void*, size_t*, void*, size_t) noexcept;
+sysctl(int*, unsigned int, void*, Size*, void*, Size) noexcept;
 #define CTL_HW  6
 #define HW_NCPU 3
 
 // sys/uio.h
-ssize_t
+SSize
 writev(int, const struct iovec*, int) noexcept;
 
 // _stdio.h
@@ -212,8 +212,8 @@ FILE*
 fopen(const char*, const char*) noexcept;
 int
 fprintf(FILE*, const char*, ...) noexcept;
-size_t
-fread(void*, size_t, size_t, FILE*) noexcept;
+Size
+fread(void*, Size, Size, FILE*) noexcept;
 int
 printf(const char*, ...) noexcept;
 int
@@ -239,18 +239,18 @@ strtoul(const char*, char**, int) noexcept;
 
 // string.h
 void*
-memchr(const void*, int, size_t) noexcept;
+memchr(const void*, int, Size) noexcept;
 int
-memcmp(const void*, const void*, size_t) noexcept;
+memcmp(const void*, const void*, Size) noexcept;
 void*
-memcpy(void*, const void*, size_t) noexcept;
+memcpy(void*, const void*, Size) noexcept;
 void*
-memmem(const void*, size_t, const void*, size_t) noexcept;
+memmem(const void*, Size, const void*, Size) noexcept;
 void*
-memmove(void*, const void*, size_t) noexcept;
+memmove(void*, const void*, Size) noexcept;
 void*
-memset(void*, int, size_t) noexcept;
-size_t
+memset(void*, int, Size) noexcept;
+Size
 strlen(char const*) noexcept;
 
 // time.h
@@ -269,14 +269,14 @@ int
 ftruncate(int, off_t) noexcept;
 int
 isatty(int) noexcept;
-ssize_t
-pread(int, void*, size_t, off_t) noexcept;
-ssize_t
-pwrite(int, const void*, size_t, off_t) noexcept;
-ssize_t
-read(int, void*, size_t) noexcept;
-ssize_t
-write(int, const void*, size_t) noexcept;
+SSize
+pread(int, void*, Size, off_t) noexcept;
+SSize
+pwrite(int, const void*, Size, off_t) noexcept;
+SSize
+read(int, void*, Size) noexcept;
+SSize
+write(int, const void*, Size) noexcept;
 
 }  // extern "C"
 

@@ -58,10 +58,10 @@ Player::stopMovement(ivec2 delta) noexcept {
     case TURN:
         break;
     case TILE:
-        for (size_t i = 0; i < numMovements; i++) {
+        for (Size i = 0; i < numMovements; i++) {
             if (movements[i] == delta) {
                 // Erase movement.
-                for (size_t j = i; j < numMovements - 1; j++) {
+                for (Size j = i; j < numMovements - 1; j++) {
                     movements[j] = movements[j + 1];
                 }
                 numMovements--;

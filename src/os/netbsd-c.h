@@ -11,24 +11,24 @@ extern "C" {
 // amd64/types.h
 // sys/ansi.h
 // sys/types.h
-typedef int64_t blkcnt_t;
-typedef int32_t blksize_t;
+typedef I64 blkcnt_t;
+typedef I32 blksize_t;
 typedef int clockid_t;
-typedef uint64_t dev_t;
-typedef uint32_t gid_t;
-typedef uint64_t ino_t;
-typedef uint32_t mode_t;
-typedef uint32_t nlink_t;
-typedef int64_t off_t;
-typedef int32_t pid_t;
-typedef uint32_t uid_t;
+typedef U64 dev_t;
+typedef U32 gid_t;
+typedef U64 ino_t;
+typedef U32 mode_t;
+typedef U32 nlink_t;
+typedef I64 off_t;
+typedef I32 pid_t;
+typedef U32 uid_t;
 
 // sys/dirent.h
 struct dirent {
     ino_t d_fileno;
-    uint16_t d_reclen;
-    uint16_t d_namlen;
-    uint8_t d_type;
+    U16 d_reclen;
+    U16 d_namlen;
+    U8 d_type;
     char d_name[512];
 };
 #define DT_DIR 4
@@ -36,16 +36,16 @@ struct dirent {
 
 // sys/timespec.h
 struct timespec {
-    time_t tv_sec;
+    Time tv_sec;
     long tv_nsec;
 };
 
 // sys/uio.h
 struct iovec {
     void* iov_base;
-    size_t iov_len;
+    Size iov_len;
 };
-ssize_t
+SSize
 writev(int, const struct iovec*, int) noexcept;
 
 // sys/errno.h
@@ -65,9 +65,9 @@ open(const char*, int, ...) noexcept;
 
 // sys/mman.h
 void*
-mmap(void*, size_t, int, int, int, off_t) noexcept;
+mmap(void*, Size, int, int, int, off_t) noexcept;
 int
-munmap(void*, size_t) noexcept;
+munmap(void*, Size) noexcept;
 #define MAP_FAILED ((void*)-1)
 #define MAP_SHARED 0x0001
 #define PROT_READ  0x01
@@ -88,9 +88,9 @@ struct stat {
     off_t st_size;
     blkcnt_t st_blocks;
     blksize_t st_blksize;
-    uint32_t st_flags;
-    uint32_t st_gen;
-    uint32_t st_spare[2];
+    U32 st_flags;
+    U32 st_gen;
+    U32 st_spare[2];
 };
 int
 fstat(int, struct stat*) noexcept __asm("__fstat50");
@@ -134,12 +134,12 @@ struct pthread_queue_t {
 struct pthread_mutex_t {
     unsigned int ptm_magic;
     __pthread_spin_t ptm_errorcheck;
-    uint8_t ptm_pad1[3];
+    U8 ptm_pad1[3];
     union {
         unsigned char ptm_ceiling;
         __pthread_spin_t ptm_unused;
     };
-    uint8_t ptm_pad2[3];
+    U8 ptm_pad2[3];
     pthread_t ptm_owner;
     pthread_t* ptm_waiters;
     unsigned int ptm_recursed;
@@ -197,9 +197,9 @@ struct FILE {
     int _lbfsize;
     void* _cookie;
     int (*_close)(void*);
-    ssize_t (*_read)(void*, void*, size_t);
+    SSize (*_read)(void*, void*, Size);
     off_t (*_seek)(void*, off_t, int);
-    ssize_t (*_write)(void*, const void*, size_t);
+    SSize (*_write)(void*, const void*, Size);
     struct __sbuf _ext;
     unsigned char* _up;
     int _ur;
@@ -216,8 +216,8 @@ FILE*
 fopen(const char*, const char*) noexcept;
 int
 fprintf(FILE*, const char*, ...) noexcept;
-size_t
-fread(void*, size_t, size_t, FILE*) noexcept;
+Size
+fread(void*, Size, Size, FILE*) noexcept;
 int
 printf(const char*, ...) noexcept;
 int
@@ -245,10 +245,10 @@ strtoul(const char*, char**, int) noexcept;
 
 // string.h
 void*
-memmem(const void*, size_t, const void*, size_t) noexcept;
+memmem(const void*, Size, const void*, Size) noexcept;
 void*
-memmove(void*, const void*, size_t) noexcept;
-size_t
+memmove(void*, const void*, Size) noexcept;
+Size
 strlen(char const*) noexcept;
 #define memchr __builtin_memchr
 #define memcmp __builtin_memcmp
@@ -274,16 +274,16 @@ int
 ftruncate(int, off_t) noexcept;
 int
 isatty(int) noexcept;
-ssize_t
-pread(int, void*, size_t, off_t) noexcept;
-ssize_t
-pwrite(int, const void*, size_t, off_t) noexcept;
-ssize_t
-read(int, void*, size_t) noexcept;
+SSize
+pread(int, void*, Size, off_t) noexcept;
+SSize
+pwrite(int, const void*, Size, off_t) noexcept;
+SSize
+read(int, void*, Size) noexcept;
 long
 sysconf(int) noexcept;
-ssize_t
-write(int, const void*, size_t) noexcept;
+SSize
+write(int, const void*, Size) noexcept;
 #define _SC_NPROCESSORS_ONLN 1002
 
 #ifdef CXX

@@ -146,19 +146,19 @@ distanceTo(fvec3 a, fvec3 b) noexcept {
     return sqrtf(dx * dx + dy * dy);
 }
 
-size_t
+Size
 hash_(ivec2 a) noexcept {
     return fnvHash(reinterpret_cast<char*>(&a), sizeof(a));
 }
-size_t
+Size
 hash_(ivec3 a) noexcept {
     return fnvHash(reinterpret_cast<char*>(&a), sizeof(a));
 }
-size_t
+Size
 hash_(fvec2 a) noexcept {
     return fnvHash(reinterpret_cast<char*>(&a), sizeof(a));
 }
-size_t
+Size
 hash_(fvec3 a) noexcept {
     return fnvHash(reinterpret_cast<char*>(&a), sizeof(a));
 }

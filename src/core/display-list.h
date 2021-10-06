@@ -22,7 +22,7 @@ struct DisplayList {
 
     Vector<DisplayItem> items;
 
-    uint32_t colorOverlayARGB;
+    U32 colorOverlayARGB;
     bool paused;  // TODO: Move to colorOverlay & overlay.
 };
 

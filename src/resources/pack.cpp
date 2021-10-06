@@ -46,7 +46,7 @@ resourceLoad(StringView path, String& data) noexcept {
         return false;
     }
 
-    uint32_t index = readerIndex(pack, path);
+    U32 index = readerIndex(pack, path);
 
     if (index == BLOB_NOT_FOUND) {
         logErr("PackResources",
@@ -55,17 +55,17 @@ resourceLoad(StringView path, String& data) noexcept {
     }
 
     BlobDetails details = readerDetails(pack, index);
-    uint32_t size = details.size;
+    U32 size = details.size;
 
     // Will it fit in memory?
-    if (size > static_cast<uint32_t>(INT32_MAX)) {
+    if (size > static_cast<U32>(INT32_MAX)) {
         logErr("PackResources",
                String() << getFullPath(path) << ": file too large");
         return false;
     }
 
-    if (data.capacity < static_cast<size_t>(size) + 1) {
-        data.reserve(static_cast<size_t>(size) + 1);
+    if (data.capacity < static_cast<Size>(size) + 1) {
+        data.reserve(static_cast<Size>(size) + 1);
     }
 
     bool ok = readerRead(pack, data.data, index);

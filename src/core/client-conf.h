@@ -18,7 +18,7 @@ extern ivec2 confWindowSize;
 extern bool confFullscreen;
 extern int confMusicVolume;
 extern int confSoundVolume;
-extern time_t confCacheTTL;
+extern Time confCacheTTL;
 extern int confPersistInit;
 extern int confPersistCons;
 

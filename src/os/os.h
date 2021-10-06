@@ -13,18 +13,16 @@
 
 extern const char dirSeparator;
 
-typedef uint64_t Filesize;
+typedef U64 Filesize;
 
 #define FS_ERROR UINT64_MAX
 
 Filesize
 getFileSize(StringView path) noexcept;
 bool
-writeFile(StringView path, uint32_t length, void* data) noexcept;
+writeFile(StringView path, U32 length, void* data) noexcept;
 bool
-writeFileVec(StringView path,
-             uint32_t count,
-             uint32_t* lengths,
+writeFileVec(StringView path, U32 count, U32* lengths,
              void** datas) noexcept;
 bool
 isDir(StringView path) noexcept;

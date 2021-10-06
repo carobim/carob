@@ -4,8 +4,8 @@
 #include "util/compiler.h"
 #include "util/string-view.h"
 
-typedef uint32_t Key;
-typedef uint32_t Keys;
+typedef U32 Key;
+typedef U32 Keys;
 
 #define KEY_ESCAPE        0x1
 #define KEY_LEFT_CONTROL  0x2
@@ -24,7 +24,7 @@ void
 windowCreate(void) noexcept;
 
 //! Time since epoch.
-time_t
+Time
 windowTime(void) noexcept;
 
 //! Width of the window in pixels.

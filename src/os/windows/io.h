@@ -15,14 +15,14 @@ class File {
     operator bool() noexcept;
 
     bool
-    read(void* buf, size_t len) noexcept;
+    read(void* buf, Size len) noexcept;
 
     bool
-    readOffset(void* buf, size_t len, size_t offset) noexcept;
+    readOffset(void* buf, Size len, Size offset) noexcept;
 
  public:
     void* handle;
-    size_t rem;  // 0 when EOF
+    Size rem;  // 0 when EOF
 
  private:
     void
@@ -38,10 +38,10 @@ class FileWriter {
     operator bool() noexcept;
 
     bool
-    resize(size_t size) noexcept;
+    resize(Size size) noexcept;
 
     bool
-    writeOffset(const void* buf, size_t len, size_t offset) noexcept;
+    writeOffset(const void* buf, Size len, Size offset) noexcept;
 
  public:
     void* handle;
@@ -50,8 +50,8 @@ class FileWriter {
 // On Windows, these are identical and both write to the attached console, if
 // it exists.
 bool
-writeStdout(const char* buf, size_t len) noexcept;
+writeStdout(const char* buf, Size len) noexcept;
 bool
-writeStderr(const char* buf, size_t len) noexcept;
+writeStderr(const char* buf, Size len) noexcept;
 
 #endif  // SRC_OS_WINDOWS_IO_H_

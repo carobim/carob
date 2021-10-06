@@ -129,7 +129,7 @@ getFileSize(StringView path) noexcept {
 }
 
 bool
-writeFile(StringView path, uint32_t length, void* data) noexcept {
+writeFile(StringView path, U32 length, void* data) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              FILE_WRITE_DATA,
                              0,
@@ -161,8 +161,8 @@ writeFile(StringView path, uint32_t length, void* data) noexcept {
 
 bool
 writeFileVec(StringView path,
-             uint32_t count,
-             uint32_t* lengths,
+             U32 count,
+             U32* lengths,
              void** datas) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              FILE_WRITE_DATA,
@@ -175,7 +175,7 @@ writeFileVec(StringView path,
         return false;
     }
 
-    for (uint32_t i = 0; i < count; i++) {
+    for (U32 i = 0; i < count; i++) {
         DWORD written;
         BOOL ok = WriteFile(file, datas[i], lengths[i], &written, 0);
         if (!ok) {

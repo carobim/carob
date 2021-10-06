@@ -20,12 +20,12 @@ struct PackReader {
     char* paths;
 
     bool lookupsConstructed;
-    Hashmap<StringView, uint32_t> lookups;
+    Hashmap<StringView, U32> lookups;
 };
 
 static void
 constructLookups(PackReader* r) noexcept {
-    for (uint32_t i = 0; i < r->header.blobCount; i++) {
+    for (U32 i = 0; i < r->header.blobCount; i++) {
         BlobMetadata meta = r->metadata[i];
         StringView path(r->paths + meta.pathOffset, meta.pathSize);
         r->lookups[path] = i;
@@ -57,8 +57,8 @@ makePackReader(StringView path) noexcept {
     BlobMetadata* metadata = xmalloc(BlobMetadata, header.blobCount);
     file.read(metadata, sizeof(BlobMetadata) * header.blobCount);
 
-    uint32_t pathsSize = 0;
-    for (size_t i = 0; i < header.blobCount; i++) {
+    U32 pathsSize = 0;
+    for (Size i = 0; i < header.blobCount; i++) {
         pathsSize += metadata[i].pathSize;
     }
 
@@ -83,19 +83,19 @@ destroyReader(PackReader* r) noexcept {
     delete r;
 }
 
-uint32_t
+U32
 readerSize(PackReader* r) noexcept {
     return r->header.blobCount;
 }
 
-uint32_t
+U32
 readerIndex(PackReader* r, StringView path) noexcept {
     if (!r->lookupsConstructed) {
         r->lookupsConstructed = true;
         constructLookups(r);
     }
 
-    Hashmap<StringView, uint32_t>::iterator it = r->lookups.find(path);
+    Hashmap<StringView, U32>::iterator it = r->lookups.find(path);
     if (it == r->lookups.end()) {
         return BLOB_NOT_FOUND;
     }
@@ -105,22 +105,22 @@ readerIndex(PackReader* r, StringView path) noexcept {
 }
 
 BlobDetails
-readerDetails(PackReader* r, uint32_t index) noexcept {
+readerDetails(PackReader* r, U32 index) noexcept {
     BlobMetadata meta = r->metadata[index];
 
     StringView path(r->paths + meta.pathOffset, meta.pathSize);
-    uint32_t size = meta.uncompressedSize;
+    U32 size = meta.uncompressedSize;
 
     BlobDetails details = {path, size};
     return details;
 }
 
 bool
-readerRead(PackReader* r, void* buf, uint32_t index) noexcept {
+readerRead(PackReader* r, void* buf, U32 index) noexcept {
     BlobMetadata meta = r->metadata[index];
 
-    uint32_t size = meta.compressedSize;
-    uint32_t offset = r->header.dataOffset + meta.dataOffset;
+    U32 size = meta.compressedSize;
+    U32 offset = r->header.dataOffset + meta.dataOffset;
 
     return r->file.readOffset(buf, size, offset);
 }

@@ -23,7 +23,7 @@ makeMappedFile(MappedFile& file, StringView path) noexcept {
         return false;
     }
 
-    size_t size = static_cast<size_t>(st.st_size);
+    Size size = static_cast<Size>(st.st_size);
     void* data = mmap(0, size, PROT_READ, MAP_SHARED, fd, 0);
 
     if (data == MAP_FAILED) {

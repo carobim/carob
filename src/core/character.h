@@ -15,7 +15,7 @@ class Character : public Entity {
     virtual ~Character() noexcept { }
 
     virtual void
-    tick(time_t dt) noexcept;
+    tick(Time dt) noexcept;
     virtual void
     turn() noexcept;
 

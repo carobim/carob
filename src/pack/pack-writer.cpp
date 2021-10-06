@@ -13,8 +13,8 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-typedef uint32_t BlobSize;
-typedef uint32_t PathOffset;
+typedef U32 BlobSize;
+typedef U32 PathOffset;
 
 struct Blob {
     String path;
@@ -67,7 +67,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     bool ok = false;
 
     Vector<Blob>& blobs = writer->blobs;
-    uint32_t blobCount = static_cast<uint32_t>(blobs.size);
+    U32 blobCount = static_cast<U32>(blobs.size);
 
     //
     // Compute metadata.
@@ -79,14 +79,14 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     BlobMetadata* metadataSection = xmalloc(BlobMetadata, blobCount);
 
     PathOffset nextPathOffset = 0;
-    uint32_t nextDataOffset = 0;
+    U32 nextDataOffset = 0;
 
-    for (uint32_t i = 0; i < blobCount; i++) {
+    for (U32 i = 0; i < blobCount; i++) {
         Blob& blob = blobs[i];
 
         BlobMetadata meta;
         meta.pathOffset = nextPathOffset;
-        meta.pathSize = static_cast<uint32_t>(blob.path.size);
+        meta.pathSize = static_cast<U32>(blob.path.size);
         meta.dataOffset = nextDataOffset;
         meta.uncompressedSize = blob.size;
         meta.compressedSize = blob.size;
@@ -94,7 +94,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
 
         metadataSection[i] = meta;
 
-        nextPathOffset += static_cast<uint32_t>(blob.path.size);
+        nextPathOffset += static_cast<U32>(blob.path.size);
         nextDataOffset += align64(blob.size);
     }
 
@@ -113,23 +113,23 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     // Compute header.
     //
 
-    uint32_t offset = 0;
+    U32 offset = 0;
 
-    uint32_t headerOffset = offset;
-    uint32_t headerSize = static_cast<uint32_t>(sizeof(HeaderSection));
+    U32 headerOffset = offset;
+    U32 headerSize = static_cast<U32>(sizeof(HeaderSection));
     offset += headerSize;
 
-    uint32_t metadataOffset = offset;
-    uint32_t metadataSize = static_cast<uint32_t>(sizeof(BlobMetadata)) * blobCount;
+    U32 metadataOffset = offset;
+    U32 metadataSize = static_cast<U32>(sizeof(BlobMetadata)) * blobCount;
     offset += metadataSize;
 
-    uint32_t pathsOffset = offset;
-    uint32_t pathsSize = nextPathOffset;
+    U32 pathsOffset = offset;
+    U32 pathsSize = nextPathOffset;
     offset += pathsOffset;
 
     offset = align64(offset);
-    uint32_t dataOffset = offset;
-    uint32_t dataSize = nextDataOffset;
+    U32 dataOffset = offset;
+    U32 dataSize = nextDataOffset;
 
     HeaderSection headerSection = {
             {PACK_MAGIC[0],
@@ -166,7 +166,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     f.writeOffset(metadataSection, metadataSize, metadataOffset);
     f.writeOffset(pathsSection.data, pathsSize, pathsOffset);
 
-    for (uint32_t i = 0; i < blobCount; i++) {
+    for (U32 i = 0; i < blobCount; i++) {
         BlobMetadata& meta = metadataSection[i];
         Blob& blob = blobs[i];
 

@@ -7,9 +7,9 @@
 extern "C" {
 
 // SDL.h
-int SDL_Init(uint32_t) noexcept;
-uint32_t
-SDL_WasInit(uint32_t flags) noexcept;
+int SDL_Init(U32) noexcept;
+U32
+SDL_WasInit(U32 flags) noexcept;
 #define SDL_INIT_AUDIO 0x10
 #define SDL_INIT_VIDEO 0x20
 
@@ -31,7 +31,7 @@ SDL_GetError() noexcept;
 typedef int SDL_Scancode;
 
 // SDK_keycode.h
-typedef int32_t SDL_Keycode;
+typedef I32 SDL_Keycode;
 enum {
     SDLK_ESCAPE = '\033',
     SDLK_SPACE = ' ',
@@ -49,8 +49,8 @@ enum {
 typedef struct {
     SDL_Scancode scancode;
     SDL_Keycode sym;
-    uint16_t mod;
-    uint32_t unused;
+    U16 mod;
+    U32 unused;
 } SDL_Keysym;
 
 // SDL_events.h
@@ -60,14 +60,14 @@ typedef enum {
     SDL_KEYUP = 0x301,
 } SDL_EventType;
 typedef struct {
-    uint32_t type, timestamp, windowID;
-    uint8_t state, repeat, padding2, padding3;
+    U32 type, timestamp, windowID;
+    U8 state, repeat, padding2, padding3;
     SDL_Keysym keysym;
 } SDL_KeyboardEvent;
 typedef union {
-    uint32_t type;
+    U32 type;
     SDL_KeyboardEvent key;
-    uint8_t padding[56];
+    U8 padding[56];
 } SDL_Event;
 int
 SDL_PollEvent(SDL_Event*) noexcept;
@@ -89,7 +89,7 @@ SDL_RWFromMem(void*, int) noexcept;
 
 // SDL_surface.h
 struct SDL_Surface {
-    uint32_t foo1;
+    U32 foo1;
     void* foo2;
     int w, h;
     int foo3;
@@ -103,13 +103,13 @@ SDL_LoadBMP_RW(SDL_RWops*, int) noexcept;
 // SDL_video.h
 typedef struct SDL_Window SDL_Window;
 typedef struct {
-    uint32_t format;
+    U32 format;
     int w, h, refresh_rate;
     void* driverdata;
 } SDL_DisplayMode;
 typedef void* SDL_GLContext;
 SDL_Window*
-SDL_CreateWindow(const char*, int, int, int, int, uint32_t) noexcept;
+SDL_CreateWindow(const char*, int, int, int, int, U32) noexcept;
 int
 SDL_GetCurrentDisplayMode(int, SDL_DisplayMode*) noexcept;
 int
@@ -139,16 +139,16 @@ typedef struct SDL_Renderer SDL_Renderer;
 typedef struct SDL_Texture SDL_Texture;
 typedef struct SDL_RendererInfo {
     const char* name;
-    uint32_t flags;
-    uint32_t num_texture_formats;
-    uint32_t texture_formats[16];
+    U32 flags;
+    U32 num_texture_formats;
+    U32 texture_formats[16];
     int max_texture_width;
     int max_texture_height;
 } SDL_RendererInfo;
 SDL_Renderer*
-SDL_CreateRenderer(SDL_Window*, int, uint32_t) noexcept;
+SDL_CreateRenderer(SDL_Window*, int, U32) noexcept;
 SDL_Texture*
-SDL_CreateTexture(SDL_Renderer*, uint32_t, int, int, int) noexcept;
+SDL_CreateTexture(SDL_Renderer*, U32, int, int, int) noexcept;
 SDL_Texture*
 SDL_CreateTextureFromSurface(SDL_Renderer*, SDL_Surface*) noexcept;
 void
@@ -156,7 +156,7 @@ SDL_DestroyTexture(SDL_Texture*) noexcept;
 int
 SDL_GetRendererInfo(SDL_Renderer*, SDL_RendererInfo*) noexcept;
 int
-SDL_QueryTexture(SDL_Texture*, uint32_t*, int*, int*, int*) noexcept;
+SDL_QueryTexture(SDL_Texture*, U32*, int*, int*, int*) noexcept;
 int
 SDL_SetRenderTarget(SDL_Renderer*, SDL_Texture*) noexcept;
 int
@@ -175,11 +175,7 @@ SDL_RenderPresent(SDL_Renderer*) noexcept;
 int
 SDL_SetRenderDrawBlendMode(SDL_Renderer*, SDL_BlendMode) noexcept;
 int
-SDL_SetRenderDrawColor(SDL_Renderer*,
-                       uint8_t,
-                       uint8_t,
-                       uint8_t,
-                       uint8_t) noexcept;
+SDL_SetRenderDrawColor(SDL_Renderer*, U8, U8, U8, U8) noexcept;
 #define SDL_RENDERER_ACCELERATED   2
 #define SDL_RENDERER_PRESENTVSYNC  4
 #define SDL_RENDERER_TARGETTEXTURE 8
@@ -211,7 +207,7 @@ Mix_LoadMUS_RW(SDL_RWops*, int) noexcept;
 Mix_Chunk*
 Mix_LoadWAV_RW(SDL_RWops*, int) noexcept;
 int
-Mix_OpenAudio(int, uint16_t, int, int) noexcept;
+Mix_OpenAudio(int, U16, int, int) noexcept;
 int
 Mix_PausedMusic() noexcept;
 void
@@ -229,7 +225,7 @@ Mix_Resume(int) noexcept;
 void
 Mix_ResumeMusic() noexcept;
 int
-Mix_SetPosition(int, int16_t, uint8_t) noexcept;
+Mix_SetPosition(int, I16, U8) noexcept;
 int
 Mix_Volume(int, int) noexcept;
 int

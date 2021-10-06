@@ -24,36 +24,36 @@
 //   (2) Coalesce metadata into one section. Align data to boundary.
 
 //                                       "T   s    u    n    a   g    a   r"
-static constexpr uint8_t PACK_MAGIC[8] = {84, 115, 117, 110, 97, 103, 97, 114};
+static constexpr U8 PACK_MAGIC[8] = {84, 115, 117, 110, 97, 103, 97, 114};
 
-static constexpr uint8_t PACK_VERSION = 2;
+static constexpr U8 PACK_VERSION = 2;
 
 struct HeaderSection {
-    uint8_t magic[8];
-    uint8_t version;
-    uint8_t unused[7];
+    U8 magic[8];
+    U8 version;
+    U8 unused[7];
 
-    uint32_t blobCount;
+    U32 blobCount;
 
-    uint32_t metadataOffset;
-    uint32_t pathsOffset;
-    uint32_t dataOffset;
+    U32 metadataOffset;
+    U32 pathsOffset;
+    U32 dataOffset;
 };
 
 enum BlobCompressionType { BLOB_COMPRESSION_NONE };
 
 struct BlobMetadata {
     // Offset into paths section.
-    uint32_t pathOffset;
-    uint32_t pathSize;
+    U32 pathOffset;
+    U32 pathSize;
 
     // Offset into data section.
-    uint32_t dataOffset;
-    uint32_t uncompressedSize;
-    uint32_t compressedSize;
+    U32 dataOffset;
+    U32 uncompressedSize;
+    U32 compressedSize;
 
-    uint8_t compressionType;
-    uint8_t unused[3];
+    U8 compressionType;
+    U8 unused[3];
 };
 
 #endif  // SRC_PACK_LAYOUT_H_

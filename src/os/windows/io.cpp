@@ -56,7 +56,7 @@ File::File(StringView path) noexcept {
         return;
     }
 
-    rem = static_cast<size_t>(size.QuadPart);
+    rem = static_cast<Size>(size.QuadPart);
 }
 
 File::File(File&& other) noexcept : handle(other.handle), rem(other.rem) {
@@ -77,7 +77,7 @@ File::operator bool() noexcept {
 }
 
 bool
-File::read(void* buf, size_t len) noexcept {
+File::read(void* buf, Size len) noexcept {
     unsigned long numRead;
     if (!ReadFile(handle, buf, static_cast<DWORD>(len), &numRead, 0)) {
         // GetLastError();
@@ -93,8 +93,8 @@ File::read(void* buf, size_t len) noexcept {
 }
 
 bool
-File::readOffset(void* buf, size_t len, size_t offset) noexcept {
-    assert_(len <= static_cast<size_t>(INT32_MAX));
+File::readOffset(void* buf, Size len, Size offset) noexcept {
+    assert_(len <= static_cast<Size>(INT32_MAX));
     DWORD position = SetFilePointer(handle, static_cast<LONG>(len), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
@@ -127,8 +127,8 @@ FileWriter::operator bool() noexcept {
 }
 
 bool
-FileWriter::resize(size_t size) noexcept {
-    assert_(size <= static_cast<size_t>(INT32_MAX));
+FileWriter::resize(Size size) noexcept {
+    assert_(size <= static_cast<Size>(INT32_MAX));
     DWORD position = SetFilePointer(handle, static_cast<LONG>(size), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
@@ -147,8 +147,8 @@ FileWriter::resize(size_t size) noexcept {
 }
 
 bool
-FileWriter::writeOffset(const void* buf, size_t len, size_t offset) noexcept {
-    assert_(len <= static_cast<size_t>(INT32_MAX));
+FileWriter::writeOffset(const void* buf, Size len, Size offset) noexcept {
+    assert_(len <= static_cast<Size>(INT32_MAX));
     DWORD position = SetFilePointer(handle, static_cast<LONG>(offset), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         // GetLastError();
@@ -191,7 +191,7 @@ openConsole() noexcept {
 }
 
 bool
-writeStdout(const char* buf, size_t len) noexcept {
+writeStdout(const char* buf, Size len) noexcept {
     if (con == UNINITIALIZED) {
         openConsole();
     }
@@ -199,7 +199,7 @@ writeStdout(const char* buf, size_t len) noexcept {
         return false;
     }
 
-    assert_(len <= static_cast<size_t>(INT32_MAX));
+    assert_(len <= static_cast<Size>(INT32_MAX));
 
     DWORD written;
     if (!WriteConsoleA(con, buf, static_cast<DWORD>(len), &written, 0)) {
@@ -216,6 +216,6 @@ writeStdout(const char* buf, size_t len) noexcept {
 }
 
 bool
-writeStderr(const char* buf, size_t len) noexcept {
+writeStderr(const char* buf, Size len) noexcept {
     return writeStdout(buf, len);
 }

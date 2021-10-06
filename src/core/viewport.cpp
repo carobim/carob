@@ -120,7 +120,7 @@ viewportSetSize(fvec2 virtRes_) noexcept {
 }
 
 void
-viewportTick(time_t) noexcept {
+viewportTick(Time) noexcept {
     update();
 }
 

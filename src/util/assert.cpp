@@ -13,7 +13,7 @@ void __cdecl __debugbreak();  // Cannot be noexcept.
 
 #    ifdef __APPLE__
 // sys/_types/_mach_port_t.h
-typedef uint32_t mach_port_t;
+typedef U32 mach_port_t;
 
 // mach/arm/exception.h
 // mach/i386/exception.h
@@ -21,15 +21,15 @@ typedef uint32_t mach_port_t;
 
 // mach/arm/kern_return.h
 // mach/i386/kern_return.h
-typedef int32_t kern_return_t;
+typedef I32 kern_return_t;
 
 // mach/thread_status.h
-typedef int32_t thread_state_flavor_t;
-typedef int32_t* thread_state_flavor_array_t;
+typedef I32 thread_state_flavor_t;
+typedef I32* thread_state_flavor_array_t;
 
 // mach/exception_types.h
-typedef uint32_t exception_mask_t;
-typedef int32_t exception_behavior_t;
+typedef U32 exception_mask_t;
+typedef I32 exception_behavior_t;
 typedef exception_behavior_t* exception_behavior_array_t;
 typedef exception_mask_t* exception_mask_array_t;
 typedef thread_state_flavor_t* exception_flavor_array_t;
@@ -48,10 +48,10 @@ typedef mach_port_t exception_handler_t;
 typedef exception_handler_t* exception_handler_array_t;
 
 // mach/message.h
-typedef uint32_t mach_msg_type_number_t;
+typedef U32 mach_msg_type_number_t;
 
 // mach/port.h
-#        define MACH_PORT_VALID(name) ((name) != 0 && (name) != ((uint32_t)~0))
+#        define MACH_PORT_VALID(name) ((name) != 0 && (name) != ((U32)~0))
 
 // mach/task.h
 extern "C" kern_return_t

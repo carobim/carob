@@ -26,7 +26,7 @@ class HashVector {
     }
 
     Value&
-    allocate(uint32_t hash) noexcept {
+    allocate(U32 hash) noexcept {
         if (used == allocated) {
             grow();
         }
@@ -39,7 +39,7 @@ class HashVector {
     }
 
     Value*
-    find(uint32_t hash) noexcept {
+    find(U32 hash) noexcept {
         for (Entry* e = storage; e < storage + used; e++) {
             if (e->hash == hash) {
                 return &e->value;
@@ -52,7 +52,7 @@ class HashVector {
  protected:
     void
     grow() noexcept {
-        uint32_t newAllocated = allocated == 0 ? 4 : allocated * 2;
+        U32 newAllocated = allocated == 0 ? 4 : allocated * 2;
 
         Entry* newStorage = xmalloc(Entry, newAllocated);
         memcpy(newStorage, storage, sizeof(Entry) * allocated);
@@ -63,13 +63,13 @@ class HashVector {
     }
 
     struct Entry {
-        uint32_t hash;
+        U32 hash;
         Value value;
     };
 
     Entry* storage;
-    uint32_t allocated;
-    uint32_t used;
+    U32 allocated;
+    U32 used;
 };
 
 #endif  // SRC_UTIL_HASHVECTOR_H_

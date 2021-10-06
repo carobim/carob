@@ -50,7 +50,7 @@ JsonAllocator::~JsonAllocator() noexcept {
 }
 
 void*
-JsonAllocator::allocate(size_t size) noexcept {
+JsonAllocator::allocate(Size size) noexcept {
     size = (size + 7) & ~7;
 
     if (head && head->used + size <= JSON_ZONE_SIZE) {
@@ -59,7 +59,7 @@ JsonAllocator::allocate(size_t size) noexcept {
         return p;
     }
 
-    size_t allocSize = sizeof(Zone) + size;
+    Size allocSize = sizeof(Zone) + size;
     Zone* zone = static_cast<Zone*>(
             malloc(allocSize <= JSON_ZONE_SIZE ? JSON_ZONE_SIZE : allocSize));
     if (zone == 0) {

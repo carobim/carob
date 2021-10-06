@@ -67,10 +67,10 @@ bool operator!=(fvec3, fvec3) noexcept;
 float distanceTo(fvec2, fvec2) noexcept;
 float distanceTo(fvec3, fvec3) noexcept;
 
-size_t hash_(ivec2) noexcept;
-size_t hash_(ivec3) noexcept;
-size_t hash_(fvec2) noexcept;
-size_t hash_(fvec3) noexcept;
+Size hash_(ivec2) noexcept;
+Size hash_(ivec3) noexcept;
+Size hash_(fvec2) noexcept;
+Size hash_(fvec3) noexcept;
 
 static const constexpr11 ivec3 IVEC3_MIN = {
     INT32_MIN,

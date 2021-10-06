@@ -6,11 +6,11 @@
 
 struct TileSet {
     int firstGid;
-    size_t width;
-    size_t height;
+    Size width;
+    Size height;
 
     int
-    at(size_t x, size_t y) noexcept;
+    at(Size x, Size y) noexcept;
 };
 
 #endif  // SRC_CORE_TILE_H_

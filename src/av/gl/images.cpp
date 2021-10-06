@@ -48,7 +48,7 @@
 static void checkError(StringView call) noexcept;
 
 typedef unsigned GLbitfield;
-typedef uint8_t GLboolean;
+typedef U8 GLboolean;
 typedef char GLchar;
 typedef unsigned GLenum;
 typedef int GLint;
@@ -56,8 +56,8 @@ typedef float GLfloat;
 typedef float GLclampf;
 typedef double GLdouble;
 typedef int GLsizei;
-typedef ssize_t GLsizeiptr;
-typedef uint8_t GLubyte;
+typedef SSize GLsizeiptr;
+typedef U8 GLubyte;
 typedef unsigned GLuint;
 
 typedef GLint Attribute;
@@ -366,7 +366,7 @@ makeProgram(const char* vertexSource, const char* fragmentSource) noexcept {
 #define ATLAS_HEIGHT 512
 
 static HashVector<TiledImage> images;
-static size_t atlasUsed = 0;
+static Size atlasUsed = 0;
 
 Texture tAtlas;
 
@@ -445,10 +445,10 @@ rectFragmentSource =
 
 struct RectVertex {
     fvec3 position;
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-    uint8_t a;
+    U8 r;
+    U8 g;
+    U8 b;
+    U8 a;
 };
 
 struct RectProgram {
@@ -630,13 +630,13 @@ load(StringView path) noexcept {
 
     tiles.image = {
         reinterpret_cast<void*>(tAtlas),
-        static_cast<uint32_t>(x),
-        static_cast<uint32_t>(y),
-        static_cast<uint32_t>(width),
-        static_cast<uint32_t>(height),
+        static_cast<U32>(x),
+        static_cast<U32>(y),
+        static_cast<U32>(width),
+        static_cast<U32>(height),
     };
 
-    atlasUsed += static_cast<uint32_t>(width);
+    atlasUsed += static_cast<U32>(width);
 
     return &tiles;
 }
@@ -667,9 +667,9 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     float xLeft   = scale.x * (trans.x + x);
     float xRight  = scale.x * (trans.x + x + image.width);
 
-    size_t offset = ip.attributes.size;
+    Size offset = ip.attributes.size;
 
-    const size_t QUAD_COORDS = 6;
+    const Size QUAD_COORDS = 6;
 
     if (ip.attributes.capacity == 0) {
         ip.attributes.reserve(QUAD_COORDS * 8);
@@ -698,10 +698,10 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 
 TiledImage
 tilesLoad(StringView path,
-          uint32_t tileWidth,
-          uint32_t tileHeight,
-          uint32_t numAcross,
-          uint32_t numHigh) noexcept {
+          U32 tileWidth,
+          U32 tileHeight,
+          U32 numAcross,
+          U32 numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
     if (!tiles) {
@@ -722,7 +722,7 @@ void
 tilesRelease(TiledImage tiles) noexcept {}
 
 Image
-tileAt(TiledImage tiles, uint32_t index) noexcept {
+tileAt(TiledImage tiles, U32 index) noexcept {
     assert_(TILES_VALID(tiles));
 
     Image image = tiles.image;
@@ -737,11 +737,11 @@ tileAt(TiledImage tiles, uint32_t index) noexcept {
 }
 
 void
-imagesPrune(time_t latestPermissibleUse) noexcept {}
+imagesPrune(Time latestPermissibleUse) noexcept {}
 
 void
 imageDrawRect(float left, float right, float top, float bottom, float z,
-              uint32_t argb) noexcept {
+              U32 argb) noexcept {
     fvec2 trans = sdl2Translation;
     fvec2 scale = sdl2Scaling;
 
@@ -750,9 +750,9 @@ imageDrawRect(float left, float right, float top, float bottom, float z,
     float xLeft   = scale.x * (trans.x + left);
     float xRight  = scale.x * (trans.x + right);
 
-    size_t offset = rp.attributes.size;
+    Size offset = rp.attributes.size;
 
-    const size_t QUAD_COORDS = 6;
+    const Size QUAD_COORDS = 6;
 
     if (rp.attributes.capacity == 0) {
         rp.attributes.reserve(QUAD_COORDS * 8);
@@ -762,10 +762,10 @@ imageDrawRect(float left, float right, float top, float bottom, float z,
     }
     rp.attributes.size += QUAD_COORDS;
 
-    uint8_t a = (argb >> 24) & 0xFF;
-    uint8_t r = (argb >> 16) & 0xFF;
-    uint8_t g = (argb >>  8) & 0xFF;
-    uint8_t b = (argb >>  0) & 0xFF;
+    U8 a = (argb >> 24) & 0xFF;
+    U8 r = (argb >> 16) & 0xFF;
+    U8 g = (argb >>  8) & 0xFF;
+    U8 b = (argb >>  0) & 0xFF;
 
     rp.attributes[offset+0] = { {xLeft,  yBottom, z}, r, g, b, a };
     rp.attributes[offset+1] = { {xRight, yBottom, z}, r, g, b, a };

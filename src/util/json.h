@@ -53,15 +53,15 @@ enum JsonTag {
 struct JsonNode;
 
 union JsonValue {
-    uint64_t ival;
+    U64 ival;
     double fval;
 
     inline JsonValue(double x) noexcept : fval(x) { }
     inline JsonValue(JsonTag tag = JSON_NULL, void* payload = 0) noexcept {
-        //assert_(reinterpret_cast<size_t>(payload) <= JSON_VALUE_PAYLOAD_MASK);
+        //assert_(reinterpret_cast<Size>(payload) <= JSON_VALUE_PAYLOAD_MASK);
         ival = JSON_VALUE_NAN_MASK |
-               (static_cast<uint64_t>(tag) << JSON_VALUE_TAG_SHIFT) |
-               reinterpret_cast<size_t>(payload);
+               (static_cast<U64>(tag) << JSON_VALUE_TAG_SHIFT) |
+               reinterpret_cast<Size>(payload);
     }
 
     inline bool
@@ -103,8 +103,8 @@ union JsonValue {
 
     inline bool
     isDouble() noexcept {
-        return static_cast<int64_t>(ival) <=
-               static_cast<int64_t>(JSON_VALUE_NAN_MASK);
+        return static_cast<I64>(ival) <=
+               static_cast<I64>(JSON_VALUE_NAN_MASK);
     }
 
     inline JsonTag
@@ -153,7 +153,7 @@ union JsonValue {
     JsonValue
     operator[](StringView key) noexcept;
 
-    inline uint64_t
+    inline U64
     getPayload() noexcept {
         // assert_(!isDouble());
         return ival & JSON_VALUE_PAYLOAD_MASK;
@@ -212,14 +212,14 @@ struct JsonAllocator {
     operator=(JsonAllocator&& other) noexcept;
 
     void*
-    allocate(size_t size) noexcept;
+    allocate(Size size) noexcept;
 
     void
     deallocate() noexcept;
 
     struct Zone {
         Zone* next;
-        size_t used;
+        Size used;
     };
 
     Zone* head;

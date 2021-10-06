@@ -9,7 +9,7 @@ soundLoad(StringView path) noexcept {
     return mark;
 }
 void
-soundsPrune(time_t latestPermissibleUse) noexcept { }
+soundsPrune(Time latestPermissibleUse) noexcept { }
 
 PlayingSoundID
 soundPlay(SoundID id) noexcept {

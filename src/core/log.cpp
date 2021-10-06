@@ -19,13 +19,13 @@
 
 static LogVerbosity verb = NORMAL;
 
-static time_t startTime;
+static Time startTime;
 
 static Mutex stdoutMutex;
 
 static StringView
 chomp(StringView str) noexcept {
-    size_t size = str.size;
+    Size size = str.size;
     while (size > 0 &&
            (str.data[size - 1] == ' ' || str.data[size - 1] == '\t' ||
             str.data[size - 1] == '\n' || str.data[size - 1] == '\r')) {
@@ -36,7 +36,7 @@ chomp(StringView str) noexcept {
 
 static String
 makeTimestamp() noexcept {
-    time_t now = windowTime();
+    Time now = windowTime();
 
     float secs = (now - startTime) / (float)1000.0;
 

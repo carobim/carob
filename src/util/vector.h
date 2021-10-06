@@ -8,15 +8,15 @@
 
 /* #include "os/c.h" */
 extern "C" void*
-memmove(void*, const void*, size_t) noexcept;
+memmove(void*, const void*, Size) noexcept;
 
 // Does not call move constructors in its own move constructor or when growing.
 template<typename X>
 class Vector {
  public:
     X* data;
-    size_t size;
-    size_t capacity;
+    Size size;
+    Size capacity;
 
  public:
     Vector() noexcept : data(0), size(0), capacity(0) { }
@@ -29,7 +29,7 @@ class Vector {
             data = xmalloc(X, other.capacity);
             size = other.size;
             capacity = other.capacity;
-            for (size_t i = 0; i < size; i++) {
+            for (Size i = 0; i < size; i++) {
                 new (data + i) X(other.data[i]);
             }
         }
@@ -42,7 +42,7 @@ class Vector {
         other.size = other.capacity = 0;
     }
     ~Vector() noexcept {
-        for (size_t i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++) {
             data[i].~X();
         }
         free(data);
@@ -50,7 +50,7 @@ class Vector {
 
     void
     operator=(const Vector& other) noexcept {
-        for (size_t i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++) {
             data[i].~X();
         }
         free(data);
@@ -62,14 +62,14 @@ class Vector {
             data = xmalloc(X, other.capacity);
             size = other.size;
             capacity = other.capacity;
-            for (size_t i = 0; i < size; i++) {
+            for (Size i = 0; i < size; i++) {
                 new (data + i) X(other[i]);
             }
         }
     }
     void
     operator=(Vector&& other) noexcept {
-        for (size_t i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++) {
             data[i].~X();
         }
         free(data);
@@ -81,7 +81,7 @@ class Vector {
     }
 
     X&
-    operator[](size_t i) noexcept {
+    operator[](Size i) noexcept {
         assert_(i < size);
         return data[i];
     }
@@ -107,7 +107,7 @@ class Vector {
         size++;
     }
     void
-    insert(size_t i, const X& x) noexcept {
+    insert(Size i, const X& x) noexcept {
         // FIXME: Does not call move constructors.
         assert_(i <= size);
         grow();
@@ -116,7 +116,7 @@ class Vector {
         size++;
     }
     void
-    insert(size_t i, X&& x) noexcept {
+    insert(Size i, X&& x) noexcept {
         // FIXME: Does not call move constructors.
         assert_(i <= size);
         grow();
@@ -125,10 +125,10 @@ class Vector {
         size++;
     }
     void
-    append(size_t n, const X* xs) noexcept {
+    append(Size n, const X* xs) noexcept {
         assert_(n <= size);
         reserve(size + n);  // FIXME: Choose better size.
-        for (size_t i = 0; i < n; i++) {
+        for (Size i = 0; i < n; i++) {
             new (data + size + i) X(xs[i]);
         }
         size += n;
@@ -141,9 +141,9 @@ class Vector {
         size--;
     }
     void
-    erase(size_t i) noexcept {
+    erase(Size i) noexcept {
         assert_(i < size);
-        for (size_t j = i; j < size - 1; j++) {
+        for (Size j = i; j < size - 1; j++) {
             data[j] = static_cast<X&&>(data[j + 1]);
         }
         size--;
@@ -153,10 +153,10 @@ class Vector {
     // Calls move constructors (which empties the old objects), but not call
     // destructors on the just-moved objects since they are hopefully empty.
     void
-    reserve(size_t n) noexcept {
+    reserve(Size n) noexcept {
         assert_(n > capacity);
         X* newData = xmalloc(X, n);
-        for (size_t i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++) {
             new (newData + i) X(static_cast<X&&>(data[i]));
         }
         free(data);
@@ -164,17 +164,17 @@ class Vector {
         capacity = n;
     }
     void
-    resize(size_t n) noexcept {
+    resize(Size n) noexcept {
         if (n > capacity) {
             reserve(n);
         }
         if (n > size) {
-            for (size_t i = size; i < n; i++) {
+            for (Size i = size; i < n; i++) {
                 new (data + i) X;
             }
         }
         else if (n < size) {
-            for (size_t i = n; i < size; i++) {
+            for (Size i = n; i < size; i++) {
                 data[i].~X();
             }
         }
@@ -188,7 +188,7 @@ class Vector {
     }
     void
     clear() noexcept {
-        for (size_t i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++) {
             data[i].~X();
         }
         size = 0;

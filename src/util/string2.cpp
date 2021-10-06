@@ -22,7 +22,7 @@ isInteger(StringView s) noexcept {
 
     int state = SPACE;
 
-    for (size_t i = 0; i < s.size; i++) {
+    for (Size i = 0; i < s.size; i++) {
         char c = s.data[i];
         if (state == SPACE) {
             if (c == ' ')
@@ -62,7 +62,7 @@ isDecimal(StringView s) noexcept {
 
     int state = SPACE;
 
-    for (size_t i = 0; i < s.size; i++) {
+    for (Size i = 0; i < s.size; i++) {
         char c = s.data[i];
         switch (state) {
         case SPACE:
@@ -115,7 +115,7 @@ isRanges(StringView s) noexcept {
 
     int state = SIGN;
 
-    for (size_t i = 0; i < s.size; i++) {
+    for (Size i = 0; i < s.size; i++) {
         char c = s.data[i];
         switch (state) {
         case SIGN:
@@ -168,7 +168,7 @@ iequals(StringView a, StringView b) noexcept {
     if (a.size != b.size) {
         return false;
     }
-    for (size_t i = 0; i < a.size; i++) {
+    for (Size i = 0; i < a.size; i++) {
         if (tolower(a.data[i]) != tolower(b.data[i])) {
             return false;
         }
@@ -294,7 +294,7 @@ void
 splitStr(Vector<StringView>& out,
          StringView input,
          StringView delimiter) noexcept {
-    size_t i = 0;
+    Size i = 0;
 
     for (StringPosition pos = input.find(delimiter); pos != SV_NOT_FOUND;
          pos = input.find(delimiter, i)) {
@@ -393,7 +393,7 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
 }
 
 FileStream::FileStream(StringView path) noexcept : file(path) {
-    size_t bufsz = file.rem < CHUNK_SIZE ? file.rem : CHUNK_SIZE;
+    Size bufsz = file.rem < CHUNK_SIZE ? file.rem : CHUNK_SIZE;
     chunk.reserve(bufsz);
 }
 
@@ -436,18 +436,18 @@ ReadLines::next() noexcept {
             return StringView();
         }
     }
-    size_t position = file.chunk.view().find('\n', offset);
+    Size position = file.chunk.view().find('\n', offset);
     if (position != SV_NOT_FOUND) {
         // Fast case: The token is contained within a single chunk and ends
         //            before the end of the file. Don't use the joiner.
-        size_t oldOffset = offset;
+        Size oldOffset = offset;
         offset = position + 1;  // 1 = delimiter
         return file.chunk.view().substr(oldOffset, position - oldOffset);
     }
     else if (file.file.rem == 0) {
         // Fast case: The token ends at the end of the file. Don't use the
         // joiner.
-        size_t oldOffset = offset;
+        Size oldOffset = offset;
         offset = file.chunk.size;
         return StringView(file.chunk.view().substr(oldOffset));
     }
@@ -467,7 +467,7 @@ ReadLines::next() noexcept {
             return StringView();
         }
 
-        size_t position = file.chunk.view().find('\n');
+        Size position = file.chunk.view().find('\n');
 
         while (true) {
             if (position != SV_NOT_FOUND) {

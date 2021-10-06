@@ -6,14 +6,14 @@
 #include "util/fnv.h"
 #include "util/new.h"
 
-static size_t
-grow1(size_t current) noexcept {
+static Size
+grow1(Size current) noexcept {
     return current < 4 ? 4 : current * 2;
 }
 
-static size_t
-growN(size_t current, size_t addition) noexcept {
-    size_t newSize = current == 0 ? 4 : current * 2;
+static Size
+growN(Size current, Size addition) noexcept {
+    Size newSize = current == 0 ? 4 : current * 2;
     while (newSize < current + addition) {
         newSize *= 2;
     }
@@ -28,7 +28,7 @@ String::String(const char* s) noexcept {
         size = capacity = 0;
     }
     else {
-        size_t len = strlen(s);
+        Size len = strlen(s);
         // FIXME: Choose better size.
         data = xmalloc(char, len);
         size = capacity = len;
@@ -103,7 +103,7 @@ String::operator=(String&& s) noexcept {
 }
 
 char&
-String::operator[](size_t i) noexcept {
+String::operator[](Size i) noexcept {
     assert_(i < size);
     return data[i];
 }
@@ -121,7 +121,7 @@ String&
 String::operator<<(const char* s) noexcept {
     // TODO: Use strncpy without knowing the size. If the string has more
     //       characters, then do a strlen & growN & memcpy like below.
-    size_t len = strlen(s);
+    Size len = strlen(s);
     if (capacity < size + len) {
         reserve(growN(size, len));
     }
@@ -289,7 +289,7 @@ String::operator<<(float f) noexcept {
 }
 
 void
-String::reserve(size_t n) noexcept {
+String::reserve(Size n) noexcept {
     assert_(capacity < n);
     char* newData = xmalloc(char, n);
     memmove(newData, data, size);
@@ -298,7 +298,7 @@ String::reserve(size_t n) noexcept {
 }
 
 void
-String::resize(size_t n) noexcept {
+String::resize(Size n) noexcept {
     if (capacity < n) {
         reserve(n);
     }
@@ -344,7 +344,7 @@ operator>(const String& a, const String& b) noexcept {
     return a.view() > b.view();
 }
 
-size_t
+Size
 hash_(const String& s) noexcept {
     return fnvHash(s.data, s.size);
 }

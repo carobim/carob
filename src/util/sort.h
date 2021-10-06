@@ -56,19 +56,19 @@
 #define Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP)                     \
     do {                                                                    \
         /* The middle element, not to be confused with the median. */       \
-        size_t q_m = q_l + ((q_r - q_l) >> 1);                              \
-        /* Reorder the second, the middle, and the last items.           \
-         * As [Edelkamp Weiss 2016] explain, using the second element    \
-         * instead of the first one helps avoid bad behaviour for        \
-         * decreasingly sorted arrays.  This method is used in recent    \
-         * versions of gcc's std::sort, see gcc bug 58437#c13, although  \
-         * the details are somewhat different (cf. #c14). */ \
+        Size q_m = q_l + ((q_r - q_l) >> 1);                                \
+        /* Reorder the second, the middle, and the last items.              \
+         * As [Edelkamp Weiss 2016] explain, using the second element       \
+         * instead of the first one helps avoid bad behaviour for           \
+         * decreasingly sorted arrays.  This method is used in recent       \
+         * versions of gcc's std::sort, see gcc bug 58437#c13, although     \
+         * the details are somewhat different (cf. #c14). */                \
         Q_SORT3(q_l + 1, q_m, q_r, Q_LESS, Q_SWAP);                         \
         /* Place the median at the beginning. */                            \
         Q_SWAP(q_l, q_m);                                                   \
-        /* Partition [q_l+2, q_r-1] around the median which is in q_l.   \
-         * q_i and q_j are initially off by one, they get decremented    \
-         * in the do-while loops. */ \
+        /* Partition [q_l+2, q_r-1] around the median which is in q_l.      \
+         * q_i and q_j are initially off by one, they get decremented       \
+         * in the do-while loops. */                                        \
         q_i = q_l + 1;                                                      \
         q_j = q_r;                                                          \
         while (1) {                                                         \
@@ -100,7 +100,7 @@
  * to eliminate the (q_j > q_l) boundary check. */
 #define Q_INSERTION_SORT(q_l, q_r, Q_LESS, Q_SWAP)                         \
     do {                                                                   \
-        size_t q_i, q_j;                                                   \
+        Size q_i, q_j;                                                     \
         /* For each item starting with the second... */                    \
         for (q_i = q_l + 1; q_i <= q_r; q_i++)                             \
             /* move it down the array so that the first part is sorted. */ \
@@ -118,22 +118,23 @@
 /* The main loop. */
 #define Q_LOOP(Q_N, Q_LESS, Q_SWAP)                                            \
     do {                                                                       \
-        size_t q_l = 0;                                                        \
-        size_t q_r = (Q_N)-1;                                                  \
-        size_t q_sp = 0; /* the number of frames pushed to the stack */        \
+        Size q_l = 0;                                                          \
+        Size q_r = (Q_N)-1;                                                    \
+        Size q_sp = 0; /* the number of frames pushed to the stack */          \
         struct {                                                               \
-            size_t q_l, q_r;                                                   \
-        } /* On 32-bit platforms, to sort a "char[3GB+]" array,             \
-     * it may take full 32 stack frames.  On 64-bit CPUs,             \
-     * though, the address space is limited to 48 bits.               \
-     * The usage is further reduced if Q_N has a 32-bit type. */ \
-        q_st[sizeof(size_t) > 4 && sizeof(Q_N) > 4 ? 48 : 32];                 \
+            Size q_l, q_r;                                                     \
+        }                                                                      \
+        /* On 32-bit platforms, to sort a "char[3GB+]" array,                  \
+         * it may take full 32 stack frames.  On 64-bit CPUs,                  \
+         * though, the address space is limited to 48 bits.                    \
+         * The usage is further reduced if Q_N has a 32-bit type. */           \
+        q_st[sizeof(Size) > 4 && sizeof(Q_N) > 4 ? 48 : 32];                   \
         while (1) {                                                            \
             if (q_r - q_l + 1 >= Q_THRESH) {                                   \
-                size_t q_i, q_j;                                               \
+                Size q_i, q_j;                                                 \
                 Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP);               \
-                /* Now have two subfiles: [q_l,q_j] and [q_i,q_r].        \
-             * Dealing with them depends on which one is bigger. */   \
+                /* Now have two subfiles: [q_l,q_j] and [q_i,q_r].             \
+                 * Dealing with them depends on which one is bigger. */        \
                 if (q_j - q_l >= q_r - q_i) {                                  \
                     Q_SUBFILES(q_l, q_j, q_i, q_r);                            \
                 }                                                              \

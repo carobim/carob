@@ -20,7 +20,7 @@ fvec2 sdl2Scaling = {0.0, 0.0};
 static Nanoseconds start = 0;
 
 static struct Transform transformStack[10];
-static size_t transformTop = 1;
+static Size transformTop = 1;
 
 static void
 init(void) noexcept {
@@ -122,7 +122,7 @@ updateTransform(void) noexcept {
     sdl2Scaling = {xScale, yScale};
 }
 
-time_t
+Time
 windowTime(void) noexcept {
     if (start == 0) {
         start = chronoNow();
@@ -147,7 +147,7 @@ windowCreate(void) noexcept {
         int width = confWindowSize.x;
         int height = confWindowSize.y;
 
-        uint32_t flags = 0;
+        U32 flags = 0;
         if (confFullscreen) {
             flags |= SDL_WINDOW_FULLSCREEN;
         }
@@ -205,7 +205,7 @@ windowMainLoop(void) noexcept {
         //
         // Simulate world and draw frame.
         //
-        time_t dt = ns_to_ms(frameStart - previousFrameStart);
+        Time dt = ns_to_ms(frameStart - previousFrameStart);
 
         assert_(dt >= 0);
 

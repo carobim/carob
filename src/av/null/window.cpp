@@ -14,7 +14,7 @@
 void
 windowCreate(void) noexcept { }
 
-time_t
+Time
 windowTime(void) noexcept {
     return ns_to_ms(chronoNow());
 }
@@ -64,7 +64,7 @@ windowMainLoop(void) noexcept {
         //
         // Simulate world and draw frame.
         //
-        time_t dt = ns_to_ms(frameStart - previousFrameStart);
+        Time dt = ns_to_ms(frameStart - previousFrameStart);
 
         worldTick(dt);
 
@@ -113,7 +113,7 @@ windowMainLoop(void) noexcept {
 }
 
 void
-windowDrawRect(float, float, float, float, uint32_t) noexcept { }
+windowDrawRect(float, float, float, float, U32) noexcept { }
 
 void
 windowPushScale(float, float) noexcept { }

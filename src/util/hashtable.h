@@ -103,7 +103,7 @@ class Hashmap {
 
      private:
         explicit iterator(Hashmap* h) noexcept : h(h), i(0) { skipEmpties(); }
-        explicit iterator(Hashmap* h, uint32_t i) noexcept : h(h), i(i) { }
+        explicit iterator(Hashmap* h, U32 i) noexcept : h(h), i(i) { }
 
         void
         skipEmpties() noexcept {
@@ -113,12 +113,12 @@ class Hashmap {
         }
 
         Hashmap* h;
-        uint32_t i;
+        U32 i;
         friend class Hashmap;
     };
 
  public:
-    Hashmap(uint32_t bucketCount = 0) noexcept {
+    Hashmap(U32 bucketCount = 0) noexcept {
         size = 0;
         capacity = 0;
         data = 0;
@@ -126,14 +126,14 @@ class Hashmap {
         if (bucketCount) {
             capacity = pow2(bucketCount);
             data = static_cast<Entry*>(malloc(sizeof(Entry) * capacity));
-            for (size_t i = 0; i < capacity; i++) {
+            for (Size i = 0; i < capacity; i++) {
                 new (data + i) Entry;
             }
         }
     }
 
     ~Hashmap() noexcept {
-        for (size_t i = 0; i < capacity; i++) {
+        for (Size i = 0; i < capacity; i++) {
             data[i].~Entry();
         }
         free(data);
@@ -154,7 +154,7 @@ class Hashmap {
     operator[](const Key& key) noexcept {
         assert_(key != E::value());  // Empty key shouldn't be used.
         reserve(size + 1);
-        for (uint32_t idx = keyToIdx(key);; idx = probe(idx)) {
+        for (U32 idx = keyToIdx(key);; idx = probe(idx)) {
             if (data[idx].key == E::value()) {
                 data[idx].value = Value();
                 data[idx].key = key;
@@ -170,7 +170,7 @@ class Hashmap {
     operator[](Key&& key) noexcept {
         assert_(key != E::value());  // Empty key shouldn't be used.
         reserve(size + 1);
-        for (uint32_t idx = keyToIdx(key);; idx = probe(idx)) {
+        for (U32 idx = keyToIdx(key);; idx = probe(idx)) {
             if (data[idx].key == E::value()) {
                 data[idx].value = Value();
                 data[idx].key = static_cast<Key&&>(key);
@@ -186,14 +186,14 @@ class Hashmap {
     // Write
     void
     erase(iterator it) noexcept {
-        uint32_t bucket = it.i;
-        for (uint32_t idx = probe(bucket);; idx = probe(idx)) {
+        U32 bucket = it.i;
+        for (U32 idx = probe(bucket);; idx = probe(idx)) {
             if (data[idx].key == E::value()) {
                 data[bucket].key = E::value();
                 size--;
                 return;
             }
-            uint32_t ideal = keyToIdx(data[idx].key);
+            U32 ideal = keyToIdx(data[idx].key);
             if (diff(bucket, ideal) < diff(idx, ideal)) {
                 // Swap. Bucket is closer to ideal than idx.
                 data[bucket] = data[idx];
@@ -209,7 +209,7 @@ class Hashmap {
     }
     void
     clear() noexcept {
-        for (size_t i = 0; i < capacity; i++) {
+        for (Size i = 0; i < capacity; i++) {
             data[i] = Entry();
         }
         size = 0;
@@ -223,7 +223,7 @@ class Hashmap {
         if (size == 0) {
             return end();
         }
-        for (uint32_t idx = keyToIdx(k);; idx = probe(idx)) {
+        for (U32 idx = keyToIdx(k);; idx = probe(idx)) {
             if (data[idx].key == E::value()) {
                 return end();
             }
@@ -251,10 +251,10 @@ class Hashmap {
 
     // Utility
     void
-    reserve(uint32_t size) noexcept {
+    reserve(U32 size) noexcept {
         // Only allow a 50% load limit.
         if (size * 2 > capacity) {
-            uint32_t pow = pow2(size * 2);
+            U32 pow = pow2(size * 2);
             rehash(pow > 8 ? pow : 8);
         }
     }
@@ -264,22 +264,22 @@ class Hashmap {
     operator=(const Hashmap& other);
 
     void
-    rehash(uint32_t newCapacity) noexcept {
+    rehash(U32 newCapacity) noexcept {
         // Must be power of 2.
         assert_((newCapacity & (newCapacity - 1)) == 0);
 
-        uint32_t oldCapacity = capacity;
+        U32 oldCapacity = capacity;
         Entry* oldData = data;
 
         size = 0;
         capacity = newCapacity;
         data = static_cast<Entry*>(malloc(sizeof(Entry) * capacity));
 
-        for (uint32_t i = 0; i < capacity; i++) {
+        for (U32 i = 0; i < capacity; i++) {
             new (data + i) Entry;
         }
 
-        for (uint32_t i = 0; i < oldCapacity; i++) {
+        for (U32 i = 0; i < oldCapacity; i++) {
             Key& key = oldData[i].key;
             Value& value = oldData[i].value;
 
@@ -295,27 +295,27 @@ class Hashmap {
     }
 
     template<typename K>
-    uint32_t
+    U32
     keyToIdx(const K& key) noexcept {
-        uint32_t mask = capacity - 1;
+        U32 mask = capacity - 1;
         return hash_(key) & mask;
     }
 
-    uint32_t
-    probe(uint32_t idx) noexcept {
-        uint32_t mask = capacity - 1;
+    U32
+    probe(U32 idx) noexcept {
+        U32 mask = capacity - 1;
         return (idx + 1) & mask;
     }
 
-    uint32_t
-    diff(uint32_t a, uint32_t b) noexcept {
-        uint32_t mask = capacity - 1;
+    U32
+    diff(U32 a, U32 b) noexcept {
+        U32 mask = capacity - 1;
         return (capacity + a - b) & mask;
     }
 
  public:
-    uint32_t size;
-    uint32_t capacity;
+    U32 size;
+    U32 capacity;
     Entry* data;
 };
 

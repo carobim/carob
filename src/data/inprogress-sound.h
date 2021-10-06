@@ -21,7 +21,7 @@ class InProgressSound : public InProgress {
     InProgressSound(StringView sound, ThenFn onThen) noexcept;
 
     void
-    tick(time_t dt) noexcept;
+    tick(Time dt) noexcept;
 
  private:
     PlayingSoundID sound;

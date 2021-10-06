@@ -19,7 +19,7 @@ ivec2 confWindowSize = {640, 480};
 bool confFullscreen = false;
 int confMusicVolume = 100;
 int confSoundVolume = 100;
-time_t confCacheTTL = 300;
+Time confCacheTTL = 300;
 int confPersistInit = 0;
 int confPersistCons = 0;
 

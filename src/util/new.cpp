@@ -9,13 +9,13 @@
 
 // Note: Do not add noexcept.
 void*
-operator new(size_t count) {
+operator new(Size count) {
     return malloc(count);
 }
 
 // Note: Do not add noexcept.
 void*
-operator new[](size_t count) {
+operator new[](Size count) {
     return malloc(count);
 }
 
@@ -30,12 +30,12 @@ operator delete[](void* ptr) noexcept {
 }
 
 void
-operator delete(void* ptr, size_t) noexcept {
+operator delete(void* ptr, Size) noexcept {
     free(ptr);
 }
 
 void
-operator delete[](void* ptr, size_t) noexcept {
+operator delete[](void* ptr, Size) noexcept {
     free(ptr);
 }
 

@@ -18,33 +18,33 @@
 template<typename T>
 class Pool {
  private:
-    typedef uint32_t Link;
+    typedef U32 Link;
 
  public:
     Pool() : storage(0), allocated(0), nextFree(POOL_END) { }
     ~Pool() { free(reinterpret_cast<char*>(storage)); }
 
     // Returns an unconstructed piece of memory.
-    uint32_t
+    U32
     allocate() noexcept {
         if (nextFree == POOL_END) {
             grow();
         }
-        uint32_t id = nextFree;
+        U32 id = nextFree;
         nextFree = asLink(nextFree);
         return id;
     }
 
     // Releases memory without destructing the object within.
     void
-    release(uint32_t i) noexcept {
+    release(U32 i) noexcept {
         assert_(0 <= i && i < allocated);
         asLink(i) = nextFree;
         nextFree = i;
     }
 
     T&
-    operator[](uint32_t i) noexcept {
+    operator[](U32 i) noexcept {
         assert_(0 <= i && i < allocated);
         return storage[i];
     }
@@ -53,13 +53,13 @@ class Pool {
     Pool(const Pool&) { }
 
     Link&
-    asLink(uint32_t i) noexcept {
+    asLink(U32 i) noexcept {
         return *reinterpret_cast<Link*>(reinterpret_cast<char*>(&storage[i]));
     }
 
     void
     grow() noexcept {
-        uint32_t newAllocated = allocated == 0 ? 4 : allocated * 2;
+        U32 newAllocated = allocated == 0 ? 4 : allocated * 2;
 
         T* newStorage = xmalloc(T, newAllocated);
         memcpy(newStorage, storage, sizeof(T) * allocated);
@@ -68,7 +68,7 @@ class Pool {
         nextFree = allocated;
         storage = newStorage;
 
-        for (uint32_t i = allocated; i < newAllocated - 1; i++) {
+        for (U32 i = allocated; i < newAllocated - 1; i++) {
             asLink(i) = i + 1;
         }
         asLink(newAllocated - 1) = POOL_END;
@@ -77,7 +77,7 @@ class Pool {
     }
 
     T* storage;
-    uint32_t allocated;
+    U32 allocated;
     Link nextFree;
 };
 

@@ -20,7 +20,7 @@ class TimeMeasure {
     String description;
     Nanoseconds start;
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
-    uint32_t signpost;
+    U32 signpost;
 #endif
 };
 

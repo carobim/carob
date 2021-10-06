@@ -19,7 +19,7 @@
 
 static SDL_Renderer* renderer = 0;
 static SDL_Texture* atlas = 0;
-static uint32_t atlasUsed = 0;
+static U32 atlasUsed = 0;
 
 static HashVector<TiledImage> images;
 
@@ -71,11 +71,11 @@ imageEndFrame() noexcept {
 
 void
 imageDrawRect(float left, float right, float top, float bottom, float z,
-              uint32_t argb) noexcept {
-    uint8_t a = static_cast<uint8_t>((argb >> 24) & 0xFF);
-    uint8_t r = static_cast<uint8_t>((argb >> 16) & 0xFF);
-    uint8_t g = static_cast<uint8_t>((argb >> 8) & 0xFF);
-    uint8_t b = static_cast<uint8_t>((argb >> 0) & 0xFF);
+              U32 argb) noexcept {
+    U8 a = static_cast<U8>((argb >> 24) & 0xFF);
+    U8 r = static_cast<U8>((argb >> 16) & 0xFF);
+    U8 g = static_cast<U8>((argb >> 8) & 0xFF);
+    U8 b = static_cast<U8>((argb >> 0) & 0xFF);
 
     SDL_Rect rect = {static_cast<int>(left),
                      static_cast<int>(top),
@@ -171,13 +171,13 @@ load(StringView path) noexcept {
 
     tiles.image = {
             atlas,
-            static_cast<uint32_t>(x),
-            static_cast<uint32_t>(y),
-            static_cast<uint32_t>(width),
-            static_cast<uint32_t>(height),
+            static_cast<U32>(x),
+            static_cast<U32>(y),
+            static_cast<U32>(width),
+            static_cast<U32>(height),
     };
 
-    atlasUsed += static_cast<uint32_t>(width);
+    atlasUsed += static_cast<U32>(width);
 
     return &tiles;
 }
@@ -218,10 +218,10 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 
 TiledImage
 tilesLoad(StringView path,
-          uint32_t tileWidth,
-          uint32_t tileHeight,
-          uint32_t numAcross,
-          uint32_t numHigh) noexcept {
+          U32 tileWidth,
+          U32 tileHeight,
+          U32 numAcross,
+          U32 numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
     if (!tiles) {
@@ -242,7 +242,7 @@ void
 tilesRelease(TiledImage tiles) noexcept { }
 
 Image
-tileAt(TiledImage tiles, uint32_t index) noexcept {
+tileAt(TiledImage tiles, U32 index) noexcept {
     assert_(TILES_VALID(tiles));
 
     Image image = tiles.image;
@@ -257,7 +257,7 @@ tileAt(TiledImage tiles, uint32_t index) noexcept {
 }
 
 void
-imagesPrune(time_t latestPermissibleUse) noexcept { }
+imagesPrune(Time latestPermissibleUse) noexcept { }
 
 void
 imageFlushImages() noexcept { }

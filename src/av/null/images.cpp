@@ -21,10 +21,10 @@ imageRelease(Image image) noexcept { }
 
 TiledImage
 tilesLoad(StringView path,
-          uint32_t tileWidth,
-          uint32_t tileHeight,
-          uint32_t numAcross,
-          uint32_t numWide) noexcept {
+          U32 tileWidth,
+          U32 tileHeight,
+          U32 numAcross,
+          U32 numWide) noexcept {
     Image image = {
             NULL_TEXTURE,
             0,
@@ -40,7 +40,7 @@ void
 tilesRelease(TiledImage tiles) noexcept { }
 
 Image
-tileAt(TiledImage tiles, uint32_t index) noexcept {
+tileAt(TiledImage tiles, U32 index) noexcept {
     Image image = {
             NULL_TEXTURE,
             0,
@@ -52,4 +52,4 @@ tileAt(TiledImage tiles, uint32_t index) noexcept {
 }
 
 void
-imagesPrune(time_t latestPermissibleUse) noexcept { }
+imagesPrune(Time latestPermissibleUse) noexcept { }

@@ -22,7 +22,7 @@ chronoSleep(Nanoseconds ns) noexcept {
     }
     Seconds s = ns_to_s(ns);
     timespec ts;
-    ts.tv_sec = static_cast<time_t>(s);
+    ts.tv_sec = static_cast<Time>(s);
     ts.tv_nsec = static_cast<long>(ns - s_to_ns(s));
     while (nanosleep(&ts, &ts) == -1 && errno == EINTR)
         ;

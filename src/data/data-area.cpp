@@ -17,13 +17,13 @@ void
 DataArea::onFocus() noexcept { }
 
 void
-DataArea::onTick(time_t) noexcept { }
+DataArea::onTick(Time) noexcept { }
 
 void
 DataArea::onTurn() noexcept { }
 
 void
-DataArea::tick(time_t dt) noexcept {
+DataArea::tick(Time dt) noexcept {
     // Only iterate over inProgresses that existed at the time of the
     // beginning of the loop.  Also, iterate by index instead of by
     // iterator because iterators are invalidated if the vector is
