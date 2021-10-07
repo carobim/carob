@@ -196,7 +196,7 @@ parsePhase(Entity* e,
                        "<phase> frames attribute index out of bounds");
                 return false;
             }
-            images.push_back(tileAt(tiles, frame));
+            images.push(tileAt(tiles, frame));
         }
         assert_(images.size > 0);
 
@@ -385,7 +385,7 @@ Entity::draw(DisplayList* display) noexcept {
 
     fvec3 destination = {minX, minY, r.z};
     DisplayItem item = {phase->setFrame(now), destination};
-    display->items.push_back(item);
+    display->items.push(item);
 }
 
 bool
@@ -517,12 +517,12 @@ Entity::setFrozen(bool b) noexcept {
 
 void
 Entity::attach(OnTickFn fn) noexcept {
-    onTickFns.push_back(static_cast<OnTickFn&&>(fn));
+    onTickFns.push(static_cast<OnTickFn&&>(fn));
 }
 
 void
 Entity::attach(OnTurnFn fn) noexcept {
-    onTurnFns.push_back(static_cast<OnTurnFn&&>(fn));
+    onTurnFns.push(static_cast<OnTurnFn&&>(fn));
 }
 
 void

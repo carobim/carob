@@ -109,7 +109,7 @@ AreaJSON::allocateMapLayer(TileGrid::LayerType type) noexcept {
     assert_(0 <= dim.x);
     assert_(0 <= dim.z);
 
-    grid.layerTypes.push_back(type);
+    grid.layerTypes.push(type);
 
     grid.graphics.resize(grid.graphics.size + dim.x * dim.y);
     grid.dim.z++;
@@ -375,7 +375,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
     // Initialize "vanilla" tile type array.
     for (U32 i = 0; i < nTiles; i++) {
         Image image = tileAt(images, i);
-        tileGraphics.push_back(Animation(image));
+        tileGraphics.push(Animation(image));
     }
 
     if (!tilespropertiesNode.isObject()) {
@@ -491,7 +491,7 @@ AreaJSON::processTileType(JsonValue obj,
             return false;
         }
 
-        framesvec.push_back(tileAt(images, idx));
+        framesvec.push(tileAt(images, idx));
     }
 
     float hertz = static_cast<float>(speedNode.toNumber());
@@ -577,7 +577,7 @@ AreaJSON::processLayerProperties(JsonValue obj) noexcept {
     grid.depth2idx[depth] = grid.dim.z - 1;
 
     // Effectively idx2depth[dim.z - 1] = depth;
-    grid.idx2depth.push_back(depth);
+    grid.idx2depth.push(depth);
 
     return true;
 }
@@ -681,7 +681,7 @@ AreaJSON::processObjectGroupProperties(JsonValue obj) noexcept {
     grid.depth2idx[depth] = grid.dim.z - 1;
 
     // Effectively idx2depth[dim.z - 1] = depth;
-    grid.idx2depth.push_back(depth);
+    grid.idx2depth.push(depth);
 
     return true;
 }

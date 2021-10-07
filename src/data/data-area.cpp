@@ -53,5 +53,5 @@ DataArea::playSoundEffect(StringView sound) noexcept {
 
 void
 DataArea::add(InProgress* inProgress) noexcept {
-    inProgresses.push_back(inProgress);
+    inProgresses.push(inProgress);
 }

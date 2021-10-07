@@ -228,7 +228,7 @@ listDir(StringView path) noexcept {
             continue;
         }
 
-        files.push_back(String(data.cFileName));
+        files.push(String(data.cFileName));
     } while (FindNextFile(find, &data));
 
     FindClose(find);

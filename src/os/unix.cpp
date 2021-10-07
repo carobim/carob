@@ -55,7 +55,7 @@ listDir(StringView path) noexcept {
             // Ignore odd files.
             continue;
         }
-        names.push_back(entry->d_name);
+        names.push(entry->d_name);
     }
 
     closedir(dir);
@@ -93,7 +93,7 @@ writeFileVec(StringView path, U32 count, U32* lengths,
     for (Size i = 0; i < count; i++) {
         total += lengths[i];
         iovec io{datas[i], lengths[i]};
-        ios.push_back(io);
+        ios.push(io);
     }
 
     SSize written = writev(fd, ios.data, static_cast<int>(ios.size));

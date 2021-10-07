@@ -75,7 +75,7 @@ JobsEnqueue(Function fn) noexcept {
     }
 
     if (workers.size < workerLimit) {
-        workers.push_back(Thread(fn));
+        workers.push(Thread(fn));
     }
 
     jobAvailable.notifyOne();

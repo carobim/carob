@@ -95,13 +95,13 @@ class Vector {
     }
 
     void
-    push_back(const X& x) noexcept {
+    push(const X& x) noexcept {
         grow();
         new (data + size) X(x);
         size++;
     }
     void
-    push_back(X&& x) noexcept {
+    push(X&& x) noexcept {
         grow();
         new (data + size) X(static_cast<X&&>(x));
         size++;

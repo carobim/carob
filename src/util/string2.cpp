@@ -298,12 +298,12 @@ splitStr(Vector<StringView>& out,
 
     for (StringPosition pos = input.find(delimiter); pos != SV_NOT_FOUND;
          pos = input.find(delimiter, i)) {
-        out.push_back(input.substr(i, pos - i));
+        out.push(input.substr(i, pos - i));
         i = pos + delimiter.size;
     }
 
     if (input.size != i) {
-        out.push_back(input.substr(i));
+        out.push(input.substr(i));
     }
 }
 
@@ -359,7 +359,7 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
                 return false;
             }
 
-            out.push_back(i);
+            out.push(i);
         }
         else {
             StringView rngstart = range->substr(0, dash);
@@ -384,7 +384,7 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
             }
 
             for (int i = start; i <= end; i++) {
-                out.push_back(i);
+                out.push(i);
             }
         }
     }

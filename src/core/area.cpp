@@ -327,7 +327,7 @@ Area::spawnNPC(StringView descriptor,
         return 0;
     }
     c->setArea(this, coord);
-    characters.push_back(c);
+    characters.push(c);
     return c;
 }
 
@@ -343,7 +343,7 @@ Area::spawnOverlay(StringView descriptor,
     }
     o->setArea(this);
     o->teleport(coord);
-    overlays.push_back(o);
+    overlays.push(o);
     return o;
 }
 

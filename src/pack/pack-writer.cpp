@@ -59,7 +59,7 @@ packWriterAddBlob(PackWriter* writer,
                   BlobSize size,
                   const void* data) noexcept {
     Blob blob = {path, size, data};
-    writer->blobs.push_back(blob);
+    writer->blobs.push(blob);
 }
 
 bool

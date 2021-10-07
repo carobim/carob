@@ -240,7 +240,7 @@ main(int argc, char* argv[]) noexcept {
     Vector<StringView> args;
 
     for (int i = 2; i < argc; i++) {
-        args.push_back(argv[i]);
+        args.push(argv[i]);
     }
 
     int exitCode;
