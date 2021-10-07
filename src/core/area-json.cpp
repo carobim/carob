@@ -10,21 +10,20 @@
 #include "core/overlay.h"
 #include "core/resources.h"
 #include "core/tile.h"
-#include "core/window.h"
 #include "core/world.h"
 #include "data/data-world.h"
-#include "os/c.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/int.h"
-#include "util/math2.h"
 #include "util/string2.h"
 #include "util/vector.h"
 
-#define CHECK(x)      \
-    if (!(x)) {       \
-        return false; \
-    }
+#define CHECK(x) \
+    do { \
+        if (!(x)) {       \
+            return false; \
+        } \
+    } while (false)
 
 /* NOTE: In the JSON map format used by Tiled, tileset tiles start counting
          their Y-positions from 0, while layer tiles start counting from 1. I
@@ -34,7 +33,7 @@
 
 class AreaJSON : public Area {
  public:
-    AreaJSON(Player* player, StringView filename) noexcept;
+    AreaJSON(Player* player, StringView descriptor) noexcept;
 
  private:
     //! Allocate Tile objects for one layer of map.
@@ -49,12 +48,12 @@ class AreaJSON : public Area {
     bool
     processTileSet(JsonValue obj) noexcept;
     bool
-    processTileSetFile(JsonValue obj, StringView source, int firstGid) noexcept;
+    processTileSetFile(JsonValue obj, StringView source, U32 firstGid) noexcept;
     bool
     processTileType(JsonValue obj,
                     Animation& graphic,
-                    TiledImage img,
-                    int id) noexcept;
+                    TiledImage images,
+                    U32 id) noexcept;
     bool
     processLayer(JsonValue obj) noexcept;
     bool
@@ -68,15 +67,11 @@ class AreaJSON : public Area {
     bool
     processObject(JsonValue obj) noexcept;
     bool
-    splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept;
+    splitTileFlags(StringView strOfFlags, U32* flags) noexcept;
     bool
     parseExit(StringView dest, Exit& exit, bool* wwide, bool* hwide) noexcept;
     bool
-    parseARGB(StringView str,
-              unsigned char& a,
-              unsigned char& r,
-              unsigned char& g,
-              unsigned char& b) noexcept;
+    parseARGB(StringView str, U8& a, U8& r, U8& g, U8& b) noexcept;
 };
 
 static void
@@ -240,7 +235,7 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
         grid.loopY = directions.find('y') != SV_NOT_FOUND;
     }
     if (coloroverlayValue.isString()) {
-        unsigned char a, r, g, b;
+        U8 a, r, g, b;
         CHECK(parseARGB(coloroverlayValue.toString(), a, r, g, b));
         colorOverlayARGB = (U32)(a << 24) + (U32)(r << 16) +
                            (U32)(g << 8) + (U32)b;
@@ -276,7 +271,7 @@ AreaJSON::processTileSet(JsonValue obj) noexcept {
     CHECK(firstgidValue.isNumber());
     CHECK(sourceValue.isString());
 
-    const unsigned firstGid = firstgidValue.toInt();
+    const U32 firstGid = firstgidValue.toInt();
 
     String source = String() << dirname(descriptor) << sourceValue.toString();
 
@@ -300,7 +295,7 @@ AreaJSON::processTileSet(JsonValue obj) noexcept {
 bool
 AreaJSON::processTileSetFile(JsonValue obj,
                              StringView source,
-                             int firstGid) noexcept {
+                             U32 firstGid) noexcept {
     /*
      {
        "image": "forest.png",
@@ -374,11 +369,11 @@ AreaJSON::processTileSetFile(JsonValue obj,
         return false;
     }
 
-    int nTiles = images.numTiles;
+    U32 nTiles = images.numTiles;
     tileGraphics.reserve(tileGraphics.size + nTiles);
 
     // Initialize "vanilla" tile type array.
-    for (int i = 0; i < nTiles; i++) {
+    for (U32 i = 0; i < nTiles; i++) {
         Image image = tileAt(images, i);
         tileGraphics.push_back(Animation(image));
     }
@@ -399,29 +394,28 @@ AreaJSON::processTileSetFile(JsonValue obj,
         // tileset, if the tileset were a flat array.
         buf.clear();
         buf = tilepropertiesNode->key;
-        unsigned id;
+        U32 id;
         if (!parseUInt(id, buf)) {
             logErr(descriptor, "Tile type id is invalid");
             return false;
         }
-        if (id > static_cast<unsigned>(INT32_MAX)) {
+        if (id > static_cast<U32>(INT32_MAX)) {
             logErr(descriptor, "Tile type id is invalid");
             return false;
         }
-        int id_ = static_cast<int>(id);
-        if (nTiles <= id_) {
+        if (nTiles <= id) {
             logErr(descriptor, "Tile type id is invalid");
             return false;
         }
 
         // "gid" is the global area-wide id of the tile.
-        int gid = id_ + firstGid;
+        U32 gid = id + firstGid;
 
         Animation& graphic = tileGraphics[gid];
         if (!processTileType(tilepropertiesNode->value,
                              graphic,
                              images,
-                             static_cast<int>(id_))) {
+                             id)) {
             return false;
         }
     }
@@ -433,7 +427,7 @@ bool
 AreaJSON::processTileType(JsonValue obj,
                           Animation& graphic,
                           TiledImage images,
-                          int id) noexcept {
+                          U32 id) noexcept {
     /*
       {
         "frames": "29,58",
@@ -453,7 +447,7 @@ AreaJSON::processTileType(JsonValue obj,
     Vector<Image> framesvec;
     int frameLen;
 
-    int nTiles = images.numTiles;
+    U32 nTiles = images.numTiles;
 
     Vector<StringView> frames;
     splitStr(frames, framesNode.toString(), ",");
@@ -464,12 +458,12 @@ AreaJSON::processTileType(JsonValue obj,
     // Make sure the first member is this tile.
     buf.clear();
     buf = frames[0];
-    unsigned firstFrame;
+    U32 firstFrame;
     if (!parseUInt(firstFrame, buf)) {
         logErr(descriptor, "couldn't parse frame index for animated tile");
         return false;
     }
-    if (static_cast<int>(firstFrame) != id) {
+    if (firstFrame != id) {
         logErr(descriptor,
                String() << "first member of tile id " << id
                         << " animation must be itself.");
@@ -482,17 +476,15 @@ AreaJSON::processTileType(JsonValue obj,
         buf.clear();
         buf = *frame;
 
-        unsigned idx_;
-        if (!parseUInt(idx_, buf)) {
+        U32 idx;
+        if (!parseUInt(idx, buf)) {
             logErr(descriptor, "couldn't parse frame index for animated tile");
             return false;
         }
-        if (idx_ > static_cast<unsigned>(INT32_MAX)) {
+        if (idx > static_cast<U32>(INT32_MAX)) {
             logErr(descriptor, "frame index out of bounds");
             return false;
         }
-
-        int idx = static_cast<int>(idx_);
 
         if (nTiles <= idx) {
             logErr(descriptor, "frame index out of range for animated tile");
@@ -606,7 +598,7 @@ AreaJSON::processLayerData(JsonValue arr) noexcept {
     for (JsonIterator node = begin(arr); node != end(arr); ++node) {
         CHECK(node->value.isNumber());
 
-        unsigned gid = node->value.toInt();
+        U32 gid = node->value.toInt();
 
         if (gid >= tileGraphics.size) {
             logErr(descriptor, "Invalid tile gid");
@@ -814,7 +806,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     Exit exit[5];
     bool haveLayermod[5] = {};
     float layermod[5];
-    unsigned flags = 0x0;
+    U32 flags = 0x0;
 
     if (flagsValue.isString()) {
         CHECK(splitTileFlags(flagsValue.toString(), &flags));
@@ -960,7 +952,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
 }
 
 bool
-AreaJSON::splitTileFlags(StringView strOfFlags, unsigned* flags) noexcept {
+AreaJSON::splitTileFlags(StringView strOfFlags, U32* flags) noexcept {
     Vector<StringView> flagStrs;
     splitStr(flagStrs, strOfFlags, ",");
 
@@ -1083,12 +1075,8 @@ AreaJSON::parseExit(StringView dest,
 }
 
 bool
-AreaJSON::parseARGB(StringView str,
-                    unsigned char& a,
-                    unsigned char& r,
-                    unsigned char& g,
-                    unsigned char& b) noexcept {
-    unsigned char* channels[] = {&a, &r, &g, &b};
+AreaJSON::parseARGB(StringView str, U8& a, U8& r, U8& g, U8& b) noexcept {
+    U8* channels[] = {&a, &r, &g, &b};
 
     Vector<StringView> strs;
     splitStr(strs, str, ",");
@@ -1111,7 +1099,7 @@ AreaJSON::parseARGB(StringView str,
             logErr(descriptor, "ARGB values must be between 0 and 255");
             return false;
         }
-        *channels[i] = static_cast<unsigned char>(v);
+        *channels[i] = static_cast<U8>(v);
     }
 
     return true;

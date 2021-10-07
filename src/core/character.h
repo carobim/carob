@@ -76,8 +76,8 @@ class Character : public Entity {
     runTileEntryScript() noexcept;
 
  protected:
-    unsigned nowalkFlags;
-    unsigned nowalkExempt;
+    U32 nowalkFlags;
+    U32 nowalkExempt;
 
     fvec3 fromCoord;
     Exit* destExit;

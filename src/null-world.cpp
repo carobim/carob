@@ -4,7 +4,7 @@
 static DataArea nullArea;
 
 DataArea*
-dataWorldArea(StringView areaName) noexcept {
+dataWorldArea(StringView) noexcept {
     return &nullArea;
 }
 

@@ -95,7 +95,7 @@ class Thread {
     operator=(const Thread&);
 };
 
-static inline unsigned
+static inline U32
 threadHardwareConcurrency() noexcept {
     SYSTEM_INFO info;
     GetSystemInfo(&info);

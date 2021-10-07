@@ -26,7 +26,7 @@ class Thread {
 
 void
 threadDisableTimerCoalescing() noexcept;
-unsigned
+U32
 threadHardwareConcurrency() noexcept;
 
 #endif  // SRC_OS_MAC_THREAD_H_

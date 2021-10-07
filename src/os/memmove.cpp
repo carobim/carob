@@ -30,9 +30,7 @@
 extern "C" {
 
 static char*
-twobyte_memmem(const unsigned char* h,
-               Size k,
-               const unsigned char* n) noexcept {
+twobyte_memmem(const U8* h, Size k, const U8* n) noexcept {
     U16 nw = n[0] << 8 | n[1], hw = h[0] << 8 | h[1];
     for (h += 2, k -= 2; k; k--, hw = hw << 8 | *h++)
         if (hw == nw)
@@ -41,9 +39,7 @@ twobyte_memmem(const unsigned char* h,
 }
 
 static char*
-threebyte_memmem(const unsigned char* h,
-                 Size k,
-                 const unsigned char* n) noexcept {
+threebyte_memmem(const U8* h, Size k, const U8* n) noexcept {
     U32 nw = n[0] << 24 | n[1] << 16 | n[2] << 8;
     U32 hw = h[0] << 24 | h[1] << 16 | h[2] << 8;
     for (h += 3, k -= 3; k; k--, hw = (hw | *h++) << 8)
@@ -53,9 +49,7 @@ threebyte_memmem(const unsigned char* h,
 }
 
 static char*
-fourbyte_memmem(const unsigned char* h,
-                Size k,
-                const unsigned char* n) noexcept {
+fourbyte_memmem(const U8* h, Size k, const U8* n) noexcept {
     U32 nw = n[0] << 24 | n[1] << 16 | n[2] << 8 | n[3];
     U32 hw = h[0] << 24 | h[1] << 16 | h[2] << 8 | h[3];
     for (h += 4, k -= 4; k; k--, hw = hw << 8 | *h++)
@@ -72,10 +66,7 @@ fourbyte_memmem(const unsigned char* h,
      << ((Size)(b) % (8 * sizeof *(a))))
 
 static char*
-twoway_memmem(const unsigned char* h,
-              const unsigned char* z,
-              const unsigned char* n,
-              Size l) noexcept {
+twoway_memmem(const U8* h, const U8* z, const U8* n, Size l) noexcept {
     Size i, ip, jp, k, p, ms, p0, mem, mem0;
     Size byteset[32 / sizeof(Size)] = {0};
     Size shift[256];
@@ -190,8 +181,8 @@ twoway_memmem(const unsigned char* h,
 
 void*
 memmem(const void* h0, Size k, const void* n0, Size l) noexcept {
-    const unsigned char* h = reinterpret_cast<const unsigned char*>(h0);
-    const unsigned char* n = reinterpret_cast<const unsigned char*>(n0);
+    const U8* h = reinterpret_cast<const U8*>(h0);
+    const U8* n = reinterpret_cast<const U8*>(n0);
 
     /* Return immediately on empty needle */
     if (!l)
@@ -202,10 +193,10 @@ memmem(const void* h0, Size k, const void* n0, Size l) noexcept {
         return 0;
 
     /* Use faster algorithms for short needles */
-    h = reinterpret_cast<const unsigned char*>(memchr(h0, *n, k));
+    h = reinterpret_cast<const U8*>(memchr(h0, *n, k));
     if (!h || l == 1)
         return (void*)h;
-    k -= h - (const unsigned char*)h0;
+    k -= h - (const U8*)h0;
     if (k < l)
         return 0;
     if (l == 2)

@@ -18,20 +18,20 @@ class Entity;
 // see AreaTMX::splitTileFlags().
 
 // Neither the player nor NPCs can walk here.
-#define TILE_NOWALK (unsigned)(0x001)
+#define TILE_NOWALK (U32)(0x001)
 
 // The player cannot walk here. NPCs can, though.
-#define TILE_NOWALK_PLAYER ((unsigned)(0x002))
+#define TILE_NOWALK_PLAYER ((U32)(0x002))
 
 // NPCs cannot walk here. The player can, though.
-#define TILE_NOWALK_NPC ((unsigned)(0x004))
+#define TILE_NOWALK_NPC ((U32)(0x004))
 
 // This Tile is an Exit. Please take appropriate action when entering this
 // Tile, usually by transferring to another Area.
 //
 // This flag is not carried by actual Tiles, but can instead be flipped in an
 // Entity's "exempt" flag which will be read elsewhere in the engine.
-#define TILE_NOWALK_EXIT ((unsigned)(0x008))
+#define TILE_NOWALK_EXIT ((U32)(0x008))
 
 // This Tile is at the edge of an Area. If you step here, please handle it
 // appropriately.
@@ -41,7 +41,7 @@ class Entity;
 //
 // This flag is not carried by actual Tiles, but can instead be flipped in an
 // Entity's "exempt" flag which will be read elsewhere in the engine.
-#define TILE_NOWALK_AREA_BOUND ((unsigned)(0x016))
+#define TILE_NOWALK_AREA_BOUND ((U32)(0x016))
 
 
 // Types of exits.
@@ -147,7 +147,7 @@ class TileGrid {
 
  public:
     // 3-dimensional array of the tiles that make up the grid.
-    Vector<int> graphics;
+    Vector<U32> graphics;
 
     enum LayerType {
         TILE_LAYER,
@@ -182,7 +182,7 @@ class TileGrid {
 
     Hashmap<ivec3, DataArea::TileScript, EmptyIcoord> scripts[SCRIPT_TYPE_LAST];
 
-    Hashmap<ivec3, unsigned, EmptyIcoord> flags;
+    Hashmap<ivec3, U32, EmptyIcoord> flags;
 
     Hashmap<ivec3, Exit, EmptyIcoord> exits[EXITS_LENGTH];
     Hashmap<ivec3, float, EmptyIcoord> layermods[EXITS_LENGTH];

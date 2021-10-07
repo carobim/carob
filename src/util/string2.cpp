@@ -200,11 +200,11 @@ parseBool(bool& out, StringView s) noexcept {
 }
 
 bool
-parseUInt(unsigned& out, String& s) noexcept {
+parseUInt(U32& out, String& s) noexcept {
     errno = 0;
 
     char* end;
-    unsigned long ul = strtoul(s.null(), &end, 10);
+    U32 ul = strtoul(s.null(), &end, 10);
 
     if (end != s.data + s.size) {
         return false;
@@ -219,12 +219,12 @@ parseUInt(unsigned& out, String& s) noexcept {
         return false;
     }
 
-    out = static_cast<unsigned>(ul);
+    out = ul;
     return true;
 }
 
 bool
-parseInt(int& out, String& s) noexcept {
+parseInt(I32& out, String& s) noexcept {
     errno = 0;
 
     char* end;
@@ -243,12 +243,12 @@ parseInt(int& out, String& s) noexcept {
         return false;
     }
 
-    out = static_cast<int>(l);
+    out = static_cast<I32>(l);
     return true;
 }
 
 bool
-parseInt0(int* out, StringView s) noexcept {
+parseInt0(I32* out, StringView s) noexcept {
     errno = 0;
 
     char* end;
@@ -267,7 +267,7 @@ parseInt0(int* out, StringView s) noexcept {
         return false;
     }
 
-    *out = static_cast<int>(l);
+    *out = static_cast<I32>(l);
     return true;
 }
 

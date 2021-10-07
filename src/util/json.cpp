@@ -148,7 +148,7 @@ string2double(char* s, char** endptr) noexcept {
             base = 0.1;
         }
 
-        unsigned int exponent = 0;
+        U32 exponent = 0;
         while (isdigit(*s)) {
             exponent = (exponent * 10) + (*s++ - '0');
         }
@@ -284,7 +284,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
                         return false;
                     }
                 }
-                else if (static_cast<unsigned int>(c) < ' ' || c == '\x7F') {
+                else if (static_cast<U32>(c) < ' ' || c == '\x7F') {
                     endptr = s;
                     return false;
                 }

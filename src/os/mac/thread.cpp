@@ -70,7 +70,7 @@ threadDisableTimerCoalescing() noexcept {
                       THREAD_EXTENDED_POLICY_COUNT);
 }
 
-unsigned
+U32
 threadHardwareConcurrency() noexcept {
     unsigned n;
     int mib[2] = {CTL_HW, HW_NCPU};

@@ -45,9 +45,9 @@ class StringView {
     rfind(char needle) const noexcept;
 
     StringView
-    substr(const Size from) const noexcept;
+    substr(Size from) const noexcept;
     StringView
-    substr(const Size from, const Size span) const noexcept;
+    substr(Size from, Size span) const noexcept;
 };
 
 bool

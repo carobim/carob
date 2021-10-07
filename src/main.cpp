@@ -7,10 +7,8 @@
 #include "core/window.h"
 #include "core/world.h"
 #include "data/data-world.h"
-#include "os/chrono.h"
 #include "os/thread.h"
 #include "util/compiler.h"
-#include "util/int.h"
 #include "util/random.h"
 
 #if MSVC
@@ -43,6 +41,7 @@ main() noexcept {
     macSetWorkingDirectory();
 #endif
 
+    // TODO: Use CVDisplayLink and remove this.
     threadDisableTimerCoalescing();
 
     confParse(CLIENT_CONF_PATH);

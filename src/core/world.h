@@ -33,9 +33,9 @@ worldTime() noexcept;
  * Process key presses.
  */
 void
-worldButtonDown(Key btn) noexcept;
+worldButtonDown(Key key) noexcept;
 void
-worldButtonUp(Key btn) noexcept;
+worldButtonUp(Key key) noexcept;
 
 /**
  * Draw game state to the screen.

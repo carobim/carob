@@ -2,12 +2,11 @@
 
 #include "core/area-json.h"
 #include "core/area.h"
-#include "core/character.h"
 #include "core/client-conf.h"
 #include "core/display-list.h"
 #include "core/images.h"
 #include "core/log.h"
-#include "core/measure.h"
+//#include "core/measure.h"
 #include "core/music.h"
 #include "core/overlay.h"
 #include "core/player.h"

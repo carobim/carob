@@ -202,8 +202,8 @@ Character::canMove(ivec3 dest) noexcept {
 
 bool
 Character::nowalked(ivec3 phys) noexcept {
-    unsigned flags = nowalkFlags & ~nowalkExempt;
-    unsigned* tileFlags = area->grid.flags.tryAt(phys);
+    U32 flags = nowalkFlags & ~nowalkExempt;
+    U32* tileFlags = area->grid.flags.tryAt(phys);
     return tileFlags && (*tileFlags & flags) != 0;
 }
 

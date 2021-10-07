@@ -31,11 +31,11 @@ bool
 parseBool(bool& out, StringView s) noexcept;
 
 bool
-parseInt(int& out, String& s) noexcept;
+parseInt(I32& out, String& s) noexcept;
 bool
-parseInt0(int* out, StringView s) noexcept;
+parseInt0(I32* out, StringView s) noexcept;
 bool
-parseUInt(unsigned& out, String& s) noexcept;
+parseUInt(U32& out, String& s) noexcept;
 bool
 parseFloat(float& out, String& s) noexcept;
 
