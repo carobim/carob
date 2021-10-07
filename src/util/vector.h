@@ -135,7 +135,7 @@ class Vector {
     }
 
     void
-    pop_back() noexcept {
+    pop() noexcept {
         assert_(size);
         data[size - 1].~X();
         size--;
