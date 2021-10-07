@@ -75,7 +75,7 @@ class Area {
     turn() noexcept;
 
     U32
-    getColorOverlay() noexcept;
+    getColorOverlay() const noexcept;
     void
     setColorOverlay(U8 a, U8 r, U8 g, U8 b) noexcept;
 

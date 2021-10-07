@@ -14,7 +14,6 @@
 #include "core/viewport.h"
 #include "core/window.h"
 #include "core/world.h"
-#include "data/data-world.h"
 #include "os/c.h"
 #include "util/assert.h"
 #include "util/compiler.h"
@@ -25,7 +24,9 @@ Area::Area() noexcept
     : ok(true),
       beenFocused(false),
       redraw(true),
-      colorOverlayARGB(0) { }
+      colorOverlayARGB(0),
+      dataArea(0),
+      player(0) { }
 
 void
 Area::focus() noexcept {
@@ -264,7 +265,7 @@ Area::turn() noexcept {
 
 
 U32
-Area::getColorOverlay() noexcept {
+Area::getColorOverlay() const noexcept {
     return colorOverlayARGB;
 }
 

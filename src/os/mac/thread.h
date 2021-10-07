@@ -5,6 +5,7 @@
 
 #include "util/compiler.h"
 #include "util/function.h"
+#include "util/int.h"
 
 class Thread {
  public:
