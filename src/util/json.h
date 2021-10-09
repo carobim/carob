@@ -29,7 +29,7 @@
  * IN THE SOFTWARE.
  */
 
-//#include "util/assert.h"
+#include "util/assert.h"
 #include "util/compiler.h"
 #include "util/int.h"
 #include "util/string-view.h"
@@ -58,7 +58,7 @@ union JsonValue {
 
     inline JsonValue(double x) noexcept : fval(x) { }
     inline JsonValue(JsonTag tag = JSON_NULL, void* payload = 0) noexcept {
-        //assert_(reinterpret_cast<Size>(payload) <= JSON_VALUE_PAYLOAD_MASK);
+        assert_(reinterpret_cast<Size>(payload) <= JSON_VALUE_PAYLOAD_MASK);
         ival = JSON_VALUE_NAN_MASK |
                (static_cast<U64>(tag) << JSON_VALUE_TAG_SHIFT) |
                reinterpret_cast<Size>(payload);
@@ -116,37 +116,37 @@ union JsonValue {
 
     inline bool
     toBool() noexcept {
-        // assert_(isBool());
+        assert_(isBool());
         return getTag() == JSON_TRUE;
     }
 
     inline int
     toInt() noexcept {
-        // assert_(isDouble());
+        assert_(isDouble());
         return static_cast<int>(fval);
     }
 
     inline double
     toNumber() noexcept {
-        // assert_(isDouble());
+        assert_(isDouble());
         return fval;
     }
 
     inline char*
     toCString() noexcept {
-        // assert_(isString());
+        assert_(isString());
         return reinterpret_cast<char*>(getPayload());
     }
 
     inline StringView
     toString() noexcept {
-        // assert_(isString());
+        assert_(isString());
         return StringView(reinterpret_cast<char*>(getPayload()));
     }
 
     inline JsonNode*
     toNode() noexcept {
-        // assert_(isArray() || isObject());
+        assert_(isArray() || isObject());
         return reinterpret_cast<JsonNode*>(getPayload());
     }
 
@@ -155,7 +155,7 @@ union JsonValue {
 
     inline U64
     getPayload() noexcept {
-        // assert_(!isDouble());
+        assert_(!isDouble());
         return ival & JSON_VALUE_PAYLOAD_MASK;
     }
 };
@@ -194,7 +194,7 @@ struct JsonIterator {
 
 inline JsonIterator
 begin(JsonValue object) noexcept {
-    //assert_(object.isNode());
+    assert_(object.isNode());
     return JsonIterator(object.toNode());
 }
 
