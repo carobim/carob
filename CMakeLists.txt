@@ -783,6 +783,10 @@ endif()
 
 # Disable frame pointer
 if(CLANG OR GCC)
+    set(CMAKE_C_FLAGS_RELEASE
+        "${CMAKE_C_FLAGS_RELEASE} -fomit-frame-pointer")
+    set(CMAKE_C_FLAGS_MINSIZEREL
+        "${CMAKE_C_FLAGS_MINSIZEREL} -fomit-frame-pointer")
     set(CMAKE_CXX_FLAGS_RELEASE
         "${CMAKE_CXX_FLAGS_RELEASE} -fomit-frame-pointer")
     set(CMAKE_CXX_FLAGS_MINSIZEREL
