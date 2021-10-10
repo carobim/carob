@@ -28,6 +28,9 @@ flush(State& state) noexcept {
     char* data = buf.data;
     Size size = buf.size;
 
+    if (size == 0) {
+        return;
+    }
     if (data[size - 1] == '\n') {
         if (state.err) {
             writeStderr(data, size);
