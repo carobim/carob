@@ -765,8 +765,10 @@ endif()
 
 # Enable floating point optimizations
 if(CLANG OR GCC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffast-math")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffast-math")
 elseif(MSVC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /fp:fast")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:fast")
 endif()
 
