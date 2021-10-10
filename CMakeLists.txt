@@ -869,9 +869,11 @@ endif()
 
 if(APPLE)
     # Metal is available on 64-bit machines from 10.11+.
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mmacosx-version-min=10.11")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.11")
 
     # Lowest that has an exported _start symbol on Xcode 12.5.
+    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mmacosx-version-min=10.8")
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8")
 endif()
 
