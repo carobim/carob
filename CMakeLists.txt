@@ -709,6 +709,12 @@ endif()
 
 # Hide most symbols
 if(CLANG OR GCC)
+    set(CMAKE_C_FLAGS
+        "${CMAKE_C_FLAGS} -fvisibility-inlines-hidden")
+    set(CMAKE_C_FLAGS_RELEASE
+        "${CMAKE_C_FLAGS_RELEASE} -fvisibility=hidden")
+    set(CMAKE_C_FLAGS_MINSIZEREL
+        "${CMAKE_C_FLAGS_MINSIZEREL} -fvisibility=hidden")
     set(CMAKE_CXX_FLAGS
         "${CMAKE_CXX_FLAGS} -fvisibility-inlines-hidden")
     set(CMAKE_CXX_FLAGS_RELEASE
