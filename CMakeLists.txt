@@ -724,6 +724,7 @@ if(CLANG OR GCC)
 endif()
 
 # Don't allow enum values outside enum range
+# Warning: Careful! Not valid for C code.
 if(CLANG OR GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-enums")
 endif()
