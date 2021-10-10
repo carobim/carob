@@ -22,8 +22,6 @@ static State errstate(true);
 Output sout(&outstate);
 Output serr(&errstate);
 
-// FIXME: Flush manually instead of automatically on every '\n'.
-
 static void
 flush(State& state) noexcept {
     String& buf = state.buf;
@@ -57,9 +55,6 @@ Output::Output(void* data) noexcept : data(data) { }
 Output&
 Output::operator<<(char x) noexcept {
     STATE.buf << x;
-    if (x == '\n') {
-        flush(STATE);
-    }
     return *this;
 }
 
@@ -72,9 +67,6 @@ Output::operator<<(const char* x) noexcept {
 Output&
 Output::operator<<(StringView x) noexcept {
     STATE.buf << x;
-    if (x.find('\n') != SV_NOT_FOUND) {
-        flush(STATE);
-    }
     return *this;
 }
 
@@ -129,4 +121,16 @@ Output&
 Output::operator<<(float x) noexcept {
     STATE.buf << x;
     return *this;
+}
+
+Output&
+Output::operator<<(Flush) noexcept {
+    flush(STATE);
+    return *this;
+}
+
+Flusher::Flusher(Output& stream) noexcept : stream(stream) {}
+
+Flusher::~Flusher() noexcept {
+    stream << Flush();
 }

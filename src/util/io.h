@@ -5,6 +5,8 @@
 #include "util/int.h"
 #include "util/string-view.h"
 
+struct Flush {};
+
 class Output {
  public:
     Output(void* data) noexcept;
@@ -33,9 +35,19 @@ class Output {
     Output&
     operator<<(float f) noexcept;
 
+    Output&
+    operator<<(Flush) noexcept;
+
  public:
     // Platform dependent.
     void* data;
+};
+
+struct Flusher {
+    Flusher(Output& stream) noexcept;
+    ~Flusher() noexcept;
+
+    Output& stream;
 };
 
 extern Output sout;
