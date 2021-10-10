@@ -774,8 +774,10 @@ endif()
 
 # Disable stack canary
 if(CLANG OR GCC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-stack-protector")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-stack-protector")
 elseif(MSVC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /GS-")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GS-")
 endif()
 
