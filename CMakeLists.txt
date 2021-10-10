@@ -736,14 +736,17 @@ endif()
 
 # Enable warnings
 if(CLANG OR GCC)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif()
 if(GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused-but-set-variable")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-but-set-variable")
 endif()
 # On GCC 4.6 this warns about unused constants in int.h
 if(GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.7)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused-variable")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-variable")
 endif()
 
