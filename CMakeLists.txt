@@ -884,6 +884,22 @@ endif()
 
 # Share variables with parent
 if(IS_SUBPROJECT)
+    set(CMAKE_C_FLAGS
+        ${CMAKE_C_FLAGS}
+        PARENT_SCOPE)
+
+    set(CMAKE_C_FLAGS_RELEASE
+        ${CMAKE_C_FLAGS_RELEASE}
+        PARENT_SCOPE)
+
+    set(CMAKE_C_FLAGS_MINSIZEREL
+        ${CMAKE_C_FLAGS_MINSIZEREL}
+        PARENT_SCOPE)
+
+    set(CMAKE_C_FLAGS_RELWITHDEBINFO
+        ${CMAKE_C_FLAGS_RELWITHDEBINFO}
+        PARENT_SCOPE)
+
     set(CMAKE_CXX_FLAGS
         ${CMAKE_CXX_FLAGS}
         PARENT_SCOPE)
