@@ -9,13 +9,16 @@ project(TsunagariEngine C CXX)
 #
 
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-    set(CLANG 1)
+    set(CLANG ${CMAKE_CXX_COMPILER_VERSION})
 endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
-    set(GCC 1)
+    set(GCC ${CMAKE_CXX_COMPILER_VERSION})
+    if(GCC AND (GCC VERSION_EQUAL 6 OR (GCC VERSION_GREATER 6 AND GCC VERSION_LESS 7)))
+        set(GCC6 1)
+    endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES MSVC)
-    set(MSVC 1)
+    set(MSVC ${CMAKE_CXX_COMPILER_VERSION})
 endif()
 
 
@@ -284,7 +287,7 @@ if (WIN32)
         # On MSVC2013 including this file results in a warning. In MSVC2015+
         # omitting it results in an error.
         ${HERE}/src/os/windows/c.cpp
-        
+
         ${HERE}/src/os/windows/c.h
         ${HERE}/src/os/windows/chrono.cpp
         ${HERE}/src/os/windows/mapped-file.cpp
@@ -665,15 +668,13 @@ endif()
 # Compilation options
 #
 
-if(GCC)
+if(GCC AND NOT GCC VERSION_LESS 6.0)
     # Fix warning that happens in util/function.h because GCC cannot statically
     # analyze that the code is safe.
-    if(NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 6.0)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-placement-new")
-    endif()
 endif()
 
-if (GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
+if (GCC AND GCC VERSION_LESS 4.7)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 elseif(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -723,7 +724,7 @@ endif()
 
 # Don't allow enum values outside enum range
 # Warning: Careful! Not valid for C code.
-if(CLANG OR GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
+if(CLANG OR GCC AND GCC VERSION_GREATER 4.6)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstrict-enums")
 endif()
 
@@ -738,12 +739,12 @@ if(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
     #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif()
-if(GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.6)
+if(GCC AND GCC VERSION_GREATER 4.6)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused-but-set-variable")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-but-set-variable")
 endif()
 # On GCC 4.6 this warns about unused constants in int.h
-if(GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.7)
+if(GCC AND GCC VERSION_GREATER 4.7)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wunused-variable")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-variable")
 endif()
@@ -792,7 +793,7 @@ if(CLANG OR GCC)
 endif()
 
 # Optimize at link time
-if(CLANG AND NOT NO_LTO OR GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.5)
+if(CLANG AND NOT NO_LTO OR GCC AND GCC VERSION_GREATER 4.5)
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -flto")
     set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} -flto")
     #set(CMAKE_C_FLAGS_RELWITHDEBINFO
@@ -859,7 +860,7 @@ if(NOT DEFINED ENV{CI})
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fcolor-diagnostics")
     endif()
-    if(NINJA AND GCC AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
+    if(NINJA AND GCC AND NOT GCC VERSION_LESS 4.9)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fdiagnostics-color=always")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
     endif()
@@ -946,13 +947,18 @@ if(STATIC_LINK)
 endif()
 
 # Optimize at link time
-if(CLANG AND NOT NO_LTO OR GCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.5)
+if(CLANG AND NOT NO_LTO OR GCC AND GCC VERSION_GREATER 4.5)
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE
         "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -flto=full")
     set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
         "${CMAKE_EXE_LINKER_FLAGS_MINSIZEREL} -flto=full")
     #set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO
     #   "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO} -flto=thin")
+endif()
+if(GCC6)
+    set(CMAKE_AR gcc-ar)
+    set(CMAKE_NM gcc-nm)
+    set(CMAKE_RANLIB gcc-ranlib)
 endif()
 
 # Do not link to libstdc++ or libc++
