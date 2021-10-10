@@ -268,15 +268,13 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/os/os.h
     ${HERE}/src/os/thread.h
 )
-set(THREAD_SOURCES ${THREAD_SOURCES}
-    ${HERE}/src/os/mutex.h
-    ${HERE}/src/os/thread.h
-)
 set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/os/c.h
     ${HERE}/src/os/chrono.h
     ${HERE}/src/os/mapped-file.h
+    ${HERE}/src/os/mutex.h
     ${HERE}/src/os/os.h
+    ${HERE}/src/os/thread.h
 )
 
 if (WIN32)
@@ -319,11 +317,6 @@ if (WIN32)
         ${HERE}/src/os/windows/io.cpp
         ${HERE}/src/os/windows/io.h
     )
-    set(THREAD_SOURCES ${THREAD_SOURCES}
-        ${HERE}/src/os/windows/condition-variable.h
-        ${HERE}/src/os/windows/mutex.h
-        ${HERE}/src/os/windows/thread.h
-    )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/memmove.cpp
 
@@ -331,14 +324,17 @@ if (WIN32)
         # omitting it results in an error.
         ${HERE}/src/os/windows/c.cpp
 
-        ${HERE}/src/os/windows/c.h
-        ${HERE}/src/os/windows/chrono.cpp
-        ${HERE}/src/os/windows/mapped-file.cpp
-        ${HERE}/src/os/windows/mapped-file.h
         ${HERE}/src/os/windows.cpp
         ${HERE}/src/os/windows.h
+        ${HERE}/src/os/windows/c.h
+        ${HERE}/src/os/windows/chrono.cpp
+        ${HERE}/src/os/windows/condition-variable.h
         ${HERE}/src/os/windows/io.cpp
         ${HERE}/src/os/windows/io.h
+        ${HERE}/src/os/windows/mapped-file.cpp
+        ${HERE}/src/os/windows/mapped-file.h
+        ${HERE}/src/os/windows/mutex.h
+        ${HERE}/src/os/windows/thread.h
     )
 elseif(APPLE)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
@@ -377,20 +373,18 @@ elseif(APPLE)
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
-    set(THREAD_SOURCES ${THREAD_SOURCES}
-        ${HERE}/src/os/mac/thread.cpp
-        ${HERE}/src/os/mac/thread.h
-        ${HERE}/src/os/unix/condition-variable.h
-        ${HERE}/src/os/unix/mutex.h
-    )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/mac/c.h
         ${HERE}/src/os/mac/chrono.cpp
-        ${HERE}/src/os/unix/mapped-file.cpp
-        ${HERE}/src/os/unix/mapped-file.h
+        ${HERE}/src/os/mac/thread.cpp
+        ${HERE}/src/os/mac/thread.h
         ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/condition-variable.h
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mapped-file.h
+        ${HERE}/src/os/unix/mutex.h
     )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
@@ -420,18 +414,16 @@ else()
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
-    set(THREAD_SOURCES ${THREAD_SOURCES}
-        ${HERE}/src/os/unix/condition-variable.h
-        ${HERE}/src/os/unix/mutex.h
-        ${HERE}/src/os/unix/thread.h
-    )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/linux-c.h
-        ${HERE}/src/os/unix/chrono.cpp
-        ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix.cpp
+        ${HERE}/src/os/unix/chrono.cpp
+        ${HERE}/src/os/unix/condition-variable.h
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/mapped-file.cpp
+        ${HERE}/src/os/unix/mutex.h
+        ${HERE}/src/os/unix/thread.h
     )
 endif()
 
@@ -605,10 +597,10 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
 #
 
 if(UTIL_ONLY)
-    add_library(tsthread ${THREAD_SOURCES})
-    add_library(tsutil ${UTIL_SOURCES})
+    set(TSTHREAD pthread)
+    set(TSMATH m)
 
-    target_link_libraries(tsthread tsutil)
+    add_library(tsutil ${UTIL_SOURCES})
 else()
     add_library(tsunagari ${TSUNAGARI_SOURCES})
     add_executable(null-world ${NULL_WORLD_SOURCES})
@@ -627,13 +619,12 @@ include_directories(src)
 
 if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8.0)
     if(UTIL_ONLY)
-        set(ALL_SOURCES ${THREAD_SOURCES})
         set(ALL_SOURCES ${UTIL_SOURCES})
     else()
         set(ALL_SOURCES ${TSUNAGARI_SOURCES}
-                      ${NULL_WORLD_SOURCES}
-                      ${PACK_TOOL_SOURCES}
-                      ${TEST_SOURCES}
+                        ${NULL_WORLD_SOURCES}
+                        ${PACK_TOOL_SOURCES}
+                        ${TEST_SOURCES}
       )
     endif()
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ALL_SOURCES})
@@ -983,8 +974,8 @@ if(LINUX AND NOT AV_EM)
 
     if(GLIBC_VERSION)
         if(UTIL_ONLY)
-            target_link_libraries(tsthread pthread)
-            target_link_libraries(tsutil m)
+            set(TSTHREAD pthread)
+            set(TSMATH m)
         else()
             target_link_libraries(tsunagari m pthread)
         endif()
@@ -993,8 +984,8 @@ endif()
 
 if(FREEBSD OR NETBSD)
     if(UTIL_ONLY)
-        target_link_libraries(tsthread pthread)
-        target_link_libraries(tsutil m)
+        set(TSTHREAD pthread)
+        set(TSMATH m)
     else()
         target_link_libraries(tsunagari m pthread)
     endif()
