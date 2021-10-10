@@ -30,9 +30,12 @@ String::String(const char* s) noexcept {
     else {
         Size len = strlen(s);
         // FIXME: Choose better size.
-        data = xmalloc(char, len);
-        size = capacity = len;
+        // Make it a valid C-string.
+        data = xmalloc(char, len + 1);
+        size = len;
+        capacity = len + 1;
         memcpy(data, s, len);
+        data[len] = 0;
     }
 }
 
