@@ -878,6 +878,7 @@ if(APPLE)
 endif()
 
 if(UNIVERSAL)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch x86_64 -arch arm64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch x86_64 -arch arm64")
 endif()
 
