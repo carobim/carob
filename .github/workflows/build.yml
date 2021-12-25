@@ -17,4 +17,4 @@ jobs:
           cmake .. -G Xcode
           cmake --build .
       - name: Test
-        run: build/units
+        run: build/Debug/units
