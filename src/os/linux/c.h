@@ -1,5 +1,5 @@
-#ifndef SRC_OS_LINUX_LINUX_C_H_
-#define SRC_OS_LINUX_LINUX_C_H_
+#ifndef SRC_OS_LINUX_C_H_
+#define SRC_OS_LINUX_C_H_
 
 // For additional copyright information pertaining to this file, please refer
 // to musl's COPYRIGHT file.
