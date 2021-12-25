@@ -430,7 +430,7 @@ elseif(APPLE)
     )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
-        ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/chrono.cpp
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mutex.h
@@ -440,7 +440,7 @@ else()
         ${HERE}/src/os/unix/io.h
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-        ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/condition-variable.h
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mapped-file.h
@@ -451,13 +451,13 @@ else()
         ${HERE}/src/os/unix/io.h
     )
     set(TEST_SOURCES ${TEST_SOURCES}
-        ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
     )
     set(UTIL_SOURCES ${UTIL_SOURCES}
-        ${HERE}/src/os/linux-c.h
+        ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/chrono.cpp
         ${HERE}/src/os/unix/condition-variable.h

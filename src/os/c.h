@@ -6,7 +6,7 @@
 #elif defined(__APPLE__)
 #    include "os/mac/c.h"
 #elif defined(__linux__) || defined(__EMSCRIPTEN__)
-#    include "os/linux-c.h"
+#    include "os/linux/c.h"
 #elif defined(__FreeBSD__)
 #    include "os/freebsd-c.h"
 #elif defined(__NetBSD__)
