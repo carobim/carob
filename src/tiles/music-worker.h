@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_MUSIC_WORKER_H_
-#define SRC_CORE_MUSIC_WORKER_H_
+#ifndef SRC_TILES_MUSIC_WORKER_H_
+#define SRC_TILES_MUSIC_WORKER_H_
 
 #include "util/compiler.h"
 #include "util/string-view.h"
@@ -18,4 +18,4 @@ musicWorkerResume() noexcept;
 void
 musicWorkerGarbageCollect() noexcept;
 
-#endif  // SRC_CORE_MUSIC_WORKER_H_
+#endif  // SRC_TILES_MUSIC_WORKER_H_

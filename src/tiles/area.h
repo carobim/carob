@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_AREA_H_
-#define SRC_CORE_AREA_H_
+#ifndef SRC_TILES_AREA_H_
+#define SRC_TILES_AREA_H_
 
 #include "tiles/animation.h"
 #include "tiles/tile-grid.h"
@@ -146,4 +146,4 @@ class Area {
     friend class AreaJSON;
 };
 
-#endif  // SRC_CORE_AREA_H_
+#endif  // SRC_TILES_AREA_H_

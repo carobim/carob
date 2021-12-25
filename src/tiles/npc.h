@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_NPC_H_
-#define SRC_CORE_NPC_H_
+#ifndef SRC_TILES_NPC_H_
+#define SRC_TILES_NPC_H_
 
 #include "tiles/character.h"
 #include "util/compiler.h"
@@ -10,4 +10,4 @@ class NPC : public Character {
     arrived() noexcept;
 };
 
-#endif  // SRC_CORE_NPC_H_
+#endif  // SRC_TILES_NPC_H_

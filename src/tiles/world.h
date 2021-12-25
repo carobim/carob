@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_WORLD_H_
-#define SRC_CORE_WORLD_H_
+#ifndef SRC_TILES_WORLD_H_
+#define SRC_TILES_WORLD_H_
 
 #include "tiles/vec.h"
 #include "tiles/window.h"
@@ -99,4 +99,4 @@ worldRunAreaLoadScript(Area* area) noexcept;
 void
 worldGarbageCollect() noexcept;
 
-#endif  // SRC_CORE_WORLD_H_
+#endif  // SRC_TILES_WORLD_H_

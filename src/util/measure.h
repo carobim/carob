@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_MEASURE_H_
-#define SRC_CORE_MEASURE_H_
+#ifndef SRC_UTIL_MEASURE_H_
+#define SRC_UTIL_MEASURE_H_
 
 #include "os/chrono.h"
 #include "util/compiler.h"
@@ -24,4 +24,4 @@ class TimeMeasure {
 #endif
 };
 
-#endif  // SRC_CORE_MEASURE_H_
+#endif  // SRC_UTIL_MEASURE_H_

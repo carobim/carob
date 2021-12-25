@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_CLIENT_CONF_H_
-#define SRC_CORE_CLIENT_CONF_H_
+#ifndef SRC_TILES_CLIENT_CONF_H_
+#define SRC_TILES_CLIENT_CONF_H_
 
 #include "tiles/log.h"
 #include "tiles/vec.h"
@@ -25,4 +25,4 @@ extern int confPersistCons;
 bool
 confParse(StringView filename) noexcept;
 
-#endif  // SRC_CORE_CLIENT_CONF_H_
+#endif  // SRC_TILES_CLIENT_CONF_H_

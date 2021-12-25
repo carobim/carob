@@ -1,5 +1,5 @@
-#ifndef SRC_OS_WINDOWS_H_
-#define SRC_OS_WINDOWS_H_
+#ifndef SRC_OS_WINDOWS_WINDOWS_H_
+#define SRC_OS_WINDOWS_WINDOWS_H_
 
 #include "util/compiler.h"
 #include "util/string-view.h"
@@ -23,4 +23,4 @@ void
 printWin32Error(void) noexcept;
 #endif
 
-#endif  // SRC_OS_WINDOWS_H_
+#endif  // SRC_OS_WINDOWS_WINDOWS_H_

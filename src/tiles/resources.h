@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_RESOURCES_H_
-#define SRC_CORE_RESOURCES_H_
+#ifndef SRC_TILES_RESOURCES_H_
+#define SRC_TILES_RESOURCES_H_
 
 #include "util/compiler.h"
 #include "util/string-view.h"
@@ -12,4 +12,4 @@
 bool
 resourceLoad(StringView path, String& data) noexcept;
 
-#endif  // SRC_CORE_RESOURCES_H_
+#endif  // SRC_TILES_RESOURCES_H_

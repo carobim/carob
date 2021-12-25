@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_SOUNDS_H_
-#define SRC_CORE_SOUNDS_H_
+#ifndef SRC_TILES_SOUNDS_H_
+#define SRC_TILES_SOUNDS_H_
 
 #include "util/compiler.h"
 #include "util/int.h"
@@ -53,4 +53,4 @@ playingSoundSpeed(PlayingSoundID psid, float speed) noexcept;
 void
 playingSoundRelease(PlayingSoundID psid) noexcept;
 
-#endif  // SRC_CORE_SOUNDS_H_
+#endif  // SRC_TILES_SOUNDS_H_

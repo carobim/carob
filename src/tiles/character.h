@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_CHARACTER_H_
-#define SRC_CORE_CHARACTER_H_
+#ifndef SRC_TILES_CHARACTER_H_
+#define SRC_TILES_CHARACTER_H_
 
 #include "tiles/entity.h"
 #include "tiles/vec.h"
@@ -83,4 +83,4 @@ class Character : public Entity {
     Exit* destExit;
 };
 
-#endif  // SRC_CORE_CHARACTER_H_
+#endif  // SRC_TILES_CHARACTER_H_

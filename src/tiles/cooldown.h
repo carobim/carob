@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_COOLDOWN_H_
-#define SRC_CORE_COOLDOWN_H_
+#ifndef SRC_TILES_COOLDOWN_H_
+#define SRC_TILES_COOLDOWN_H_
 
 #include "util/compiler.h"
 #include "util/int.h"
@@ -53,4 +53,4 @@ class Cooldown {
     Time duration, passed;
 };
 
-#endif  // SRC_CORE_COOLDOWN_H_
+#endif  // SRC_TILES_COOLDOWN_H_

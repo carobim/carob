@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_VEC_H_
-#define SRC_CORE_VEC_H_
+#ifndef SRC_TILES_VEC_H_
+#define SRC_TILES_VEC_H_
 
 #include "util/compiler.h"
 #include "util/int.h"
@@ -80,4 +80,4 @@ static const constexpr11 ivec3 IVEC3_MIN = {
 
 // clang-format on
 
-#endif  // SRC_CORE_VEC_H_
+#endif  // SRC_TILES_VEC_H_

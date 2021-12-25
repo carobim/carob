@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_WINDOW_H_
-#define SRC_CORE_WINDOW_H_
+#ifndef SRC_TILES_WINDOW_H_
+#define SRC_TILES_WINDOW_H_
 
 #include "util/compiler.h"
 #include "util/string-view.h"
@@ -65,4 +65,4 @@ windowClose(void) noexcept;
 
 extern Keys windowKeysDown;
 
-#endif  // SRC_CORE_WINDOW_H_
+#endif  // SRC_TILES_WINDOW_H_

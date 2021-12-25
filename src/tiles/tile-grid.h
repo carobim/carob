@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_TILE_GRID_H_
-#define SRC_CORE_TILE_GRID_H_
+#ifndef SRC_TILES_TILE_GRID_H_
+#define SRC_TILES_TILE_GRID_H_
 
 #include "tiles/vec.h"
 #include "data/data-area.h"
@@ -193,4 +193,4 @@ class TileGrid {
     operator=(const TileGrid&) noexcept;
 };
 
-#endif  // SRC_CORE_TILE_GRID_H_
+#endif  // SRC_TILES_TILE_GRID_H_

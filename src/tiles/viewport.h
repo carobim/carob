@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_VIEWPORT_H_
-#define SRC_CORE_VIEWPORT_H_
+#ifndef SRC_TILES_VIEWPORT_H_
+#define SRC_TILES_VIEWPORT_H_
 
 #include "tiles/vec.h"
 #include "util/compiler.h"
@@ -53,4 +53,4 @@ viewportTrackEntity(Entity* e) noexcept;
 void
 viewportSetArea(Area* a) noexcept;
 
-#endif  // SRC_CORE_VIEWPORT_H_
+#endif  // SRC_TILES_VIEWPORT_H_

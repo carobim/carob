@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_LOG_H_
-#define SRC_CORE_LOG_H_
+#ifndef SRC_TILES_LOG_H_
+#define SRC_TILES_LOG_H_
 
 #include "util/compiler.h"
 #include "util/string-view.h"
@@ -36,4 +36,4 @@ logFatal(StringView domain, StringView msg) noexcept;
 void
 logReportVerbosityOnStartup() noexcept;
 
-#endif  // SRC_CORE_LOG_H_
+#endif  // SRC_TILES_LOG_H_

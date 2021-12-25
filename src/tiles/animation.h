@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_ANIMATION_H_
-#define SRC_CORE_ANIMATION_H_
+#ifndef SRC_TILES_ANIMATION_H_
+#define SRC_TILES_ANIMATION_H_
 
 #include "tiles/images.h"
 #include "util/compiler.h"
@@ -91,4 +91,4 @@ class Animation {
     AnimationID id;
 };
 
-#endif  // SRC_CORE_ANIMATION_H_
+#endif  // SRC_TILES_ANIMATION_H_

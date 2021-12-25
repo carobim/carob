@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_OVERLAY_H_
-#define SRC_CORE_OVERLAY_H_
+#ifndef SRC_TILES_OVERLAY_H_
+#define SRC_TILES_OVERLAY_H_
 
 #include "tiles/entity.h"
 #include "util/compiler.h"
@@ -25,4 +25,4 @@ class Overlay : public Entity {
     pickFacingForAngle() noexcept;
 };
 
-#endif  // SRC_CORE_OVERLAY_H_
+#endif  // SRC_TILES_OVERLAY_H_

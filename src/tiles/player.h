@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_PLAYER_H_
-#define SRC_CORE_PLAYER_H_
+#ifndef SRC_TILES_PLAYER_H_
+#define SRC_TILES_PLAYER_H_
 
 #include "tiles/character.h"
 #include "tiles/vec.h"
@@ -50,4 +50,4 @@ class Player : public Character {
     Size numMovements;
 };
 
-#endif  // SRC_CORE_PLAYER_H_
+#endif  // SRC_TILES_PLAYER_H_

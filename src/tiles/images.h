@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_IMAGES_H_
-#define SRC_CORE_IMAGES_H_
+#ifndef SRC_TILES_IMAGES_H_
+#define SRC_TILES_IMAGES_H_
 
 #include "util/compiler.h"
 #include "util/int.h"
@@ -76,4 +76,4 @@ void
 imageFlushRects() noexcept;
 
 
-#endif  // SRC_CORE_IMAGES_H_
+#endif  // SRC_TILES_IMAGES_H_

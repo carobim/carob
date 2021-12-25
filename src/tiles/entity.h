@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_ENTITY_H_
-#define SRC_CORE_ENTITY_H_
+#ifndef SRC_TILES_ENTITY_H_
+#define SRC_TILES_ENTITY_H_
 
 #include "tiles/animation.h"
 #include "tiles/images.h"
@@ -191,4 +191,4 @@ class Entity {
     Vector<OnTurnFn> onTurnFns;
 };
 
-#endif  // SRC_CORE_ENTITY_H_
+#endif  // SRC_TILES_ENTITY_H_

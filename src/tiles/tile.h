@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_TILE_H_
-#define SRC_CORE_TILE_H_
+#ifndef SRC_TILES_TILE_H_
+#define SRC_TILES_TILE_H_
 
 #include "util/compiler.h"
 #include "util/int.h"
@@ -13,4 +13,4 @@ struct TileSet {
     at(Size x, Size y) const noexcept;
 };
 
-#endif  // SRC_CORE_TILE_H_
+#endif  // SRC_TILES_TILE_H_

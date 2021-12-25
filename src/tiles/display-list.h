@@ -1,5 +1,5 @@
-#ifndef SRC_CORE_DISPLAY_LIST_H_
-#define SRC_CORE_DISPLAY_LIST_H_
+#ifndef SRC_TILES_DISPLAY_LIST_H_
+#define SRC_TILES_DISPLAY_LIST_H_
 
 #include "tiles/images.h"
 #include "tiles/vec.h"
@@ -29,4 +29,4 @@ struct DisplayList {
 void
 displayListPresent(DisplayList* display) noexcept;
 
-#endif  // SRC_CORE_DISPLAY_LIST_H_
+#endif  // SRC_TILES_DISPLAY_LIST_H_
