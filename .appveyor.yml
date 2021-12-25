@@ -3,6 +3,7 @@ image:
 - Visual Studio 2015
 - Visual Studio 2017
 - Visual Studio 2019
+- Visual Studio 2022
 
 for:
 - matrix:
@@ -51,5 +52,14 @@ for:
   - mkdir build
   - cd build
   - cmake .. -G "Visual Studio 16 2019"
+  - cmake --build .
+  - Debug\units.exe
+- matrix:
+    only:
+    - image: Visual Studio 2022
+  build_script:
+  - mkdir build
+  - cd build
+  - cmake .. -G "Visual Studio 17 2022"
   - cmake --build .
   - Debug\units.exe

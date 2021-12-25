@@ -14,6 +14,8 @@
 #        define MSVC 2017
 #    elif 1920 <= _MSC_VER && _MSC_VER < 1930
 #        define MSVC 2019
+#    elif 1930 <= _MSC_VER && _MSC_VER < 1940
+#        define MSVC 2022
 #    endif
 #    define CLANG 0
 #    define GCC 0
@@ -46,7 +48,7 @@
 #if CXX
 #    if MSVC == 2015
 /* 'noexcept' used but no exception handling is enabled. */
-#        pragma warning(disable : 4577)  
+#        pragma warning(disable : 4577)
 #    endif
 #    if MSVC == 2010 || MSVC == 2012 || MSVC == 2013 || (0 < GCC && GCC < 46)
 #        define noexcept throw()
