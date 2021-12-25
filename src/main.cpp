@@ -12,7 +12,7 @@
 #include "util/random.h"
 
 #if MSVC
-#    include "os/windows.h"
+#    include "os/windows/windows.h"
 #endif
 
 #ifdef __APPLE__

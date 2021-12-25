@@ -10,7 +10,7 @@
 #include "util/math2.h"
 
 #if MSVC
-#    include "os/windows.h"
+#    include "os/windows/windows.h"
 #endif
 
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
