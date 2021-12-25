@@ -280,7 +280,6 @@ if(RENDERER_GL)
 endif()
 
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
-    ${HERE}/src/core/algorithm.h
     ${HERE}/src/core/animation.cpp
     ${HERE}/src/core/animation.h
     ${HERE}/src/core/area.cpp
@@ -538,6 +537,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
 )
 
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/util/algorithm.h
     ${HERE}/src/util/align.h
     ${HERE}/src/util/assert.h
     ${HERE}/src/util/compiler.h

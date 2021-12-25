@@ -1,7 +1,7 @@
 #include "data/data-area.h"
 
-#include "core/algorithm.h"
 #include "core/sounds.h"
+#include "util/algorithm.h"
 #include "util/compiler.h"
 #include "util/random.h"
 

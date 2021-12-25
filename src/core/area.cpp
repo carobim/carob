@@ -1,6 +1,5 @@
 #include "core/area.h"
 
-#include "core/algorithm.h"
 #include "core/client-conf.h"
 #include "core/display-list.h"
 #include "core/entity.h"
@@ -15,6 +14,7 @@
 #include "core/window.h"
 #include "core/world.h"
 #include "os/c.h"
+#include "util/algorithm.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/hashtable.h"
