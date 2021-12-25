@@ -8,6 +8,7 @@
 #include "tiles/window.h"
 #include "tiles/world.h"
 #include "util/compiler.h"
+#include "util/io.h"
 #include "util/measure.h"
 #include "util/random.h"
 
@@ -27,6 +28,9 @@
  */
 int
 main() noexcept {
+    Flusher f1(sout);
+    Flusher f2(serr);
+
 #if MSVC && !defined(NDEBUG)
     wFixConsole();
 #endif

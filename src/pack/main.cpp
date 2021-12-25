@@ -221,6 +221,9 @@ extractArchive(StringView archivePath) noexcept {
 
 int
 main(int argc, char* argv[]) noexcept {
+    Flusher f1(sout);
+    Flusher f2(serr);
+
     exe = argv[0];
     StringPosition dir = exe.view().rfind(dirSeparator);
     if (dir == SV_NOT_FOUND) {
