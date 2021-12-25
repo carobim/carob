@@ -139,18 +139,27 @@ option(STATIC_SDL "Use a static SDL2 library at chosen location")
 if(APPLE)
     option(UNIVERSAL "Build an AMD64/ARM64 universal binary")
 endif()
-if(CLANG)
+if(CLANG OR GCC)
     option(NO_LTO "Disable link time optimization")
-endif()
-
-if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM AND NOT AV_CUSTOM)
-    set(AV_NULL ON)
 endif()
 
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
 
 option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
 option(STATIC_LINK "Build statically linked binaries")
+
+
+#
+# Option constraints
+#
+
+if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM AND NOT AV_CUSTOM)
+    set(AV_NULL ON)
+endif()
+
+if(GCC AND NOT GCC_GTE_45)
+    set(NO_LTO ON)
+endif()
 
 
 #
@@ -887,7 +896,7 @@ if(CLANG OR GCC)
 endif()
 
 # Optimize at link time
-if(CLANG AND NOT NO_LTO OR GCC AND GCC_GTE_45)
+if((CLANG OR GCC) AND NOT NO_LTO)
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -flto")
     set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} -flto")
     #set(CMAKE_C_FLAGS_RELWITHDEBINFO
@@ -1043,7 +1052,7 @@ if(STATIC_LINK)
 endif()
 
 # Optimize at link time
-if(CLANG AND NOT NO_LTO OR GCC_GTE_45)
+if((CLANG OR GCC) AND NOT NO_LTO)
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE
         "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -flto=full")
     set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL
