@@ -1,8 +1,8 @@
 #include "data/inprogress.h"
 
-#include "core/sounds.h"
 #include "data/inprogress-sound.h"
 #include "data/inprogress-timer.h"
+#include "tiles/sounds.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 

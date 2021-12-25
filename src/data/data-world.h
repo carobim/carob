@@ -3,8 +3,8 @@
 
 class DataArea;
 
-#include "core/client-conf.h"
-#include "core/vec.h"
+#include "tiles/client-conf.h"
+#include "tiles/vec.h"
 #include "util/compiler.h"
 #include "util/string-view.h"
 

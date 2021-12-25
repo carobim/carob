@@ -1,8 +1,8 @@
 #ifndef SRC_DATA_DATA_AREA_H_
 #define SRC_DATA_DATA_AREA_H_
 
-#include "core/vec.h"
 #include "data/inprogress.h"
+#include "tiles/vec.h"
 #include "util/compiler.h"
 #include "util/hashtable.h"
 #include "util/int.h"

@@ -1,4 +1,4 @@
-#include "core/sounds.h"
+#include "tiles/sounds.h"
 
 #include "util/compiler.h"
 #include "util/int.h"

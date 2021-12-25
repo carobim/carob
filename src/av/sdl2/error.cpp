@@ -1,7 +1,7 @@
 #include "av/sdl2/error.h"
 
 #include "av/sdl2/sdl2.h"
-#include "core/log.h"
+#include "tiles/log.h"
 #include "util/compiler.h"
 #include "util/string.h"
 

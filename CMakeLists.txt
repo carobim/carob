@@ -284,55 +284,6 @@ if(RENDERER_GL)
 endif()
 
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
-    ${HERE}/src/core/animation.cpp
-    ${HERE}/src/core/animation.h
-    ${HERE}/src/core/area.cpp
-    ${HERE}/src/core/area.h
-    ${HERE}/src/core/area-json.cpp
-    ${HERE}/src/core/area-json.h
-    ${HERE}/src/core/character.cpp
-    ${HERE}/src/core/character.h
-    ${HERE}/src/core/client-conf.cpp
-    ${HERE}/src/core/client-conf.h
-    ${HERE}/src/core/cooldown.cpp
-    ${HERE}/src/core/cooldown.h
-    ${HERE}/src/core/display-list.cpp
-    ${HERE}/src/core/display-list.h
-    ${HERE}/src/core/entity.cpp
-    ${HERE}/src/core/entity.h
-    ${HERE}/src/core/images.h
-    ${HERE}/src/core/jsons.cpp
-    ${HERE}/src/core/jsons.h
-    ${HERE}/src/core/log.cpp
-    ${HERE}/src/core/log.h
-    ${HERE}/src/core/measure.cpp
-    ${HERE}/src/core/measure.h
-    ${HERE}/src/core/music.cpp
-    ${HERE}/src/core/music-worker.h
-    ${HERE}/src/core/music.h
-    ${HERE}/src/core/npc.cpp
-    ${HERE}/src/core/npc.h
-    ${HERE}/src/core/overlay.cpp
-    ${HERE}/src/core/overlay.h
-    ${HERE}/src/core/player.cpp
-    ${HERE}/src/core/player.h
-    ${HERE}/src/core/resources.h
-    ${HERE}/src/core/sounds.h
-    ${HERE}/src/core/tile.cpp
-    ${HERE}/src/core/tile.h
-    ${HERE}/src/core/tile-grid.cpp
-    ${HERE}/src/core/tile-grid.h
-    ${HERE}/src/core/vec.cpp
-    ${HERE}/src/core/vec.h
-    ${HERE}/src/core/viewport.cpp
-    ${HERE}/src/core/viewport.h
-    ${HERE}/src/core/window.cpp
-    ${HERE}/src/core/window.h
-    ${HERE}/src/core/world.cpp
-    ${HERE}/src/core/world.h
-)
-
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/data/data-area.cpp
     ${HERE}/src/data/data-area.h
     ${HERE}/src/data/data-world.h
@@ -538,6 +489,55 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
 
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/resources/pack.cpp
+)
+
+set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/tiles/animation.cpp
+    ${HERE}/src/tiles/animation.h
+    ${HERE}/src/tiles/area.cpp
+    ${HERE}/src/tiles/area.h
+    ${HERE}/src/tiles/area-json.cpp
+    ${HERE}/src/tiles/area-json.h
+    ${HERE}/src/tiles/character.cpp
+    ${HERE}/src/tiles/character.h
+    ${HERE}/src/tiles/client-conf.cpp
+    ${HERE}/src/tiles/client-conf.h
+    ${HERE}/src/tiles/cooldown.cpp
+    ${HERE}/src/tiles/cooldown.h
+    ${HERE}/src/tiles/display-list.cpp
+    ${HERE}/src/tiles/display-list.h
+    ${HERE}/src/tiles/entity.cpp
+    ${HERE}/src/tiles/entity.h
+    ${HERE}/src/tiles/images.h
+    ${HERE}/src/tiles/jsons.cpp
+    ${HERE}/src/tiles/jsons.h
+    ${HERE}/src/tiles/log.cpp
+    ${HERE}/src/tiles/log.h
+    ${HERE}/src/tiles/measure.cpp
+    ${HERE}/src/tiles/measure.h
+    ${HERE}/src/tiles/music.cpp
+    ${HERE}/src/tiles/music-worker.h
+    ${HERE}/src/tiles/music.h
+    ${HERE}/src/tiles/npc.cpp
+    ${HERE}/src/tiles/npc.h
+    ${HERE}/src/tiles/overlay.cpp
+    ${HERE}/src/tiles/overlay.h
+    ${HERE}/src/tiles/player.cpp
+    ${HERE}/src/tiles/player.h
+    ${HERE}/src/tiles/resources.h
+    ${HERE}/src/tiles/sounds.h
+    ${HERE}/src/tiles/tile.cpp
+    ${HERE}/src/tiles/tile.h
+    ${HERE}/src/tiles/tile-grid.cpp
+    ${HERE}/src/tiles/tile-grid.h
+    ${HERE}/src/tiles/vec.cpp
+    ${HERE}/src/tiles/vec.h
+    ${HERE}/src/tiles/viewport.cpp
+    ${HERE}/src/tiles/viewport.h
+    ${HERE}/src/tiles/window.cpp
+    ${HERE}/src/tiles/window.h
+    ${HERE}/src/tiles/world.cpp
+    ${HERE}/src/tiles/world.h
 )
 
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}

@@ -1,4 +1,4 @@
-#include "core/images.h"
+#include "tiles/images.h"
 
 #include "util/compiler.h"
 

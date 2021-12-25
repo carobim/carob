@@ -1,8 +1,8 @@
 #ifndef SRC_DATA_INPROGRESS_SOUND_H_
 #define SRC_DATA_INPROGRESS_SOUND_H_
 
-#include "core/sounds.h"
 #include "data/inprogress.h"
+#include "tiles/sounds.h"
 #include "util/compiler.h"
 #include "util/function.h"
 #include "util/int.h"
