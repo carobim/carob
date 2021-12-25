@@ -651,7 +651,7 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/util/vector.h
 )
 
-if(MSVC OR XCODE OR ${CMAKE_GTE_31})
+if(MSVC OR XCODE OR CMAKE_GTE_31)
     # MSVC 2017 and below, Xcode, and CMake 3.0 and below cannot vary source
     # files by configuration.
     # https://cmake.org/cmake/help/latest/release/3.1.html#properties
