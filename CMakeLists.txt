@@ -1,7 +1,59 @@
-cmake_minimum_required(VERSION 2.8.2...3.19)
+cmake_minimum_required(VERSION 2.8.2...3.22)
 #https://cmake.org/cmake/help/v2.8.2/cmake.html
 
+# CMake 2.4.0 or earlier (<= 2006/04/18)
+#   function cmake_minimum_required
+#   function execute_progress
+#   function find_package
+#   function get_directory_property + PARENT_DIRECTORY
+#   function get_filename_component + PATH
+#   function source_group
+#   function string + REPLACE
+#   function target_link_libraries
+#   keyword if(MATCHES)
+#   variable BUILD_SHARED_LIBS
+#   variable CMAKE_EXECUTABLE_SUFFIX
+#   variable CMAKE_GENERATOR
+#   variable CMAKE_<LANG>_COMPILER
+#   variable CMAKE_OSX_SYSROOT
+#   variable CMAKE_SYSTEM_NAME
+#   variable MACOSX_BUNDLE*
+
+# CMake 2.6.0 (2008/05/05)
+#   package PkgConfig + pkg_search_module
+#   variable CMAKE_<LANG>_COMPILER_ID
+
+# CMake 2.8.0 (2009/11/13)
+#   keyword set(PARENT_SCOPE)
+#   keyword if(VERSION_LESS)
+#   syntax generator-expressions
+#   variable CMAKE_OSX_DEPLOYMENT_TARGET
+
+# CMake 2.8.2 (2010/06/28)
+#   compiler CLANG
+
+# CMake 2.8.8 (2012/04/19)
+#   variable CMAKE_<LANG>_COMPILER_VERSION
+
+# CMake 2.8.11 (2013/05/15)
+#   function target_compile_definitions
+
+# CMake 3.8.0 (2017/04/10)
+#   keyword source_group(TREE) + source_group(FILES)
+
 project(TsunagariEngine C CXX)
+
+
+#
+# CMake
+#
+
+if(NOT ${CMAKE_VERSION} VERSION_LESS 3.1)
+    set(CMAKE_GTE_31 1)
+endif()
+if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8)
+    set(CMAKE_GTE_38 1)
+endif()
 
 
 #
@@ -9,6 +61,7 @@ project(TsunagariEngine C CXX)
 #
 
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
+    # Assume that CMake >= 2.8.8 when Clang is used.
     set(CLANG ${CMAKE_CXX_COMPILER_VERSION})
 endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
@@ -17,7 +70,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
         # CMake 2.8.7 or lower.
         execute_process(COMMAND "${CMAKE_CXX_COMPILER}" --version
                         OUTPUT_VARIABLE GCC_OUT)
-        if("${GCC_OUT}" MATCHES "(4.[0-9].[0-9]*)")
+        if("${GCC_OUT}" MATCHES "(4\\.[0-9])")
             set(GCC "${CMAKE_MATCH_1}")
         else()
             message(WARNING "Could not determine libc version")
@@ -598,9 +651,10 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/util/vector.h
 )
 
-if(MSVC OR ${CMAKE_VERSION} VERSION_LESS 3.1)
-    # MSVC 2017 and below, and CMake 3.0 and below cannot vary source files by
-    # configuration.
+if(MSVC OR XCODE OR ${CMAKE_GTE_31})
+    # MSVC 2017 and below, Xcode, and CMake 3.0 and below cannot vary source
+    # files by configuration.
+    # https://cmake.org/cmake/help/latest/release/3.1.html#properties
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/util/assert.cpp
     )
@@ -652,7 +706,7 @@ include_directories(src)
 # Source groups for IDEs
 #
 
-if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8.0)
+if(CMAKE_GTE_38)
     if(UTIL_ONLY)
         set(ALL_SOURCES ${UTIL_SOURCES})
     else()
@@ -841,18 +895,18 @@ if(CLANG AND NOT NO_LTO OR GCC AND GCC_GTE_45)
 endif()
 
 # Enable NDEBUG anything not a debug build.
-if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
+#if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
     set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} -DNDEBUG")
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DNDEBUG")
     set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -DNDEBUG")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG")
-else()
-    target_compile_definitions(tsunagari PUBLIC $<$<NOT:${IS_DEBUG}>:NDEBUG>)
-    target_compile_definitions(pack-tool PRIVATE $<$<NOT:${IS_DEBUG}>:NDEBUG>)
-endif()
+#else()
+#    target_compile_definitions(tsunagari PUBLIC $<$<NOT:${IS_DEBUG}>:NDEBUG>)
+#    target_compile_definitions(pack-tool PRIVATE $<$<NOT:${IS_DEBUG}>:NDEBUG>)
+#endif()
 
 # Enable RELEASE in anything with optimizations.
-if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
+#if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
     set(CMAKE_C_FLAGS_MINSIZEREL
         "${CMAKE_C_FLAGS_MINSIZEREL} -DRELEASE")
     set(CMAKE_C_FLAGS_RELEASE
@@ -865,10 +919,10 @@ if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
         "${CMAKE_CXX_FLAGS_RELEASE} -DRELEASE")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
         "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DRELEASE")
-else()
-    target_compile_definitions(tsunagari PUBLIC $<${IS_RELEASE}:RELEASE>)
-    target_compile_definitions(pack-tool PRIVATE $<${IS_RELEASE}:RELEASE>)
-endif()
+#else()
+#    target_compile_definitions(tsunagari PUBLIC $<${IS_RELEASE}:RELEASE>)
+#    target_compile_definitions(pack-tool PRIVATE $<${IS_RELEASE}:RELEASE>)
+#endif()
 
 # Emscripten configuration
 if(AV_EM)
@@ -904,17 +958,17 @@ endif()
 
 if(APPLE)
     # Metal is available on 64-bit machines from 10.11+.
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mmacosx-version-min=10.11")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.11")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11")
 
     # Lowest that has an exported _start symbol on Xcode 12.5.
-    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mmacosx-version-min=10.8")
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmacosx-version-min=10.8")
+    #set(CMAKE_OSX_DEPLOYMENT_TARGET "10.8")
 endif()
 
 if(UNIVERSAL)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -arch x86_64 -arch arm64")
+    set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -arch x86_64 -arch arm64")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -arch x86_64 -arch arm64")
+    set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -arch x86_64 -arch arm64")
 endif()
 
 # Share variables with parent
@@ -1122,7 +1176,7 @@ elseif(SDL2)
         endif()
     endif()
 
-    link_directories( ${SDL2_LIBRARY_DIRS})
+    link_directories(${SDL2_LIBRARY_DIRS})
     target_link_libraries(tsunagari ${SDL2_LIBRARIES})
 endif()
 
