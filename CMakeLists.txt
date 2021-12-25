@@ -329,35 +329,35 @@ if (WIN32)
 
         ${HERE}/src/os/windows/c.h
         ${HERE}/src/os/windows/chrono.cpp
-        ${HERE}/src/os/windows/mapped-file.cpp
-        ${HERE}/src/os/windows/mapped-file.h
-        ${HERE}/src/os/windows.cpp
-        ${HERE}/src/os/windows.h
         ${HERE}/src/os/windows/io.cpp
         ${HERE}/src/os/windows/io.h
+        ${HERE}/src/os/windows/mapped-file.cpp
+        ${HERE}/src/os/windows/mapped-file.h
+        ${HERE}/src/os/windows/windows.cpp
+        ${HERE}/src/os/windows/windows.h
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/memmove.cpp
         ${HERE}/src/os/windows/c.cpp
         ${HERE}/src/os/windows/c.h
         ${HERE}/src/os/windows/condition-variable.h
+        ${HERE}/src/os/windows/io.cpp
+        ${HERE}/src/os/windows/io.h
         ${HERE}/src/os/windows/mapped-file.cpp
         ${HERE}/src/os/windows/mapped-file.h
         ${HERE}/src/os/windows/mutex.h
         ${HERE}/src/os/windows/thread.h
-        ${HERE}/src/os/windows.cpp
-        ${HERE}/src/os/windows.h
-        ${HERE}/src/os/windows/io.cpp
-        ${HERE}/src/os/windows/io.h
+        ${HERE}/src/os/windows/windows.cpp
+        ${HERE}/src/os/windows/windows.h
     )
     set(TEST_SOURCES ${TEST_SOURCES}
         ${HERE}/src/os/memmove.cpp
         ${HERE}/src/os/windows/c.cpp
         ${HERE}/src/os/windows/c.h
-        ${HERE}/src/os/windows.cpp
-        ${HERE}/src/os/windows.h
         ${HERE}/src/os/windows/io.cpp
         ${HERE}/src/os/windows/io.h
+        ${HERE}/src/os/windows/windows.cpp
+        ${HERE}/src/os/windows/windows.h
     )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/memmove.cpp
@@ -366,8 +366,6 @@ if (WIN32)
         # omitting it results in an error.
         ${HERE}/src/os/windows/c.cpp
 
-        ${HERE}/src/os/windows.cpp
-        ${HERE}/src/os/windows.h
         ${HERE}/src/os/windows/c.h
         ${HERE}/src/os/windows/chrono.cpp
         ${HERE}/src/os/windows/condition-variable.h
@@ -377,6 +375,8 @@ if (WIN32)
         ${HERE}/src/os/windows/mapped-file.h
         ${HERE}/src/os/windows/mutex.h
         ${HERE}/src/os/windows/thread.h
+        ${HERE}/src/os/windows/windows.cpp
+        ${HERE}/src/os/windows/windows.h
     )
 elseif(APPLE)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}

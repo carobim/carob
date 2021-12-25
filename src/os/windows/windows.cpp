@@ -1,4 +1,4 @@
-#include "os/windows.h"
+#include "windows.h"
 
 #include "os/c.h"
 #include "os/os.h"

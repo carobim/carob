@@ -47,7 +47,7 @@ void
 exitProcess(int code) noexcept;
 
 #if MSVC
-#    include "windows.h"
+#    include "windows/windows.h"
 #endif
 
 #endif  // SRC_OS_OS_H_
