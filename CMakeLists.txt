@@ -513,8 +513,6 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/tiles/jsons.h
     ${HERE}/src/tiles/log.cpp
     ${HERE}/src/tiles/log.h
-    ${HERE}/src/tiles/measure.cpp
-    ${HERE}/src/tiles/measure.h
     ${HERE}/src/tiles/music.cpp
     ${HERE}/src/tiles/music-worker.h
     ${HERE}/src/tiles/music.h
@@ -562,6 +560,8 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/util/list.h
     ${HERE}/src/util/markable.h
     ${HERE}/src/util/math2.h
+    ${HERE}/src/util/measure.cpp
+    ${HERE}/src/util/measure.h
     ${HERE}/src/util/move.h
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h

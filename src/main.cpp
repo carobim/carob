@@ -4,11 +4,11 @@
 #include "tiles/client-conf.h"
 #include "tiles/images.h"
 #include "tiles/log.h"
-#include "tiles/measure.h"
 #include "tiles/resources.h"
 #include "tiles/window.h"
 #include "tiles/world.h"
 #include "util/compiler.h"
+#include "util/measure.h"
 #include "util/random.h"
 
 #if MSVC

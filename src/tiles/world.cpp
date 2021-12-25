@@ -7,7 +7,6 @@
 #include "tiles/display-list.h"
 #include "tiles/images.h"
 #include "tiles/log.h"
-//#include "tiles/measure.h"
 #include "tiles/music.h"
 #include "tiles/overlay.h"
 #include "tiles/player.h"
@@ -17,6 +16,7 @@
 #include "tiles/window.h"
 #include "util/compiler.h"
 #include "util/hashtable.h"
+//#include "util/measure.h"
 #include "util/vector.h"
 
 // ScriptRef keydownScript, keyupScript;

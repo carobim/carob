@@ -7,10 +7,10 @@
 #include "tiles/client-conf.h"
 #include "tiles/display-list.h"
 #include "tiles/log.h"
-#include "tiles/measure.h"
 #include "tiles/window.h"
 #include "tiles/world.h"
 #include "util/compiler.h"
+#include "util/measure.h"
 #include "util/transform.h"
 
 SDL_Window* sdl2Window = 0;
