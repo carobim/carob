@@ -1,7 +1,7 @@
 #include "tiles/measure.h"
 
-#include "tiles/log.h"
 #include "util/compiler.h"
+#include "util/io.h"
 
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)
 #    include "util/hashtable.h"
@@ -44,8 +44,7 @@ TimeMeasure::~TimeMeasure() noexcept {
 #endif
 
     Nanoseconds end = chronoNow();
-
     Nanoseconds elapsed = end - start;
-    logInfo("Measure",
-            description << " took " << ns_to_s_d(elapsed) << " seconds");
+
+    serr << "Measure " << description << " took " << ns_to_s_d(elapsed) << " seconds" << Flush();
 }
