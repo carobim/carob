@@ -384,12 +384,12 @@ elseif(APPLE)
         ${HERE}/src/os/mac/chrono.cpp
         ${HERE}/src/os/mac/thread.cpp
         ${HERE}/src/os/mac/thread.h
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mapped-file.h
         ${HERE}/src/os/unix/mutex.h
-        ${HERE}/src/os/unix.cpp
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/unix.cpp
     )
     if(NOT WINDOW_NULL OR NOT AUDIO_NULL)
         set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
@@ -405,60 +405,59 @@ elseif(APPLE)
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mapped-file.h
         ${HERE}/src/os/unix/mutex.h
-        ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/unix.cpp
     )
     set(TEST_SOURCES ${TEST_SOURCES}
         ${HERE}/src/os/mac/c.h
-        ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/unix.cpp
     )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/mac/c.h
         ${HERE}/src/os/mac/chrono.cpp
         ${HERE}/src/os/mac/thread.cpp
         ${HERE}/src/os/mac/thread.h
-        ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/condition-variable.h
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mapped-file.h
         ${HERE}/src/os/unix/mutex.h
+        ${HERE}/src/os/unix/unix.cpp
     )
 else()
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/chrono.cpp
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mutex.h
         ${HERE}/src/os/unix/thread.h
-        ${HERE}/src/os/unix.cpp
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/unix.cpp
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/condition-variable.h
+        ${HERE}/src/os/unix/io.cpp
+        ${HERE}/src/os/unix/io.h
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mapped-file.h
         ${HERE}/src/os/unix/mutex.h
         ${HERE}/src/os/unix/thread.h
-        ${HERE}/src/os/unix.cpp
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/unix.cpp
     )
     set(TEST_SOURCES ${TEST_SOURCES}
         ${HERE}/src/os/linux/c.h
-        ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
+        ${HERE}/src/os/unix/unix.cpp
     )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/linux/c.h
-        ${HERE}/src/os/unix.cpp
         ${HERE}/src/os/unix/chrono.cpp
         ${HERE}/src/os/unix/condition-variable.h
         ${HERE}/src/os/unix/io.cpp
@@ -466,6 +465,7 @@ else()
         ${HERE}/src/os/unix/mapped-file.cpp
         ${HERE}/src/os/unix/mutex.h
         ${HERE}/src/os/unix/thread.h
+        ${HERE}/src/os/unix/unix.cpp
     )
 endif()
 
