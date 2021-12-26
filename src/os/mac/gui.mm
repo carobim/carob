@@ -6,7 +6,7 @@
 #include "util/string-view.h"
 
 extern "C" {
-int chdir(const char *) noexcept;
+I32 chdir(const char *) noexcept;
 
 typedef signed long CFIndex;
 typedef signed char BOOL;
@@ -102,7 +102,7 @@ macSetWorkingDirectory() noexcept {
     (void)ok2;
     assert_(ok2);
 
-    int err = chdir("Contents/Resources");
+    I32 err = chdir("Contents/Resources");
     (void)err;
     // FIXME: This assert will fail if we are not in a bundle. Detect when
     //        we are not in a bundle before this point and bail out earlier.

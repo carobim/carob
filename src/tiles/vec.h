@@ -6,8 +6,8 @@
 
 // clang-format off
 
-struct ivec2 { int x, y; };
-struct ivec3 { int x, y, z; };
+struct ivec2 { I32 x, y; };
+struct ivec3 { I32 x, y, z; };
 struct fvec2 { float x, y; };
 struct fvec3 { float x, y, z; };
 
@@ -18,13 +18,13 @@ struct fvec3 { float x, y, z; };
  * z is a virtual layer depth within an Area.
  */
 struct vicoord {
-    int x, y;
+    I32 x, y;
     float z;
 };
 
 struct icube {
-    int x1, y1, z1;
-    int x2, y2, z2;
+    I32 x1, y1, z1;
+    I32 x2, y2, z2;
 };
 
 ivec2 operator+(ivec2, ivec2) noexcept;
@@ -38,19 +38,19 @@ fvec2 operator-(fvec2, fvec2) noexcept;
 fvec3 operator-(fvec3, fvec3) noexcept;
 
 ivec2 operator*(ivec2, ivec2) noexcept;
-ivec2 operator*(int, ivec2) noexcept;
-ivec3 operator*(int, ivec3) noexcept;
+ivec2 operator*(I32, ivec2) noexcept;
+ivec3 operator*(I32, ivec3) noexcept;
 fvec2 operator*(fvec2, fvec2) noexcept;
 fvec2 operator*(float, fvec2) noexcept;
 fvec3 operator*(float, fvec3) noexcept;
 
-ivec2 operator*(ivec2, int) noexcept;
-ivec3 operator*(ivec3, int) noexcept;
+ivec2 operator*(ivec2, I32) noexcept;
+ivec3 operator*(ivec3, I32) noexcept;
 fvec2 operator*(fvec2, float) noexcept;
 fvec3 operator*(fvec3, float) noexcept;
 
-ivec2 operator/(ivec2, int) noexcept;
-ivec3 operator/(ivec3, int) noexcept;
+ivec2 operator/(ivec2, I32) noexcept;
+ivec3 operator/(ivec3, I32) noexcept;
 fvec2 operator/(fvec2, float) noexcept;
 fvec3 operator/(fvec3, float) noexcept;
 

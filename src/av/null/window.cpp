@@ -19,12 +19,12 @@ windowTime(void) noexcept {
     return ns_to_ms(chronoNow());
 }
 
-int
+I32
 windowWidth(void) noexcept {
     return confWindowSize.x;
 }
 
-int
+I32
 windowHeight(void) noexcept {
     return confWindowSize.y;
 }
@@ -98,7 +98,7 @@ windowMainLoop(void) noexcept {
         nextFrameStart += idealFrameTime;
 
         if (frameStart > nextFrameStart) {
-            int framesDropped = 0;
+            I32 framesDropped = 0;
             while (frameStart > nextFrameStart) {
                 nextFrameStart += idealFrameTime;
                 framesDropped += 1;

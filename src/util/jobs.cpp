@@ -11,7 +11,7 @@
 
 static Size workerLimit = 0;
 static Vector<Thread> workers;
-static int jobsRunning = 0;
+static U32 jobsRunning = 0;
 
 // Empty jobs are the signal to quit.
 static Queue<Function> jobs;

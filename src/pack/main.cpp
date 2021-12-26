@@ -219,8 +219,8 @@ extractArchive(StringView archivePath) noexcept {
     return true;
 }
 
-int
-main(int argc, char* argv[]) noexcept {
+I32
+main(I32 argc, char* argv[]) noexcept {
     Flusher f1(sout);
     Flusher f2(serr);
 
@@ -242,11 +242,11 @@ main(int argc, char* argv[]) noexcept {
     StringView command = argv[1];
     Vector<StringView> args;
 
-    for (int i = 2; i < argc; i++) {
+    for (I32 i = 2; i < argc; i++) {
         args.push(argv[i]);
     }
 
-    int exitCode;
+    I32 exitCode;
 
     if (command == "create") {
         if (args.size > 0 && args[0] == "-v") {

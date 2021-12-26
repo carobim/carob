@@ -35,7 +35,7 @@ Thread::Thread(Function fn) noexcept {
     Function* data = xmalloc(Function, 1);
     *data = fn;
 
-    int err = pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, data);
+    I32 err = pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, data);
     (void)err;
     assert_(err == 0);
 }
@@ -52,7 +52,7 @@ void
 Thread::join() noexcept {
     assert_(t != 0);
 
-    int err = pthread_join(static_cast<pthread_t>(t), 0);
+    I32 err = pthread_join(static_cast<pthread_t>(t), 0);
     (void)err;
     assert_(err == 0);
 
@@ -73,7 +73,7 @@ threadDisableTimerCoalescing() noexcept {
 U32
 threadHardwareConcurrency() noexcept {
     unsigned n;
-    int mib[2] = {CTL_HW, HW_NCPU};
+    I32 mib[2] = {CTL_HW, HW_NCPU};
     Size s = sizeof(n);
     sysctl(mib, 2, &n, &s, 0, 0);
     return n;

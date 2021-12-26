@@ -110,12 +110,12 @@ Area::buttonUp(Key key) noexcept {
 void
 Area::draw(DisplayList* display) noexcept {
     icube tiles = visibleTiles();
-    int maxZ = grid.dim.z;
+    I32 maxZ = grid.dim.z;
 
     assert_(tiles.z1 == 0);
     assert_(tiles.z2 == maxZ);
 
-    for (int z = 0; z < maxZ; z++) {
+    for (I32 z = 0; z < maxZ; z++) {
         switch (grid.layerTypes[z]) {
         case TileGrid::TILE_LAYER:
             drawTiles(display, tiles, z);
@@ -171,14 +171,14 @@ Area::needsRedraw() noexcept {
 
     Time now = worldTime();
 
-    for (int z = tiles.z1; z < tiles.z2; z++) {
+    for (I32 z = tiles.z1; z < tiles.z2; z++) {
         if (grid.layerTypes[z] != TileGrid::TILE_LAYER) {
             continue;
         }
-        for (int y = tiles.y1; y < tiles.y2; y++) {
-            for (int x = tiles.x1; x < tiles.x2; x++) {
+        for (I32 y = tiles.y1; y < tiles.y2; y++) {
+            for (I32 x = tiles.x1; x < tiles.x2; x++) {
                 ivec3 coord = {x, y, z};
-                int type = grid.getTileType(coord);
+                I32 type = grid.getTileType(coord);
 
                 if (type == 0) {
                     continue;
@@ -292,10 +292,10 @@ Area::visibleTiles() noexcept {
     fvec2 screen = viewportGetVirtRes();
     fvec2 off = viewportGetMapOffset();
 
-    int x1 = static_cast<int>(floorf(off.x / grid.tileDim.x));
-    int y1 = static_cast<int>(floorf(off.y / grid.tileDim.y));
-    int x2 = static_cast<int>(ceilf((screen.x + off.x) / grid.tileDim.x));
-    int y2 = static_cast<int>(ceilf((screen.y + off.y) / grid.tileDim.y));
+    I32 x1 = static_cast<I32>(floorf(off.x / grid.tileDim.x));
+    I32 y1 = static_cast<I32>(floorf(off.y / grid.tileDim.y));
+    I32 x2 = static_cast<I32>(ceilf((screen.x + off.x) / grid.tileDim.x));
+    I32 y2 = static_cast<I32>(ceilf((screen.y + off.y) / grid.tileDim.y));
 
     if (!grid.loopX) {
         x1 = bound(x1, 0, grid.dim.x);
@@ -365,7 +365,7 @@ Area::runScript(TileGrid::ScriptType type,
 
 
 void
-Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
+Area::drawTiles(DisplayList* display, icube& tiles, I32 z) noexcept {
     Vector<DisplayItem>& items = display->items;
 
     Time now = worldTime();
@@ -387,14 +387,14 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
 
     float depth = grid.idx2depth[(Size)z];
 
-    int width = 16;
-    int height = 16;
+    I32 width = 16;
+    I32 height = 16;
 
-    for (int y = tiles.y1; y < tiles.y2; y++) {
-        for (int x = tiles.x1; x < tiles.x2; x++) {
+    for (I32 y = tiles.y1; y < tiles.y2; y++) {
+        for (I32 x = tiles.x1; x < tiles.x2; x++) {
             // We are certain the Tile exists.
             ivec3 coord = {x, y, z};
-            int type = grid.getTileType(coord);
+            I32 type = grid.getTileType(coord);
 
             if (type == 0) {
                 continue;
@@ -425,7 +425,7 @@ Area::drawTiles(DisplayList* display, icube& tiles, int z) noexcept {
 }
 
 void
-Area::drawEntities(DisplayList* display, icube& tiles, int z) noexcept {
+Area::drawEntities(DisplayList* display, icube& tiles, I32 z) noexcept {
     float depth = grid.idx2depth[(Size)z];
 
     for (Character** character = characters.begin();

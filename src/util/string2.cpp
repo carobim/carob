@@ -20,7 +20,7 @@ isInteger(StringView s) noexcept {
 #define SIGN  1
 #define DIGIT 2
 
-    int state = SPACE;
+    char state = SPACE;
 
     for (Size i = 0; i < s.size; i++) {
         char c = s.data[i];
@@ -60,7 +60,7 @@ isDecimal(StringView s) noexcept {
 #define DOT    3
 #define DIGIT2 4
 
-    int state = SPACE;
+    char state = SPACE;
 
     for (Size i = 0; i < s.size; i++) {
         char c = s.data[i];
@@ -113,7 +113,7 @@ isRanges(StringView s) noexcept {
 
     bool dashed = false;
 
-    int state = SIGN;
+    char state = SIGN;
 
     for (Size i = 0; i < s.size; i++) {
         char c = s.data[i];
@@ -312,7 +312,7 @@ splitStr(Vector<StringView>& out,
  * Can take things such as "5-7".
  */
 bool
-parseRange(int& lo, int& hi, StringView range, String& buf) noexcept {
+parseRange(I32& lo, I32& hi, StringView range, String& buf) noexcept {
     StringPosition dash = range.find('-');
 
     if (dash == SV_NOT_FOUND) {
@@ -342,7 +342,7 @@ parseRange(int& lo, int& hi, StringView range, String& buf) noexcept {
 }
 
 bool
-parseRanges(Vector<int>& out, StringView format) noexcept {
+parseRanges(Vector<I32>& out, StringView format) noexcept {
     Vector<StringView> tokens;
     splitStr(tokens, format, ",");
 
@@ -354,7 +354,7 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
             buf.clear();
             buf = *range;
 
-            int i;
+            I32 i;
             if (!parseInt(i, buf)) {
                 return false;
             }
@@ -367,14 +367,14 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
 
             buf.clear();
             buf = rngstart;
-            int start;
+            I32 start;
             if (!parseInt(start, buf)) {
                 return false;
             }
 
             buf.clear();
             buf = rngend;
-            int end;
+            I32 end;
             if (!parseInt(end, buf)) {
                 return false;
             }
@@ -383,7 +383,7 @@ parseRanges(Vector<int>& out, StringView format) noexcept {
                 return false;
             }
 
-            for (int i = start; i <= end; i++) {
+            for (I32 i = start; i <= end; i++) {
                 out.push(i);
             }
         }

@@ -49,7 +49,7 @@ File::File(StringView path) noexcept {
     }
 
     LARGE_INTEGER size;
-    int ok = GetFileSizeEx(handle, &size);
+    I32 ok = GetFileSizeEx(handle, &size);
     if (!ok) {
         CloseHandle(handle);
         handle = INVALID_HANDLE_VALUE;

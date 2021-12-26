@@ -26,7 +26,7 @@
  * The client config tells us our window parameters along with which World
  * we're going to load. The GameWindow class then loads and plays the game.
  */
-int
+I32
 main() noexcept {
     Flusher f1(sout);
     Flusher f2(serr);
@@ -78,7 +78,7 @@ main() noexcept {
 }
 
 #if MSVC
-int __stdcall WinMain(void*, void*, void*, int) {
+I32 __stdcall WinMain(void*, void*, void*, I32) {
     return main();
 }
 #endif

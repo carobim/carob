@@ -11,28 +11,28 @@ class ConditionVariable {
     inline ConditionVariable() noexcept : cv PTHREAD_COND_INITIALIZER { }
 
     inline ~ConditionVariable() noexcept {
-        int err = pthread_cond_destroy(&cv);
+        I32 err = pthread_cond_destroy(&cv);
         (void)err;
         assert_(err == 0);
     }
 
     inline void
     notifyOne() noexcept {
-        int err = pthread_cond_signal(&cv);
+        I32 err = pthread_cond_signal(&cv);
         (void)err;
         assert_(err == 0);
     }
 
     inline void
     notifyAll() noexcept {
-        int err = pthread_cond_broadcast(&cv);
+        I32 err = pthread_cond_broadcast(&cv);
         (void)err;
         assert_(err == 0);
     }
 
     inline void
     wait(LockGuard& lock) noexcept {
-        int err = pthread_cond_wait(&cv, &lock.m.m);
+        I32 err = pthread_cond_wait(&cv, &lock.m.m);
         (void)err;
         assert_(err == 0);
     }

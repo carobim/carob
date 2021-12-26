@@ -6,7 +6,7 @@
 
 // mach/arm/kern_return.h
 // mach/i386/kern_return.h
-typedef int kern_return_t;
+typedef I32 kern_return_t;
 
 // mach/mach_time.h
 struct mach_timebase_info {

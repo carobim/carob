@@ -53,7 +53,7 @@ Character::getTileCoords_vi() noexcept {
 }
 
 void
-Character::setTileCoords(int x, int y) noexcept {
+Character::setTileCoords(I32 x, I32 y) noexcept {
     leaveTile();
     redraw = true;
     vicoord virt = {x, y, r.z};

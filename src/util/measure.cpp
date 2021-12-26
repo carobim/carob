@@ -8,8 +8,8 @@
 
 // sys/kdebug_signpost.h
 extern "C" {
-int kdebug_signpost_start(U32, Size, Size, Size, Size) noexcept;
-int kdebug_signpost_end(U32, Size, Size, Size, Size) noexcept;
+I32 kdebug_signpost_start(U32, Size, Size, Size, Size) noexcept;
+I32 kdebug_signpost_end(U32, Size, Size, Size, Size) noexcept;
 }
 
 static U32 nextSignpost = 0;

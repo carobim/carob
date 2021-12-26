@@ -157,12 +157,12 @@ parsePhase(Entity* e,
     CHECK(!frameValue.isNumber() || !framesValue.isArray());
     CHECK(!framesValue.isArray() || speedValue.isNumber());
 
-    int nTiles = tiles.numTiles;
+    I32 nTiles = tiles.numTiles;
 
     Animation animation;
 
     if (frameValue.isNumber()) {
-        int frame = frameValue.toInt();
+        I32 frame = frameValue.toInt();
         if (frame >= nTiles) {
             logErr(e->descriptor,
                    "<phase> frame attribute index out of bounds");
@@ -189,7 +189,7 @@ parsePhase(Entity* e,
             JsonValue frameValue = node->value;
 
             CHECK(frameValue.isNumber());
-            int frame = frameValue.toInt();
+            I32 frame = frameValue.toInt();
 
             if (frame < 0 || nTiles < frame) {
                 logErr(e->descriptor,
@@ -410,11 +410,11 @@ Entity::needsRedraw(icube& visiblePixels) noexcept {
     // if it is on-screen.
 
     // X-axis is centered on tile.
-    int maxX = (area->grid.tileDim.x + imgsz.x) / 2 + static_cast<int>(r.x);
-    int minX = maxX - imgsz.x;
+    I32 maxX = (area->grid.tileDim.x + imgsz.x) / 2 + static_cast<I32>(r.x);
+    I32 minX = maxX - imgsz.x;
     // Y-axis is aligned with bottom of tile.
-    int maxY = area->grid.tileDim.y + static_cast<int>(r.y);
-    int minY = maxY - imgsz.y;
+    I32 maxY = area->grid.tileDim.y + static_cast<I32>(r.y);
+    I32 minY = maxY - imgsz.y;
 
     if (visiblePixels.x2 < minX || maxX < visiblePixels.x1) {
         return false;

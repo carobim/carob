@@ -7,7 +7,7 @@
 #    include "util/io.h"
 
 #    if MSVC
-extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent() noexcept;
+extern "C" __declspec(dllimport) I32 __stdcall IsDebuggerPresent() noexcept;
 void __cdecl __debugbreak();  // Cannot be noexcept.
 #    endif
 
@@ -107,7 +107,7 @@ isDebuggerPresent(void) {
 
 static bool
 haveDebugger() noexcept {
-    static int result = 2;
+    static I32 result = 2;
 
     if (result == 2) {
 #    if defined(_WIN32)
@@ -152,7 +152,7 @@ triggerDebugger() noexcept {
 void
 assert__(const char* func,
          const char* file,
-         int line,
+         I32 line,
          const char* expr) noexcept {
     if (haveDebugger()) {
         triggerDebugger();

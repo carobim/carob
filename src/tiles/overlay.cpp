@@ -18,7 +18,7 @@ Overlay::teleport(vicoord coord) noexcept {
 
 void
 Overlay::drift(ivec2 xy) noexcept {
-    ivec2 dest = {static_cast<int>(r.x) + xy.x, static_cast<int>(r.y) + xy.y};
+    ivec2 dest = {static_cast<I32>(r.x) + xy.x, static_cast<I32>(r.y) + xy.y};
     driftTo(dest);
 }
 

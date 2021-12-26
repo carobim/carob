@@ -53,12 +53,12 @@ operator*(ivec2 a, ivec2 b) noexcept {
     return result;
 }
 ivec2
-operator*(int co, ivec2 a) noexcept {
+operator*(I32 co, ivec2 a) noexcept {
     ivec2 result = {a.x * co, a.y * co};
     return result;
 }
 ivec3
-operator*(int co, ivec3 a) noexcept {
+operator*(I32 co, ivec3 a) noexcept {
     ivec3 result = {a.x * co, a.y * co, a.z * co};
     return result;
 }
@@ -79,12 +79,12 @@ operator*(float co, fvec3 a) noexcept {
 }
 
 ivec2
-operator/(ivec2 a, int co) noexcept {
+operator/(ivec2 a, I32 co) noexcept {
     ivec2 result = {a.x / co, a.y / co};
     return result;
 }
 ivec3
-operator/(ivec3 a, int co) noexcept {
+operator/(ivec3 a, I32 co) noexcept {
     ivec3 result = {a.x / co, a.y / co, a.z / co};
     return result;
 }

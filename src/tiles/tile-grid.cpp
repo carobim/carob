@@ -6,7 +6,7 @@
 #include "util/math2.h"
 #include "util/string.h"
 
-static int
+static I32
 ivec2_to_dir(ivec2 v) noexcept {
     switch (v.x) {
     case -1:
@@ -35,22 +35,22 @@ TileGrid::TileGrid() noexcept : loopX(false), loopY(false) {
     tileDim.x = tileDim.y = 0;
 }
 
-int
+I32
 TileGrid::getTileType(ivec3 phys) noexcept {
-    int idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;
+    I32 idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;
     return graphics[idx];
 }
 
-int
+I32
 TileGrid::getTileType(vicoord virt) noexcept {
     return getTileType(virt2phys(virt));
 }
 
 void
-TileGrid::setTileType(vicoord virt, int type) noexcept {
+TileGrid::setTileType(vicoord virt, I32 type) noexcept {
     ivec3 phys = virt2phys(virt);
 
-    int idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;
+    I32 idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;
     graphics[idx] = type;
 }
 
@@ -88,16 +88,16 @@ TileGrid::phys2virt_r(ivec3 phys) noexcept {
 
 ivec3
 TileGrid::virt2phys(vicoord virt) noexcept {
-    ivec3 phys = {static_cast<int>(virt.x),
-                  static_cast<int>(virt.y),
+    ivec3 phys = {static_cast<I32>(virt.x),
+                  static_cast<I32>(virt.y),
                   depthIndex(virt.z)};
     return phys;
 }
 
 ivec3
 TileGrid::virt2phys(fvec3 virt) noexcept {
-    ivec3 phys = {static_cast<int>(virt.x) / tileDim.x,
-                  static_cast<int>(virt.y) / tileDim.y,
+    ivec3 phys = {static_cast<I32>(virt.x) / tileDim.x,
+                  static_cast<I32>(virt.y) / tileDim.y,
                   depthIndex(virt.z)};
     return phys;
 }
@@ -112,20 +112,20 @@ TileGrid::virt2virt(vicoord virt) noexcept {
 
 vicoord
 TileGrid::virt2virt(fvec3 virt) noexcept {
-    vicoord v = {static_cast<int>(virt.x) / tileDim.x,
-                  static_cast<int>(virt.y) / tileDim.y,
+    vicoord v = {static_cast<I32>(virt.x) / tileDim.x,
+                  static_cast<I32>(virt.y) / tileDim.y,
                   virt.z};
     return v;
 }
 
-int
+I32
 TileGrid::depthIndex(float depth) noexcept {
     assert_(depth2idx.contains(depth) && "Attempt to access invalid layer");
     return depth2idx[depth];
 }
 
 float
-TileGrid::indexDepth(int idx) noexcept {
+TileGrid::indexDepth(I32 idx) noexcept {
     assert_(0 <= idx && idx <= dim.z);
     return idx2depth[(Size)idx];
 }
@@ -146,12 +146,12 @@ TileGrid::moveDest(ivec3 from, ivec2 facing) noexcept {
 
 Exit*
 TileGrid::exitAt(ivec3 from, ivec2 facing) noexcept {
-    int idx = ivec2_to_dir(facing);
+    I32 idx = ivec2_to_dir(facing);
     return idx == -1 ? 0 : exits[idx].tryAt(from);
 }
 
 float*
 TileGrid::layermodAt(ivec3 from, ivec2 facing) noexcept {
-    int idx = ivec2_to_dir(facing);
+    I32 idx = ivec2_to_dir(facing);
     return idx == -1 ? 0 : layermods[idx].tryAt(from);
 }

@@ -28,11 +28,11 @@ Time
 windowTime(void) noexcept;
 
 //! Width of the window in pixels.
-int
+I32
 windowWidth(void) noexcept;
 
 //! Height of the window in pixels.
-int
+I32
 windowHeight(void) noexcept;
 
 //! Set window manager caption.

@@ -120,10 +120,10 @@ union JsonValue {
         return getTag() == JSON_TRUE;
     }
 
-    inline int
+    inline I32
     toInt() noexcept {
         assert_(isDouble());
-        return static_cast<int>(fval);
+        return static_cast<I32>(fval);
     }
 
     inline double

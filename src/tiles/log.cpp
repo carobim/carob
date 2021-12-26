@@ -114,7 +114,7 @@ logErr(StringView domain, StringView msg) noexcept {
 
 #if MSVC
 extern "C" {
-__declspec(dllimport) int __stdcall IsDebuggerPresent();
+__declspec(dllimport) I32 __stdcall IsDebuggerPresent();
 }
 void __cdecl __debugbreak();
 #endif

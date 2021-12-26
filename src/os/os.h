@@ -44,7 +44,7 @@ void
 setTermColor(TermColor color, Output& out) noexcept;
 
 void
-exitProcess(int code) noexcept;
+exitProcess(I32 code) noexcept;
 
 #if MSVC
 #    include "windows/windows.h"

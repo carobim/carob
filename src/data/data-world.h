@@ -22,8 +22,8 @@ extern StringView dataWorldVersion;
 
 extern enum MoveMode dataWorldMoveMode;
 extern fvec2 dataWorldViewportResolution;
-extern int dataWorldInputPersistDelayInitial;
-extern int dataWorldInputPersistDelayConsecutive;
+extern I32 dataWorldInputPersistDelayInitial;
+extern I32 dataWorldInputPersistDelayConsecutive;
 extern StringView dataWorldStartArea;
 extern StringView dataWorldPlayerFile;
 extern StringView dataWorldPlayerStartPhase;

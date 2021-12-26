@@ -114,9 +114,9 @@ class Area {
  protected:
     //! Calculate frame to show for each type of tile
     void
-    drawTiles(DisplayList* display, icube& tiles, int z) noexcept;
+    drawTiles(DisplayList* display, icube& tiles, I32 z) noexcept;
     void
-    drawEntities(DisplayList* display, icube& tiles, int z) noexcept;
+    drawEntities(DisplayList* display, icube& tiles, I32 z) noexcept;
 
  protected:
     Hashmap<String, TileSet> tileSets;

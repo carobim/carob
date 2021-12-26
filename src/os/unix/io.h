@@ -21,7 +21,7 @@ class File {
     readOffset(void* buf, Size len, Size offset) noexcept;
 
  public:
-    int fd;
+    I32 fd;
     Size rem;  // 0 when EOF
 
  private:
@@ -44,7 +44,7 @@ class FileWriter {
     writeOffset(const void* buf, Size len, Size offset) noexcept;
 
  public:
-    int fd;
+    I32 fd;
 };
 
 bool

@@ -30,7 +30,7 @@ class Character : public Entity {
 
     //! Set location within Area.
     void
-    setTileCoords(int x, int y) noexcept;
+    setTileCoords(I32 x, I32 y) noexcept;
     void
     setTileCoords(ivec3 phys) noexcept;
     void

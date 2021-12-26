@@ -22,7 +22,7 @@ class Pool {
 
  public:
     Pool() : storage(0), allocated(0), nextFree(POOL_END) { }
-    ~Pool() { free(reinterpret_cast<char*>(storage)); }
+    ~Pool() { free(storage); }
 
     // Returns an unconstructed piece of memory.
     U32

@@ -87,13 +87,13 @@ class TileGrid {
  public:
     TileGrid() noexcept;
 
-    int
+    I32
     getTileType(ivec3 phys) noexcept;
-    int
+    I32
     getTileType(vicoord virt) noexcept;
 
     void
-    setTileType(vicoord virt, int type) noexcept;
+    setTileType(vicoord virt, I32 type) noexcept;
 
     //! Returns true if a Tile exists at the specified coordinate.
     bool
@@ -122,10 +122,10 @@ class TileGrid {
     virt2virt(fvec3 virt) noexcept;
 
     // Convert between virtual and physical map depths.
-    int
+    I32
     depthIndex(float depth) noexcept;
     float
-    indexDepth(int idx) noexcept;
+    indexDepth(I32 idx) noexcept;
 
     // Gets the correct destination for an Entity wanting to move off of this
     // tile in <code>facing</code> direction.
@@ -163,7 +163,7 @@ class TileGrid {
     ivec2 tileDim;
 
     // Maps virtual float-point depths to an index in our map array.
-    Hashmap<float, int, EmptyFloat> depth2idx;
+    Hashmap<float, I32, EmptyFloat> depth2idx;
 
     // Maps an index in our map array to a virtual float-point depth.
     Vector<float> idx2depth;

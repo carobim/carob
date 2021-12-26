@@ -17,11 +17,11 @@ LogVerbosity confVerbosity = VERBOSE;
 MoveMode confMoveMode;
 ivec2 confWindowSize = {640, 480};
 bool confFullscreen = false;
-int confMusicVolume = 100;
-int confSoundVolume = 100;
+I32 confMusicVolume = 100;
+I32 confSoundVolume = 100;
 Time confCacheTTL = 300;
-int confPersistInit = 0;
-int confPersistCons = 0;
+I32 confPersistInit = 0;
+I32 confPersistCons = 0;
 
 // Parse and process the client config file, and set configuration defaults for
 // missing options.

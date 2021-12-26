@@ -6,8 +6,8 @@
 #include "util/markable.h"
 #include "util/string-view.h"
 
-typedef Markable<int, -1> SoundID;
-typedef Markable<int, -1> PlayingSoundID;
+typedef Markable<I32, -1> SoundID;
+typedef Markable<I32, -1> PlayingSoundID;
 
 //
 // Sounds

@@ -7,7 +7,7 @@
 
 bool
 makeMappedFile(MappedFile& file, StringView path) noexcept {
-    int fd = open(String(path).null(), O_RDONLY);
+    I32 fd = open(String(path).null(), O_RDONLY);
     if (fd == -1) {
         return false;
     }

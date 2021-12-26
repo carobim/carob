@@ -106,7 +106,7 @@ isxdigit(char c) noexcept {
     return (c >= '0' && c <= '9') || ((c & ~' ') >= 'A' && (c & ~' ') <= 'F');
 }
 
-static inline int
+static inline I32
 char2int(char c) noexcept {
     if (c <= '9') {
         return c - '0';
@@ -193,7 +193,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
     JsonTag tags[JSON_STACK_SIZE];
     char* keys[JSON_STACK_SIZE];
     JsonValue o;
-    int pos = -1;
+    SSize pos = -1;
     bool separator = true;
     JsonNode* node;
     char* endptr = s;
@@ -231,7 +231,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
         case '"':
             o = JsonValue(JSON_STRING, s);
             for (char* it = s; *s; ++it, ++s) {
-                int c = *it = *s;
+                I32 c = *it = *s;
                 if (c == '\\') {
                     c = *++s;
                     switch (c) {
@@ -257,7 +257,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
                         break;
                     case 'u':
                         c = 0;
-                        for (int i = 0; i < 4; ++i) {
+                        for (I32 i = 0; i < 4; ++i) {
                             if (isxdigit(*++s)) {
                                 c = c * 16 + char2int(*s);
                             }

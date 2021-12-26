@@ -8,7 +8,7 @@
 struct MappedFile {
     char* data;
     Size size;
-    int fd;
+    I32 fd;
 };
 
 bool

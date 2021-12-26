@@ -24,7 +24,7 @@ class Thread {
         Function* data = xmalloc(Function, 1);
         *data = fn;
 
-        int err = pthread_create(&t, 0, run, static_cast<void*>(data));
+        I32 err = pthread_create(&t, 0, run, static_cast<void*>(data));
         (void)err;
         assert_(err == 0);
     }
@@ -36,7 +36,7 @@ class Thread {
     join() noexcept {
         assert_(t != 0);
 
-        int err = pthread_join(t, 0);
+        I32 err = pthread_join(t, 0);
         (void)err;
         assert_(err == 0);
 

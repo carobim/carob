@@ -8,7 +8,7 @@ Nanoseconds
 chronoNow() noexcept {
     struct timespec tp;
 
-    int err = clock_gettime(CLOCK_MONOTONIC, &tp);
+    I32 err = clock_gettime(CLOCK_MONOTONIC, &tp);
     (void)err;
     assert_(err == 0);
 

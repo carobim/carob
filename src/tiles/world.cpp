@@ -32,7 +32,7 @@ static Time total = 0;
 
 static bool alive = false;
 static bool redraw = false;
-static int paused = 0;
+static I32 paused = 0;
 
 static Keys keyStates[10];
 static Size numKeyStates = 0;

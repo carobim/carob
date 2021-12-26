@@ -14,8 +14,8 @@ StringView dataWorldVersion = "1";
 
 enum MoveMode dataWorldMoveMode = TILE;
 fvec2 dataWorldViewportResolution = {240, 160};
-int dataWorldInputPersistDelayInitial = 300;
-int dataWorldInputPersistDelayConsecutive = 100;
+I32 dataWorldInputPersistDelayInitial = 300;
+I32 dataWorldInputPersistDelayConsecutive = 100;
 StringView dataWorldStartArea = "null-area.json";
 StringView dataWorldPlayerFile = "null-player.json";
 StringView dataWorldPlayerStartPhase = "down";

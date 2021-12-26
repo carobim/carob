@@ -19,7 +19,7 @@
 void
 assert__(const char* func,
          const char* file,
-         int line,
+         I32 line,
          const char* expr) noexcept;
 
 void

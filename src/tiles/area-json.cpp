@@ -353,8 +353,8 @@ AreaJSON::processTileSetFile(JsonValue obj,
         return false;
     }
 
-    grid.tileDim.x = static_cast<int>(tileWidth);
-    grid.tileDim.y = static_cast<int>(tileHeight);
+    grid.tileDim.x = static_cast<I32>(tileWidth);
+    grid.tileDim.y = static_cast<I32>(tileHeight);
 
     String imgSource = String() << dirname(source) << imageNode.toString();
 
@@ -445,7 +445,7 @@ AreaJSON::processTileType(JsonValue obj,
 
     // If a Tile is animated, it needs both member frames and a speed.
     Vector<Image> framesvec;
-    int frameLen;
+    I32 frameLen;
 
     U32 nTiles = images.numTiles;
 
@@ -496,7 +496,7 @@ AreaJSON::processTileType(JsonValue obj,
 
     float hertz = static_cast<float>(speedNode.toNumber());
     CHECK(hertz > 0.0f);
-    frameLen = static_cast<int>(1000.0f / hertz);
+    frameLen = static_cast<I32>(1000.0f / hertz);
 
     // Add 'now' to Animation constructor??
     Time now = worldTime();
@@ -529,8 +529,8 @@ AreaJSON::processLayer(JsonValue obj) noexcept {
     CHECK(propertiesValue.isObject() || propertiesValue.isNull());
     CHECK(dataValue.isArray());
 
-    const int x = widthValue.toInt();
-    const int y = heightValue.toInt();
+    const I32 x = widthValue.toInt();
+    const I32 y = heightValue.toInt();
 
     if (grid.dim.x != x || grid.dim.y != y) {
         logErr(descriptor, "layer x,y size != map x,y size");
@@ -903,24 +903,24 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     // of the map. We don't keep an intermediary "object" object lying
     // around.
 
-    const int x = xValue.toInt() / grid.tileDim.x;
-    const int y = yValue.toInt() / grid.tileDim.y;
-    const int w = widthValue.toInt() / grid.tileDim.x;
-    const int h = heightValue.toInt() / grid.tileDim.y;
+    const I32 x = xValue.toInt() / grid.tileDim.x;
+    const I32 y = yValue.toInt() / grid.tileDim.y;
+    const I32 w = widthValue.toInt() / grid.tileDim.x;
+    const I32 h = heightValue.toInt() / grid.tileDim.y;
 
     CHECK(x + w <= grid.dim.x);
     CHECK(y + h <= grid.dim.y);
 
     // We know which Tiles are being talked about now... yay
-    for (int Y = y; Y < y + h; Y++) {
-        for (int X = x; X < x + w; X++) {
-            ivec3 tile = {X, Y, static_cast<int>(z)};
+    for (I32 Y = y; Y < y + h; Y++) {
+        for (I32 X = x; X < x + w; X++) {
+            ivec3 tile = {X, Y, static_cast<I32>(z)};
 
             grid.flags[tile] |= flags;
             for (Size i = 0; i < EXITS_LENGTH; i++) {
                 if (haveExit[i]) {
-                    int dx = X - x;
-                    int dy = Y - y;
+                    I32 dx = X - x;
+                    I32 dy = Y - y;
                     if (wwide[i]) {
                         exit[i].coords.x += dx;
                     }
@@ -980,11 +980,11 @@ AreaJSON::splitTileFlags(StringView strOfFlags, U32* flags) noexcept {
  */
 static bool
 isIntegerOrPlus(StringView s) noexcept {
-    const int space = 0;
-    const int digit = 1;
-    const int sign = 2;
+    const I32 space = 0;
+    const I32 digit = 1;
+    const I32 sign = 2;
 
-    int state = space;
+    I32 state = space;
 
     for (const char* c = s.begin(); c != s.end(); c++) {
         if (state == space) {
@@ -1047,8 +1047,8 @@ AreaJSON::parseExit(StringView dest,
 
     String buf;
 
-    int x_;
-    int y_;
+    I32 x_;
+    I32 y_;
     float z_;
 
     buf.clear();
@@ -1090,7 +1090,7 @@ AreaJSON::parseARGB(StringView str, U8& a, U8& r, U8& g, U8& b) noexcept {
     for (Size i = 0; i < 4; i++) {
         buf.clear();
         buf = strs[i];
-        int v;
+        I32 v;
         if (!parseInt(v, buf)) {
             logErr(descriptor, "invalid ARGB format");
             return false;

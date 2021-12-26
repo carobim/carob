@@ -15,7 +15,7 @@
  * InProgress objects are generally only indirectly used through DataArea's
  * public methods, such as:
  *   - playSoundAndThen(string sound, fn then);
- *   - timerProgressAndThen(int duration, fn progress, fn then);
+ *   - timerProgressAndThen(I32 duration, fn progress, fn then);
  *
  * These functions are essentially wrappers around the constructors of
  * InProgress subclasses, but they tie the constructed InProgress to that
