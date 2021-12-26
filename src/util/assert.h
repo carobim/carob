@@ -2,6 +2,7 @@
 #define SRC_UTIL_ASSERT_H_
 
 #include "util/compiler.h"
+#include "util/int.h"
 #include "util/likely.h"
 
 #ifndef NDEBUG
