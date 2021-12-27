@@ -90,7 +90,6 @@ Animation::Animation(Vector<Image> frames, Time frameTime) noexcept {
     assert_(frameTime > 0);
     for (Image* frame = frames.begin(); frame != frames.end(); frame++) {
         assert_(IMAGE_VALID(*frame));
-        (void)frame;
     }
 
     id = pool.allocate();

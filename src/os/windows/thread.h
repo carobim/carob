@@ -77,11 +77,9 @@ class Thread {
         assert_(id != 0);
 
         DWORD err = WaitForSingleObjectEx(id, INFINITE, false);
-        (void)err;
         assert_(err != WAIT_FAILED);  // GetLastError();
 
         BOOL err2 = CloseHandle(id);
-        (void)err;
         assert_(err2);  // GetLastError();
 
         id = 0;

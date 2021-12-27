@@ -11,21 +11,18 @@ class Mutex {
 
     inline ~Mutex() noexcept {
         I32 err = pthread_mutex_destroy(&m);
-        (void)err;
         assert_(err == 0);
     }
 
     inline void
     lock() noexcept {
         I32 err = pthread_mutex_lock(&m);
-        (void)err;
         assert_(err == 0);
     };
 
     inline void
     unlock() noexcept {
         I32 err = pthread_mutex_unlock(&m);
-        (void)err;
         assert_(err == 0);
     }
 

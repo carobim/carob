@@ -24,7 +24,6 @@ chronoNow() noexcept {
         haveFreq = true;
 
         BOOL ok = QueryPerformanceFrequency(&freq);
-        (void)ok;
         assert_(ok);
     }
 

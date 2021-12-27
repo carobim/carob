@@ -44,7 +44,6 @@ static void
 initTimebase(void) {
     if (timebase.numer == 0 && timebase.denom == 0) {
         kern_return_t err = mach_timebase_info(&timebase);
-        (void)err;
         assert_(err == KERN_SUCCESS);
     }
 }

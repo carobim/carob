@@ -47,7 +47,6 @@ class ConditionVariable {
     inline void
     wait(LockGuard& lock) noexcept {
         BOOL ok = SleepConditionVariableSRW(&cv, &lock.m.m, INFINITE, 0);
-        (void)ok;
         assert_(ok);  // GetLastError();
     }
 

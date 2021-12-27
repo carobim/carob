@@ -36,7 +36,6 @@ Thread::Thread(Function fn) noexcept {
     *data = fn;
 
     I32 err = pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, data);
-    (void)err;
     assert_(err == 0);
 }
 
@@ -53,7 +52,6 @@ Thread::join() noexcept {
     assert_(t != 0);
 
     I32 err = pthread_join(static_cast<pthread_t>(t), 0);
-    (void)err;
     assert_(err == 0);
 
     t = 0;

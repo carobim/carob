@@ -9,7 +9,6 @@ chronoNow() noexcept {
     struct timespec tp;
 
     I32 err = clock_gettime(CLOCK_MONOTONIC, &tp);
-    (void)err;
     assert_(err == 0);
 
     return static_cast<Nanoseconds>(s_to_ns(tp.tv_sec) + tp.tv_nsec);

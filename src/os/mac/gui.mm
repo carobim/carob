@@ -89,7 +89,6 @@ macSetWorkingDirectory() noexcept {
                                              true,
                                              pathBytes,
                                              sizeof(pathBytes));
-    (void)ok;
     assert_(ok);
 
     appPath = [[NSString alloc] initWithBytesNoCopy:pathBytes
@@ -99,11 +98,9 @@ macSetWorkingDirectory() noexcept {
     assert_(appPath);
 
     BOOL ok2 = [[NSFileManager defaultManager] changeCurrentDirectoryPath:appPath];
-    (void)ok2;
     assert_(ok2);
 
     I32 err = chdir("Contents/Resources");
-    (void)err;
     // FIXME: This assert will fail if we are not in a bundle. Detect when
     //        we are not in a bundle before this point and bail out earlier.
     //assert_(err == 0);

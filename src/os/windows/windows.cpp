@@ -120,7 +120,6 @@ getFileSize(StringView path) noexcept {
     }
 
     ok = CloseHandle(file);
-    (void)ok;
     assert_(ok);
 
     return static_cast<Filesize>(size.QuadPart);
@@ -203,7 +202,7 @@ isDir(StringView path) noexcept {
 void
 makeDirectory(StringView path) noexcept {
     BOOL ok = CreateDirectory(String(path).null(), 0);
-    (void)ok;
+    assert_(ok);
 }
 
 Vector<String>
@@ -308,7 +307,7 @@ setTermColor(TermColor color, Output& /*out*/) noexcept {
     }
 
     BOOL ok = SetConsoleTextAttribute(out, attribute);
-    (void)ok;
+    assert_(ok);
 }
 
 void

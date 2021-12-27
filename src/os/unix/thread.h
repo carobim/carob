@@ -25,7 +25,6 @@ class Thread {
         *data = fn;
 
         I32 err = pthread_create(&t, 0, run, static_cast<void*>(data));
-        (void)err;
         assert_(err == 0);
     }
 
@@ -37,7 +36,6 @@ class Thread {
         assert_(t != 0);
 
         I32 err = pthread_join(t, 0);
-        (void)err;
         assert_(err == 0);
 
         t = 0;
