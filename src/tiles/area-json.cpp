@@ -812,17 +812,29 @@ AreaJSON::processObject(JsonValue obj) noexcept {
         CHECK(splitTileFlags(flagsValue.toString(), &flags));
     }
 
+    // For some reason, Visual Studio 2015 and up widen a void (*) noexcept to
+    // a void (*). This latter type does not have a noexcept qualifier. Wonder
+    // why do they do this...
+    //
+    // The solution suggested by the compiler is to use a reinterpret_cast to
+    // bring back the noexcept.
     if (onenterValue.isString()) {
         StringView scriptName = onenterValue.toString();
-        enterScript = *dataArea->scripts.find(hash_(scriptName));
+        enterScript =
+                reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
+                        *dataArea->scripts.find(hash_(scriptName)));
     }
     if (onleaveValue.isString()) {
         StringView scriptName = onleaveValue.toString();
-        leaveScript = *dataArea->scripts.find(hash_(scriptName));
+        leaveScript =
+                reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
+                        *dataArea->scripts.find(hash_(scriptName)));
     }
     if (onuseValue.isString()) {
         StringView scriptName = onuseValue.toString();
-        useScript = *dataArea->scripts.find(hash_(scriptName));
+        useScript =
+                reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
+                        dataArea->scripts.find(hash_(scriptName)));
     }
 
     if (exitValue.isString()) {
