@@ -69,7 +69,11 @@ imageEndFrame() noexcept {
 }
 
 void
-imageDrawRect(float left, float right, float top, float bottom, float z,
+imageDrawRect(float left,
+              float right,
+              float top,
+              float bottom,
+              float z,
               U32 argb) noexcept {
     U8 a = static_cast<U8>((argb >> 24) & 0xFF);
     U8 r = static_cast<U8>((argb >> 16) & 0xFF);

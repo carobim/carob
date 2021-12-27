@@ -20,7 +20,7 @@ fvec2 sdl2Scaling = {0.0, 0.0};
 static Nanoseconds start = 0;
 
 static struct Transform transformStack[10];
-static Size transformTop = 1;
+static Size transformTop = 0;
 
 static void
 init(void) noexcept {

@@ -52,8 +52,12 @@ displayListPresent(DisplayList* display) noexcept {
     windowPushScale(display->scale.x, display->scale.y);
     windowPushTranslate(-display->scroll.x, -display->scroll.y);
 
-    for (DisplayItem* item = display->items.begin(); item != display->items.end(); item++) {
-        imageDraw(item->image, item->destination.x, item->destination.y,
+    for (DisplayItem* item = display->items.begin();
+         item != display->items.end();
+         item++) {
+        imageDraw(item->image,
+                  item->destination.x,
+                  item->destination.y,
                   item->destination.z);
     }
 
