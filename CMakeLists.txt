@@ -1172,7 +1172,7 @@ elseif(SDL2)
         find_package(PkgConfig REQUIRED)
         pkg_search_module(SDL2 REQUIRED SDL2 sdl2)
 
-        if("${SDL2_LIBRARIES}" STREQUAL "")
+        if(SDL2_LIBRARIES STREQUAL "")
             message(SEND_ERROR "pkg-config could not find SDL2")
         endif()
     else()
