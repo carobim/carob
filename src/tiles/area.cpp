@@ -20,12 +20,12 @@
 #include "util/math2.h"
 
 Area::Area() noexcept
-    : ok(true),
-      beenFocused(false),
-      redraw(true),
-      colorOverlayARGB(0),
-      dataArea(0),
-      player(0) { }
+        : ok(true),
+          beenFocused(false),
+          redraw(true),
+          colorOverlayARGB(0),
+          dataArea(0),
+          player(0) { }
 
 void
 Area::focus() noexcept {
@@ -154,8 +154,7 @@ Area::needsRedraw() noexcept {
             return true;
         }
     }
-    for (Overlay** overlay = overlays.begin();
-         overlay != overlays.end();
+    for (Overlay** overlay = overlays.begin(); overlay != overlays.end();
          overlay++) {
         if ((*overlay)->needsRedraw(pixels)) {
             return true;
@@ -223,8 +222,7 @@ Area::tick(Time dt) noexcept {
         dataArea->tick(dt);
     }
 
-    for (Overlay** overlay = overlays.begin();
-         overlay != overlays.end();
+    for (Overlay** overlay = overlays.begin(); overlay != overlays.end();
          overlay++) {
         (*overlay)->tick(dt);
     }
@@ -270,8 +268,8 @@ Area::getColorOverlay() const noexcept {
 
 void
 Area::setColorOverlay(U8 a, U8 r, U8 g, U8 b) noexcept {
-    colorOverlayARGB = (U32)(a << 24u) + (U32)(r << 16u) +
-                       (U32)(g << 8u) + (U32)b;
+    colorOverlayARGB =
+            (U32)(a << 24u) + (U32)(r << 16u) + (U32)(g << 8u) + (U32)b;
     redraw = true;
 }
 
@@ -356,9 +354,9 @@ void
 Area::runScript(TileGrid::ScriptType type,
                 ivec3 tile,
                 Entity* triggeredBy) noexcept {
-    DataArea::TileScript* script = grid.scripts[type].tryAt(tile);
+    void (**script)(DataArea*, Entity*, ivec3) = grid.scripts[type].tryAt(tile);
     if (script) {
-        (dataArea->*(*script))(*triggeredBy, tile);
+        (*script)(dataArea, triggeredBy, tile);
     }
 }
 
@@ -435,8 +433,7 @@ Area::drawEntities(DisplayList* display, icube& tiles, I32 z) noexcept {
         }
     }
 
-    for (Overlay** overlay = overlays.begin();
-         overlay != overlays.end();
+    for (Overlay** overlay = overlays.begin(); overlay != overlays.end();
          overlay++) {
         if ((*overlay)->getPixelCoord().z == depth) {
             (*overlay)->draw(display);

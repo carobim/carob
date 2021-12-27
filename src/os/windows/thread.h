@@ -58,7 +58,7 @@ beginthreadex_thunk(void* data) noexcept {
 class Thread {
  public:
     inline explicit Thread(Function f) noexcept {
-        Function* data = xmalloc(Function, 1);
+        new0(Function, data);
         data->fn = f.fn;
         data->data = f.data;
         id = reinterpret_cast<HANDLE>(_beginthreadex(0,

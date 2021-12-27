@@ -14,8 +14,10 @@
         return false; \
     }
 
+Player* thePlayer;
 
 Player::Player() noexcept : numMovements(0) {
+    thePlayer = this;
     nowalkFlags = TILE_NOWALK | TILE_NOWALK_PLAYER;
     nowalkExempt = TILE_NOWALK_EXIT;
     velocity.x = 0;

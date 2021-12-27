@@ -18,11 +18,11 @@
 #include "util/string2.h"
 #include "util/vector.h"
 
-#define CHECK(x) \
-    do { \
+#define CHECK(x)          \
+    do {                  \
         if (!(x)) {       \
             return false; \
-        } \
+        }                 \
     } while (false)
 
 /* NOTE: In the JSON map format used by Tiled, tileset tiles start counting
@@ -237,8 +237,8 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
     if (coloroverlayValue.isString()) {
         U8 a, r, g, b;
         CHECK(parseARGB(coloroverlayValue.toString(), a, r, g, b));
-        colorOverlayARGB = (U32)(a << 24) + (U32)(r << 16) +
-                           (U32)(g << 8) + (U32)b;
+        colorOverlayARGB =
+                (U32)(a << 24) + (U32)(r << 16) + (U32)(g << 8) + (U32)b;
     }
 
     return true;
@@ -412,10 +412,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
         U32 gid = id + firstGid;
 
         Animation& graphic = tileGraphics[gid];
-        if (!processTileType(tilepropertiesNode->value,
-                             graphic,
-                             images,
-                             id)) {
+        if (!processTileType(tilepropertiesNode->value, graphic, images, id)) {
             return false;
         }
     }
@@ -801,7 +798,10 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     // Gather object properties now. Assign them to tiles later.
     bool wwide[5] = {}, hwide[5] = {};  // Wide exit in width or height.
 
-    DataArea::TileScript enterScript = 0, leaveScript = 0, useScript = 0;
+    void (*enterScript)(DataArea*, Entity*, ivec3) noexcept = 0;
+    void (*leaveScript)(DataArea*, Entity*, ivec3) noexcept = 0;
+    void (*useScript)(DataArea*, Entity*, ivec3) noexcept = 0;
+
     bool haveExit[5] = {};
     Exit exit[5];
     bool haveLayermod[5] = {};
@@ -814,15 +814,15 @@ AreaJSON::processObject(JsonValue obj) noexcept {
 
     if (onenterValue.isString()) {
         StringView scriptName = onenterValue.toString();
-        enterScript = dataArea->scripts[scriptName];
+        enterScript = *dataArea->scripts.find(hash_(scriptName));
     }
     if (onleaveValue.isString()) {
         StringView scriptName = onleaveValue.toString();
-        leaveScript = dataArea->scripts[scriptName];
+        leaveScript = *dataArea->scripts.find(hash_(scriptName));
     }
     if (onuseValue.isString()) {
         StringView scriptName = onuseValue.toString();
-        useScript = dataArea->scripts[scriptName];
+        useScript = *dataArea->scripts.find(hash_(scriptName));
     }
 
     if (exitValue.isString()) {
@@ -956,7 +956,8 @@ AreaJSON::splitTileFlags(StringView strOfFlags, U32* flags) noexcept {
     Vector<StringView> flagStrs;
     splitStr(flagStrs, strOfFlags, ",");
 
-    for (StringView* flagStr = flagStrs.begin(); flagStr != flagStrs.end(); flagStr++) {
+    for (StringView* flagStr = flagStrs.begin(); flagStr != flagStrs.end();
+         flagStr++) {
         if (*flagStr == "nowalk") {
             *flags |= TILE_NOWALK;
         }

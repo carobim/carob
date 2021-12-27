@@ -1,10 +1,10 @@
 #ifndef SRC_DATA_DATA_AREA_H_
 #define SRC_DATA_DATA_AREA_H_
 
-#include "data/inprogress.h"
+#include "data/action.h"
 #include "tiles/vec.h"
 #include "util/compiler.h"
-#include "util/hashtable.h"
+#include "util/hashvector.h"
 #include "util/int.h"
 #include "util/string-view.h"
 #include "util/vector.h"
@@ -12,12 +12,13 @@
 class Area;
 class Entity;
 
+//! Play a sound with a 3% speed variation applied to it.
+void
+playSoundEffect(StringView sound) noexcept;
+
 class DataArea {
  public:
-    typedef void (DataArea::*TileScript)(Entity& triggeredBy, ivec3 tile);
-
- public:
-    DataArea() noexcept : area(0) { }
+    DataArea() noexcept { }
     virtual ~DataArea() noexcept { }
 
     Area* area;  // borrowed reference
@@ -33,12 +34,8 @@ class DataArea {
 
     // For scripts
 
-    //! Play a sound with a 3% speed variation applied to it.
     void
-    playSoundEffect(StringView sound) noexcept;
-
-    void
-    add(InProgress* inProgress) noexcept;
+    add(struct Action action) noexcept;
 
     // For engine
     void
@@ -46,14 +43,15 @@ class DataArea {
     void
     turn() noexcept;
 
-    Hashmap<StringView, TileScript> scripts;
+    HashVector<void (*)(DataArea*, Entity* triggeredBy, ivec3 tile) noexcept>
+            scripts;
 
  private:
     DataArea(const DataArea&);
     DataArea&
     operator=(const DataArea&);
 
-    Vector<InProgress*> inProgresses;
+    Vector<struct Action> actions;
 };
 
 #endif  // SRC_DATA_DATA_AREA_H_

@@ -55,10 +55,13 @@ typedef U32 mach_msg_type_number_t;
 
 // mach/task.h
 extern "C" kern_return_t
-task_get_exception_ports(task_t, exception_mask_t, exception_mask_array_t,
-                         mach_msg_type_number_t*, exception_handler_array_t,
-                         exception_behavior_array_t, exception_flavor_array_t)
-                        noexcept;
+task_get_exception_ports(task_t,
+                         exception_mask_t,
+                         exception_mask_array_t,
+                         mach_msg_type_number_t*,
+                         exception_handler_array_t,
+                         exception_behavior_array_t,
+                         exception_flavor_array_t) noexcept;
 
 static bool
 isDebuggerPresent(void) {
@@ -69,12 +72,15 @@ isDebuggerPresent(void) {
     thread_state_flavor_t flavors[EXC_TYPES_COUNT];
 
     exception_mask_t mask = EXC_BREAKPOINT;
-    kern_return_t result =
-        task_get_exception_ports(mach_task_self(), mask, masks, &count, ports,
-                                 behaviors, flavors);
+    kern_return_t result = task_get_exception_ports(mach_task_self(),
+                                                    mask,
+                                                    masks,
+                                                    &count,
+                                                    ports,
+                                                    behaviors,
+                                                    flavors);
     if (result == KERN_SUCCESS) {
-        for (mach_msg_type_number_t portIndex = 0;
-             portIndex < count;
+        for (mach_msg_type_number_t portIndex = 0; portIndex < count;
              portIndex++) {
             if (MACH_PORT_VALID(ports[portIndex])) {
                 return true;
@@ -86,10 +92,7 @@ isDebuggerPresent(void) {
 #    endif
 
 #    ifdef __linux__
-enum ptrace_request {
-    PTRACE_TRACEME = 0,
-    PTRACE_DETACH = 17
-};
+enum ptrace_request { PTRACE_TRACEME = 0, PTRACE_DETACH = 17 };
 extern "C" long
 ptrace(enum ptrace_request, ...) noexcept;
 
@@ -152,7 +155,7 @@ triggerDebugger() noexcept {
 void
 assert__(const char* func,
          const char* file,
-         I32 line,
+         int line,
          const char* expr) noexcept {
     if (haveDebugger()) {
         triggerDebugger();

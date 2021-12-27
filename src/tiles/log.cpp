@@ -79,6 +79,8 @@ logInfo(StringView domain, StringView msg) noexcept {
 
         //setTermColor(TC_RESET, Stdout);
         sout << " - " << chomp(msg) << '\n';
+
+        sout << Flush();
     }
 }
 
@@ -97,6 +99,8 @@ logErr(StringView domain, StringView msg) noexcept {
 
             //setTermColor(TC_RESET, Stderr);
             serr << " - " << chomp(msg) << '\n';
+
+            serr << Flush();
         }
 
         String s = String() << "Error [" << domain << "] - " << chomp(msg);
@@ -132,6 +136,8 @@ logFatal(StringView domain, StringView msg) noexcept {
 
         //setTermColor(TC_RESET, Stderr);
         serr << " - " << chomp(msg) << '\n';
+
+        serr << Flush();
     }
 
     String s = String() << "Fatal [" << domain << "] - " << chomp(msg);

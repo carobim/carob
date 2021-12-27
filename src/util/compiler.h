@@ -18,22 +18,22 @@
 #        define MSVC 2022
 #    endif
 #    define CLANG 0
-#    define GCC 0
+#    define GCC   0
 #    ifdef _WIN64
 #        define SIZE 64
 #    else
 #        define SIZE 32
 #    endif
 #elif defined(__clang__)
-#    define MSVC 0
+#    define MSVC  0
 #    define CLANG (__clang_major__ * 10 + __clang_minor__)
-#    define GCC 0
-#    define SIZE (__SIZEOF_SIZE_T__ * 8)
+#    define GCC   0
+#    define SIZE  (__SIZEOF_SIZE_T__ * 8)
 #elif defined(__GNUC__)
-#    define MSVC 0
+#    define MSVC  0
 #    define CLANG 0
-#    define GCC (__GNUC__ * 10 + __GNUC_MINOR__)
-#    define SIZE (__SIZEOF_SIZE_T__ * 8)
+#    define GCC   (__GNUC__ * 10 + __GNUC_MINOR__)
+#    define SIZE  (__SIZEOF_SIZE_T__ * 8)
 #endif
 
 /* https://clang.llvm.org/cxx_status.html */

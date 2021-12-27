@@ -21,7 +21,7 @@ run(void* data) noexcept {
 class Thread {
  public:
     inline explicit Thread(Function fn) noexcept {
-        Function* data = xmalloc(Function, 1);
+        new0(Function, data);
         *data = fn;
 
         I32 err = pthread_create(&t, 0, run, static_cast<void*>(data));

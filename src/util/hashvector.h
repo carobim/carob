@@ -8,7 +8,7 @@
 
 // HashVector
 //
-// Simple array indexable by a key's hash, but without storing a copy of the
+// Simple array index-able by a key's hash, but without storing a copy of the
 // key.
 //
 // Notes:

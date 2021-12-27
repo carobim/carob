@@ -32,7 +32,7 @@ run(void* data) noexcept {
 }
 
 Thread::Thread(Function fn) noexcept {
-    Function* data = xmalloc(Function, 1);
+    new0(Function, data);
     *data = fn;
 
     I32 err = pthread_create(reinterpret_cast<pthread_t*>(&t), 0, run, data);

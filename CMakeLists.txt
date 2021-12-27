@@ -41,11 +41,11 @@ cmake_minimum_required(VERSION 2.8.2...3.22)
 # CMake 3.8.0 (2017/04/10)
 #   keyword source_group(TREE) + source_group(FILES)
 
-project(TsunagariEngine C CXX)
-
 if("${CMAKE_BUILD_TYPE}" STREQUAL "")
     set(CMAKE_BUILD_TYPE "DEFAULT")
 endif()
+
+project(TsunagariEngine C CXX)
 
 
 #
@@ -293,13 +293,11 @@ if(RENDERER_GL)
 endif()
 
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    ${HERE}/src/data/action.cpp
+    ${HERE}/src/data/action.h
     ${HERE}/src/data/data-area.cpp
     ${HERE}/src/data/data-area.h
     ${HERE}/src/data/data-world.h
-    ${HERE}/src/data/inprogress.cpp
-    ${HERE}/src/data/inprogress.h
-    ${HERE}/src/data/inprogress-sound.h
-    ${HERE}/src/data/inprogress-timer.h
 )
 
 set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
@@ -328,7 +326,7 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/os/thread.h
 )
 
-if (WIN32)
+if(WIN32)
     set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
         ${HERE}/src/os/memmove.cpp
 
@@ -404,7 +402,7 @@ elseif(APPLE)
         set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
             ${HERE}/src/os/mac/gui.mm
             ${HERE}/src/os/mac/gui.h
-        )
+    )
     endif()
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/mac/c.h
@@ -558,6 +556,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/util/hash.cpp
     ${HERE}/src/util/hash.h
     ${HERE}/src/util/hashtable.h
+    ${HERE}/src/util/hashvector.h
     ${HERE}/src/util/int.h
     ${HERE}/src/util/io.cpp
     ${HERE}/src/util/io.h
@@ -693,7 +692,6 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
 )
 
 
-
 #
 # Targets
 #
@@ -727,7 +725,7 @@ if(CMAKE_GTE_38)
                         ${NULL_WORLD_SOURCES}
                         ${PACK_TOOL_SOURCES}
                         ${TEST_SOURCES}
-      )
+        )
     endif()
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ALL_SOURCES})
 endif()
@@ -777,7 +775,7 @@ if(CLANG OR GCC)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 endif()
 
-if (GCC_LT_47)
+if(GCC_LT_47)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 elseif(CLANG OR GCC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -908,36 +906,26 @@ if((CLANG OR GCC) AND NOT NO_LTO)
 endif()
 
 # Enable NDEBUG anything not a debug build.
-#if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
-    set(CMAKE_C_FLAGS_DEFAULT "${CMAKE_C_FLAGS_DEFAULT} -DNDEBUG")
-    set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} -DNDEBUG")
-    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DNDEBUG")
-    set(CMAKE_CXX_FLAGS_DEFAULT "${CMAKE_CXX_FLAGS_DEFAULT} -DNDEBUG")
-    set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -DNDEBUG")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG")
-#else()
-#    target_compile_definitions(tsunagari PUBLIC $<$<NOT:${IS_DEBUG}>:NDEBUG>)
-#    target_compile_definitions(pack-tool PRIVATE $<$<NOT:${IS_DEBUG}>:NDEBUG>)
-#endif()
+set(CMAKE_C_FLAGS_DEFAULT "${CMAKE_C_FLAGS_DEFAULT} -DNDEBUG")
+set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_C_FLAGS_MINSIZEREL} -DNDEBUG")
+set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -DNDEBUG")
+set(CMAKE_CXX_FLAGS_DEFAULT "${CMAKE_CXX_FLAGS_DEFAULT} -DNDEBUG")
+set(CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG")
 
 # Enable RELEASE in anything with optimizations.
-#if(${CMAKE_VERSION} VERSION_LESS 2.8.11 OR UTIL_ONLY)
-    set(CMAKE_C_FLAGS_MINSIZEREL
-        "${CMAKE_C_FLAGS_MINSIZEREL} -DRELEASE")
-    set(CMAKE_C_FLAGS_RELEASE
-        "${CMAKE_C_FLAGS_RELEASE} -DRELEASE")
-    set(CMAKE_C_FLAGS_RELWITHDEBINFO
-        "${CMAKE_C_FLAGS_RELWITHDEBINFO} -DRELEASE")
-    set(CMAKE_CXX_FLAGS_MINSIZEREL
-        "${CMAKE_CXX_FLAGS_MINSIZEREL} -DRELEASE")
-    set(CMAKE_CXX_FLAGS_RELEASE
-        "${CMAKE_CXX_FLAGS_RELEASE} -DRELEASE")
-    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
-        "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DRELEASE")
-#else()
-#    target_compile_definitions(tsunagari PUBLIC $<${IS_RELEASE}:RELEASE>)
-#    target_compile_definitions(pack-tool PRIVATE $<${IS_RELEASE}:RELEASE>)
-#endif()
+set(CMAKE_C_FLAGS_MINSIZEREL
+    "${CMAKE_C_FLAGS_MINSIZEREL} -DRELEASE")
+set(CMAKE_C_FLAGS_RELEASE
+    "${CMAKE_C_FLAGS_RELEASE} -DRELEASE")
+set(CMAKE_C_FLAGS_RELWITHDEBINFO
+    "${CMAKE_C_FLAGS_RELWITHDEBINFO} -DRELEASE")
+set(CMAKE_CXX_FLAGS_MINSIZEREL
+    "${CMAKE_CXX_FLAGS_MINSIZEREL} -DRELEASE")
+set(CMAKE_CXX_FLAGS_RELEASE
+    "${CMAKE_CXX_FLAGS_RELEASE} -DRELEASE")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO
+    "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -DRELEASE")
 
 # Emscripten configuration
 if(AV_EM)
@@ -992,6 +980,10 @@ if(IS_SUBPROJECT)
         ${CMAKE_C_FLAGS}
         PARENT_SCOPE)
 
+    set(CMAKE_C_FLAGS_DEFAULT
+        ${CMAKE_C_FLAGS_DEFAULT}
+        PARENT_SCOPE)
+
     set(CMAKE_C_FLAGS_RELEASE
         ${CMAKE_C_FLAGS_RELEASE}
         PARENT_SCOPE)
@@ -1006,6 +998,10 @@ if(IS_SUBPROJECT)
 
     set(CMAKE_CXX_FLAGS
         ${CMAKE_CXX_FLAGS}
+        PARENT_SCOPE)
+
+    set(CMAKE_CXX_FLAGS_DEFAULT
+        ${CMAKE_CXX_FLAGS_DEFAULT}
         PARENT_SCOPE)
 
     set(CMAKE_CXX_FLAGS_RELEASE

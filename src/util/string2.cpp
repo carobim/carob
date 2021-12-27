@@ -150,7 +150,7 @@ isRanges(StringView s) noexcept {
 #undef COMMA
 }
 
-static inline char
+static char
 tolower(char c) noexcept {
     if ('A' <= c && c <= 'Z') {
         return c + 'a' - 'A';

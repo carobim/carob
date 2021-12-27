@@ -139,8 +139,8 @@ class Vector {
     void
     pop() noexcept {
         assert_(size);
-        data[size - 1].~X();
         size--;
+        data[size].~X();
     }
     void
     erase(Size i) noexcept {
@@ -148,8 +148,16 @@ class Vector {
         for (Size j = i; j < size - 1; j++) {
             data[j] = static_cast<X&&>(data[j + 1]);
         }
-        size--;
-        data[size].~X();
+        pop();
+    }
+    void
+    eraseUnordered(Size i) noexcept {
+        assert_(i < size);
+        data[i].~X();
+        if (i < size - 1) {
+            data[i] = static_cast<X&&>(data[size - 1]);
+            pop();
+        }
     }
 
     // Calls move constructors (which empties the old objects), but not call

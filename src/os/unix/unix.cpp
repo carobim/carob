@@ -77,8 +77,7 @@ writeFile(StringView path, U32 length, void* data) noexcept {
 }
 
 bool
-writeFileVec(StringView path, U32 count, U32* lengths,
-             void** datas) noexcept {
+writeFileVec(StringView path, U32 count, U32* lengths, void** datas) noexcept {
     int fd = open(String(path).null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
     if (fd == -1) {
         return false;
@@ -182,6 +181,9 @@ setTermColor(TermColor color, Output& out) noexcept {
 
 void
 exitProcess(int code) noexcept {
+    sout << Flush();
+    serr << Flush();
+
     _exit(code);
     unreachable;
 }

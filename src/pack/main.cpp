@@ -59,10 +59,7 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
         path = standardizedPath;
     }
 
-    packWriterAddBlob(ctx->pack,
-                      path,
-                      static_cast<U32>(data.size),
-                      data.data);
+    packWriterAddBlob(ctx->pack, path, static_cast<U32>(data.size), data.data);
 
     data.reset();  // Don't delete data pointer.
 }
@@ -80,11 +77,11 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
 
     walk(static_cast<Vector<StringView>&&>(paths), &ctx, addFileCallback);
 
-    if (verbose) {
-        sout << "Writing to " << archivePath << '\n';
-    }
-
     bool ok = packWriterWriteToFile(ctx.pack, archivePath);
+
+    if (verbose) {
+        sout << "Wrote to " << archivePath << '\n';
+    }
 
     destroyPackWriter(ctx.pack);
     return ok;

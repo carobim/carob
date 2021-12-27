@@ -1,8 +1,8 @@
 #ifndef SRC_TILES_TILE_GRID_H_
 #define SRC_TILES_TILE_GRID_H_
 
-#include "tiles/vec.h"
 #include "data/data-area.h"
+#include "tiles/vec.h"
 #include "util/compiler.h"
 #include "util/hashtable.h"
 #include "util/string.h"
@@ -149,10 +149,7 @@ class TileGrid {
     // 3-dimensional array of the tiles that make up the grid.
     Vector<U32> graphics;
 
-    enum LayerType {
-        TILE_LAYER,
-        OBJECT_LAYER
-    };
+    enum LayerType { TILE_LAYER, OBJECT_LAYER };
     Vector<LayerType> layerTypes;
 
     // 3-dimensional length of map.
@@ -180,7 +177,10 @@ class TileGrid {
         SCRIPT_TYPE_LAST
     };
 
-    Hashmap<ivec3, DataArea::TileScript, EmptyIcoord> scripts[SCRIPT_TYPE_LAST];
+    Hashmap<ivec3,
+            void (*)(DataArea*, Entity* triggeredBy, ivec3 tile) noexcept,
+            EmptyIcoord>
+            scripts[SCRIPT_TYPE_LAST];
 
     Hashmap<ivec3, U32, EmptyIcoord> flags;
 
