@@ -8,10 +8,14 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-// FIXME: Break up disk IO from terminal IO from process managment into separate
+// FIXME: Break up disk IO from terminal IO from process management into separate
 //        files.
 
-extern const char dirSeparator;
+#ifdef MSVC
+#    define DIR_SEPARATOR '\\'
+#else
+#    define DIR_SEPARATOR '/'
+#endif
 
 typedef U64 Filesize;
 

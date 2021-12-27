@@ -53,4 +53,4 @@ struct Flusher {
 extern Output sout;
 extern Output serr;
 
-#endif  // SRC_UTIL_STRING_H_
+#endif  // SRC_UTIL_IO_H_

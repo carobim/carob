@@ -3,6 +3,7 @@
 
 #include "util/compiler.h"
 #include "util/int.h"
+#include "util/move.h"
 
 template<typename T>
 class List {

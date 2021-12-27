@@ -30,7 +30,7 @@
 extern "C" {
 
 static char*
-twobyte_memmem(const U8* h, Size k, const U8* n) noexcept {
+twoByteMemmem(const U8* h, Size k, const U8* n) noexcept {
     U16 nw = n[0] << 8 | n[1], hw = h[0] << 8 | h[1];
     for (h += 2, k -= 2; k; k--, hw = hw << 8 | *h++)
         if (hw == nw)
@@ -39,7 +39,7 @@ twobyte_memmem(const U8* h, Size k, const U8* n) noexcept {
 }
 
 static char*
-threebyte_memmem(const U8* h, Size k, const U8* n) noexcept {
+threeByteMemmem(const U8* h, Size k, const U8* n) noexcept {
     U32 nw = n[0] << 24 | n[1] << 16 | n[2] << 8;
     U32 hw = h[0] << 24 | h[1] << 16 | h[2] << 8;
     for (h += 3, k -= 3; k; k--, hw = (hw | *h++) << 8)
@@ -49,7 +49,7 @@ threebyte_memmem(const U8* h, Size k, const U8* n) noexcept {
 }
 
 static char*
-fourbyte_memmem(const U8* h, Size k, const U8* n) noexcept {
+fourByteMemmem(const U8* h, Size k, const U8* n) noexcept {
     U32 nw = n[0] << 24 | n[1] << 16 | n[2] << 8 | n[3];
     U32 hw = h[0] << 24 | h[1] << 16 | h[2] << 8 | h[3];
     for (h += 4, k -= 4; k; k--, hw = hw << 8 | *h++)
@@ -61,19 +61,19 @@ fourbyte_memmem(const U8* h, Size k, const U8* n) noexcept {
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-#define BITOP(a, b, op)                                \
+#define BIT_OP(a, b, op) \
     ((a)[(Size)(b) / (8 * sizeof *(a))] op(Size) 1 \
      << ((Size)(b) % (8 * sizeof *(a))))
 
 static char*
-twoway_memmem(const U8* h, const U8* z, const U8* n, Size l) noexcept {
+twoWayMemmem(const U8* h, const U8* z, const U8* n, Size l) noexcept {
     Size i, ip, jp, k, p, ms, p0, mem, mem0;
-    Size byteset[32 / sizeof(Size)] = {0};
+    Size byteSet[32 / sizeof(Size)] = {0};
     Size shift[256];
 
     /* Computing length of needle and fill shift table */
     for (i = 0; i < l; i++)
-        BITOP(byteset, n[i], |=), shift[n[i]] = i + 1;
+        BIT_OP(byteSet, n[i], |=), shift[n[i]] = i + 1;
 
     /* Compute maximal suffix */
     ip = -1;
@@ -145,7 +145,7 @@ twoway_memmem(const U8* h, const U8* z, const U8* n, Size l) noexcept {
             return 0;
 
         /* Check last byte first; advance by shift on mismatch */
-        if (BITOP(byteset, h[l - 1], &)) {
+        if (BIT_OP(byteSet, h[l - 1], &)) {
             k = l - shift[h[l - 1]];
             if (k) {
                 if (k < mem)
@@ -185,12 +185,14 @@ memmem(const void* h0, Size k, const void* n0, Size l) noexcept {
     const U8* n = reinterpret_cast<const U8*>(n0);
 
     /* Return immediately on empty needle */
-    if (!l)
+    if (!l) {
         return (void*)h;
+    }
 
     /* Return immediately when needle is longer than haystack */
-    if (k < l)
+    if (k < l) {
         return 0;
+    }
 
     /* Use faster algorithms for short needles */
     h = reinterpret_cast<const U8*>(memchr(h0, *n, k));
@@ -200,13 +202,13 @@ memmem(const void* h0, Size k, const void* n0, Size l) noexcept {
     if (k < l)
         return 0;
     if (l == 2)
-        return twobyte_memmem(h, k, n);
+        return twoByteMemmem(h, k, n);
     if (l == 3)
-        return threebyte_memmem(h, k, n);
+        return threeByteMemmem(h, k, n);
     if (l == 4)
-        return fourbyte_memmem(h, k, n);
+        return fourByteMemmem(h, k, n);
 
-    return twoway_memmem(h, h + k, n, l);
+    return twoWayMemmem(h, h + k, n, l);
 }
 
 }

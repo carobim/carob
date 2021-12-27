@@ -9,9 +9,6 @@ struct Exit;
 
 class Player : public Character {
  public:
-    static Player&
-    instance() noexcept;
-
     Player() noexcept;
     void
     destroy() noexcept;

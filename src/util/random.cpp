@@ -19,7 +19,7 @@ generate() noexcept {
 }
 
 U32
-randInt(U32 min, U32 max) noexcept {
+randU32(U32 min, U32 max) noexcept {
     U32 range = max - min + 1;
     U32 scaling = UINT32_MAX / range;
     U32 over = range * scaling;

@@ -49,7 +49,7 @@ tilesLoad(StringView path,
           U32 numAcross,
           U32 numHigh) noexcept;
 
-#define TILES_VALID(tiles) (tiles.image.texture != 0)
+#define TILES_VALID(tiles) ((tiles).image.texture != 0)
 
 void
 tilesRelease(TiledImage tiles) noexcept;

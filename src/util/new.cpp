@@ -3,7 +3,6 @@
 
 #    include "util/new.h"
 
-#    include "util/assert.h"
 #    include "util/compiler.h"
 #    include "util/int.h"
 

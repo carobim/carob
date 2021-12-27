@@ -26,7 +26,7 @@ walk(Vector<StringView> paths,
             Vector<String> names = listDir(path);
             for (String* name = names.begin(); name != names.end(); name++) {
                 String child;
-                child << path << dirSeparator << *name;
+                child << path << DIR_SEPARATOR << *name;
                 files.push(static_cast<String&&>(child));
             }
         }

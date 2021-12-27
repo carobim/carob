@@ -4,8 +4,6 @@
 #include "os/os.h"
 #include "util/compiler.h"
 #include "util/int.h"
-#include "util/io.h"
-#include "util/math2.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
@@ -136,7 +134,6 @@ isRanges(StringView s) noexcept {
                 break;
             }
         case COMMA:
-            state++;
             if (c == ',') {
                 dashed = false;
                 state = SIGN;
@@ -467,13 +464,13 @@ ReadLines::next() noexcept {
             return StringView();
         }
 
-        Size position = file.chunk.view().find('\n');
+        Size position2 = file.chunk.view().find('\n');
 
         while (true) {
-            if (position != SV_NOT_FOUND) {
+            if (position2 != SV_NOT_FOUND) {
                 // We found the end of the token within this chunk.
-                joiner << file.chunk.view().substr(0, position);
-                offset = position + 1;  // 1 = delimiter
+                joiner << file.chunk.view().substr(0, position2);
+                offset = position2 + 1;  // 1 = delimiter
                 return joiner.view();
             }
             else if (file.file.rem == 0) {
@@ -492,7 +489,7 @@ ReadLines::next() noexcept {
                     file.file.rem = 0;
                     return StringView();
                 }
-                position = file.chunk.view().find('\n');
+                position2 = file.chunk.view().find('\n');
             }
         }
     }

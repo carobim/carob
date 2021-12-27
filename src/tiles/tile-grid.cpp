@@ -1,10 +1,8 @@
 #include "tiles/tile-grid.h"
 
-#include "tiles/log.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/math2.h"
-#include "util/string.h"
 
 static I32
 ivec2_to_dir(ivec2 v) noexcept {
@@ -35,19 +33,19 @@ TileGrid::TileGrid() noexcept : loopX(false), loopY(false) {
     tileDim.x = tileDim.y = 0;
 }
 
-I32
+U32
 TileGrid::getTileType(ivec3 phys) noexcept {
     I32 idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;
     return graphics[idx];
 }
 
-I32
+U32
 TileGrid::getTileType(vicoord virt) noexcept {
     return getTileType(virt2phys(virt));
 }
 
 void
-TileGrid::setTileType(vicoord virt, I32 type) noexcept {
+TileGrid::setTileType(vicoord virt, U32 type) noexcept {
     ivec3 phys = virt2phys(virt);
 
     I32 idx = (phys.z * dim.y + phys.y) * dim.x + phys.x;

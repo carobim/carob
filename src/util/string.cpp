@@ -91,12 +91,14 @@ String::operator=(StringView s) noexcept {
 
 void
 String::operator=(const String& s) noexcept {
+    assert_(this != &s);
     clear();
     *this << s;
 }
 
 void
 String::operator=(String&& s) noexcept {
+    assert_(this != &s);
     free(data);
     data = s.data;
     size = s.size;

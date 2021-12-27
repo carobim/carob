@@ -1,6 +1,4 @@
-#include "os/c.h"
 #include "os/os.h"
-#include "pack/file-type.h"
 #include "pack/pack-reader.h"
 #include "pack/pack-writer.h"
 #include "pack/walker.h"
@@ -49,11 +47,11 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
     // Write the file path to the pack file with '/' instead of '\\' on Windows.
     String standardizedPath;
 
-    if (dirSeparator != '/') {
+    if (DIR_SEPARATOR != '/') {
         standardizedPath = path;
 
         for (Size i = 0; i < path.size; i++) {
-            if (standardizedPath[i] == dirSeparator) {
+            if (standardizedPath[i] == DIR_SEPARATOR) {
                 standardizedPath[i] = '/';
             }
         }
@@ -113,12 +111,12 @@ listArchive(StringView archivePath) noexcept {
         // Print file paths with '\\' Windows.
         String standardizedPath;
 
-        if (dirSeparator != '/') {
+        if (DIR_SEPARATOR != '/') {
             standardizedPath = path;
 
-            for (Size i = 0; i < path.size; i++) {
-                if (standardizedPath[i] == '/') {
-                    standardizedPath[i] = dirSeparator;
+            for (Size j = 0; j < path.size; j++) {
+                if (standardizedPath[j] == '/') {
+                    standardizedPath[j] = DIR_SEPARATOR;
                 }
             }
 
@@ -136,7 +134,7 @@ listArchive(StringView archivePath) noexcept {
 
 static bool
 getParentPath(StringView path, StringView& parent) noexcept {
-    StringPosition sep = path.rfind(dirSeparator);
+    StringPosition sep = path.rfind(DIR_SEPARATOR);
     if (sep == SV_NOT_FOUND) {
         return false;
     }
@@ -193,12 +191,12 @@ extractArchive(StringView archivePath) noexcept {
         U32 size = details.size;
 
         // Change file paths to use '\\' on Windows.
-        if (dirSeparator != '/') {
+        if (DIR_SEPARATOR != '/') {
             standardizedPath = path;
 
-            for (Size i = 0; i < path.size; i++) {
-                if (standardizedPath[i] == '/') {
-                    standardizedPath[i] = dirSeparator;
+            for (Size j = 0; j < path.size; j++) {
+                if (standardizedPath[j] == '/') {
+                    standardizedPath[j] = DIR_SEPARATOR;
                 }
             }
 
@@ -225,7 +223,7 @@ main(I32 argc, char* argv[]) noexcept {
     Flusher f2(serr);
 
     exe = argv[0];
-    StringPosition dir = exe.view().rfind(dirSeparator);
+    StringPosition dir = exe.view().rfind(DIR_SEPARATOR);
     if (dir == SV_NOT_FOUND) {
         exe = exe.view().substr(dir + 1);
     }

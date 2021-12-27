@@ -42,7 +42,7 @@ class Character : public Entity {
     setArea(Area* area, vicoord position) noexcept;
 
     //! Initiate a movement within the Area.
-    void
+    virtual void
     moveByTile(ivec2 delta) noexcept;
 
  protected:

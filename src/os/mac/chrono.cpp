@@ -1,4 +1,3 @@
-#include "os/c.h"
 #include "os/chrono.h"
 #include "util/assert.h"
 #include "util/compiler.h"

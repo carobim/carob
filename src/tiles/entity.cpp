@@ -12,7 +12,6 @@
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/math2.h"
-#include "util/string2.h"
 
 #define CHECK(x)      \
     if (!(x)) {       \
@@ -186,10 +185,10 @@ parsePhase(Entity* e,
         for (JsonIterator node = begin(framesValue);
              node != end(framesValue);
              ++node) {
-            JsonValue frameValue = node->value;
+            JsonValue frameValue_ = node->value;
 
-            CHECK(frameValue.isNumber());
-            I32 frame = frameValue.toInt();
+            CHECK(frameValue_.isNumber());
+            I32 frame = frameValue_.toInt();
 
             if (frame < 0 || nTiles < frame) {
                 logErr(e->descriptor,
@@ -551,7 +550,7 @@ Entity::directionStr(ivec2 facing) noexcept {
 
 enum SetPhaseResult
 Entity::_setPhase(StringView name) noexcept {
-    Animation* newPhase = 0;
+    Animation* newPhase;
     if (name == "stance") {
         newPhase = &phaseStance;
     }

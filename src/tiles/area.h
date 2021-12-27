@@ -12,8 +12,6 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-#define ISOMETRIC_ZOFF_PER_TILE 0.001
-
 class AreaJSON;
 class Character;
 class DataArea;
@@ -93,10 +91,10 @@ class Area {
 
     // Create an NPC and insert it into the Area. Returns a borrowed ref.
     Character*
-    spawnNPC(StringView descriptor, vicoord coord, StringView phase) noexcept;
+    spawnNPC(StringView descriptor_, vicoord coord, StringView phase) noexcept;
     // Create an Overlay and insert it into the Area. Returns a borrowed ref.
     Overlay*
-    spawnOverlay(StringView descriptor, vicoord coord, StringView phase) noexcept;
+    spawnOverlay(StringView descriptor_, vicoord coord, StringView phase) noexcept;
 
     DataArea*
     getDataArea() noexcept;

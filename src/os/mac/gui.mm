@@ -1,6 +1,6 @@
 #include "os/mac/gui.h"
 
-#include "core/world.h"
+#include "tiles/world.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/string-view.h"

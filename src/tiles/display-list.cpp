@@ -2,7 +2,6 @@
 
 #include "tiles/window.h"
 #include "util/compiler.h"
-#include "util/int.h"
 #include "util/math2.h"
 
 static void

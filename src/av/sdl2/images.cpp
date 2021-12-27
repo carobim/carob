@@ -7,7 +7,6 @@
 #include "tiles/resources.h"
 #include "util/assert.h"
 #include "util/compiler.h"
-#include "util/hash.h"
 #include "util/hashvector.h"
 #include "util/int.h"
 #include "util/measure.h"

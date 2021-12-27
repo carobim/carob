@@ -27,7 +27,7 @@ void
 debugger() noexcept;
 
 #else
-#    define assert_(expr)
+#    define assert_(expr) (void)(expr)
 #    define debugger()
 #endif
 

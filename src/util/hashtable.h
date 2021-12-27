@@ -251,10 +251,10 @@ class Hashmap {
 
     // Utility
     void
-    reserve(U32 size) noexcept {
+    reserve(U32 size_) noexcept {
         // Only allow a 50% load limit.
-        if (size * 2 > capacity) {
-            U32 pow = pow2(size * 2);
+        if (size_ * 2 > capacity) {
+            U32 pow = pow2(size_ * 2);
             rehash(pow > 8 ? pow : 8);
         }
     }

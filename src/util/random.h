@@ -14,7 +14,7 @@ initRandom() noexcept;
     @return random integer between min and max.
 */
 U32
-randInt(U32 min, U32 max) noexcept;
+randU32(U32 min, U32 max) noexcept;
 
 //! Produce a random float floating point number.
 /*!

@@ -48,6 +48,6 @@ best-effort support for i386 and armelhf architectures with glibc 2.13+ or musl
 
 Requirements:
 
-| NAME        | LICENSE     | LINK                   |
-| ----------- | ----------- | ---------------------- |
-| SDL2        | zlib        | http://www.libsdl.org  |
+| NAME | LICENSE | LINK                  |
+|------|---------|-----------------------|
+| SDL2 | zlib    | http://www.libsdl.org |

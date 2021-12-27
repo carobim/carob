@@ -6,8 +6,6 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-const char dirSeparator = '/';
-
 Filesize
 getFileSize(StringView path) noexcept {
     struct stat status;
@@ -33,8 +31,8 @@ makeDirectory(StringView path) noexcept {
 
 Vector<String>
 listDir(StringView path) noexcept {
-    DIR* dir = 0;
-    struct dirent* entry = 0;
+    DIR* dir;
+    struct dirent* entry;
     Vector<String> names;
 
     if ((dir = opendir(String(path).null())) == 0) {

@@ -17,7 +17,6 @@
 #include "util/algorithm.h"
 #include "util/assert.h"
 #include "util/compiler.h"
-#include "util/hashtable.h"
 #include "util/math2.h"
 
 Area::Area() noexcept
@@ -317,12 +316,12 @@ Area::inBounds(Entity* ent) noexcept {
 
 
 Character*
-Area::spawnNPC(StringView descriptor,
+Area::spawnNPC(StringView descriptor_,
                vicoord coord,
                StringView phase) noexcept {
     Character* c = new Character;
-    if (!c->init(descriptor, phase)) {
-        logErr("Area", String() << "Failed to load entity " << descriptor);
+    if (!c->init(descriptor_, phase)) {
+        logErr("Area", String() << "Failed to load entity " << descriptor_);
         delete c;
         return 0;
     }
@@ -332,12 +331,12 @@ Area::spawnNPC(StringView descriptor,
 }
 
 Overlay*
-Area::spawnOverlay(StringView descriptor,
+Area::spawnOverlay(StringView descriptor_,
                    vicoord coord,
                    StringView phase) noexcept {
     Overlay* o = new Overlay;
-    if (!o->init(descriptor, phase)) {
-        logErr("Area", String() << "Failed to load entity " << descriptor);
+    if (!o->init(descriptor_, phase)) {
+        logErr("Area", String() << "Failed to load entity " << descriptor_);
         delete o;
         return 0;
     }

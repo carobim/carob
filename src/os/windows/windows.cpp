@@ -99,8 +99,6 @@ WriteFile(HANDLE, LPCVOID, DWORD, LPDWORD, void*) noexcept;
 #pragma pack(pop)
 
 
-const char dirSeparator = '\\';
-
 Filesize
 getFileSize(StringView path) noexcept {
     HANDLE file = CreateFile(String(path).null(),

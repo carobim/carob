@@ -3,7 +3,7 @@
 
 void
 NPC::arrived() noexcept {
-    Entity::arrived();
+    Character::arrived();
 
     if (destExit) {
         moving = false;  // Prevent time rollover check in

@@ -50,6 +50,7 @@ class Vector {
 
     void
     operator=(const Vector& other) noexcept {
+        assert_(this != &other);
         for (Size i = 0; i < size; i++) {
             data[i].~X();
         }
@@ -69,6 +70,7 @@ class Vector {
     }
     void
     operator=(Vector&& other) noexcept {
+        assert_(this != &other);
         for (Size i = 0; i < size; i++) {
             data[i].~X();
         }

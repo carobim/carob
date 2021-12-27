@@ -5,8 +5,6 @@
 #include "util/compiler.h"
 #include "util/json.h"
 #include "util/string.h"
-#include "util/string2.h"
-#include "util/vector.h"
 
 #define CHECK(x)      \
     if (!(x)) {       \

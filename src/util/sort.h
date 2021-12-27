@@ -1,6 +1,8 @@
 #ifndef SRC_UTIL_SORT_H_
 #define SRC_UTIL_SORT_H_
 
+#include "util/move.h"
+
 // Original source downloaded from: https://github.com/svpv/qsort
 
 // **********

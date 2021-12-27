@@ -87,13 +87,13 @@ class TileGrid {
  public:
     TileGrid() noexcept;
 
-    I32
+    U32
     getTileType(ivec3 phys) noexcept;
-    I32
+    U32
     getTileType(vicoord virt) noexcept;
 
     void
-    setTileType(vicoord virt, I32 type) noexcept;
+    setTileType(vicoord virt, U32 type) noexcept;
 
     //! Returns true if a Tile exists at the specified coordinate.
     bool

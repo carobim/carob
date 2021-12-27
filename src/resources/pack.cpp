@@ -6,7 +6,7 @@
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/int.h"
-#include "util/measure.h"
+// #include "util/measure.h"
 #include "util/string-view.h"
 #include "util/string.h"
 
@@ -70,7 +70,6 @@ resourceLoad(StringView path, String& data) noexcept {
 
     bool ok = readerRead(pack, data.data, index);
     assert_(ok);
-    (void)ok;
 
     data.size = size;
     data.data[size] = 0;
