@@ -129,6 +129,7 @@ SDL_GL_CreateContext(SDL_Window*) noexcept;
 void
 SDL_GL_SwapWindow(SDL_Window*) noexcept;
 #define SDL_WINDOW_FULLSCREEN              0x00000001
+#define SDL_WINDOW_OPENGL                  0x00000002
 #define SDL_WINDOW_HIDDEN                  0x00000008
 #define SDL_WINDOWPOS_UNDEFINED_MASK       0x1FFF0000u
 #define SDL_WINDOWPOS_UNDEFINED_DISPLAY(X) (SDL_WINDOWPOS_UNDEFINED_MASK | (X))

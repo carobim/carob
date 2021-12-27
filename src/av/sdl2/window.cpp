@@ -152,6 +152,10 @@ windowCreate(void) noexcept {
             flags |= SDL_WINDOW_FULLSCREEN;
         }
 
+#ifdef RENDERER_GL
+        flags |= SDL_WINDOW_OPENGL;
+#endif
+
         sdl2Window = SDL_CreateWindow("Tsunagari",
                                       SDL_WINDOWPOS_UNDEFINED,
                                       SDL_WINDOWPOS_UNDEFINED,
@@ -284,7 +288,8 @@ windowPushScale(float x, float y) noexcept {
     float factor = static_cast<float>(x);
     struct Transform transform = transformStack[transformTop];
 
-    transformStack[++transformTop] = transformMultiply(transformScale(factor, factor), transform);
+    transformStack[++transformTop] =
+            transformMultiply(transformScale(factor, factor), transform);
     updateTransform();
 }
 
@@ -297,13 +302,9 @@ windowPopScale(void) noexcept {
 void
 windowPushTranslate(float x, float y) noexcept {
     struct Transform transform = transformStack[transformTop];
-    transformStack[++transformTop] =
-            transformMultiply(
-                    transformTranslate(
-                        static_cast<float>(x),
-                        static_cast<float>(y)),
-                    transform
-            );
+    transformStack[++transformTop] = transformMultiply(
+            transformTranslate(static_cast<float>(x), static_cast<float>(y)),
+            transform);
     updateTransform();
 }
 
