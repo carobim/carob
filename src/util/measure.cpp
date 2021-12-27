@@ -46,5 +46,7 @@ TimeMeasure::~TimeMeasure() noexcept {
     Nanoseconds end = chronoNow();
     Nanoseconds elapsed = end - start;
 
-    serr << "Measure " << description << " took " << ns_to_s_d(elapsed) << " seconds" << Flush();
+    serr << "Measure " << description << " took " << ns_to_s_d(elapsed)
+         << " seconds\n"
+         << Flush();
 }
