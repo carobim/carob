@@ -2,7 +2,6 @@
 
 #include "data/action.h"
 #include "tiles/sounds.h"
-#include "util/algorithm.h"
 #include "util/compiler.h"
 #include "util/random.h"
 
