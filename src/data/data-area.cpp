@@ -43,9 +43,15 @@ DataArea::tick(Time dt) noexcept {
             i++;
         }
         else if (status == AS_END) {
+            struct Action* next = action->next;
             action->free(action->data);
-            actions.eraseUnordered(i);
-            size--;
+            if (next) {
+                *action = *next;
+            }
+            else {
+                actions.eraseUnordered(i);
+                size--;
+            }
         }
     }
 }

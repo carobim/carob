@@ -275,7 +275,7 @@ AreaJSON::processTileSet(JsonValue obj) noexcept {
 
     String source = String() << dirname(descriptor) << sourceValue.toString();
 
-    // We don't handle embeded tilesets, only references to an external JSON
+    // We don't handle embedded tilesets, only references to an external JSON
     // files.
     JsonDocument doc = loadJson(source);
     if (!doc.ok) {
