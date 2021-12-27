@@ -47,17 +47,17 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
     // Write the file path to the pack file with '/' instead of '\\' on Windows.
     String standardizedPath;
 
-    if (DIR_SEPARATOR != '/') {
-        standardizedPath = path;
+#if DIR_SEPARATOR != '/'
+    standardizedPath = path;
 
-        for (Size i = 0; i < path.size; i++) {
-            if (standardizedPath[i] == DIR_SEPARATOR) {
-                standardizedPath[i] = '/';
-            }
+    for (Size i = 0; i < path.size; i++) {
+        if (standardizedPath[i] == DIR_SEPARATOR) {
+            standardizedPath[i] = '/';
         }
-
-        path = standardizedPath;
     }
+
+    path = standardizedPath;
+#endif
 
     packWriterAddBlob(ctx->pack, path, static_cast<U32>(data.size), data.data);
 
@@ -108,17 +108,17 @@ listArchive(StringView archivePath) noexcept {
         // Print file paths with '\\' Windows.
         String standardizedPath;
 
-        if (DIR_SEPARATOR != '/') {
-            standardizedPath = path;
+#if DIR_SEPARATOR != '/'
+        standardizedPath = path;
 
-            for (Size j = 0; j < path.size; j++) {
-                if (standardizedPath[j] == '/') {
-                    standardizedPath[j] = DIR_SEPARATOR;
-                }
+        for (Size j = 0; j < path.size; j++) {
+            if (standardizedPath[j] == '/') {
+                standardizedPath[j] = DIR_SEPARATOR;
             }
-
-            path = standardizedPath;
         }
+
+        path = standardizedPath;
+#endif
 
         output << path << ": " << size << " bytes\n";
     }
@@ -188,17 +188,17 @@ extractArchive(StringView archivePath) noexcept {
         U32 size = details.size;
 
         // Change file paths to use '\\' on Windows.
-        if (DIR_SEPARATOR != '/') {
-            standardizedPath = path;
+#if DIR_SEPARATOR != '/'
+        standardizedPath = path;
 
-            for (Size j = 0; j < path.size; j++) {
-                if (standardizedPath[j] == '/') {
-                    standardizedPath[j] = DIR_SEPARATOR;
-                }
+        for (Size j = 0; j < path.size; j++) {
+            if (standardizedPath[j] == '/') {
+                standardizedPath[j] = DIR_SEPARATOR;
             }
-
-            path = standardizedPath;
         }
+
+        path = standardizedPath;
+#endif
 
         if (verbose) {
             sout << "Extracting " << path << ": " << size << " bytes\n";
