@@ -175,5 +175,6 @@ logReportVerbosityOnStartup() noexcept {
     sout << makeTimestamp() << ' ';
 
     //setTermColor(TC_RESET, Stdout);
-    sout << "Reporting engine messages in " << verbString << " mode.\n";
+    sout << "Reporting engine messages in " << verbString << " mode.\n"
+         << Flush();
 }
