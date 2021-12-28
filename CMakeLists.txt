@@ -41,11 +41,11 @@ cmake_minimum_required(VERSION 2.8.2...3.22)
 # CMake 3.8.0 (2017/04/10)
 #   keyword source_group(TREE) + source_group(FILES)
 
-if("${CMAKE_BUILD_TYPE}" STREQUAL "")
-    set(CMAKE_BUILD_TYPE "DEFAULT")
-endif()
-
 project(TsunagariEngine C CXX)
+
+if(CMAKE_BUILD_TYPE STREQUAL "")
+    set(CMAKE_BUILD_TYPE DEFAULT)
+endif()
 
 
 #
