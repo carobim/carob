@@ -1181,7 +1181,7 @@ elseif(SDL2)
         set(SDL2_LIBRARIES "" CACHE STRING
             "Name of SDL2 library")
 
-        if("${SDL2_LIBRARIES}" STREQUAL "")
+        if(SDL2_LIBRARIES STREQUAL "")
             message(SEND_ERROR "When not using pkg-config, please manually set"
                 " SDL2 libraries")
         endif()
@@ -1202,7 +1202,7 @@ if(AUDIO_SDL2)
             "Name with SDL2_mixer library")
     endif()
 
-    if("${SDL2_mixer_LIBRARIES}" STREQUAL "")
+    if(SDL2_mixer_LIBRARIES STREQUAL "")
         message(SEND_ERROR "When not using pkg-config, please manually set"
             " SDL2_mixer libraries")
     endif()
@@ -1223,7 +1223,7 @@ endif()
 #            "Name with SDL2_image library")
 #    endif()
 #
-#    if("${SDL2_image_LIBRARIES}" STREQUAL "")
+#    if(SDL2_image_LIBRARIES STREQUAL "")
 #        message(SEND_ERROR "When not using pkg-config, please manually set"
 #            " SDL2_image include dirs and libraries")
 #    endif()
