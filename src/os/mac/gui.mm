@@ -28,6 +28,7 @@ CFURLGetFileSystemRepresentation(CFURLRef url,
                                  Boolean resolveAgainstBase,
                                  UInt8 *buffer,
                                  CFIndex maxBufLen) noexcept;
+}
 
 typedef long NSInteger;
 typedef unsigned long NSUInteger;
@@ -48,14 +49,6 @@ typedef NSUInteger NSStringEncoding;
 - (nullable instancetype)initWithBytesNoCopy:(const void *)bytes length:(NSUInteger)len encoding:(NSStringEncoding)encoding freeWhenDone:(BOOL)freeBuffer;
 @property (nullable, readonly) __strong const char *UTF8String;
 @end
-
-@interface NSFileManager : NSObject
-+ (NSFileManager *)defaultManager;
-// Compile error on macOS 10.11 El Capitan.
-//@property (class, readonly, strong) NSFileManager *defaultManager;
-- (BOOL)changeCurrentDirectoryPath:(NSString *)path;
-@end
-}
 
 @interface NSButton
 @end
@@ -79,7 +72,7 @@ macSetWorkingDirectory() noexcept {
     CFBundleRef mainBundle;
     CFURLRef url;
     NSString* appPath_;
-    StringView appPath;
+    String appPath;
 
     mainBundle = CFBundleGetMainBundle();
     assert_(mainBundle);
@@ -105,10 +98,8 @@ macSetWorkingDirectory() noexcept {
         return;
     }
 
-    BOOL ok2 = [[NSFileManager defaultManager] changeCurrentDirectoryPath:appPath_];
-    assert_(ok2);
-
-    I32 err = chdir("Contents/Resources");
+    appPath << "Contents/Resources";
+    I32 err = chdir(appPath.view().null());
     assert_(err == 0);
 
     [appPath_ release];
