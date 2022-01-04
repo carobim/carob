@@ -46,6 +46,7 @@ typedef NSUInteger NSStringEncoding;
 
 @interface NSString : NSObject
 - (nullable instancetype)initWithBytesNoCopy:(const void *)bytes length:(NSUInteger)len encoding:(NSStringEncoding)encoding freeWhenDone:(BOOL)freeBuffer;
+@property (nullable, readonly) __strong const char *UTF8String;
 @end
 
 @interface NSFileManager : NSObject
@@ -77,7 +78,8 @@ macSetWorkingDirectory() noexcept {
     UInt8 pathBytes[512];
     CFBundleRef mainBundle;
     CFURLRef url;
-    NSString* appPath;
+    NSString* appPath_;
+    StringView appPath;
 
     mainBundle = CFBundleGetMainBundle();
     assert_(mainBundle);
@@ -86,26 +88,30 @@ macSetWorkingDirectory() noexcept {
     assert_(url);
 
     bool ok = CFURLGetFileSystemRepresentation(url,
-                                             true,
-                                             pathBytes,
-                                             sizeof(pathBytes));
+                                               true,
+                                               pathBytes,
+                                               sizeof(pathBytes));
     assert_(ok);
 
-    appPath = [[NSString alloc] initWithBytesNoCopy:pathBytes
-                                             length:StringView((char*)pathBytes).size + 1
-                                           encoding:NSUTF8StringEncoding
-                                       freeWhenDone:false];
-    assert_(appPath);
+    appPath_ = [[NSString alloc] initWithBytesNoCopy:pathBytes
+                                              length:StringView((char*)pathBytes).size + 1
+                                            encoding:NSUTF8StringEncoding
+                                        freeWhenDone:false];
+    assert_(appPath_);
 
-    BOOL ok2 = [[NSFileManager defaultManager] changeCurrentDirectoryPath:appPath];
+    appPath = [appPath_ UTF8String];
+    if (appPath.rfind(StringView(".app", 4)) != appPath.size - 4) {
+        // Not in a bundle.
+        return;
+    }
+
+    BOOL ok2 = [[NSFileManager defaultManager] changeCurrentDirectoryPath:appPath_];
     assert_(ok2);
 
     I32 err = chdir("Contents/Resources");
-    // FIXME: This assert will fail if we are not in a bundle. Detect when
-    //        we are not in a bundle before this point and bail out earlier.
-    //assert_(err == 0);
+    assert_(err == 0);
 
-    [appPath release];
+    [appPath_ release];
     CFRelease(url);
 }
 
