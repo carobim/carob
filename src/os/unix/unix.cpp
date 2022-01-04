@@ -111,6 +111,7 @@ readFile(StringView path, String& data) noexcept {
 
     int fd = open(path_.null(), O_RDONLY);
     if (fd < 0) {
+        // errno set
         return false;
     }
 
