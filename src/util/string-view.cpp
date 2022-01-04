@@ -116,6 +116,27 @@ StringView::rfind(char needle) const noexcept {
     return SV_NOT_FOUND;
 }
 
+StringPosition
+StringView::rfind(StringView needle) const noexcept {
+    if (data == 0 || needle.size > size) {
+        return SV_NOT_FOUND;
+    }
+    if (needle.size == 0) {
+        return 0;
+    }
+
+    Size i = size - needle.size;
+    do {
+        if (data[i] == needle[0]) {
+            if (substr(i, needle.size) == needle) {
+                return StringPosition(i);
+            }
+        }
+    } while (i-- > 0);
+
+    return SV_NOT_FOUND;
+}
+
 StringView
 StringView::substr(const Size from) const noexcept {
     assert_(from <= this->size);
