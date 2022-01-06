@@ -4,6 +4,7 @@
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/string-view.h"
+#include "util/string.h"
 
 extern "C" {
 I32 chdir(const char *) noexcept;
@@ -38,7 +39,7 @@ typedef NSUInteger NSStringEncoding;
 #define NSUTF8StringEncoding 4
 
 @protocol NSObject
-- (oneway void)release;
+- (void)release;
 @end
 @interface NSObject <NSObject>
 + (instancetype)alloc;
@@ -72,7 +73,6 @@ macSetWorkingDirectory() noexcept {
     CFBundleRef mainBundle;
     CFURLRef url;
     NSString* appPath_;
-    String appPath;
 
     mainBundle = CFBundleGetMainBundle();
     assert_(mainBundle);
@@ -92,15 +92,21 @@ macSetWorkingDirectory() noexcept {
                                         freeWhenDone:false];
     assert_(appPath_);
 
-    appPath = [appPath_ UTF8String];
+    StringView appPath = [appPath_ UTF8String];
     if (appPath.rfind(StringView(".app", 4)) != appPath.size - 4) {
         // Not in a bundle.
         return;
     }
 
-    appPath << "Contents/Resources";
-    I32 err = chdir(appPath.view().null());
-    assert_(err == 0);
+    // Not sure how to tell Apple LLVM 7.0.0 that Objective-C methods do not
+    // throw. Resort to object destruction before we call our next Objective-C
+    // method.
+    {
+        String resourcesPath = appPath;
+        resourcesPath << "/Contents/Resources";
+        I32 err = chdir(resourcesPath.null());
+        assert_(err == 0);
+    }
 
     [appPath_ release];
     CFRelease(url);
