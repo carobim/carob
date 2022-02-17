@@ -646,6 +646,8 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/util/list.h
     ${HERE}/src/util/markable.h
     ${HERE}/src/util/math2.h
+    ${HERE}/src/util/measure.cpp
+    ${HERE}/src/util/measure.h
     ${HERE}/src/util/move.h
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h
