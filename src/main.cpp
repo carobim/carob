@@ -41,7 +41,9 @@ main() noexcept {
         return 1;
     }
 
+#if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
     macSetWorkingDirectory();
+#endif
 
     // TODO: Use CVDisplayLink and remove this.
     threadDisableTimerCoalescing();
