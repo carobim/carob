@@ -17,7 +17,6 @@ Tsunagari works on many common PC operating systems. It requires:
 
 - Clang 3.0+, GCC 4.4+, or MSVC 2010+
 - CMake 2.8.2+
-- SDL2 and SDL2\_mixer (for game engine builds)
 
 It supports:
 
@@ -31,3 +30,14 @@ It supports:
 Specifically for GNU Linux, it has first class support for x86\_64, and
 best-effort support for i386 and armelhf architectures with glibc 2.13+ or musl
 1.1.5+, and binutils 2.22+. musl 1.2 i386 is not supported.
+
+For game engine builds it requires:
+
+- SDL2 and SDL2\_mixer
+
+And supports:
+
+- SDL2 input and audio/video output
+- SDL2 and OpenGL 2 renderers
+- [Tiled](https://www.mapeditor.org/) maps
+- 16-bit-styled graphics
