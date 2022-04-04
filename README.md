@@ -11,7 +11,8 @@
 
 [![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari?category=code)](https://github.com/XAMPPRocky/tokei)
 
-Tsunagari is a tiling game engine and C++ runtime.
+Tsunagari is a tiling game engine and C++ runtime. It compiles quickly into
+small and fast binaries with minimal runtime dependencies.
 
 Building Tsunagari requires:
 
