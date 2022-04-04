@@ -23,8 +23,8 @@ It works on many common PC operating systems. Specifically:
 - Windows 10 1809+
 - Mac OS X 10.11+
 - Alpine Linux 3.1+, Arch Linux, Debian 7+, Fedora 20+, every version of NixOS, Ubuntu 11.04+, and Void Linux
-  - Specifically, glibc 2.13+ or musl 1.1.5+, and binutils 2.22+. musl 1.2
-    i386 is not supported.
+  - Probably anything with glibc 2.13+ or musl 1.1.5+, and binutils 2.22+
+  - musl 1.2 i686 is not supported at this time
 - FreeBSD 11+
 - NetBSD 7+
 - Raspbian
