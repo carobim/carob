@@ -357,7 +357,7 @@ makeProgram(const char* vertexSource, const char* fragmentSource) noexcept {
 }
 
 //
-// Tsunagari-specific code
+// Carob-specific code
 //
 
 #define ATLAS_WIDTH 2048

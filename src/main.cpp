@@ -51,7 +51,7 @@ main() noexcept {
     confParse(CLIENT_CONF_PATH);
 
     logSetVerbosity(confVerbosity);
-    logInfo("Main", String() << "Starting " << TSUNAGARI_RELEASE_VERSION);
+    logInfo("Main", String() << "Starting " << CAROB_RELEASE_VERSION);
     logReportVerbosityOnStartup();
 
     windowCreate();

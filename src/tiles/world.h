@@ -14,7 +14,7 @@ struct DisplayList;
  * Top class holding all data necessary to create a game. Such a collection of
  * data is called a "world". Materially, a world is just a set of graphics,
  * sound effects, music, and scripts. From the perspective from a player, each
- * world should be a separate game. Tsunagari is an engine that powers worlds.
+ * world should be a separate game. Carob is an engine that powers worlds.
  */
 
 /**

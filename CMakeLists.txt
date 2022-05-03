@@ -41,7 +41,7 @@ cmake_minimum_required(VERSION 2.8.2...3.23)
 # CMake 3.8.0 (2017/04/10)
 #   keyword source_group(TREE) + source_group(FILES)
 
-project(TsunagariEngine C CXX)
+project(carob C CXX)
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE DEFAULT)
@@ -145,7 +145,7 @@ endif()
 
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
 
-option(BUILD_SHARED_LIBS "Build Tsunagari as a shared library")
+option(BUILD_SHARED_LIBS "Build Carob as a shared library")
 option(STATIC_LINK "Build statically linked binaries")
 
 
@@ -228,7 +228,7 @@ get_filename_component(HERE "${CMAKE_CURRENT_LIST_FILE}" PATH)
 # Sources in src
 #
 
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/main.cpp
     ${HERE}/src/config.h
 )
@@ -246,53 +246,53 @@ set(TEST_SOURCES ${TEST_SOURCES}
 )
 
 if(AUDIO_NULL)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/null/music.cpp
         ${HERE}/src/av/null/sounds.cpp
     )
 endif()
 if(WINDOW_NULL)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/null/window.cpp
     )
 endif()
 if(RENDERER_NULL)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/null/images.cpp
     )
 endif()
 
 if(SDL2)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/sdl2/error.cpp
         ${HERE}/src/av/sdl2/error.h
     )
 endif()
 if(AUDIO_SDL2)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/sdl2/music.cpp
         ${HERE}/src/av/sdl2/sounds.cpp
     )
 endif()
 if(WINDOW_SDL2)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/sdl2/window.cpp
         ${HERE}/src/av/sdl2/window.h
     )
 endif()
 if(RENDERER_SDL2)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/sdl2/images.cpp
     )
 endif()
 
 if(RENDERER_GL)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/gl/images.cpp
     )
 endif()
 
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/data/action.cpp
     ${HERE}/src/data/action.h
     ${HERE}/src/data/data-area.cpp
@@ -300,7 +300,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/data/data-world.h
 )
 
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/os/c.h
     ${HERE}/src/os/chrono.h
     ${HERE}/src/os/mapped-file.h
@@ -327,7 +327,7 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
 )
 
 if(WIN32)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/os/memmove.cpp
 
         # On MSVC2013 including this file results in a warning. In MSVC2015+
@@ -386,7 +386,7 @@ if(WIN32)
         ${HERE}/src/os/windows/windows.h
     )
 elseif(APPLE)
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/os/mac/c.h
         ${HERE}/src/os/mac/chrono.cpp
         ${HERE}/src/os/mac/thread.cpp
@@ -399,7 +399,7 @@ elseif(APPLE)
         ${HERE}/src/os/unix/unix.cpp
     )
     if(NOT WINDOW_NULL OR NOT AUDIO_NULL)
-        set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+        set(CAROB_SOURCES ${CAROB_SOURCES}
             ${HERE}/src/os/mac/gui.mm
             ${HERE}/src/os/mac/gui.h
     )
@@ -436,7 +436,7 @@ elseif(APPLE)
         ${HERE}/src/os/unix/unix.cpp
     )
 else()
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/chrono.cpp
         ${HERE}/src/os/unix/io.cpp
@@ -476,7 +476,7 @@ else()
     )
 endif()
 
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/pack/file-type.cpp
     ${HERE}/src/pack/file-type.h
     ${HERE}/src/pack/pack-reader.cpp
@@ -494,11 +494,11 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/pack/walker.h
 )
 
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/resources/pack.cpp
 )
 
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/tiles/animation.cpp
     ${HERE}/src/tiles/animation.h
     ${HERE}/src/tiles/area.cpp
@@ -545,7 +545,7 @@ set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
     ${HERE}/src/tiles/world.h
 )
 
-set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/util/algorithm.h
     ${HERE}/src/util/align.h
     ${HERE}/src/util/assert.h
@@ -669,7 +669,7 @@ if(MSVC OR XCODE OR NOT CMAKE_GTE_31)
     # MSVC 2017 and below, Xcode, and CMake 3.0 and below cannot vary source
     # files by configuration.
     # https://cmake.org/cmake/help/latest/release/3.1.html#properties
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/util/assert.cpp
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
@@ -679,7 +679,7 @@ if(MSVC OR XCODE OR NOT CMAKE_GTE_31)
         ${HERE}/src/util/assert.cpp
     )
 else()
-    set(TSUNAGARI_SOURCES ${TSUNAGARI_SOURCES}
+    set(CAROB_SOURCES ${CAROB_SOURCES}
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
@@ -704,12 +704,12 @@ if(UTIL_ONLY)
 
     add_library(tsutil ${UTIL_SOURCES})
 else()
-    add_library(tsunagari ${TSUNAGARI_SOURCES})
+    add_library(carob ${CAROB_SOURCES})
     add_executable(null-world ${NULL_WORLD_SOURCES})
     add_executable(pack-tool ${PACK_TOOL_SOURCES})
     add_executable(units ${TEST_SOURCES})
 
-    target_link_libraries(null-world tsunagari)
+    target_link_libraries(null-world carob)
 endif()
 
 include_directories(src)
@@ -723,7 +723,7 @@ if(CMAKE_GTE_38)
     if(UTIL_ONLY)
         set(ALL_SOURCES ${UTIL_SOURCES})
     else()
-        set(ALL_SOURCES ${TSUNAGARI_SOURCES}
+        set(ALL_SOURCES ${CAROB_SOURCES}
                         ${NULL_WORLD_SOURCES}
                         ${PACK_TOOL_SOURCES}
                         ${TEST_SOURCES}
@@ -1027,11 +1027,11 @@ if(IS_SUBPROJECT)
         ${CMAKE_EXECUTABLE_SUFFIX}
         PARENT_SCOPE)
 
-    get_property(TSUNAGARI_INCLUDE_DIRECTORIES
+    get_property(CAROB_INCLUDE_DIRECTORIES
         DIRECTORY
         PROPERTY INCLUDE_DIRECTORIES)
-    set(TSUNAGARI_INCLUDE_DIRECTORIES
-        ${TSUNAGARI_INCLUDE_DIRECTORIES}
+    set(CAROB_INCLUDE_DIRECTORIES
+        ${CAROB_INCLUDE_DIRECTORIES}
         PARENT_SCOPE)
 endif()
 
@@ -1106,7 +1106,7 @@ if(APPLE AND NOT WINDOW_NULL)
 endif()
 
 if(APPLE AND NOT WINDOW_NULL AND NOT AUDIO_NULL)
-    target_link_libraries(tsunagari
+    target_link_libraries(carob
         /System/Library/Frameworks/Cocoa.framework
         /System/Library/Frameworks/Foundation.framework
     )
@@ -1134,7 +1134,7 @@ if(LINUX AND NOT AV_EM)
         if(UTIL_ONLY)
             target_link_libraries(tsutil rt)
         else()
-            target_link_libraries(tsunagari rt)
+            target_link_libraries(carob rt)
         endif()
     endif()
 
@@ -1143,7 +1143,7 @@ if(LINUX AND NOT AV_EM)
             set(TSTHREAD pthread)
             set(TSMATH m)
         else()
-            target_link_libraries(tsunagari m pthread)
+            target_link_libraries(carob m pthread)
         endif()
     endif()
 endif()
@@ -1153,18 +1153,18 @@ if(FREEBSD OR NETBSD)
         set(TSTHREAD pthread)
         set(TSMATH m)
     else()
-        target_link_libraries(tsunagari m pthread)
+        target_link_libraries(carob m pthread)
     endif()
 endif()
 if(AV_EM)
-    target_link_libraries(tsunagari pthread)
+    target_link_libraries(carob pthread)
 endif()
 
 if(STATIC_SDL)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${STATIC_SDL}")
     if(APPLE)
         if(WINDOW_SDL2)
-            # FIXME: Make these specific to libtsunagari.
+            # FIXME: Make these specific to libcarob.
             set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lobjc -Wl,-framework,Carbon -Wl,-framework,Cocoa -Wl,-framework,CoreVideo -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore")
         endif()
         if(AUDIO_SDL2)
@@ -1195,7 +1195,7 @@ elseif(SDL2)
     endif()
 
     link_directories(${SDL2_LIBRARY_DIRS})
-    target_link_libraries(tsunagari ${SDL2_LIBRARIES})
+    target_link_libraries(carob ${SDL2_LIBRARIES})
 endif()
 
 if(AUDIO_SDL2)
@@ -1215,7 +1215,7 @@ if(AUDIO_SDL2)
     endif()
 
     link_directories(${SDL2_mixer_LIBRARY_DIRS})
-    target_link_libraries(tsunagari ${SDL2_mixer_LIBRARIES})
+    target_link_libraries(carob ${SDL2_mixer_LIBRARIES})
 endif()
 
 #if(RENDERER_SDL2)
@@ -1235,9 +1235,9 @@ endif()
 #            " SDL2_image include dirs and libraries")
 #    endif()
 #
-#    target_include_directories(tsunagari PRIVATE ${SDL2_image_INCLUDE_DIRS})
+#    target_include_directories(carob PRIVATE ${SDL2_image_INCLUDE_DIRS})
 #    link_directories(${SDL2_image_LIBRARY_DIRS})
-#    target_link_libraries(tsunagari ${SDL2_image_LIBRARIES})
+#    target_link_libraries(carob ${SDL2_image_LIBRARIES})
 #endif()
 
 # Share variables with parent

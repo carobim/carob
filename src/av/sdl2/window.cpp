@@ -156,7 +156,7 @@ windowCreate(void) noexcept {
         flags |= SDL_WINDOW_OPENGL;
 #endif
 
-        sdl2Window = SDL_CreateWindow("Tsunagari",
+        sdl2Window = SDL_CreateWindow("Carob",
                                       SDL_WINDOWPOS_UNDEFINED,
                                       SDL_WINDOWPOS_UNDEFINED,
                                       width,

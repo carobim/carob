@@ -106,10 +106,10 @@ logErr(StringView domain, StringView msg) noexcept {
         String s = String() << "Error [" << domain << "] - " << chomp(msg);
 
 #if MSVC
-        wMessageBox("Tsunagari - Error", s);
+        wMessageBox("Carob - Error", s);
 #endif
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
-        macMessageBox(StringView("Tsunagari - Error"), s);
+        macMessageBox(StringView("Carob - Error"), s);
 #endif
 
         debugger();
@@ -143,10 +143,10 @@ logFatal(StringView domain, StringView msg) noexcept {
     String s = String() << "Fatal [" << domain << "] - " << chomp(msg);
 
 #if MSVC
-    wMessageBox("Tsunagari - Fatal", s);
+    wMessageBox("Carob - Fatal", s);
 #endif
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
-    macMessageBox(StringView("Tsunagari - Fatal"), s);
+    macMessageBox(StringView("Carob - Fatal"), s);
 #endif
 
     debugger();

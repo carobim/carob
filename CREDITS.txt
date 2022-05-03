@@ -1,12 +1,12 @@
-This file contains attributions for the Tsunagari Tile Engine, and third-party
-software and dependencies it uses directly. Secondary dependencies are
-attributed in the distributions of the below mentioned primary dependencies.
+This file contains attributions for Carob, and third-party software and
+dependencies it uses directly. Secondary dependencies are attributed in the
+distributions of the below mentioned primary dependencies.
 
 -----
 
-=== Tsunagari Tile Engine ===
+=== Carob ===
 
-Copyright (c) 2011-2019:
+Copyright (c) 2011-2022:
 	Michael Reiley
 	Paul Merrill
 
