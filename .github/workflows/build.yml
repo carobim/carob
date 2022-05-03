@@ -1,11 +1,13 @@
+# https://github.com/actions/virtual-environments
+
 name: Build
 
 on: [push]
 
 jobs:
-  macos_11_0_big_sur:
-    name: macOS 11.0 Big Sur
-    runs-on: macos-11.0
+  macos_12_monterey:
+    name: macOS 12.0 Monterey
+    runs-on: macos-12.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
