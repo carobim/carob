@@ -133,9 +133,9 @@ getXCR0Eax(void) noexcept {
 #    error unimplemented
 #endif
 
-X86Features
+struct X86Features
 getCpu() noexcept {
-    X86Features features;
+    struct X86Features features = {};
     Leaves leaves = readLeaves();
 
     struct Leaf leaf1 = leaves.leaf1;

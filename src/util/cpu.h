@@ -39,18 +39,18 @@
 #endif  //  defined(CPU_FEATURES_ARCH_ANY_ARM)
 
 #if defined(__i386__) || defined(__x86_64__)
-typedef struct {
-    int popcnt : 1;
-    int rdrnd : 1;
+struct X86Features {
+    U32 popcnt : 1;
+    U32 rdrnd : 1;
 
-    int sse4_1 : 1;
-    int sse4_2 : 1;
+    U32 sse4_1 : 1;
+    U32 sse4_2 : 1;
 
-    int avx : 1;
-    int avx2 : 1;
-} X86Features;
+    U32 avx : 1;
+    U32 avx2 : 1;
+};
 
-X86Features
+struct X86Features
 getCpu() noexcept;
 #elif defined(__aarch64__)
 // Nothing.
