@@ -230,7 +230,6 @@ get_filename_component(HERE "${CMAKE_CURRENT_LIST_FILE}" PATH)
 
 set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/main.cpp
-    ${HERE}/src/config.h
 )
 
 set(NULL_WORLD_SOURCES ${NULL_WORLD_SOURCES}
@@ -699,10 +698,10 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
 #
 
 if(UTIL_ONLY)
-    set(TSTHREAD pthread)
-    set(TSMATH m)
+    set(CTHREAD pthread)
+    set(CMATH m)
 
-    add_library(tsutil ${UTIL_SOURCES})
+    add_library(cutil ${UTIL_SOURCES})
 else()
     add_library(carob ${CAROB_SOURCES})
     add_executable(null-world ${NULL_WORLD_SOURCES})
@@ -1132,7 +1131,7 @@ if(LINUX AND NOT AV_EM)
 
     if("${GLIBC_VERSION}" VERSION_LESS "2.17")
         if(UTIL_ONLY)
-            target_link_libraries(tsutil rt)
+            target_link_libraries(cutil rt)
         else()
             target_link_libraries(carob rt)
         endif()
@@ -1140,8 +1139,8 @@ if(LINUX AND NOT AV_EM)
 
     if(GLIBC_VERSION)
         if(UTIL_ONLY)
-            set(TSTHREAD pthread)
-            set(TSMATH m)
+            set(CTHREAD pthread)
+            set(CMATH m)
         else()
             target_link_libraries(carob m pthread)
         endif()
@@ -1150,8 +1149,8 @@ endif()
 
 if(FREEBSD OR NETBSD)
     if(UTIL_ONLY)
-        set(TSTHREAD pthread)
-        set(TSMATH m)
+        set(CTHREAD pthread)
+        set(CMATH m)
     else()
         target_link_libraries(carob m pthread)
     endif()
