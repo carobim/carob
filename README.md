@@ -2,14 +2,14 @@
 
 | BUILD      | STATUS                                                                                                                                                                            |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows    | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/TsunagariEngine/Tsunagari?svg=true)](https://ci.appveyor.com/project/TsunagariEngine/Tsunagari)                   |
-| macOS      | [![TravisCI](https://api.travis-ci.com/TsunagariEngine/Tsunagari.svg)](https://app.travis-ci.com/github/TsunagariEngine/Tsunagari)                                                |
-| Linux      | [![CircleCI](https://circleci.com/gh/TsunagariEngine/Tsunagari.svg?style=shield)](https://circleci.com/gh/TsunagariEngine/Tsunagari)                                              |
-| FreeBSD 12 | [![builds.sr.ht](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-12.yml.svg)](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-12.yml)                                     |
-| FreeBSD 13 | [![builds.sr.ht](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-13.yml.svg)](https://builds.sr.ht/~pdm/tsunagari/commits/freebsd-13.yml)                                     |
-| NetBSD 9   | [![builds.sr.ht](https://builds.sr.ht/~pdm/tsunagari/commits/netbsd-9.yml.svg)](https://builds.sr.ht/~pdm/tsunagari/commits/netbsd-9.yml)                                         |
+| Windows    | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/carobim/carob?svg=true)](https://ci.appveyor.com/project/carobim/carob)                   |
+| macOS      | [![TravisCI](https://api.travis-ci.com/carobim/carob.svg)](https://app.travis-ci.com/github/carobim/carob)                                                |
+| Linux      | [![CircleCI](https://circleci.com/gh/carobim/carob.svg?style=shield)](https://circleci.com/gh/carobim/carob)                                              |
+| FreeBSD 12 | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/freebsd-12.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/freebsd-12.yml)                                     |
+| FreeBSD 13 | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/freebsd-13.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/freebsd-13.yml)                                     |
+| NetBSD 9   | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/netbsd-9.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/netbsd-9.yml)                                         |
 
-[![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari?category=code)](https://github.com/XAMPPRocky/tokei)
+[![LoC](https://tokei.rs/b1/github/carobim/carob?category=code)](https://github.com/XAMPPRocky/tokei)
 
 Carob is a tiling game engine and C++ runtime. It compiles quickly into small
 and fast binaries with minimal runtime dependencies.
