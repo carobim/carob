@@ -80,7 +80,7 @@
 #if CLANG || GCC >= 45
 #    define unreachable __builtin_unreachable()
 #else
-#    define unreachable (void)0
+#    define unreachable __assume(0)
 #endif
 
 #endif
