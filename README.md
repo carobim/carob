@@ -1,13 +1,13 @@
 # Carob
 
-| BUILD      | STATUS                                                                                                                                                                            |
-|------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows    | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/pmer/carob?svg=true)](https://ci.appveyor.com/project/pmer/carob)                   |
-| macOS      | [![TravisCI](https://api.travis-ci.com/carobim/carob.svg)](https://app.travis-ci.com/github/carobim/carob)                                                |
-| Linux      | [![CircleCI](https://circleci.com/gh/carobim/carob.svg?style=shield)](https://circleci.com/gh/carobim/carob)                                              |
-| FreeBSD 12 | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/freebsd-12.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/freebsd-12.yml)                                     |
-| FreeBSD 13 | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/freebsd-13.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/freebsd-13.yml)                                     |
-| NetBSD 9   | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/netbsd-9.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/netbsd-9.yml)                                         |
+| BUILD      | STATUS                                                                                                                                |
+|------------|---------------------------------------------------------------------------------------------------------------------------------------|
+| Windows    | [![Appveyor](https://ci.appveyor.com/api/projects/status/github/carobim/carob?svg=true)](https://ci.appveyor.com/project/pmer/carob)  |
+| macOS      | [![TravisCI](https://api.travis-ci.com/carobim/carob.svg)](https://app.travis-ci.com/github/carobim/carob)                            |
+| Linux      | [![CircleCI](https://circleci.com/gh/carobim/carob.svg?style=shield)](https://circleci.com/gh/carobim/carob)                          |
+| FreeBSD 12 | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/freebsd-12.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/freebsd-12.yml) |
+| FreeBSD 13 | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/freebsd-13.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/freebsd-13.yml) |
+| NetBSD 9   | [![builds.sr.ht](https://builds.sr.ht/~pdm/carob/commits/netbsd-9.yml.svg)](https://builds.sr.ht/~pdm/carob/commits/netbsd-9.yml)     |
 
 [![LoC](https://tokei.rs/b1/github/carobim/carob?category=code)](https://github.com/XAMPPRocky/tokei)
 
