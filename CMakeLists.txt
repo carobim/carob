@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.2...3.22)
+cmake_minimum_required(VERSION 2.8.2...3.23)
 #https://cmake.org/cmake/help/v2.8.2/cmake.html
 
 # CMake 2.4.0 or earlier (<= 2006/04/18)
