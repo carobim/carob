@@ -2,7 +2,6 @@
 
 #include "os/mutex.h"
 #include "os/os.h"
-#include "tiles/client-conf.h"
 #include "tiles/window.h"
 #include "util/assert.h"
 #include "util/compiler.h"
@@ -16,8 +15,6 @@
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
 #    include "os/mac/gui.h"
 #endif
-
-static LogVerbosity verb = NORMAL;
 
 static Time startTime;
 
@@ -62,58 +59,49 @@ logInit() noexcept {
 }
 
 void
-logSetVerbosity(LogVerbosity v) noexcept {
-    verb = v;
-}
-
-void
 logInfo(StringView domain, StringView msg) noexcept {
-    if (verb > NORMAL) {
-        LockGuard lock(stdoutMutex);
+    LockGuard lock(stdoutMutex);
 
-        //setTermColor(TC_GREEN, Stdout);
-        sout << makeTimestamp() << ' ';
+    //setTermColor(TC_GREEN, Stdout);
+    sout << makeTimestamp() << ' ';
 
-        //setTermColor(TC_YELLOW, Stdout);
-        sout << "Info [" << domain << ']';
+    //setTermColor(TC_YELLOW, Stdout);
+    sout << "Info [" << domain << ']';
 
-        //setTermColor(TC_RESET, Stdout);
-        sout << " - " << chomp(msg) << '\n';
+    //setTermColor(TC_RESET, Stdout);
+    sout << " - " << chomp(msg) << '\n';
 
-        sout << Flush();
-    }
+    sout << Flush();
 }
 
 void
 logErr(StringView domain, StringView msg) noexcept {
-    if (verb > QUIET) {
-        {
-            LockGuard lock(stdoutMutex);
+    {
+        LockGuard lock(stdoutMutex);
 
-            //setTermColor(TC_GREEN, Stderr);
-            serr << makeTimestamp() << ' ';
+        //setTermColor(TC_GREEN, Stderr);
+        serr << makeTimestamp() << ' ';
 
-            //setTermColor(TC_RED, Stderr);
-            String s = String() << "Error [" << domain << "]";
-            serr << "Error [" << domain << ']';
+        //setTermColor(TC_RED, Stderr);
+        String s = String() << "Error [" << domain << "]";
+        serr << "Error [" << domain << ']';
 
-            //setTermColor(TC_RESET, Stderr);
-            serr << " - " << chomp(msg) << '\n';
+        //setTermColor(TC_RESET, Stderr);
+        serr << " - " << chomp(msg) << '\n';
 
-            serr << Flush();
-        }
+        serr << Flush();
+    }
 
-        String s = String() << "Error [" << domain << "] - " << chomp(msg);
+    String s = String() << "Error [" << domain << "] - " << chomp(msg);
 
 #if MSVC
-        wMessageBox("Carob - Error", s);
+    wMessageBox("Carob - Error", s);
 #endif
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
-        macMessageBox(StringView("Carob - Error"), s);
+    macMessageBox(StringView("Carob - Error"), s);
 #endif
 
-        debugger();
-    }
+    debugger();
 }
 
 #if MSVC
@@ -152,29 +140,4 @@ logFatal(StringView domain, StringView msg) noexcept {
     debugger();
 
     exitProcess(1);
-}
-
-void
-logReportVerbosityOnStartup() noexcept {
-    LockGuard lock(stdoutMutex);
-
-    StringView verbString;
-    switch (confVerbosity) {
-    case QUIET:
-        verbString = "QUIET";
-        break;
-    case NORMAL:
-        verbString = "NORMAL";
-        break;
-    case VERBOSE:
-        verbString = "VERBOSE";
-        break;
-    }
-
-    //setTermColor(TC_GREEN, Stdout);
-    sout << makeTimestamp() << ' ';
-
-    //setTermColor(TC_RESET, Stdout);
-    sout << "Reporting engine messages in " << verbString << " mode.\n"
-         << Flush();
 }

@@ -12,7 +12,6 @@
 //! Game Movement Mode
 enum MoveMode { TURN, TILE, NOTILE };
 
-extern LogVerbosity confVerbosity;
 extern MoveMode confMoveMode;
 extern ivec2 confWindowSize;
 extern bool confFullscreen;

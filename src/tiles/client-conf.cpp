@@ -6,7 +6,6 @@
 #include "util/json.h"
 #include "util/string.h"
 
-LogVerbosity confVerbosity = VERBOSE;
 MoveMode confMoveMode;
 ivec2 confWindowSize = {640, 480};
 bool confFullscreen = false;
@@ -30,27 +29,6 @@ confParse(StringView filename) noexcept {
     }
 
     JsonValue root = doc.root;
-
-    JsonValue engineValue = root["engine"];
-    if (engineValue.isObject()) {
-        JsonValue verbosityValue = engineValue["verbosity"];
-        if (verbosityValue.isString()) {
-            StringView verbosity = verbosityValue.toString();
-            if (verbosity == "quiet") {
-                confVerbosity = QUIET;
-            }
-            else if (verbosity == "normal") {
-                confVerbosity = NORMAL;
-            }
-            else if (verbosity == "verbose") {
-                confVerbosity = VERBOSE;
-            }
-            else {
-                logErr(filename,
-                       "Unknown value for \"engine.verbosity\", using default");
-            }
-        }
-    }
 
     JsonValue windowValue = root["window"];
     if (windowValue.isObject()) {

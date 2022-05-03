@@ -40,6 +40,7 @@ main() noexcept {
     if (!logInit()) {
         return 1;
     }
+    logInfo("Main", String() << "Starting " << CAROB_RELEASE_VERSION);
 
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
     macSetWorkingDirectory();
@@ -49,10 +50,6 @@ main() noexcept {
     threadDisableTimerCoalescing();
 
     confParse(CLIENT_CONF_PATH);
-
-    logSetVerbosity(confVerbosity);
-    logInfo("Main", String() << "Starting " << CAROB_RELEASE_VERSION);
-    logReportVerbosityOnStartup();
 
     windowCreate();
     imageInit();

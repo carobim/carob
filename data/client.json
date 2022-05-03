@@ -1,8 +1,4 @@
 {
-	"engine": {
-		"verbosity": "verbose",
-		"halting": "fatal"
-	},
 	"window": {
 		"width": 720,
 		"height": 480,
