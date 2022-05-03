@@ -7,12 +7,12 @@ sources:
 - https://github.com/carobim/carob.git
 tasks:
 - cmake: |
-    cd Tsunagari
+    cd carob
     mkdir build
     cd build
     cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
 - samu: |
-    cd Tsunagari
+    cd carob
     cd build
     samu
-- test: Tsunagari/build/units
+- test: carob/build/units
