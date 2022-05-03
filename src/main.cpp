@@ -16,7 +16,7 @@
 #    include "os/windows/windows.h"
 #endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
 #    include "os/mac/gui.h"
 #endif
 
