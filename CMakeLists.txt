@@ -67,6 +67,9 @@ endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
     # Assume that CMake >= 2.8.8 when Clang is used.
     set(CLANG ${CMAKE_CXX_COMPILER_VERSION})
+    if(NOT CLANG VERSION_LESS 11.0)
+        set(CLANG_GTE_11 1)
+    endif()
 endif()
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
     set(GCC ${CMAKE_CXX_COMPILER_VERSION})
@@ -855,7 +858,10 @@ if(GCC AND GCC_GTE_47)
     add_c_flag("-Wunused-variable")
     add_cxx_flag("-Wunused-variable")
 endif()
-
+# Disable warnings
+if(CLANG_GTE_11)
+    add_cxx_flag(-Wno-c++17-compat-mangling)
+endif()
 # Disable warnings when making old OS X builds since we don't use libstdc++
 #if(APPLE AND CLANG)
 #    add_cxx_flag("-Wno-stdlibcxx-not-found")
