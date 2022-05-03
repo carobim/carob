@@ -3,7 +3,6 @@
 #include "tiles/client-conf.h"
 #include "tiles/images.h"
 #include "tiles/log.h"
-#include "tiles/resources.h"
 #include "tiles/window.h"
 #include "tiles/world.h"
 #include "util/compiler.h"
