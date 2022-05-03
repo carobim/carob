@@ -1,4 +1,4 @@
-# Tsunagari Tile Engine
+# Carob
 
 | BUILD      | STATUS                                                                                                                                                                            |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -11,10 +11,10 @@
 
 [![LoC](https://tokei.rs/b1/github/TsunagariEngine/Tsunagari?category=code)](https://github.com/XAMPPRocky/tokei)
 
-Tsunagari is a tiling game engine and C++ runtime. It compiles quickly into
-small and fast binaries with minimal runtime dependencies.
+Carob is a tiling game engine and C++ runtime. It compiles quickly into small
+and fast binaries with minimal runtime dependencies.
 
-Building Tsunagari requires:
+Building Carob requires:
 
 - Clang 3.0+, GCC 4.4+, or MSVC 2010+
 - CMake 2.8.2+
