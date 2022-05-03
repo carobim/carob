@@ -4,7 +4,7 @@ packages:
 - cmake
 - ninja
 sources:
-- https://github.com/TsunagariEngine/Tsunagari.git
+- https://github.com/carobim/carob.git
 tasks:
 - cmake: |
     cd Tsunagari
