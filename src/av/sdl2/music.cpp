@@ -159,6 +159,3 @@ musicWorkerResume() noexcept {
         Mix_ResumeMusic();
     }
 }
-
-void
-musicWorkerGarbageCollect() noexcept { }

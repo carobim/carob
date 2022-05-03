@@ -15,7 +15,4 @@ musicWorkerPause() noexcept;
 void
 musicWorkerResume() noexcept;
 
-void
-musicWorkerGarbageCollect() noexcept;
-
 #endif  // SRC_TILES_MUSIC_WORKER_H_

@@ -7,12 +7,5 @@
 		"width": 720,
 		"height": 480,
 		"fullscreen": false
-	},
-	"audio": {
-		"musicvolume": 100,
-		"soundvolume": 100
-	},
-	"cache": {
-		"ttl": 300
 	}
 }

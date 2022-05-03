@@ -94,9 +94,4 @@ worldRestoreKeys() noexcept;
 void
 worldRunAreaLoadScript(Area* area) noexcept;
 
-//! Expunge old resources cached in memory. Decisions on which are
-//! removed and which are kept are based on the global Conf struct.
-void
-worldGarbageCollect() noexcept;
-
 #endif  // SRC_TILES_WORLD_H_

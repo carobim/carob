@@ -16,13 +16,8 @@ extern LogVerbosity confVerbosity;
 extern MoveMode confMoveMode;
 extern ivec2 confWindowSize;
 extern bool confFullscreen;
-extern int confMusicVolume;
-extern int confSoundVolume;
-extern Time confCacheTTL;
-extern int confPersistInit;
-extern int confPersistCons;
 
-bool
+void
 confParse(StringView filename) noexcept;
 
 #endif  // SRC_TILES_CLIENT_CONF_H_

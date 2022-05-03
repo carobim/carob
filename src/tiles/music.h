@@ -31,8 +31,4 @@ musicPause() noexcept;
 void
 musicResume() noexcept;
 
-//! Free music not recently played.
-void
-musicGarbageCollect() noexcept;
-
 #endif  // SRC_TILES_MUSIC_H_

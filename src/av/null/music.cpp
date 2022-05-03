@@ -12,6 +12,3 @@ void
 musicWorkerPause() noexcept { }
 void
 musicWorkerResume() noexcept { }
-
-void
-musicWorkerGarbageCollect() noexcept { }

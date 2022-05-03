@@ -5,13 +5,11 @@
 #include "tiles/area.h"
 #include "tiles/client-conf.h"
 #include "tiles/display-list.h"
-#include "tiles/images.h"
 #include "tiles/log.h"
 #include "tiles/music.h"
 #include "tiles/overlay.h"
 #include "tiles/player.h"
 #include "tiles/resources.h"
-#include "tiles/sounds.h"
 #include "tiles/viewport.h"
 #include "tiles/window.h"
 #include "util/compiler.h"
@@ -233,13 +231,4 @@ worldRestoreKeys() noexcept {
             }
         }
     }
-}
-
-void
-worldGarbageCollect() noexcept {
-    Time latestPermissibleUse = total - confCacheTTL * 1000;
-
-    imagesPrune(latestPermissibleUse);
-    musicGarbageCollect();
-    soundsPrune(latestPermissibleUse);
 }

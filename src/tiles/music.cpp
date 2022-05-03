@@ -28,9 +28,3 @@ musicResume() noexcept {
     // JobsEnqueue([]() { musicWorkerResume(); });
     musicWorkerResume();
 }
-
-void
-musicGarbageCollect() noexcept {
-    // JobsEnqueue([]() { musicWorkerGarbageCollect(); });
-    musicWorkerGarbageCollect();
-}
