@@ -1,4 +1,3 @@
-#include "config.h"
 #include "data/data-world.h"
 #include "os/thread.h"
 #include "tiles/client-conf.h"
@@ -40,7 +39,6 @@ main() noexcept {
     if (!logInit()) {
         return 1;
     }
-    logInfo("Main", String() << "Starting " << CAROB_RELEASE_VERSION);
 
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
     macSetWorkingDirectory();
@@ -49,7 +47,7 @@ main() noexcept {
     // TODO: Use CVDisplayLink and remove this.
     threadDisableTimerCoalescing();
 
-    confParse(CLIENT_CONF_PATH);
+    confParse("./client.json");
 
     windowCreate();
     imageInit();

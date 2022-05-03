@@ -1,6 +1,5 @@
 #include "tiles/client-conf.h"
 
-#include "config.h"
 #include "os/os.h"
 #include "util/compiler.h"
 #include "util/json.h"
