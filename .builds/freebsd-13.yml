@@ -1,4 +1,4 @@
-# Sourcehut manifest.
+# https://man.sr.ht/builds.sr.ht/compatibility.md
 image: freebsd/13.x
 packages:
 - cmake

@@ -1,4 +1,4 @@
-# Sourcehut manifest.
+# https://man.sr.ht/builds.sr.ht/compatibility.md
 image: netbsd/9.x
 packages:
 - cmake
