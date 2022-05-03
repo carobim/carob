@@ -16,14 +16,8 @@ DataArea*
 dataWorldArea(StringView areaName) noexcept;
 
 // Engine parameters set by world's author.
-extern StringView dataWorldName;
-extern StringView dataWorldAuthor;
-extern StringView dataWorldVersion;
-
 extern enum MoveMode dataWorldMoveMode;
 extern fvec2 dataWorldViewportResolution;
-extern I32 dataWorldInputPersistDelayInitial;
-extern I32 dataWorldInputPersistDelayConsecutive;
 extern StringView dataWorldStartArea;
 extern StringView dataWorldPlayerFile;
 extern StringView dataWorldPlayerStartPhase;

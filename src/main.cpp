@@ -67,8 +67,6 @@ main() noexcept {
         }
     }
 
-    windowSetCaption(dataWorldName);
-
     windowMainLoop();
 
     return 0;
