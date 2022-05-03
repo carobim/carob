@@ -7,7 +7,7 @@
 #include "util/int.h"
 #include "util/string-view.h"
 
-//! Engine-wide user-confurable values.
+//! Engine-wide user-configurable values.
 
 //! Game Movement Mode
 enum MoveMode { TURN, TILE, NOTILE };
