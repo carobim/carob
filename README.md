@@ -11,8 +11,8 @@
 
 [![LoC](https://tokei.rs/b1/github/carobim/carob?category=code)](https://github.com/XAMPPRocky/tokei)
 
-Carob is a tiling game engine and C++ runtime. It compiles quickly into small
-and fast binaries with minimal runtime dependencies.
+Carob is a C++ runtime. It compiles quickly into small and fast binaries with
+minimal runtime dependencies.
 
 Building Carob requires:
 
@@ -37,7 +37,7 @@ It supports the following CPU architectures:
 - aarch64
 - armelhf
 
-For game engine builds it also requires:
+Carob also contains a tiling game engine, for which builds also requires:
 
 - SDL2 and SDL2\_mixer
 
