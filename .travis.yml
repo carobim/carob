@@ -130,7 +130,7 @@ jobs:
 #    - CMAKE_OPTS='-DAV_SDL2=On -DUSE_SDL2_PKGCONFIG=Off -DSDL2_LIBRARY_DIRS=$HOME/lib -DSDL2_LIBRARIES=SDL2 -DSDL2_mixer_LIBRARY_DIRS=$HOME/lib -DSDL2_mixer_LIBRARIES=SDL2_mixer'
 #    <<: *script
   - name: 12 Monterey null
-    osx_image: xcode13.2
+    osx_image: xcode13.3
     script:
     - |
       mkdir build
