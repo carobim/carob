@@ -6,8 +6,8 @@ on: [push]
 
 jobs:
   macos_12_monterey:
-    name: macOS 12.0 Monterey
-    runs-on: macos-12.0
+    name: macOS 12 Monterey
+    runs-on: macos-12
     steps:
       - name: Checkout
         uses: actions/checkout@v2
