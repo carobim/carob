@@ -52,10 +52,9 @@ makeTimestamp() noexcept {
     return s2;
 }
 
-bool
+void
 logInit() noexcept {
     startTime = windowTime();
-    return true;
 }
 
 void

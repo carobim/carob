@@ -9,7 +9,7 @@ class DataArea;
 #include "util/string-view.h"
 
 //! After the engine has booted, initialize the world.
-bool
+void
 dataWorldInit() noexcept;
 
 DataArea*

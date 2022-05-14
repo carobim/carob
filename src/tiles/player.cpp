@@ -136,9 +136,5 @@ Player::arrived() noexcept {
 
 void
 Player::takeExit(Exit& exit) noexcept {
-    if (!worldFocusArea(exit.area, exit.coords)) {
-        // Roll back movement if exit failed to open.
-        setTileCoords(fromCoord);
-        logErr("Exit", String() << exit.area << ": failed to load properly");
-    }
+    worldFocusArea(exit.area, exit.coords);
 }

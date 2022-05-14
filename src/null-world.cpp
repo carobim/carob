@@ -17,7 +17,5 @@ vicoord dataWorldStartCoords = {0, 0, 0};
 
 StringView dataWorldDatafile = "./null.world";
 
-bool
-dataWorldInit() noexcept {
-    return true;
-}
+void
+dataWorldInit() noexcept { }

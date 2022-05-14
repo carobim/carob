@@ -35,9 +35,7 @@ main() noexcept {
 
     initRandom();
 
-    if (!logInit()) {
-        return 1;
-    }
+    logInit();
 
 #if defined(__APPLE__) && (!defined(WINDOW_NULL) || !defined(AUDIO_NULL))
     macSetWorkingDirectory();
@@ -51,17 +49,11 @@ main() noexcept {
     windowCreate();
     imageInit();
 
-    if (!dataWorldInit()) {
-        logFatal("Main", "Data World initialization");
-        return 1;
-    }
+    dataWorldInit();
 
     {
         TimeMeasure m("Constructed world");
-        if (!worldInit()) {
-            logFatal("Main", "World initialization");
-            return 1;
-        }
+        worldInit();
     }
 
     windowMainLoop();

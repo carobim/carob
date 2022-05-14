@@ -35,7 +35,7 @@ static I32 paused = 0;
 static Keys keyStates[10];
 static Size numKeyStates = 0;
 
-bool
+void
 worldInit() noexcept {
     alive = true;
 
@@ -43,18 +43,13 @@ worldInit() noexcept {
 
     if (!player.init(dataWorldPlayerFile, dataWorldPlayerStartPhase)) {
         logFatal("World", "failed to load player");
-        return false;
+        return;
     }
 
-    if (!worldFocusArea(dataWorldStartArea, dataWorldStartCoords)) {
-        logFatal("World", "failed to load initial Area");
-        return false;
-    }
+    worldFocusArea(dataWorldStartArea, dataWorldStartCoords);
 
     viewportSetSize(dataWorldViewportResolution);
     viewportTrackEntity(&player);
-
-    return true;
 }
 
 Time
@@ -138,28 +133,22 @@ worldTurn() noexcept {
     }
 }
 
-bool
+void
 worldFocusArea(StringView filename, vicoord playerPos) noexcept {
     Area** cachedArea = areas.tryAt(filename);
     if (cachedArea) {
         Area* area = *cachedArea;
         worldFocusArea(area, playerPos);
-        return true;
+        return;
     }
 
     Area* newArea = makeAreaFromJSON(&player, filename);
-    if (!newArea) {
-        return false;
-    }
+    assert_(newArea);
 
-    if (!newArea->ok) {
-        return false;
-    }
+    assert_(newArea->ok);
 
     DataArea* dataArea = dataWorldArea(filename);
-    if (!dataArea) {
-        return false;
-    }
+    assert_(dataArea);
 
     dataArea->area = newArea;  // FIXME: Pass Area by parameter, not
                                // member variable so we can avoid this
@@ -167,8 +156,6 @@ worldFocusArea(StringView filename, vicoord playerPos) noexcept {
     areas[filename] = newArea;
 
     worldFocusArea(newArea, playerPos);
-
-    return true;
 }
 
 void

@@ -182,8 +182,7 @@ parsePhase(Entity* e,
         assert_(fps != 0.0f);
 
         Vector<Image> images;
-        for (JsonIterator node = begin(framesValue);
-             node != end(framesValue);
+        for (JsonIterator node = begin(framesValue); node != end(framesValue);
              ++node) {
             JsonValue frameValue_ = node->value;
 

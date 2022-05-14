@@ -20,7 +20,7 @@ struct DisplayList;
 /**
  * Initialize the world for use.
  */
-bool
+void
 worldInit() noexcept;
 
 /**
@@ -78,7 +78,7 @@ worldTurn() noexcept;
  * Switch the game to a new Area, moving the player to the specified
  * position in the Area.
  */
-bool
+void
 worldFocusArea(StringView filename, vicoord playerPos) noexcept;
 void
 worldFocusArea(Area* area, vicoord playerPos) noexcept;

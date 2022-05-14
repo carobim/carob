@@ -5,7 +5,7 @@
 #include "util/string-view.h"
 
 // Initialize the clock for log timestamps.
-bool
+void
 logInit() noexcept;
 
 // Log an info message to the console if verbosity is V_VERBOSE.
