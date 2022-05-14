@@ -232,11 +232,11 @@ get_filename_component(HERE "${CMAKE_CURRENT_LIST_FILE}" PATH)
 #
 
 set(CAROB_SOURCES ${CAROB_SOURCES}
-    ${HERE}/src/main.cpp
+    ${HERE}/src/tiles/main.cpp
 )
 
 set(NULL_WORLD_SOURCES ${NULL_WORLD_SOURCES}
-    ${HERE}/src/null-world.cpp
+    ${HERE}/src/tiles/null-world.cpp
 )
 set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/pack/main.cpp
