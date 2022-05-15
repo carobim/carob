@@ -238,6 +238,12 @@ set(CAROB_SOURCES ${CAROB_SOURCES}
 set(NULL_WORLD_SOURCES ${NULL_WORLD_SOURCES}
     ${HERE}/src/tiles/null-world.cpp
 )
+
+set(DEMO_SOURCES ${DEMO_SOURCES}
+    ${HERE}/src/demo/main.cpp
+    ${HERE}/src/demo/world.cpp
+)
+
 set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/pack/main.cpp
 )
@@ -708,10 +714,12 @@ if(UTIL_ONLY)
 else()
     add_library(carob ${CAROB_SOURCES})
     add_executable(null-world ${NULL_WORLD_SOURCES})
+    add_executable(demo ${DEMO_SOURCES})
     add_executable(pack-tool ${PACK_TOOL_SOURCES})
     add_executable(units ${TEST_SOURCES})
 
     target_link_libraries(null-world carob)
+    target_link_libraries(demo carob)
 endif()
 
 include_directories(src)
@@ -727,6 +735,7 @@ if(CMAKE_GTE_38)
     else()
         set(ALL_SOURCES ${CAROB_SOURCES}
                         ${NULL_WORLD_SOURCES}
+                        ${DEMO_SOURCES}
                         ${PACK_TOOL_SOURCES}
                         ${TEST_SOURCES}
         )
