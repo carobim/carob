@@ -1,4 +1,4 @@
-Copyright (c) 2011-2016 Michael Reiley
+Copyright (c) 2011-2016 Sei Satzparad
 Copyright (c) 2011-2022 Paul Merrill
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
