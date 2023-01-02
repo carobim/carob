@@ -111,10 +111,10 @@ jobs:
           ninja-build
       - run: build/units
 
-  # Has CMake 3.22, GCC 12, Samurai 1.1
-  fedora_36:
+  # Has CMake 3.25, GCC 12, Samurai 1.9
+  fedora_38:
     docker:
-      - image: fedora:36
+      - image: fedora:38
     steps:
       - run: |
           dnf install -y cmake gcc-c++ samurai
@@ -242,7 +242,7 @@ workflows:
       - debian_7_wheezy
       - debian_11_bullseye
       - fedora_20
-      - fedora_36
+      - fedora_38
       - nix_2_5_1
       - rocky_8
       - ubuntu_12_04_precise
