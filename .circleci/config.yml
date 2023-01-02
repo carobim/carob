@@ -183,10 +183,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.22, GCC 11, Ninja 1.10
-  ubuntu_22_04_jammy:
+  # Has CMake 3.24, GCC 12, Ninja 1.11
+  ubuntu_22_10_kinetic:
     docker:
-      - image: ubuntu:22.04
+      - image: ubuntu:22.10
     steps:
       - run: |
           apt-get update &&
@@ -246,6 +246,6 @@ workflows:
       - nix_2_5_1
       - rocky_8
       - ubuntu_12_04_precise
-      - ubuntu_22_04_jammy
+      - ubuntu_22_10_kinetic
       - void
       - void_musl
