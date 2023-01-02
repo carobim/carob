@@ -151,10 +151,10 @@ jobs:
           cd build &&
           nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./units'
 
-  # Has CMake 3.18, GCC 8
-  rocky_8:
+  # Has CMake 3.20, GCC 11
+  rocky_9:
     docker:
-      - image: rockylinux/rockylinux:8
+      - image: rockylinux:9
     steps:
       - run: |
           dnf install -y cmake gcc-c++ make
@@ -244,7 +244,7 @@ workflows:
       - fedora_20
       - fedora_38
       - nix_2_5_1
-      - rocky_8
+      - rocky_9
       - ubuntu_12_04_precise
       - ubuntu_22_10_kinetic
       - void
