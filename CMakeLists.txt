@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.2...3.23)
+cmake_minimum_required(VERSION 2.8.2...3.25)
 #https://cmake.org/cmake/help/v2.8.2/cmake.html
 
 # CMake 2.4.0 or earlier (<= 2006/04/18)
@@ -139,17 +139,17 @@ option(AV_SDL2_GL "Use SDL2 for audio and window, and OpenGL for graphics")
 option(AV_EM "Use Emscripten for audio and video output")
 option(AV_CUSTOM "Select the AV backend options manually")
 option(STATIC_SDL "Use a static SDL2 library at chosen location")
+option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
+option(CURL "Enable curl for HTTP")
+
+option(BUILD_SHARED_LIBS "Build Carob as a shared library")
+option(STATIC_LINK "Build statically linked binaries")
 if(APPLE)
     option(UNIVERSAL "Build an AMD64/ARM64 universal binary")
 endif()
 if(CLANG OR GCC)
     option(NO_LTO "Disable link time optimization")
 endif()
-
-option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
-
-option(BUILD_SHARED_LIBS "Build Carob as a shared library")
-option(STATIC_LINK "Build statically linked binaries")
 
 
 #
@@ -301,6 +301,13 @@ set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/data/data-area.h
     ${HERE}/src/data/data-world.h
 )
+
+if(CURL)
+    set(UTIL_SOURCES ${UTIL_SOURCES}
+        ${HERE}/src/net/http.h
+        ${HERE}/src/net/http_curl.cpp
+    )
+endif()
 
 set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/os/c.h
@@ -1244,6 +1251,10 @@ endif()
 #    link_directories(${SDL2_image_LIBRARY_DIRS})
 #    target_link_libraries(carob ${SDL2_image_LIBRARIES})
 #endif()
+
+if(CURL)
+    target_link_libraries(cutil curl)
+endif()
 
 # Share variables with parent
 if(IS_SUBPROJECT)
