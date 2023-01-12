@@ -31,6 +31,20 @@ flush(State& state) noexcept {
     if (size == 0) {
         return;
     }
+    if (state.err) {
+        writeStderr(data, size);
+    }
+    else {
+        writeStdout(data, size);
+    }
+    buf.size -= size;
+
+    // The below is the old code, and it does not handle flushing without a newline.
+
+    /*
+    if (size == 0) {
+        return;
+    }
     if (data[size - 1] == '\n') {
         if (state.err) {
             writeStderr(data, size);
@@ -51,6 +65,7 @@ flush(State& state) noexcept {
         memmove(data, data + len, size - len);
         buf.size -= len;
     }
+    */
 }
 
 Output::Output(void* data) noexcept : data(data) { }
