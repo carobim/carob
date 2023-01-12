@@ -137,6 +137,14 @@ StringView::rfind(StringView needle) const noexcept {
     return SV_NOT_FOUND;
 }
 
+bool
+StringView::startsWith(StringView needle) const noexcept {
+    if (size < needle.size) {
+        return false;
+    }
+    return memcmp(data, needle.data, needle.size) == 0;
+}
+
 StringView
 StringView::substr(const Size from) const noexcept {
     assert_(from <= this->size);

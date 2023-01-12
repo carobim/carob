@@ -46,6 +46,9 @@ class StringView {
     StringPosition
     rfind(StringView needle) const noexcept;
 
+    bool
+    startsWith(StringView needle) const noexcept;
+
     StringView
     substr(Size from) const noexcept;
     StringView
