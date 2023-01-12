@@ -751,6 +751,13 @@ endmacro()
 macro(add_cxx_flag text)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${text}")
 endmacro()
+macro(add_c_and_cxx_flag text)
+    add_c_flag("${text}")
+    add_cxx_flag("${text}")
+endmacro()
+macro(add_link_flag text)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${text}")
+endmacro()
 
 if(AUDIO_NULL)
     add_cxx_flag("-DAUDIO_NULL")
@@ -969,12 +976,10 @@ endif()
 # Enable color within compiler's output
 if(NOT DEFINED ENV{CI})
     if(NINJA AND CLANG)
-        add_c_flag("-fcolor-diagnostics")
-        add_cxx_flag("-fcolor-diagnostics")
+        add_c_and_cxx_flag("-fcolor-diagnostics")
     endif()
     if(NINJA AND GCC_GTE_49)
-        add_c_flag("-fdiagnostics-color=always")
-        add_cxx_flag("-fdiagnostics-color=always")
+        add_c_and_cxx_flag("-fdiagnostics-color=always")
     endif()
 endif()
 
@@ -987,10 +992,7 @@ if(APPLE)
 endif()
 
 if(UNIVERSAL)
-    add_c_flag("-arch x86_64 -arch arm64")
-    set(CMAKE_C_LINK_FLAGS "${CMAKE_C_LINK_FLAGS} -arch x86_64 -arch arm64")
-    add_cxx_flag("-arch x86_64 -arch arm64")
-    set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -arch x86_64 -arch arm64")
+    add_c_and_cxx_flag("-arch x86_64 -arch arm64")
 endif()
 
 # Share variables with parent
@@ -1035,8 +1037,8 @@ if(IS_SUBPROJECT)
         ${CMAKE_CXX_FLAGS_RELWITHDEBINFO}
         PARENT_SCOPE)
 
-    set(CMAKE_EXECUTABLE_SUFFIX
-        ${CMAKE_EXECUTABLE_SUFFIX}
+    set(CMAKE_OSX_DEPLOYMENT_TARGET
+        ${CMAKE_OSX_DEPLOYMENT_TARGET}
         PARENT_SCOPE)
 
     get_property(CAROB_INCLUDE_DIRECTORIES
@@ -1053,14 +1055,12 @@ endif()
 #
 
 if(CMAKE_OSX_SYSROOT)
-    set(CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} -L${CMAKE_OSX_SYSROOT}/usr/lib")
+    add_link_flag("-L${CMAKE_OSX_SYSROOT}/usr/lib")
 endif()
 
 if(STATIC_LINK)
     if(CLANG OR GCC)
-        set(CMAKE_EXE_LINKER_FLAGS
-            "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -static")
+        add_link_flag("-static")
     else()
         message(WARNING "Not sure how to statically link for this compiler")
     endif()
@@ -1103,13 +1103,11 @@ elseif(APPLE)
 endif()
 
 if(UNIVERSAL)
-    set(CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} -arch x86_64 -arch arm64")
+    add_link_flag("-arch x86_64 -arch arm64")
 endif()
 
 if(APPLE)
-    set(CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} --no-standard-libraries -lSystem")
+    add_link_flag("--no-standard-libraries -lSystem")
 endif()
 
 if(APPLE AND NOT WINDOW_NULL)
@@ -1177,13 +1175,13 @@ if(STATIC_SDL)
     if(APPLE)
         if(WINDOW_SDL2)
             # FIXME: Make these specific to libcarob.
-            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lobjc -Wl,-framework,Carbon -Wl,-framework,Cocoa -Wl,-framework,CoreVideo -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore")
+            add_link_flag("-lobjc -Wl,-framework,Carbon -Wl,-framework,Cocoa -Wl,-framework,CoreVideo -Wl,-framework,IOKit -Wl,-weak_framework,QuartzCore")
         endif()
         if(AUDIO_SDL2)
-            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-framework,AudioToolbox -Wl,-framework,CoreAudio")
+            add_link_flag("-Wl,-framework,AudioToolbox -Wl,-framework,CoreAudio")
         endif()
         if(RENDERER_SDL2)
-            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-weak_framework,Metal")
+            add_link_flag("-Wl,-weak_framework,Metal")
         endif()
     endif()
 elseif(SDL2)
@@ -1272,6 +1270,9 @@ if(IS_SUBPROJECT)
         PARENT_SCOPE)
     set(CMAKE_CXX_LINK_EXECUTABLE
         ${CMAKE_CXX_LINK_EXECUTABLE}
+        PARENT_SCOPE)
+    set(CMAKE_EXECUTABLE_SUFFIX
+        ${CMAKE_EXECUTABLE_SUFFIX}
         PARENT_SCOPE)
 endif()
 
