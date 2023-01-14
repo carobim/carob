@@ -302,6 +302,10 @@ set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/data/data-world.h
 )
 
+set(UTIL_SOURCES ${UTIL_SOURCES}
+    ${HERE}/src/net/html.cpp
+    ${HERE}/src/net/html.h
+)
 if(CURL)
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/net/http.h
