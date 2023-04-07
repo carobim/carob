@@ -207,7 +207,7 @@ jobs:
     steps:
       - run: |
           xbps-install -Suy xbps &&
-          xbps-install -y bash cmake gcc samurai
+          xbps-install -Sy bash cmake gcc samurai
       - checkout
       - run: |
           mkdir build &&
@@ -223,7 +223,7 @@ jobs:
     steps:
       - run: |
           xbps-install -Suy xbps &&
-          xbps-install -y cmake gcc samurai
+          xbps-install -Sy cmake gcc samurai
       - checkout
       - run: |
           mkdir build &&
