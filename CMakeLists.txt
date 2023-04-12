@@ -402,6 +402,7 @@ elseif(APPLE)
     set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/os/mac/c.h
         ${HERE}/src/os/mac/chrono.cpp
+        ${HERE}/src/os/mac/dir.cpp
         ${HERE}/src/os/mac/thread.cpp
         ${HERE}/src/os/mac/thread.h
         ${HERE}/src/os/unix/io.cpp
@@ -419,6 +420,7 @@ elseif(APPLE)
     endif()
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/mac/c.h
+        ${HERE}/src/os/mac/dir.cpp
         ${HERE}/src/os/mac/thread.cpp
         ${HERE}/src/os/mac/thread.h
         ${HERE}/src/os/unix/condition-variable.h
@@ -437,6 +439,7 @@ elseif(APPLE)
     )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/mac/c.h
+        ${HERE}/src/os/mac/dir.cpp
         ${HERE}/src/os/mac/chrono.cpp
         ${HERE}/src/os/mac/thread.cpp
         ${HERE}/src/os/mac/thread.h
@@ -452,6 +455,7 @@ else()
     set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/chrono.cpp
+        ${HERE}/src/os/unix/dir.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
         ${HERE}/src/os/unix/mapped-file.cpp
@@ -462,6 +466,7 @@ else()
     set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
         ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/condition-variable.h
+        ${HERE}/src/os/unix/dir.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
         ${HERE}/src/os/unix/mapped-file.cpp
@@ -480,6 +485,7 @@ else()
         ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/chrono.cpp
         ${HERE}/src/os/unix/condition-variable.h
+        ${HERE}/src/os/unix/dir.cpp
         ${HERE}/src/os/unix/io.cpp
         ${HERE}/src/os/unix/io.h
         ${HERE}/src/os/unix/mapped-file.cpp

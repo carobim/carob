@@ -70,6 +70,7 @@ struct dirent {
 };
 #define DT_DIR 4
 #define DT_REG 8
+#define DT_WHT 14
 
 // sys/errno.h
 int*
@@ -80,10 +81,13 @@ __error(void) noexcept;
 // sys/fcntl.h
 int
 open(const char*, int, ...) noexcept;
-#define O_RDONLY 0x000
-#define O_WRONLY 0x001
-#define O_CREAT  0x200
-#define O_TRUNC  0x400
+#define O_RDONLY    0x0000000
+#define O_WRONLY    0x0000001
+#define O_NONBLOCK  0x0000004
+#define O_CREAT     0x0000200
+#define O_TRUNC     0x0000400
+#define O_DIRECTORY 0x0100000
+#define O_CLOEXEC   0x1000000
 
 // sys/mman.h
 void*
