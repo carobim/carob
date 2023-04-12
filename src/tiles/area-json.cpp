@@ -834,7 +834,7 @@ AreaJSON::processObject(JsonValue obj) noexcept {
         StringView scriptName = onuseValue.toString();
         useScript =
                 reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
-                        dataArea->scripts.find(hash_(scriptName)));
+                        *dataArea->scripts.find(hash_(scriptName)));
     }
 
     if (exitValue.isString()) {
