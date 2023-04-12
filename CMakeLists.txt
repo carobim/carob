@@ -44,7 +44,7 @@ cmake_minimum_required(VERSION 2.8.2...3.25)
 project(carob C CXX)
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
-    set(CMAKE_BUILD_TYPE DEFAULT)
+    set(CMAKE_BUILD_TYPE Default)
 endif()
 
 
@@ -313,26 +313,10 @@ if(CURL)
     )
 endif()
 
-set(CAROB_SOURCES ${CAROB_SOURCES}
-    ${HERE}/src/os/c.h
-    ${HERE}/src/os/chrono.h
-    ${HERE}/src/os/mapped-file.h
-    ${HERE}/src/os/mutex.h
-    ${HERE}/src/os/thread.h
-    ${HERE}/src/os/os.h
-)
-set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-    ${HERE}/src/os/c.h
-    ${HERE}/src/os/condition-variable.h
-    ${HERE}/src/os/io.h
-    ${HERE}/src/os/mapped-file.h
-    ${HERE}/src/os/mutex.h
-    ${HERE}/src/os/os.h
-    ${HERE}/src/os/thread.h
-)
 set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/os/c.h
     ${HERE}/src/os/chrono.h
+    ${HERE}/src/os/condition-variable.h
     ${HERE}/src/os/mapped-file.h
     ${HERE}/src/os/mutex.h
     ${HERE}/src/os/os.h
@@ -340,45 +324,6 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
 )
 
 if(WIN32)
-    set(CAROB_SOURCES ${CAROB_SOURCES}
-        ${HERE}/src/os/memmove.cpp
-
-        # On MSVC2013 including this file results in a warning. In MSVC2015+
-        # omitting it results in an error.
-        ${HERE}/src/os/windows/c.cpp
-
-        ${HERE}/src/os/windows/c.h
-        ${HERE}/src/os/windows/chrono.cpp
-        ${HERE}/src/os/windows/io.cpp
-        ${HERE}/src/os/windows/io.h
-        ${HERE}/src/os/windows/mapped-file.cpp
-        ${HERE}/src/os/windows/mapped-file.h
-        ${HERE}/src/os/windows/windows.cpp
-        ${HERE}/src/os/windows/windows.h
-    )
-    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-        ${HERE}/src/os/memmove.cpp
-        ${HERE}/src/os/windows/c.cpp
-        ${HERE}/src/os/windows/c.h
-        ${HERE}/src/os/windows/condition-variable.h
-        ${HERE}/src/os/windows/io.cpp
-        ${HERE}/src/os/windows/io.h
-        ${HERE}/src/os/windows/mapped-file.cpp
-        ${HERE}/src/os/windows/mapped-file.h
-        ${HERE}/src/os/windows/mutex.h
-        ${HERE}/src/os/windows/thread.h
-        ${HERE}/src/os/windows/windows.cpp
-        ${HERE}/src/os/windows/windows.h
-    )
-    set(TEST_SOURCES ${TEST_SOURCES}
-        ${HERE}/src/os/memmove.cpp
-        ${HERE}/src/os/windows/c.cpp
-        ${HERE}/src/os/windows/c.h
-        ${HERE}/src/os/windows/io.cpp
-        ${HERE}/src/os/windows/io.h
-        ${HERE}/src/os/windows/windows.cpp
-        ${HERE}/src/os/windows/windows.h
-    )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/memmove.cpp
 
@@ -399,48 +344,16 @@ if(WIN32)
         ${HERE}/src/os/windows/windows.h
     )
 elseif(APPLE)
-    set(CAROB_SOURCES ${CAROB_SOURCES}
-        ${HERE}/src/os/mac/c.h
-        ${HERE}/src/os/mac/chrono.cpp
-        ${HERE}/src/os/mac/dir.cpp
-        ${HERE}/src/os/mac/thread.cpp
-        ${HERE}/src/os/mac/thread.h
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
-        ${HERE}/src/os/unix/mapped-file.cpp
-        ${HERE}/src/os/unix/mapped-file.h
-        ${HERE}/src/os/unix/mutex.h
-        ${HERE}/src/os/unix/unix.cpp
-    )
     if(NOT WINDOW_NULL OR NOT AUDIO_NULL)
         set(CAROB_SOURCES ${CAROB_SOURCES}
             ${HERE}/src/os/mac/gui.mm
             ${HERE}/src/os/mac/gui.h
     )
     endif()
-    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-        ${HERE}/src/os/mac/c.h
-        ${HERE}/src/os/mac/dir.cpp
-        ${HERE}/src/os/mac/thread.cpp
-        ${HERE}/src/os/mac/thread.h
-        ${HERE}/src/os/unix/condition-variable.h
-        ${HERE}/src/os/unix/mapped-file.cpp
-        ${HERE}/src/os/unix/mapped-file.h
-        ${HERE}/src/os/unix/mutex.h
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
-        ${HERE}/src/os/unix/unix.cpp
-    )
-    set(TEST_SOURCES ${TEST_SOURCES}
-        ${HERE}/src/os/mac/c.h
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
-        ${HERE}/src/os/unix/unix.cpp
-    )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/mac/c.h
-        ${HERE}/src/os/mac/dir.cpp
         ${HERE}/src/os/mac/chrono.cpp
+        ${HERE}/src/os/mac/dir.cpp
         ${HERE}/src/os/mac/thread.cpp
         ${HERE}/src/os/mac/thread.h
         ${HERE}/src/os/unix/condition-variable.h
@@ -452,35 +365,6 @@ elseif(APPLE)
         ${HERE}/src/os/unix/unix.cpp
     )
 else()
-    set(CAROB_SOURCES ${CAROB_SOURCES}
-        ${HERE}/src/os/linux/c.h
-        ${HERE}/src/os/unix/chrono.cpp
-        ${HERE}/src/os/unix/dir.cpp
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
-        ${HERE}/src/os/unix/mapped-file.cpp
-        ${HERE}/src/os/unix/mutex.h
-        ${HERE}/src/os/unix/thread.h
-        ${HERE}/src/os/unix/unix.cpp
-    )
-    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-        ${HERE}/src/os/linux/c.h
-        ${HERE}/src/os/unix/condition-variable.h
-        ${HERE}/src/os/unix/dir.cpp
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
-        ${HERE}/src/os/unix/mapped-file.cpp
-        ${HERE}/src/os/unix/mapped-file.h
-        ${HERE}/src/os/unix/mutex.h
-        ${HERE}/src/os/unix/thread.h
-        ${HERE}/src/os/unix/unix.cpp
-    )
-    set(TEST_SOURCES ${TEST_SOURCES}
-        ${HERE}/src/os/linux/c.h
-        ${HERE}/src/os/unix/io.cpp
-        ${HERE}/src/os/unix/io.h
-        ${HERE}/src/os/unix/unix.cpp
-    )
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/os/linux/c.h
         ${HERE}/src/os/unix/chrono.cpp
@@ -564,7 +448,7 @@ set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/tiles/world.h
 )
 
-set(CAROB_SOURCES ${CAROB_SOURCES}
+set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/util/algorithm.h
     ${HERE}/src/util/align.h
     ${HERE}/src/util/assert.h
@@ -593,90 +477,14 @@ set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/util/new.cpp
     ${HERE}/src/util/new.h
     ${HERE}/src/util/pool.h
+    ${HERE}/src/util/queue.h
     ${HERE}/src/util/random.cpp
     ${HERE}/src/util/random.h
-    ${HERE}/src/util/string-view.cpp
-    ${HERE}/src/util/string-view.h
-    ${HERE}/src/util/string.cpp
-    ${HERE}/src/util/string.h
-    ${HERE}/src/util/string2.cpp
-    ${HERE}/src/util/string2.h
-    ${HERE}/src/util/transform.c
-    ${HERE}/src/util/transform.h
-    ${HERE}/src/util/vector.h
-)
-
-set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-    ${HERE}/src/util/align.h
-    ${HERE}/src/util/assert.h
-    ${HERE}/src/util/compiler.h
-    ${HERE}/src/util/fnv.cpp
-    ${HERE}/src/util/fnv.h
-    ${HERE}/src/util/hashtable.h
-    ${HERE}/src/util/int.h
-    ${HERE}/src/util/io.cpp
-    ${HERE}/src/util/io.h
-    ${HERE}/src/util/list.h
-    ${HERE}/src/util/move.h
-    ${HERE}/src/util/new.cpp
-    ${HERE}/src/util/new.h
-    ${HERE}/src/util/queue.h
     ${HERE}/src/util/sort.h
     ${HERE}/src/util/string-view.cpp
     ${HERE}/src/util/string-view.h
     ${HERE}/src/util/string.cpp
     ${HERE}/src/util/string.h
-    ${HERE}/src/util/vector.h
-)
-
-set(TEST_SOURCES ${TEST_SOURCES}
-    ${HERE}/src/util/assert.cpp
-    ${HERE}/src/util/assert.h
-    ${HERE}/src/util/compiler.h
-    ${HERE}/src/util/fnv.cpp
-    ${HERE}/src/util/fnv.h
-    ${HERE}/src/util/int.h
-    ${HERE}/src/util/io.cpp
-    ${HERE}/src/util/io.h
-    ${HERE}/src/util/string-view.cpp
-    ${HERE}/src/util/string-view.h
-    ${HERE}/src/util/string.cpp
-    ${HERE}/src/util/string.h
-)
-
-set(UTIL_SOURCES ${UTIL_SOURCES}
-    ${HERE}/src/util/align.h
-    ${HERE}/src/util/assert.h
-    ${HERE}/src/util/compiler.h
-    ${HERE}/src/util/fnv.cpp
-    ${HERE}/src/util/fnv.h
-    ${HERE}/src/util/function.h
-    ${HERE}/src/util/hash.cpp
-    ${HERE}/src/util/hash.h
-    ${HERE}/src/util/hashtable.h
-    ${HERE}/src/util/int.h
-    ${HERE}/src/util/io.cpp
-    ${HERE}/src/util/io.h
-    ${HERE}/src/util/jobs.cpp
-    ${HERE}/src/util/jobs.h
-    ${HERE}/src/util/json.cpp
-    ${HERE}/src/util/json.h
-    ${HERE}/src/util/likely.h
-    ${HERE}/src/util/list.h
-    ${HERE}/src/util/markable.h
-    ${HERE}/src/util/math2.h
-    ${HERE}/src/util/measure.cpp
-    ${HERE}/src/util/measure.h
-    ${HERE}/src/util/move.h
-    ${HERE}/src/util/new.cpp
-    ${HERE}/src/util/new.h
-    ${HERE}/src/util/pool.h
-    ${HERE}/src/util/random.cpp
-    ${HERE}/src/util/random.h
-    ${HERE}/src/util/string-view.cpp
-    ${HERE}/src/util/string-view.h
-    ${HERE}/src/util/string.cpp
-    ${HERE}/src/util/string.h
     ${HERE}/src/util/string2.cpp
     ${HERE}/src/util/string2.h
     ${HERE}/src/util/transform.c
@@ -684,33 +492,23 @@ set(UTIL_SOURCES ${UTIL_SOURCES}
     ${HERE}/src/util/vector.h
 )
 
-if(MSVC OR XCODE OR NOT CMAKE_GTE_31)
-    # MSVC 2017 and below, Xcode, and CMake 3.0 and below cannot vary source
-    # files by configuration.
+if(MSVC OR XCODE)
+    # MSVC 2017 and below and Xcode cannot vary source files by configuration.
+    set(UTIL_SOURCES ${UTIL_SOURCES}
+        ${HERE}/src/util/assert.cpp
+    )
+    # FIXME: Use a generator exrpression on MSVC 2019+ and CMake 3.1+.
+elseif(CMAKE_GTE_31)
     # https://cmake.org/cmake/help/latest/release/3.1.html#properties
-    set(CAROB_SOURCES ${CAROB_SOURCES}
-        ${HERE}/src/util/assert.cpp
-    )
-    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-        ${HERE}/src/util/assert.cpp
-    )
-    set(TEST_SOURCES ${TEST_SOURCES}
-        ${HERE}/src/util/assert.cpp
-    )
-else()
-    set(CAROB_SOURCES ${CAROB_SOURCES}
+    set(UTIL_SOURCES ${UTIL_SOURCES}
         $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
     )
-    set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
-        $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
-    )
-    set(TEST_SOURCES ${TEST_SOURCES}
-        $<${IS_DEBUG}:${HERE}/src/util/assert.cpp>
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug" OR
+       CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    set(UTIL_SOURCES ${UTIL_SOURCES}
+        ${HERE}/src/util/assert.cpp
     )
 endif()
-set(UTIL_SOURCES ${UTIL_SOURCES}
-    ${HERE}/src/util/assert.cpp
-)
 
 
 #
@@ -723,12 +521,16 @@ if(UTIL_ONLY)
 
     add_library(cutil ${UTIL_SOURCES})
 else()
+    add_library(cutil ${UTIL_SOURCES})
     add_library(carob ${CAROB_SOURCES})
     add_executable(null-world ${NULL_WORLD_SOURCES})
     add_executable(pack-tool ${PACK_TOOL_SOURCES})
     add_executable(units ${TEST_SOURCES})
 
-    target_link_libraries(null-world carob)
+    target_link_libraries(carob)
+    target_link_libraries(null-world carob cutil)
+    target_link_libraries(pack-tool cutil)
+    target_link_libraries(units cutil)
 endif()
 
 include_directories(src)
