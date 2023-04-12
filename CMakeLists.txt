@@ -619,7 +619,16 @@ endif()
 
 if(CLANG OR GCC)
     add_c_flag("-nostdinc")
-    add_cxx_flag("-nostdinc -nostdinc++")
+    add_cxx_flag("-nostdinc")
+    if(NOT APPLE)
+        # Clang from Xcode 10 (based on LLVM 6.0.1) behaves differently from
+        # normal Clang 6.0.1. We should not pass -nostdinc++ when we already
+        # passed -nostdinc when using Xcode 10.0.
+        #
+        # On the other hand, Xcode 14.2 (based on LLVM 14.0.0) does not care if
+        # we also pass this flag.
+        add_cxx_flag("-nostdinc++")
+    endif()
 endif()
 
 # Disable C++ exceptions
