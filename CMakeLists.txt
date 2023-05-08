@@ -64,14 +64,46 @@ endif()
 # Compiler
 #
 
-if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     # Assume that CMake >= 2.8.8 when Clang is used.
     set(CLANG ${CMAKE_CXX_COMPILER_VERSION})
     if(NOT CLANG VERSION_LESS 6.0)
         set(CLANG_GTE_6 1)
     endif()
 endif()
-if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    # Assume that CMake >= 2.8.8 when AppleClang is used.
+    set(APPLE_CLANG ${CMAKE_CXX_COMPILER_VERSION})
+    set(CLANG 1)
+    # Xcode  4.6, AppleClang  4.2   == Clang  3.2
+    # Xcode  5.0, AppleClang  5.0   == Clang  3.3
+    # Xcode  5.1, AppleClang  5.1   == Clang  3.4
+    # Xcode  6.0, AppleClang  6.0   == Clang  3.5
+    # Xcode  6.3, AppleClang  6.1   == Clang  3.6
+    # Xcode  7.0, AppleClang  7.0   == Clang  3.7
+    # Xcode  7.3, AppleClang  7.3   == Clang  3.8
+    # Xcode  8.0, AppleClang  8.0   == Clang  3.9
+    # Xcode  9.0, AppleClang  9.0   == Clang  4
+    # Xcode  9.3, AppleClang  9.1   == Clang  5
+    # Xcode 10.0, AppleClang 10.0.0 == Clang  6
+    # Xcode 10.2, AppleClang 10.0.1 == Clang  7
+    # Xcode 11.0, AppleClang 11.0.0 == Clang  8
+    # Xcode 11.4, AppleClang 11.0.3 == Clang  9
+    # Xcode 12.0, AppleClang 12.0.0 == Clang 10
+    # Xcode 12.5, AppleClang 12.0.5 == Clang 11
+    # Xcode 13.0, AppleClang 13.0.0 == Clang 12
+    # Xcode 13.3, AppleClang 13.1.6 == Clang 13
+    # Xcode 14.0, AppleClang 14.0.0 == Clang 14
+    # Xcode 14.3, AppleClang 14.0.3 == Clang 15
+    if(NOT APPLE_CLANG VERSION_LESS 10.0)
+        set(CLANG_GTE_6 1)
+    endif()
+    if(NOT APPLE_CLANG VERSION_LESS 12.2)
+        # Contains the SDK for Big Sur, or higher.
+        set(APPLE_CLANG_GTE_12 1)
+    endif()
+endif()
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(GCC ${CMAKE_CXX_COMPILER_VERSION})
     if(NOT GCC)
         # CMake 2.8.7 or lower.
@@ -877,6 +909,10 @@ endif()
 
 if(CMAKE_OSX_SYSROOT)
     add_link_flag("-L${CMAKE_OSX_SYSROOT}/usr/lib")
+endif()
+
+if(APPLE_CLANG_GTE_12)
+    add_link_flag("-isysroot ${CMAKE_OSX_SYSROOT}")
 endif()
 
 if(STATIC_LINK)
