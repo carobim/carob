@@ -384,14 +384,14 @@ Area::drawTiles(DisplayList* display, icube& tiles, I32 z) noexcept {
 
     float depth = grid.idx2depth[(Size)z];
 
-    I32 width = 16;
-    I32 height = 16;
+    I32 width = grid.tileDim.x;
+    I32 height = grid.tileDim.y;
 
     for (I32 y = tiles.y1; y < tiles.y2; y++) {
         for (I32 x = tiles.x1; x < tiles.x2; x++) {
             // We are certain the Tile exists.
             ivec3 coord = {x, y, z};
-            I32 type = grid.getTileType(coord);
+            U32 type = grid.getTileType(coord);
 
             if (type == 0) {
                 continue;
