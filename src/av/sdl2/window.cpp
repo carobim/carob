@@ -166,6 +166,8 @@ windowCreate(void) noexcept {
         if (sdl2Window == 0) {
             sdlDie("SDL2", "SDL_CreateWindow");
         }
+
+        SDL_EnableScreenSaver();
     }
 }
 

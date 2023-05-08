@@ -110,6 +110,8 @@ typedef struct {
 typedef void* SDL_GLContext;
 SDL_Window*
 SDL_CreateWindow(const char*, int, int, int, int, U32) noexcept;
+void
+SDL_EnableScreenSaver(void) noexcept;
 int
 SDL_GetCurrentDisplayMode(int, SDL_DisplayMode*) noexcept;
 int
