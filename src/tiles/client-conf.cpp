@@ -5,9 +5,11 @@
 #include "util/json.h"
 #include "util/string.h"
 
+extern fvec2 dataWorldViewportResolution;
+
 MoveMode confMoveMode;
-ivec2 confWindowSize = {640, 480};
-bool confFullscreen = false;
+ivec2 confWindowSize;
+bool confFullscreen;
 
 // Parse and process the client config file, and set configuration defaults for
 // missing options.
@@ -17,13 +19,16 @@ confParse(StringView filename) noexcept {
 
     bool ok = readFile(filename, file);
     if (!ok) {
-        logErr(filename, String() << "Could not find " << filename);
+        logInfo("ClientConf", String() << "Missing " << filename << ", using defaults");
+        confWindowSize.x = static_cast<I32>(dataWorldViewportResolution.x);
+        confWindowSize.y = static_cast<I32>(dataWorldViewportResolution.y);
+        confFullscreen = false;
         return;
     }
 
     JsonDocument doc = JsonDocument(static_cast<String&&>(file));
     if (!doc.ok) {
-        logErr(filename, String() << "Could not parse " << filename);
+        logErr("ClientConf", String() << "Could not parse " << filename);
         return;
     }
 
