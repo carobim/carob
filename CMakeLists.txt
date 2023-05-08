@@ -497,7 +497,7 @@ if(MSVC OR XCODE)
     set(UTIL_SOURCES ${UTIL_SOURCES}
         ${HERE}/src/util/assert.cpp
     )
-    # FIXME: Use a generator exrpression on MSVC 2019+ and CMake 3.1+.
+    # FIXME: Use a generator expression on MSVC 2019+ and CMake 3.1+.
 elseif(CMAKE_GTE_31)
     # https://cmake.org/cmake/help/latest/release/3.1.html#properties
     set(UTIL_SOURCES ${UTIL_SOURCES}
