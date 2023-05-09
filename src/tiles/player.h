@@ -9,9 +9,6 @@ struct Exit;
 
 class Player : public Character {
  public:
-    static Player&
-    instance() noexcept;
-
     Player() noexcept;
     void
     destroy() noexcept;
@@ -50,6 +47,6 @@ class Player : public Character {
     Size numMovements;
 };
 
-extern Player* thePlayer;
+extern Player player;
 
 #endif  // SRC_TILES_PLAYER_H_

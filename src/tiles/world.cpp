@@ -21,7 +21,6 @@
 
 static Hashmap<String, Area*> areas;
 static Area* worldArea = 0;
-static Player player;
 
 /**
  * Total unpaused game run time.

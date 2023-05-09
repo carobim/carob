@@ -4,7 +4,7 @@
 #include "tiles/client-conf.h"
 #include "tiles/entity.h"
 #include "tiles/log.h"
-#include "tiles/tile.h"
+#include "tiles/tile-grid.h"
 #include "tiles/window.h"
 #include "tiles/world.h"
 #include "util/compiler.h"
@@ -14,10 +14,9 @@
         return false; \
     }
 
-Player* thePlayer;
+Player player;
 
 Player::Player() noexcept : numMovements(0) {
-    thePlayer = this;
     nowalkFlags = TILE_NOWALK | TILE_NOWALK_PLAYER;
     nowalkExempt = TILE_NOWALK_EXIT;
     velocity.x = 0;
