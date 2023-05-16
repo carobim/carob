@@ -110,6 +110,7 @@ QualifierOrder: ['static', 'inline', 'volatile', 'const', 'constexpr', 'type']
 ReflowComments: false
 RemoveBracesLLVM: true
 RemoveSemicolon: true
+ShortNamespaceLines: 8
 SortIncludes: CaseInsensitive
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
@@ -131,17 +132,10 @@ SpacesInAngles: false
 SpacesInCStyleCastParentheses: false
 SpacesInConditionalStatement: false
 SpacesInContainerLiterals: false
-#SpacesInLineCommentPrefix:
-#  - Minimum: 0
-#  - Maximum: -1
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
 Standard: c++11  # Update to c++03 at some point
-StatementAttributeLikeMacros: []
-StatementMacros: []
 TabWidth: 4
 TypenameMacros: []
-#UseCRLF: false
 UseTab: Never
-WhitespaceSensitiveMacros: []
 ...
