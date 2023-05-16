@@ -188,7 +188,7 @@ windowMainLoop(void) noexcept {
         }
         else {
             // FIXME: Why does this happen and what should be done when it
-            //        occurrs?
+            //        occurs?
             // logInfo("SDL2", "dt == 0");
         }
 
