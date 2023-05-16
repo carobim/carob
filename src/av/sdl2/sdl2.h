@@ -72,6 +72,12 @@ typedef union {
 int
 SDL_PollEvent(SDL_Event*) noexcept;
 
+// SDL_metal.h
+void*
+SDL_Metal_CreateView(void*) noexcept;
+void*
+SDL_Metal_GetLayer(void*) noexcept;
+
 // SDL_pixels.h
 #define SDL_PIXELFORMAT_RGBA8888 373694468
 #define SDL_PIXELFORMAT_ABGR8888 376840196

@@ -1130,6 +1130,10 @@ endif()
 #    target_link_libraries(carob ${SDL2_image_LIBRARIES})
 #endif()
 
+if(RENDERER_METAL)
+    target_link_libraries(carob /System/Library/Frameworks/Metal.framework)
+endif()
+
 if(CURL)
     target_link_libraries(cutil curl)
 endif()
