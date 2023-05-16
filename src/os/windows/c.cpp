@@ -14,10 +14,10 @@ typedef struct {
 typedef char* va_list;
 
 CRTIMP int
-__stdio_common_vfprintf(unsigned __int64, FILE*, char const*, _locale_t,
+__stdio_common_vfprintf(unsigned __int64, FILE*, const char*, _locale_t,
                         va_list) noexcept;
 CRTIMP int
-__stdio_common_vsprintf(unsigned __int64, char*, Size, char const*, _locale_t,
+__stdio_common_vsprintf(unsigned __int64, char*, Size, const char*, _locale_t,
                         va_list) noexcept;
 
 #    if SIZE == 64
@@ -57,17 +57,17 @@ __declspec(noinline) __inline unsigned __int64* __local_stdio_printf_options(
 }
 
 inline int
-_vfprintf_l(FILE* const _Stream, char const* const _Format,
-            _locale_t const _Locale, va_list _ArgList) noexcept {
+_vfprintf_l(FILE* const _Stream, const char* const _Format,
+            const _locale_t _Locale, va_list _ArgList) noexcept {
     return __stdio_common_vfprintf(*__local_stdio_printf_options(), _Stream,
                                    _Format, _Locale, _ArgList);
 }
 
 inline int
-_vsnprintf_l(char* const _Buffer, Size const _BufferCount,
-             char const* const _Format, _locale_t const _Locale,
+_vsnprintf_l(char* const _Buffer, const Size _BufferCount,
+             const char* const _Format, const _locale_t _Locale,
              va_list _ArgList) noexcept {
-    int const _Result = __stdio_common_vsprintf(
+    const int _Result = __stdio_common_vsprintf(
         *__local_stdio_printf_options() |
             _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
         _Buffer, _BufferCount, _Format, _Locale, _ArgList);
@@ -76,13 +76,13 @@ _vsnprintf_l(char* const _Buffer, Size const _BufferCount,
 }
 
 inline int
-_vsprintf_l(char* const _Buffer, char const* const _Format,
-            _locale_t const _Locale, va_list _ArgList) noexcept {
+_vsprintf_l(char* const _Buffer, const char* const _Format,
+            const _locale_t _Locale, va_list _ArgList) noexcept {
     return _vsnprintf_l(_Buffer, (Size)-1, _Format, _Locale, _ArgList);
 }
 
 int
-fprintf(FILE* const _Stream, char const* const _Format, ...) noexcept {
+fprintf(FILE* const _Stream, const char* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
     __crt_va_start(_ArgList, _Format);
@@ -92,7 +92,7 @@ fprintf(FILE* const _Stream, char const* const _Format, ...) noexcept {
 }
 
 int
-printf(char const* const _Format, ...) noexcept {
+printf(const char* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
     __crt_va_start(_ArgList, _Format);
@@ -102,7 +102,7 @@ printf(char const* const _Format, ...) noexcept {
 }
 
 int
-sprintf(char* const _Buffer, char const* const _Format, ...) noexcept {
+sprintf(char* const _Buffer, const char* const _Format, ...) noexcept {
     int _Result;
     va_list _ArgList;
     __crt_va_start(_ArgList, _Format);

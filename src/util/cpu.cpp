@@ -7,7 +7,7 @@
 // Apache License 2.0
 
 #if defined(__i386__) || defined(__x86_64__)
-inline static bool
+static inline bool
 isBitSet(U32 reg, U32 bit) noexcept {
     return (reg >> bit) & 0x1;
 }

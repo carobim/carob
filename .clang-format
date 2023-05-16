@@ -64,12 +64,10 @@ ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
 DeriveLineEnding: true
 DerivePointerAlignment: false
-DisableFormat: false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: Always
 ExperimentalAutoDetectBinPacking: false  # Remove at some point when clang-format drops it
 FixNamespaceComments: true
-ForEachMacros: []
 IncludeBlocks: Preserve
 IncludeCategories:
   - Regex:           '^<.*\.h>'
@@ -80,8 +78,6 @@ IncludeCategories:
     Priority:        3
   - Regex:           '.'
     Priority:        4
-IncludeIsMainRegex: '(-freebsd|-mac|-netbsd|-openbsd|-unix|-windows)?$'
-#IncludeIsMainSourceRegex: '...'
 IndentCaseBlocks: false
 IndentCaseLabels: false
 IndentExternBlock: NoIndent
@@ -89,17 +85,17 @@ IndentGotoLabels: true
 IndentPPDirectives: AfterHash
 IndentWidth: 4
 IndentWrappedFunctionNames: false
+InsertNewlineAtEOF: true
 KeepEmptyLinesAtTheStartOfBlocks: false
-#MacroBlockBegin: "..."
-#MacroBlockEnd: "..."
 MaxEmptyLinesToKeep: 3
-NamespaceIndentation: All
+NamespaceIndentation: None
 #NamespaceMacros: []
 ObjCBinPackProtocolList: Auto
 ObjCBlockIndentWidth: 4
 ObjCBreakBeforeNestedBlockParam: true
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: false
+PackConstructorInitializers: BinPack
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 1
 PenaltyBreakComment: 300
@@ -110,6 +106,8 @@ PenaltyExcessCharacter: 1000000
 #PenaltyIndentedWhitespace: ...
 PenaltyReturnTypeOnItsOwnLine: 0
 PointerAlignment: Left
+QualifierAlignment: Custom
+QualifierOrder: ['static', 'inline', 'volatile', 'const', 'constexpr', 'type']
 #RawStringFormats: []
 ReflowComments: false
 SortIncludes: CaseInsensitive

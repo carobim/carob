@@ -18,7 +18,7 @@ class List {
         toNode() noexcept {
             return reinterpret_cast<Node*>(this);
         }
-        inline constexpr14 const Node*
+        inline const constexpr14 Node*
         toNode() const noexcept {
             return reinterpret_cast<const Node*>(this);
         }

@@ -238,7 +238,7 @@ memmove(void*, const void*, Size) noexcept;
 void*
 memset(void*, int, Size) noexcept;
 Size
-strlen(char const*) noexcept;
+strlen(const char*) noexcept;
 }
 
 // time.h

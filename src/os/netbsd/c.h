@@ -249,7 +249,7 @@ memmem(const void*, Size, const void*, Size) noexcept;
 void*
 memmove(void*, const void*, Size) noexcept;
 Size
-strlen(char const*) noexcept;
+strlen(const char*) noexcept;
 #define memchr __builtin_memchr
 #define memcmp __builtin_memcmp
 #define memcpy __builtin_memcpy

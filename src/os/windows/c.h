@@ -100,11 +100,11 @@ srand(unsigned int) noexcept;
 CRTIMP void*
 memchr(const void*, int, Size) noexcept;
 int
-memcmp(void const*, void const*, Size) noexcept;
+memcmp(const void*, const void*, Size) noexcept;
 void*
-memcpy(void*, void const*, Size) noexcept;
+memcpy(void*, const void*, Size) noexcept;
 Size
-strlen(char const*) noexcept;
+strlen(const char*) noexcept;
 
 // 2010 math.h
 // 2012 math.h
@@ -164,11 +164,11 @@ sqrtf(float x) noexcept {
 // 2010 stdlib.h
 // 2012 stdlib.h
 CRTIMP double
-strtod(char const*, char**) noexcept;
+strtod(const char*, char**) noexcept;
 CRTIMP long
-strtol(char const*, char**, int) noexcept;
+strtol(const char*, char**, int) noexcept;
 CRTIMP unsigned long
-strtoul(char const*, char**, int) noexcept;
+strtoul(const char*, char**, int) noexcept;
 
 // 2010 stdlib.h
 // 2012 stdlib.h
@@ -203,11 +203,11 @@ sprintf(char*, const char*, ...) noexcept;
 }  // extern "C"
 #elif MSVC >= 2015
 int
-printf(char const* const, ...) noexcept;
+printf(const char* const, ...) noexcept;
 int
-fprintf(FILE* const, char const* const, ...) noexcept;
+fprintf(FILE* const, const char* const, ...) noexcept;
 int
-sprintf(char* const, char const* const, ...) noexcept;
+sprintf(char* const, const char* const, ...) noexcept;
 #endif
 
 // 2010 string.h
