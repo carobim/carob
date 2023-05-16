@@ -18,7 +18,7 @@ class Mutex {
     lock() noexcept {
         I32 err = pthread_mutex_lock(&m);
         assert_(err == 0);
-    };
+    }
 
     inline void
     unlock() noexcept {

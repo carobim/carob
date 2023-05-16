@@ -1,4 +1,4 @@
-# Requires clang-format 15
+# Requires clang-format 16
 # https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 ---
 Language: Cpp
@@ -109,6 +109,7 @@ QualifierAlignment: Custom
 QualifierOrder: ['static', 'inline', 'volatile', 'const', 'constexpr', 'type']
 ReflowComments: false
 RemoveBracesLLVM: true
+RemoveSemicolon: true
 SortIncludes: CaseInsensitive
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
