@@ -14,17 +14,10 @@ typedef struct {
 typedef char* va_list;
 
 CRTIMP int
-__stdio_common_vfprintf(unsigned __int64,
-                        FILE*,
-                        char const*,
-                        _locale_t,
+__stdio_common_vfprintf(unsigned __int64, FILE*, char const*, _locale_t,
                         va_list) noexcept;
 CRTIMP int
-__stdio_common_vsprintf(unsigned __int64,
-                        char*,
-                        Size,
-                        char const*,
-                        _locale_t,
+__stdio_common_vsprintf(unsigned __int64, char*, Size, char const*, _locale_t,
                         va_list) noexcept;
 
 #    if SIZE == 64
@@ -64,10 +57,8 @@ __declspec(noinline) __inline unsigned __int64* __local_stdio_printf_options(
 }
 
 inline int
-_vfprintf_l(FILE* const _Stream,
-            char const* const _Format,
-            _locale_t const _Locale,
-            va_list _ArgList) noexcept {
+_vfprintf_l(FILE* const _Stream, char const* const _Format,
+            _locale_t const _Locale, va_list _ArgList) noexcept {
     return __stdio_common_vfprintf(*__local_stdio_printf_options(),
                                    _Stream,
                                    _Format,
@@ -76,10 +67,8 @@ _vfprintf_l(FILE* const _Stream,
 }
 
 inline int
-_vsnprintf_l(char* const _Buffer,
-             Size const _BufferCount,
-             char const* const _Format,
-             _locale_t const _Locale,
+_vsnprintf_l(char* const _Buffer, Size const _BufferCount,
+             char const* const _Format, _locale_t const _Locale,
              va_list _ArgList) noexcept {
     int const _Result = __stdio_common_vsprintf(
             *__local_stdio_printf_options() |
@@ -94,10 +83,8 @@ _vsnprintf_l(char* const _Buffer,
 }
 
 inline int
-_vsprintf_l(char* const _Buffer,
-            char const* const _Format,
-            _locale_t const _Locale,
-            va_list _ArgList) noexcept {
+_vsprintf_l(char* const _Buffer, char const* const _Format,
+            _locale_t const _Locale, va_list _ArgList) noexcept {
     return _vsnprintf_l(_Buffer, (Size)-1, _Format, _Locale, _ArgList);
 }
 

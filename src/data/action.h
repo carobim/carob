@@ -41,8 +41,7 @@ struct Action {
 
 // An action that calls a function once.
 struct Action
-makeUnitAction(void (*fn)(DataArea*, void* data) noexcept,
-               void* data,
+makeUnitAction(void (*fn)(DataArea*, void* data) noexcept, void* data,
                void (*free)(void* data) noexcept) noexcept;
 
 // An action that waits a set amount of time.
@@ -57,7 +56,6 @@ makeSoundAction(StringView sound) noexcept;
 struct Action
 makeTimerAction(Time duration,
                 void (*tick)(DataArea*, void* data, float progress) noexcept,
-                void* data,
-                void (*free)(void* data) noexcept) noexcept;
+                void* data, void (*free)(void* data) noexcept) noexcept;
 
 #endif  // SRC_DATA_ACTION_H_

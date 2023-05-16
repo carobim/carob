@@ -7,8 +7,7 @@
 #include "util/vector.h"
 
 void
-walk(Vector<StringView> paths,
-     void* userData,
+walk(Vector<StringView> paths, void* userData,
      void (*op)(void* userData, StringView path)) noexcept {
     Queue<String> files;
 

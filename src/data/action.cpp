@@ -30,8 +30,7 @@ freeUnit(void* data) noexcept {
 }
 
 struct Action
-makeUnitAction(void (*fn)(DataArea* area, void* data) noexcept,
-               void* data,
+makeUnitAction(void (*fn)(DataArea* area, void* data) noexcept, void* data,
                void (*free)(void* data) noexcept) noexcept {
     new3(struct UnitParams, params, fn, fn, data, data, free, free);
 
@@ -147,8 +146,7 @@ timerFree(void* data_) noexcept {
 
 struct Action
 makeTimerAction(Time duration,
-                void (*tick)(DataArea*,
-                             void* userData,
+                void (*tick)(DataArea*, void* userData,
                              float progress) noexcept,
                 void* userData,
                 void (*free)(void* userData) noexcept) noexcept {

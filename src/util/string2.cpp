@@ -288,8 +288,7 @@ parseFloat(float& out, String& s) noexcept {
 }
 
 void
-splitStr(Vector<StringView>& out,
-         StringView input,
+splitStr(Vector<StringView>& out, StringView input,
          StringView delimiter) noexcept {
     Size i = 0;
 

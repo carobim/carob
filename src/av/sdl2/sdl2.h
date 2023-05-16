@@ -167,9 +167,7 @@ SDL_SetTextureBlendMode(SDL_Texture*, SDL_BlendMode) noexcept;
 int
 SDL_RenderClear(SDL_Renderer*) noexcept;
 int
-SDL_RenderCopy(SDL_Renderer*,
-               SDL_Texture*,
-               const SDL_Rect*,
+SDL_RenderCopy(SDL_Renderer*, SDL_Texture*, const SDL_Rect*,
                const SDL_Rect*) noexcept;
 int
 SDL_RenderFillRect(SDL_Renderer*, const SDL_Rect*) noexcept;

@@ -22,8 +22,7 @@ WakeAllConditionVariable(PCONDITION_VARIABLE ConditionVariable) noexcept;
 
 WINBASEAPI BOOL WINAPI
 SleepConditionVariableSRW(PCONDITION_VARIABLE ConditionVariable,
-                          PSRWLOCK SRWLock,
-                          DWORD dwMilliseconds,
+                          PSRWLOCK SRWLock, DWORD dwMilliseconds,
                           ULONG Flags) noexcept;
 
 #define INFINITE 0xFFFFFFFF  // Infinite timeout.

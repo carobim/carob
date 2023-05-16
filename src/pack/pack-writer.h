@@ -14,9 +14,7 @@ void
 destroyPackWriter(PackWriter* writer) noexcept;
 
 void
-packWriterAddBlob(PackWriter* writer,
-                  StringView path,
-                  U32 size,
+packWriterAddBlob(PackWriter* writer, StringView path, U32 size,
                   const void* data) noexcept;
 
 bool

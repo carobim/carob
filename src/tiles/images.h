@@ -43,10 +43,7 @@ imageRelease(Image image) noexcept;
 // and heigh as specified. If the image does not have the expected number of
 // tiles across and high, loading fails.
 TiledImage
-tilesLoad(StringView path,
-          U32 tileWidth,
-          U32 tileHeight,
-          U32 numAcross,
+tilesLoad(StringView path, U32 tileWidth, U32 tileHeight, U32 numAcross,
           U32 numHigh) noexcept;
 
 #define TILES_VALID(tiles) ((tiles).image.texture != 0)
@@ -66,11 +63,7 @@ imagesPrune(Time latestPermissibleUse) noexcept;
  * are in virtual pixels.
  */
 void
-imageDrawRect(float left,
-              float right,
-              float top,
-              float bottom,
-              float z,
+imageDrawRect(float left, float right, float top, float bottom, float z,
               U32 argb) noexcept;
 
 void

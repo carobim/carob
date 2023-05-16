@@ -69,11 +69,7 @@ imageEndFrame() noexcept {
 }
 
 void
-imageDrawRect(float left,
-              float right,
-              float top,
-              float bottom,
-              float z,
+imageDrawRect(float left, float right, float top, float bottom, float z,
               U32 argb) noexcept {
     U8 a = static_cast<U8>((argb >> 24) & 0xFF);
     U8 r = static_cast<U8>((argb >> 16) & 0xFF);
@@ -220,10 +216,7 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 }
 
 TiledImage
-tilesLoad(StringView path,
-          U32 tileWidth,
-          U32 tileHeight,
-          U32 numAcross,
+tilesLoad(StringView path, U32 tileWidth, U32 tileHeight, U32 numAcross,
           U32 numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 

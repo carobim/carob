@@ -44,8 +44,7 @@ parseInt100(char* s) noexcept;
 
 //! Split a string by a delimiter.
 void
-splitStr(Vector<StringView>& out,
-         StringView str,
+splitStr(Vector<StringView>& out, StringView str,
          StringView delimiter) noexcept;
 
 /**

@@ -306,8 +306,7 @@ Area::inBounds(Entity* ent) noexcept {
 
 
 Character*
-Area::spawnNPC(StringView descriptor_,
-               vicoord coord,
+Area::spawnNPC(StringView descriptor_, vicoord coord,
                StringView phase) noexcept {
     Character* c = new Character;
     if (!c->init(descriptor_, phase)) {
@@ -321,8 +320,7 @@ Area::spawnNPC(StringView descriptor_,
 }
 
 Overlay*
-Area::spawnOverlay(StringView descriptor_,
-                   vicoord coord,
+Area::spawnOverlay(StringView descriptor_, vicoord coord,
                    StringView phase) noexcept {
     Overlay* o = new Overlay;
     if (!o->init(descriptor_, phase)) {
@@ -343,8 +341,7 @@ Area::getDataArea() noexcept {
 }
 
 void
-Area::runScript(TileGrid::ScriptType type,
-                ivec3 tile,
+Area::runScript(TileGrid::ScriptType type, ivec3 tile,
                 Entity* triggeredBy) noexcept {
     void (**script)(DataArea*, Entity*, ivec3) = grid.scripts[type].tryAt(tile);
     if (script) {

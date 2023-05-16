@@ -15,25 +15,17 @@ typedef struct {
 WINBASEAPI BOOL WINAPI
 CloseHandle(HANDLE hObject) noexcept;
 WINBASEAPI HANDLE WINAPI
-CreateFileA(LPCSTR lpFileName,
-            DWORD dwDesiredAccess,
-            DWORD dwShareMode,
+CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
             LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-            DWORD dwCreationDisposition,
-            DWORD dwFlagsAndAttributes,
+            DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes,
             HANDLE hTemplateFile) noexcept;
 WINBASEAPI HANDLE WINAPI
-CreateFileMappingA(HANDLE hFile,
-                   LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
-                   DWORD flProtect,
-                   DWORD dwMaximumSizeHigh,
-                   DWORD dwMaximumSizeLow,
-                   LPCSTR lpName) noexcept;
+CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
+                   DWORD flProtect, DWORD dwMaximumSizeHigh,
+                   DWORD dwMaximumSizeLow, LPCSTR lpName) noexcept;
 WINBASEAPI LPVOID WINAPI
-MapViewOfFile(HANDLE hFileMappingObject,
-              DWORD dwDesiredAccess,
-              DWORD dwFileOffsetHigh,
-              DWORD dwFileOffsetLow,
+MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess,
+              DWORD dwFileOffsetHigh, DWORD dwFileOffsetLow,
               SIZE_T dwNumberOfBytesToMap) noexcept;
 WINBASEAPI BOOL WINAPI
 UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;

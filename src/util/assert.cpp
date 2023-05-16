@@ -55,11 +55,8 @@ typedef U32 mach_msg_type_number_t;
 
 // mach/task.h
 extern "C" kern_return_t
-task_get_exception_ports(task_t,
-                         exception_mask_t,
-                         exception_mask_array_t,
-                         mach_msg_type_number_t*,
-                         exception_handler_array_t,
+task_get_exception_ports(task_t, exception_mask_t, exception_mask_array_t,
+                         mach_msg_type_number_t*, exception_handler_array_t,
                          exception_behavior_array_t,
                          exception_flavor_array_t) noexcept;
 
@@ -153,9 +150,7 @@ triggerDebugger() noexcept {
 }
 
 void
-assert__(const char* func,
-         const char* file,
-         int line,
+assert__(const char* func, const char* file, int line,
          const char* expr) noexcept {
     if (haveDebugger()) {
         triggerDebugger();

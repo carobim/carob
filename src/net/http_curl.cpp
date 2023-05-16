@@ -140,10 +140,7 @@ httpSetCookie(Http* self, String cookie) noexcept {
 }
 
 StringView
-httpGet(Http* self,
-        String* response,
-        StringView url,
-        Header* headers,
+httpGet(Http* self, String* response, StringView url, Header* headers,
         Size headersSize) noexcept {
     self->buf.clear();
     if (self->buf.capacity < 1024) {
@@ -212,13 +209,8 @@ httpGet(Http* self,
 }
 
 StringView
-httpForm(Http* self,
-         String* response,
-         StringView url,
-         Header* headers,
-         Size headersSize,
-         FormData* data,
-         Size dataSize) noexcept {
+httpForm(Http* self, String* response, StringView url, Header* headers,
+         Size headersSize, FormData* data, Size dataSize) noexcept {
     self->buf.clear();
     if (self->buf.capacity < 1024) {
         self->buf.reserve(1024);

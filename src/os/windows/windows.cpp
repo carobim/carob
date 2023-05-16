@@ -74,12 +74,8 @@ WINBASEAPI BOOL WINAPI FindClose(HANDLE) noexcept;
 WINBASEAPI
 DWORD
 WINAPI
-FormatMessageA(DWORD dwFlags,
-               LPCVOID lpSource,
-               DWORD dwMessageId,
-               DWORD dwLanguageId,
-               LPSTR lpBuffer,
-               DWORD nSize,
+FormatMessageA(DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId,
+               DWORD dwLanguageId, LPSTR lpBuffer, DWORD nSize,
                va_list* Arguments);
 CRTIMP FILE*
 freopen(const char*, const char*, FILE*) noexcept;

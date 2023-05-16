@@ -36,9 +36,7 @@ parseSprite(Entity* e, JsonValue sprite) noexcept;
 static bool
 parsePhases(Entity* e, JsonValue phases, TiledImage tiles) noexcept;
 static bool
-parsePhase(Entity* e,
-           StringView name,
-           JsonValue phase,
+parsePhase(Entity* e, StringView name, JsonValue phase,
            TiledImage tiles) noexcept;
 static bool
 parseSounds(Entity* e, JsonValue sounds) noexcept;
@@ -137,9 +135,7 @@ parsePhases(Entity* e, JsonValue phases, TiledImage tiles) noexcept {
 }
 
 static bool
-parsePhase(Entity* e,
-           StringView name,
-           JsonValue phase,
+parsePhase(Entity* e, StringView name, JsonValue phase,
            TiledImage tiles) noexcept {
     // Each phase requires a 'name' and a 'frame' or 'frames'. Additionally,
     // 'speed' is required if 'frames' is found.

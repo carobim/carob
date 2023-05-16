@@ -50,9 +50,7 @@ class AreaJSON : public Area {
     bool
     processTileSetFile(JsonValue obj, StringView source, U32 firstGid) noexcept;
     bool
-    processTileType(JsonValue obj,
-                    Animation& graphic,
-                    TiledImage images,
+    processTileType(JsonValue obj, Animation& graphic, TiledImage images,
                     U32 id) noexcept;
     bool
     processLayer(JsonValue obj) noexcept;
@@ -293,8 +291,7 @@ AreaJSON::processTileSet(JsonValue obj) noexcept {
 }
 
 bool
-AreaJSON::processTileSetFile(JsonValue obj,
-                             StringView source,
+AreaJSON::processTileSetFile(JsonValue obj, StringView source,
                              U32 firstGid) noexcept {
     /*
      {
@@ -421,9 +418,7 @@ AreaJSON::processTileSetFile(JsonValue obj,
 }
 
 bool
-AreaJSON::processTileType(JsonValue obj,
-                          Animation& graphic,
-                          TiledImage images,
+AreaJSON::processTileType(JsonValue obj, Animation& graphic, TiledImage images,
                           U32 id) noexcept {
     /*
       {
@@ -1024,9 +1019,7 @@ isIntegerOrPlus(StringView s) noexcept {
 }
 
 bool
-AreaJSON::parseExit(StringView dest,
-                    Exit& exit,
-                    bool* wwide,
+AreaJSON::parseExit(StringView dest, Exit& exit, bool* wwide,
                     bool* hwide) noexcept {
     /*
       Format: destination area, x, y, z

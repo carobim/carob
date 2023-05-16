@@ -188,51 +188,19 @@ GLFN_VOID_3(void, glGetShaderiv, Shader, GLenum, GLint*)
 GLFN_RETURN_1(const GLubyte*, glGetString, GLenum)
 GLFN_RETURN_2(Uniform, glGetUniformLocation, Program, const GLchar*)
 GLFN_VOID_1(void, glLinkProgram, Program)
-GLFN_VOID_4(void,
-            glShaderSource,
-            Shader,
-            GLsizei,
-            const GLchar* const*,
+GLFN_VOID_4(void, glShaderSource, Shader, GLsizei, const GLchar* const*,
             const GLint*)
-GLFN_VOID_9(void,
-            glTexImage2D,
-            GLenum,
-            GLint,
-            GLint,
-            GLsizei,
-            GLsizei,
-            GLint,
-            GLenum,
-            GLenum,
-            const void*)
+GLFN_VOID_9(void, glTexImage2D, GLenum, GLint, GLint, GLsizei, GLsizei, GLint,
+            GLenum, GLenum, const void*)
 GLFN_VOID_3(void, glTexParameteri, GLenum, GLenum, GLint)
-GLFN_VOID_9(void,
-            glTexSubImage2D,
-            GLenum,
-            GLint,
-            GLint,
-            GLint,
-            GLsizei,
-            GLsizei,
-            GLenum,
-            GLenum,
-            const void*)
+GLFN_VOID_9(void, glTexSubImage2D, GLenum, GLint, GLint, GLint, GLsizei,
+            GLsizei, GLenum, GLenum, const void*)
 GLFN_VOID_2(void, glUniform1i, Uniform, GLint)
-GLFN_VOID_4(void,
-            glUniformMatrix4fv,
-            Uniform,
-            GLsizei,
-            GLboolean,
+GLFN_VOID_4(void, glUniformMatrix4fv, Uniform, GLsizei, GLboolean,
             const GLfloat*)
 GLFN_VOID_1(void, glUseProgram, Program)
-GLFN_VOID_6(void,
-            glVertexAttribPointer,
-            Buffer,
-            GLint,
-            GLenum,
-            GLboolean,
-            GLsizei,
-            const void*)
+GLFN_VOID_6(void, glVertexAttribPointer, Buffer, GLint, GLenum, GLboolean,
+            GLsizei, const void*)
 GLFN_VOID_4(void, glViewport, GLint, GLint, GLsizei, GLsizei)
 
 #define GL_FALSE                         0x0000
@@ -755,10 +723,7 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 }
 
 TiledImage
-tilesLoad(StringView path,
-          U32 tileWidth,
-          U32 tileHeight,
-          U32 numAcross,
+tilesLoad(StringView path, U32 tileWidth, U32 tileHeight, U32 numAcross,
           U32 numHigh) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
@@ -798,11 +763,7 @@ void
 imagesPrune(Time latestPermissibleUse) noexcept { }
 
 void
-imageDrawRect(float left,
-              float right,
-              float top,
-              float bottom,
-              float z,
+imageDrawRect(float left, float right, float top, float bottom, float z,
               U32 argb) noexcept {
     fvec2 trans = sdl2Translation;
     fvec2 scale = sdl2Scaling;

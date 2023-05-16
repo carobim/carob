@@ -20,10 +20,7 @@ void
 imageRelease(Image image) noexcept { }
 
 TiledImage
-tilesLoad(StringView path,
-          U32 tileWidth,
-          U32 tileHeight,
-          U32 numAcross,
+tilesLoad(StringView path, U32 tileWidth, U32 tileHeight, U32 numAcross,
           U32 numWide) noexcept {
     Image image = {
             NULL_TEXTURE,

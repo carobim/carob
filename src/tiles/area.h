@@ -94,16 +94,14 @@ class Area {
     spawnNPC(StringView descriptor_, vicoord coord, StringView phase) noexcept;
     // Create an Overlay and insert it into the Area. Returns a borrowed ref.
     Overlay*
-    spawnOverlay(StringView descriptor_,
-                 vicoord coord,
+    spawnOverlay(StringView descriptor_, vicoord coord,
                  StringView phase) noexcept;
 
     DataArea*
     getDataArea() noexcept;
 
     void
-    runScript(TileGrid::ScriptType type,
-              ivec3 tile,
+    runScript(TileGrid::ScriptType type, ivec3 tile,
               Entity* triggeredBy) noexcept;
 
  public:

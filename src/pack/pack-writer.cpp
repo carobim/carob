@@ -51,9 +51,7 @@ destroyPackWriter(PackWriter* writer) noexcept {
 }
 
 void
-packWriterAddBlob(PackWriter* writer,
-                  StringView path,
-                  BlobSize size,
+packWriterAddBlob(PackWriter* writer, StringView path, BlobSize size,
                   const void* data) noexcept {
     Blob blob = {path, size, data};
     writer->blobs.push(blob);

@@ -32,17 +32,13 @@ CloseHandle(HANDLE hObject) noexcept;
 WINBASEAPI VOID WINAPI
 GetSystemInfo(LPSYSTEM_INFO lpSystemInfo) noexcept;
 WINBASEAPI DWORD WINAPI
-WaitForSingleObjectEx(HANDLE hHandle,
-                      DWORD dwMilliseconds,
+WaitForSingleObjectEx(HANDLE hHandle, DWORD dwMilliseconds,
                       BOOL bAlertable) noexcept;
 CRTIMP
 Size
-_beginthreadex(void* security,
-               unsigned stack_size,
-               unsigned(WINAPI* start_address)(void*),
-               void* arglist,
-               unsigned initflag,
-               unsigned* thrdaddr) noexcept;
+_beginthreadex(void* security, unsigned stack_size,
+               unsigned(WINAPI* start_address)(void*), void* arglist,
+               unsigned initflag, unsigned* thrdaddr) noexcept;
 
 #define INFINITE    0xFFFFFFFF  // Infinite timeout.
 #define WAIT_FAILED 0xFFFFFFFF
