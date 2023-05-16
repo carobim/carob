@@ -58,12 +58,8 @@ class Thread {
         new0(Function, data);
         data->fn = f.fn;
         data->data = f.data;
-        id = reinterpret_cast<HANDLE>(_beginthreadex(0,
-                                                     0,
-                                                     beginthreadex_thunk,
-                                                     static_cast<void*>(data),
-                                                     0,
-                                                     0));
+        id = reinterpret_cast<HANDLE>(_beginthreadex(
+                0, 0, beginthreadex_thunk, static_cast<void*>(data), 0, 0));
         assert_(id);
     }
     Thread(Thread&& other) noexcept : id(other.id) { other.id = 0; }

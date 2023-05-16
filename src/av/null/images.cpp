@@ -23,11 +23,7 @@ TiledImage
 tilesLoad(StringView path, U32 tileWidth, U32 tileHeight, U32 numAcross,
           U32 numWide) noexcept {
     Image image = {
-            NULL_TEXTURE,
-            0,
-            0,
-            tileWidth * numAcross,
-            tileHeight * numWide,
+            NULL_TEXTURE, 0, 0, tileWidth * numAcross, tileHeight * numWide,
     };
     TiledImage tiles = {image, tileWidth, tileHeight, numAcross * numWide};
     return tiles;
@@ -39,11 +35,7 @@ tilesRelease(TiledImage tiles) noexcept { }
 Image
 tileAt(TiledImage tiles, U32 index) noexcept {
     Image image = {
-            NULL_TEXTURE,
-            0,
-            0,
-            tiles.tileWidth,
-            tiles.tileHeight,
+            NULL_TEXTURE, 0, 0, tiles.tileWidth, tiles.tileHeight,
     };
     return image;
 }

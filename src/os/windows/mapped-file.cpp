@@ -44,13 +44,8 @@ UnmapViewOfFile(LPCVOID lpBaseAddress) noexcept;
 
 bool
 makeMappedFile(MappedFile& file, StringView path) noexcept {
-    HANDLE hFile = CreateFile(String(path).null(),
-                              GENERIC_READ,
-                              0,
-                              0,
-                              OPEN_EXISTING,
-                              FILE_ATTRIBUTE_NORMAL,
-                              0);
+    HANDLE hFile = CreateFile(String(path).null(), GENERIC_READ, 0, 0,
+                              OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     if (hFile == INVALID_HANDLE_VALUE) {
         return false;
     }

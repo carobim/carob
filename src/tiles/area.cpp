@@ -128,20 +128,15 @@ Area::needsRedraw() noexcept {
 
     icube tiles = visibleTiles();
     icube pixels = {
-            tiles.x1 * grid.tileDim.x,
-            tiles.y1 * grid.tileDim.y,
-            tiles.z1,
-            tiles.x2 * grid.tileDim.x,
-            tiles.y2 * grid.tileDim.y,
-            tiles.z2,
+            tiles.x1 * grid.tileDim.x, tiles.y1 * grid.tileDim.y, tiles.z1,
+            tiles.x2 * grid.tileDim.x, tiles.y2 * grid.tileDim.y, tiles.z2,
     };
 
     if (player->needsRedraw(pixels)) {
         return true;
     }
     for (Character** character = characters.begin();
-         character != characters.end();
-         character++) {
+         character != characters.end(); character++) {
         if ((*character)->needsRedraw(pixels)) {
             return true;
         }
@@ -224,8 +219,7 @@ Area::tick(Time dt) noexcept {
         player->tick(dt);
 
         for (Character** character = characters.begin();
-             character != characters.end();
-             character++) {
+             character != characters.end(); character++) {
             (*character)->tick(dt);
         }
         erase_if(characters, isCharacterDead);
@@ -243,8 +237,7 @@ Area::turn() noexcept {
     player->turn();
 
     for (Character** character = characters.begin();
-         character != characters.end();
-         character++) {
+         character != characters.end(); character++) {
         (*character)->turn();
     }
     erase_if(characters, isCharacterDead);
@@ -415,8 +408,7 @@ Area::drawEntities(DisplayList* display, icube& tiles, I32 z) noexcept {
     float depth = grid.idx2depth[(Size)z];
 
     for (Character** character = characters.begin();
-         character != characters.end();
-         character++) {
+         character != characters.end(); character++) {
         if ((*character)->getTileCoords_i().z == z) {
             (*character)->draw(display);
         }

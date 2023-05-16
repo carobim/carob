@@ -26,8 +26,7 @@ void
 imageInit() noexcept {
     TimeMeasure m("Created SDL2 renderer");
 
-    renderer = SDL_CreateRenderer(sdl2Window,
-                                  -1,
+    renderer = SDL_CreateRenderer(sdl2Window, -1,
                                   SDL_RENDERER_ACCELERATED |
                                           SDL_RENDERER_PRESENTVSYNC |
                                           SDL_RENDERER_TARGETTEXTURE);
@@ -45,9 +44,9 @@ imageInit() noexcept {
     StringView name = info.name;
     bool vsync = (info.flags & SDL_RENDERER_PRESENTVSYNC) != 0;
 
-    logInfo("SDL2",
-            String("Rendering will be done with ")
-                    << name << (vsync ? " with vsync" : " without vsync"));
+    logInfo("SDL2", String("Rendering will be done with ")
+                            << name
+                            << (vsync ? " with vsync" : " without vsync"));
 
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
@@ -76,8 +75,7 @@ imageDrawRect(float left, float right, float top, float bottom, float z,
     U8 g = static_cast<U8>((argb >> 8) & 0xFF);
     U8 b = static_cast<U8>((argb >> 0) & 0xFF);
 
-    SDL_Rect rect = {static_cast<int>(left),
-                     static_cast<int>(top),
+    SDL_Rect rect = {static_cast<int>(left), static_cast<int>(top),
                      static_cast<int>(right - left),
                      static_cast<int>(bottom - top)};
 
@@ -89,10 +87,8 @@ imageDrawRect(float left, float right, float top, float bottom, float z,
 static void
 initAtlas() noexcept {
     if (atlas == 0) {
-        atlas = SDL_CreateTexture(renderer,
-                                  SDL_PIXELFORMAT_RGBA32,
-                                  SDL_TEXTUREACCESS_TARGET,
-                                  ATLAS_WIDTH,
+        atlas = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
+                                  SDL_TEXTUREACCESS_TARGET, ATLAS_WIDTH,
                                   ATLAS_HEIGHT);
         if (atlas == 0) {
             logFatal("SDL2", "Failed to create texture");
@@ -203,10 +199,8 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     fvec2 scaling = sdl2Scaling;
 
     SDL_Texture* texture = static_cast<SDL_Texture*>(image.texture);
-    SDL_Rect src{static_cast<int>(image.x),
-                 static_cast<int>(image.y),
-                 static_cast<int>(image.width),
-                 static_cast<int>(image.height)};
+    SDL_Rect src{static_cast<int>(image.x), static_cast<int>(image.y),
+                 static_cast<int>(image.width), static_cast<int>(image.height)};
     SDL_Rect dst{static_cast<int>((x + translation.x) * scaling.x),
                  static_cast<int>((y + translation.y) * scaling.y),
                  static_cast<int>(image.width * scaling.x),

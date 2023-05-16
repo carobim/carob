@@ -141,8 +141,7 @@ AreaJSON::processDescriptor() noexcept {
     CHECK(tilesetsValue.toNode());
 
     for (JsonIterator tilesetNode = begin(tilesetsValue);
-         tilesetNode != end(tilesetsValue);
-         ++tilesetNode) {
+         tilesetNode != end(tilesetsValue); ++tilesetNode) {
         JsonValue tilesetValue = tilesetNode->value;
         CHECK(tilesetValue.isObject());
 
@@ -153,8 +152,7 @@ AreaJSON::processDescriptor() noexcept {
 
     Size numLayers = 0;
     for (JsonIterator layerNode = begin(layersValue);
-         layerNode != end(layersValue);
-         ++layerNode) {
+         layerNode != end(layersValue); ++layerNode) {
         JsonValue layerValue = layerNode->value;
         CHECK(layerValue.isObject());
 
@@ -170,8 +168,7 @@ AreaJSON::processDescriptor() noexcept {
     preallocateMapLayers(grid, numLayers);
 
     for (JsonIterator layerNode = begin(layersValue);
-         layerNode != end(layersValue);
-         ++layerNode) {
+         layerNode != end(layersValue); ++layerNode) {
         JsonValue layerValue = layerNode->value;
         CHECK(layerValue.isObject());
 
@@ -383,8 +380,7 @@ AreaJSON::processTileSetFile(JsonValue obj, StringView source,
 
     String buf;
     for (JsonIterator tilepropertiesNode = begin(tilespropertiesNode);
-         tilepropertiesNode != end(tilespropertiesNode);
-         ++tilepropertiesNode) {
+         tilepropertiesNode != end(tilespropertiesNode); ++tilepropertiesNode) {
         CHECK(tilepropertiesNode->value.isObject());
 
         // "id" is 0-based index of a tile in the current
@@ -456,9 +452,8 @@ AreaJSON::processTileType(JsonValue obj, Animation& graphic, TiledImage images,
         return false;
     }
     if (firstFrame != id) {
-        logErr(descriptor,
-               String() << "first member of tile id " << id
-                        << " animation must be itself.");
+        logErr(descriptor, String() << "first member of tile id " << id
+                                    << " animation must be itself.");
         return false;
     }
 
@@ -633,8 +628,7 @@ AreaJSON::processObjectGroup(JsonValue obj) noexcept {
     }
 
     for (JsonIterator objectNode = begin(objectsValue);
-         objectNode != end(objectsValue);
-         ++objectNode) {
+         objectNode != end(objectsValue); ++objectNode) {
         CHECK(objectNode->value.isObject());
         CHECK(processObject(objectNode->value));
     }
@@ -835,42 +829,32 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     if (exitValue.isString()) {
         haveExit[EXIT_NORMAL] = true;
         StringView value = exitValue.toString();
-        CHECK(parseExit(value,
-                        exit[EXIT_NORMAL],
-                        &wwide[EXIT_NORMAL],
+        CHECK(parseExit(value, exit[EXIT_NORMAL], &wwide[EXIT_NORMAL],
                         &hwide[EXIT_NORMAL]));
         flags |= TILE_NOWALK_NPC;
     }
     if (exitupValue.isString()) {
         haveExit[EXIT_UP] = true;
         StringView value = exitupValue.toString();
-        CHECK(parseExit(value,
-                        exit[EXIT_UP],
-                        &wwide[EXIT_UP],
+        CHECK(parseExit(value, exit[EXIT_UP], &wwide[EXIT_UP],
                         &hwide[EXIT_UP]));
     }
     if (exitdownValue.isString()) {
         haveExit[EXIT_DOWN] = true;
         StringView value = exitdownValue.toString();
-        CHECK(parseExit(value,
-                        exit[EXIT_DOWN],
-                        &wwide[EXIT_DOWN],
+        CHECK(parseExit(value, exit[EXIT_DOWN], &wwide[EXIT_DOWN],
                         &hwide[EXIT_DOWN]));
     }
     if (exitleftValue.isString()) {
         haveExit[EXIT_LEFT] = true;
         StringView value = exitleftValue.toString();
-        CHECK(parseExit(value,
-                        exit[EXIT_LEFT],
-                        &wwide[EXIT_LEFT],
+        CHECK(parseExit(value, exit[EXIT_LEFT], &wwide[EXIT_LEFT],
                         &hwide[EXIT_LEFT]));
     }
     if (exitrightValue.isString()) {
         haveExit[EXIT_RIGHT] = true;
         StringView value = exitrightValue.toString();
-        CHECK(parseExit(value,
-                        exit[EXIT_RIGHT],
-                        &wwide[EXIT_RIGHT],
+        CHECK(parseExit(value, exit[EXIT_RIGHT], &wwide[EXIT_RIGHT],
                         &hwide[EXIT_RIGHT]));
     }
 

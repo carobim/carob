@@ -8,8 +8,7 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-#pragma comment(linker,                                                               \
-                        "\"/manifestdependency:type='win32' "                         \
+#pragma comment(linker, "\"/manifestdependency:type='win32' "                         \
                         "name='Microsoft.Windows.Common-Controls' version='6.0.0.0' " \
                         "processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -96,13 +95,8 @@ WriteFile(HANDLE, LPCVOID, DWORD, LPDWORD, void*) noexcept;
 
 Filesize
 getFileSize(StringView path) noexcept {
-    HANDLE file = CreateFile(String(path).null(),
-                             FILE_READ_ATTRIBUTES,
-                             0,
-                             0,
-                             OPEN_EXISTING,
-                             0,
-                             0);
+    HANDLE file = CreateFile(String(path).null(), FILE_READ_ATTRIBUTES, 0, 0,
+                             OPEN_EXISTING, 0, 0);
     if (file == INVALID_HANDLE_VALUE) {
         return FS_ERROR;
     }
@@ -122,13 +116,8 @@ getFileSize(StringView path) noexcept {
 
 bool
 writeFile(StringView path, U32 length, void* data) noexcept {
-    HANDLE file = CreateFile(String(path).null(),
-                             FILE_WRITE_DATA,
-                             0,
-                             0,
-                             CREATE_ALWAYS,
-                             0,
-                             0);
+    HANDLE file = CreateFile(String(path).null(), FILE_WRITE_DATA, 0, 0,
+                             CREATE_ALWAYS, 0, 0);
     if (file == INVALID_HANDLE_VALUE) {
         return false;
     }
@@ -153,13 +142,8 @@ writeFile(StringView path, U32 length, void* data) noexcept {
 
 bool
 writeFileVec(StringView path, U32 count, U32* lengths, void** datas) noexcept {
-    HANDLE file = CreateFile(String(path).null(),
-                             FILE_WRITE_DATA,
-                             0,
-                             0,
-                             CREATE_ALWAYS,
-                             0,
-                             0);
+    HANDLE file = CreateFile(String(path).null(), FILE_WRITE_DATA, 0, 0,
+                             CREATE_ALWAYS, 0, 0);
     if (file == INVALID_HANDLE_VALUE) {
         return false;
     }
@@ -238,13 +222,8 @@ readFile(StringView path, String& data) noexcept {
 
     DWORD size = static_cast<DWORD>(size_);
 
-    HANDLE file = CreateFile(String(path).null(),
-                             FILE_READ_DATA,
-                             0,
-                             0,
-                             OPEN_EXISTING,
-                             0,
-                             0);
+    HANDLE file = CreateFile(String(path).null(), FILE_READ_DATA, 0, 0,
+                             OPEN_EXISTING, 0, 0);
     if (file == INVALID_HANDLE_VALUE) {
         return false;
     }
@@ -324,13 +303,8 @@ printWin32Error(void) noexcept {
     char buf[512];
 
     DWORD size = FormatMessage(
-            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-            0,
-            error,
-            0,
-            buf,
-            sizeof(buf) / sizeof(TCHAR),
-            0);
+            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, 0,
+            error, 0, buf, sizeof(buf) / sizeof(TCHAR), 0);
     if (size == 0) {
         // Error.
         return;

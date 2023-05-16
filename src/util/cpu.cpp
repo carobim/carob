@@ -21,10 +21,10 @@ struct Leaf {
 static struct Leaf
 getCpuidLeaf(U32 leafId, int subleaf) noexcept {
     struct Leaf leaf;
-    __asm__ volatile(
-            "cpuid"
-            : "=a"(leaf.eax), "=b"(leaf.ebx), "=c"(leaf.ecx), "=d"(leaf.edx)
-            : "a"(leafId), "b"(0), "c"(subleaf), "d"(0));
+    __asm__ volatile("cpuid"
+                     : "=a"(leaf.eax), "=b"(leaf.ebx), "=c"(leaf.ecx),
+                       "=d"(leaf.edx)
+                     : "a"(leafId), "b"(0), "c"(subleaf), "d"(0));
     return leaf;
 }
 #    elif defined(MSVC)

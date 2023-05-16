@@ -27,7 +27,7 @@ AlwaysBreakAfterReturnType: All  # FIXME: Doesn't work with __cdecl in same line
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: Yes
 AttributeMacros: []
-BinPackArguments: false
+BinPackArguments: true
 BinPackParameters: true
 BitFieldColonSpacing: Both
 BraceWrapping:

@@ -37,12 +37,8 @@ WriteFile(HANDLE, LPCVOID, DWORD, LPDWORD, void*) noexcept;
 
 File::File(StringView path) noexcept {
     handle = CreateFileA(String(path).null(),
-                         FILE_READ_ATTRIBUTES | FILE_READ_DATA,
-                         0,
-                         0,
-                         OPEN_EXISTING,
-                         0,
-                         0);
+                         FILE_READ_ATTRIBUTES | FILE_READ_DATA, 0, 0,
+                         OPEN_EXISTING, 0, 0);
     if (handle == INVALID_HANDLE_VALUE) {
         // GetLastError(); for more specific information if we want
         return;
@@ -106,13 +102,8 @@ File::readOffset(void* buf, Size len, Size offset) noexcept {
 }
 
 FileWriter::FileWriter(StringView path) noexcept {
-    handle = CreateFileA(String(path).null(),
-                         GENERIC_WRITE,
-                         0,
-                         0,
-                         CREATE_NEW | TRUNCATE_EXISTING,
-                         0,
-                         0);
+    handle = CreateFileA(String(path).null(), GENERIC_WRITE, 0, 0,
+                         CREATE_NEW | TRUNCATE_EXISTING, 0, 0);
 }
 
 FileWriter::~FileWriter() noexcept {
@@ -178,13 +169,8 @@ HANDLE con = UNINITIALIZED;
 
 static void
 openConsole() noexcept {
-    con = CreateFileA("CONOUT$",
-                      GENERIC_WRITE,
-                      FILE_SHARE_WRITE,
-                      0,
-                      OPEN_EXISTING,
-                      0,
-                      0);
+    con = CreateFileA("CONOUT$", GENERIC_WRITE, FILE_SHARE_WRITE, 0,
+                      OPEN_EXISTING, 0, 0);
     // if (con == INVALID_HANDLE_VALUE) {
     //     GetLastError();
     // }

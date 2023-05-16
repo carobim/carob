@@ -59,11 +59,8 @@ __declspec(noinline) __inline unsigned __int64* __local_stdio_printf_options(
 inline int
 _vfprintf_l(FILE* const _Stream, char const* const _Format,
             _locale_t const _Locale, va_list _ArgList) noexcept {
-    return __stdio_common_vfprintf(*__local_stdio_printf_options(),
-                                   _Stream,
-                                   _Format,
-                                   _Locale,
-                                   _ArgList);
+    return __stdio_common_vfprintf(*__local_stdio_printf_options(), _Stream,
+                                   _Format, _Locale, _ArgList);
 }
 
 inline int
@@ -73,11 +70,7 @@ _vsnprintf_l(char* const _Buffer, Size const _BufferCount,
     int const _Result = __stdio_common_vsprintf(
             *__local_stdio_printf_options() |
                     _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
-            _Buffer,
-            _BufferCount,
-            _Format,
-            _Locale,
-            _ArgList);
+            _Buffer, _BufferCount, _Format, _Locale, _ArgList);
 
     return _Result < 0 ? -1 : _Result;
 }

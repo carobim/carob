@@ -167,8 +167,7 @@ httpGet(Http* self, String* response, StringView url, Header* headers,
     }
 
     for (CURLlist* item = self->list.begin();
-         item != self->list.end() && item + 1 != self->list.end();
-         ++item) {
+         item != self->list.end() && item + 1 != self->list.end(); ++item) {
         item[0].next = &item[1];
     }
 

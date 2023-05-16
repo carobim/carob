@@ -69,13 +69,8 @@ isDebuggerPresent(void) {
     thread_state_flavor_t flavors[EXC_TYPES_COUNT];
 
     exception_mask_t mask = EXC_BREAKPOINT;
-    kern_return_t result = task_get_exception_ports(mach_task_self(),
-                                                    mask,
-                                                    masks,
-                                                    &count,
-                                                    ports,
-                                                    behaviors,
-                                                    flavors);
+    kern_return_t result = task_get_exception_ports(
+            mach_task_self(), mask, masks, &count, ports, behaviors, flavors);
     if (result == KERN_SUCCESS) {
         for (mach_msg_type_number_t portIndex = 0; portIndex < count;
              portIndex++) {

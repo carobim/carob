@@ -62,8 +62,7 @@ threadDisableTimerCoalescing() noexcept {
     thread_extended_policy policyInfo = {};
     policyInfo.timeshare = false;
 
-    thread_policy_set(mach_thread_self(),
-                      THREAD_EXTENDED_POLICY,
+    thread_policy_set(mach_thread_self(), THREAD_EXTENDED_POLICY,
                       reinterpret_cast<U32*>(&policyInfo),
                       THREAD_EXTENDED_POLICY_COUNT);
 }

@@ -17,8 +17,7 @@ class Queue {
         }
         // Items at tail of ring buffer.
         for (Size i = 0;
-             offset + size > capacity && i < offset + size - capacity;
-             i++) {
+             offset + size > capacity && i < offset + size - capacity; i++) {
             data[i].~T();
         }
 
@@ -66,8 +65,7 @@ class Queue {
             data[i].~T();
         }
         for (Size i = 0;
-             offset + size > capacity && i < offset + size - capacity;
-             i++) {
+             offset + size > capacity && i < offset + size - capacity; i++) {
             new (&newData[i + capacity - offset]) T(static_cast<T&&>(data[i]));
             data[i].~T();
         }

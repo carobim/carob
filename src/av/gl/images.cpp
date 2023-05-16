@@ -122,14 +122,7 @@ static APICALL GlGetErrorProc glGetError;
 #define GLFN_VOID_9(rt, fn, t1, t2, t3, t4, t5, t6, t7, t8, t9)         \
     typedef rt(APIENTRY* fn##Proc)(t1, t2, t3, t4, t5, t6, t7, t8, t9); \
     static APICALL fn##Proc fn;                                         \
-    static rt fn##_(t1 a,                                               \
-                    t2 b,                                               \
-                    t3 c,                                               \
-                    t4 d,                                               \
-                    t5 e,                                               \
-                    t6 f,                                               \
-                    t7 g,                                               \
-                    t8 h,                                               \
+    static rt fn##_(t1 a, t2 b, t3 c, t4 d, t5 e, t6 f, t7 g, t8 h,     \
                     t9 i) noexcept {                                    \
         fn(a, b, c, d, e, f, g, h, i);                                  \
         checkError(#fn);                                                \
@@ -477,9 +470,8 @@ printVersion() noexcept {
     logInfo("GL", String() << "Vendor: " << getString(GL_VENDOR));
     logInfo("GL", String() << "Renderer: " << getString(GL_RENDERER));
     logInfo("GL", String() << "Version: " << getString(GL_VERSION));
-    logInfo("GL",
-            String() << "Shading language version: "
-                     << getString(GL_SHADING_LANGUAGE_VERSION));
+    logInfo("GL", String() << "Shading language version: "
+                           << getString(GL_SHADING_LANGUAGE_VERSION));
     //logInfo("GL", String() << "Extensions: " << getString(GL_EXTENSIONS));
 }
 
@@ -548,15 +540,8 @@ imageInit() noexcept {
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri_(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexImage2D_(GL_TEXTURE_2D,
-                  0,
-                  GL_RGBA,
-                  ATLAS_WIDTH,
-                  ATLAS_HEIGHT,
-                  0,
-                  GL_RGBA,
-                  GL_UNSIGNED_BYTE,
-                  0);
+    glTexImage2D_(GL_TEXTURE_2D, 0, GL_RGBA, ATLAS_WIDTH, ATLAS_HEIGHT, 0,
+                  GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
     ip.program = makeProgram(imageVertexSource, imageFragmentSource);
     ip.uAtlas = glGetUniformLocation_(ip.program, "uAtlas");
@@ -861,24 +846,16 @@ imageFlushImages() noexcept {
     glUseProgram_(ip.program);
 
     glBindBuffer_(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData_(GL_ARRAY_BUFFER,
-                  ip.attributes.size * sizeof(ImageVertex),
-                  ip.attributes.data,
-                  GL_STATIC_DRAW);
+    glBufferData_(GL_ARRAY_BUFFER, ip.attributes.size * sizeof(ImageVertex),
+                  ip.attributes.data, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray_(ip.aPosition);
     glEnableVertexAttribArray_(ip.aTexCoord);
 
-    glVertexAttribPointer_(ip.aPosition,
-                           3,
-                           GL_FLOAT,
-                           false,
+    glVertexAttribPointer_(ip.aPosition, 3, GL_FLOAT, false,
                            sizeof(ImageVertex),
                            &static_cast<ImageVertex*>(0)->position);
-    glVertexAttribPointer_(ip.aTexCoord,
-                           2,
-                           GL_FLOAT,
-                           false,
+    glVertexAttribPointer_(ip.aTexCoord, 2, GL_FLOAT, false,
                            sizeof(ImageVertex),
                            &static_cast<ImageVertex*>(0)->texCoord);
 
@@ -899,26 +876,16 @@ imageFlushRects() noexcept {
     glUseProgram_(rp.program);
 
     glBindBuffer_(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData_(GL_ARRAY_BUFFER,
-                  rp.attributes.size * sizeof(RectVertex),
-                  rp.attributes.data,
-                  GL_STATIC_DRAW);
+    glBufferData_(GL_ARRAY_BUFFER, rp.attributes.size * sizeof(RectVertex),
+                  rp.attributes.data, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray_(rp.aPosition);
     glEnableVertexAttribArray_(rp.aColor);
 
-    glVertexAttribPointer_(rp.aPosition,
-                           3,
-                           GL_FLOAT,
-                           false,
-                           sizeof(RectVertex),
+    glVertexAttribPointer_(rp.aPosition, 3, GL_FLOAT, false, sizeof(RectVertex),
                            &static_cast<RectVertex*>(0)->position);
-    glVertexAttribPointer_(rp.aColor,
-                           4,
-                           GL_UNSIGNED_BYTE,
-                           true,
-                           sizeof(RectVertex),
-                           &static_cast<RectVertex*>(0)->r);
+    glVertexAttribPointer_(rp.aColor, 4, GL_UNSIGNED_BYTE, true,
+                           sizeof(RectVertex), &static_cast<RectVertex*>(0)->r);
 
     glUniformMatrix4fv_(rp.uProjection, 1, false, getOrtho().m);
 
