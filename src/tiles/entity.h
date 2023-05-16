@@ -117,7 +117,6 @@ class Entity {
     // ScriptRef tickScript, turnScript, tileEntryScript,
     //            tileExitScript;
 
-
  protected:
     // Precalculate various drawing measurements.
     void
