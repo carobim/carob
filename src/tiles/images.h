@@ -72,5 +72,4 @@ imageFlushImages() noexcept;
 void
 imageFlushRects() noexcept;
 
-
 #endif  // SRC_TILES_IMAGES_H_

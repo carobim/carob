@@ -128,6 +128,10 @@ windowCreate(void) noexcept {
         flags |= SDL_WINDOW_OPENGL;
 #endif
 
+#ifdef RENDERER_METAL
+        flags |= SDL_WINDOW_METAL;
+#endif
+
         sdl2Window =
             SDL_CreateWindow("Carob", SDL_WINDOWPOS_UNDEFINED,
                              SDL_WINDOWPOS_UNDEFINED, width, height, flags);

@@ -168,10 +168,10 @@ endif()
 option(AV_NULL "Disable audio and video output")
 option(AV_SDL2 "Use SDL2 for audio and video output")
 option(AV_SDL2_GL "Use SDL2 for audio and window, and OpenGL for graphics")
+option(AV_SDL2_METAL "Use SDL2 for audio and window, and Metal for graphics")
 option(AV_EM "Use Emscripten for audio and video output")
-option(AV_CUSTOM "Select the AV backend options manually")
 option(STATIC_SDL "Use a static SDL2 library at chosen location")
-option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" ON)
+option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" 1)
 option(CURL "Enable curl for HTTP")
 
 option(BUILD_SHARED_LIBS "Build Carob as a shared library")
@@ -188,12 +188,8 @@ endif()
 # Option constraints
 #
 
-if(NOT AV_SDL2 AND NOT AV_SDL2_GL AND NOT AV_EM AND NOT AV_CUSTOM)
-    set(AV_NULL ON)
-endif()
-
 if(GCC AND NOT GCC_GTE_45)
-    set(NO_LTO ON)
+    set(NO_LTO 1)
 endif()
 
 
@@ -235,6 +231,12 @@ if(AV_SDL2_GL)
     set(RENDERER_GL 1)
 endif()
 
+if(AV_SDL2_METAL)
+    set(AUDIO_SDL2 1)
+    set(WINDOW_SDL2 1)
+    set(RENDERER_METAL 1)
+endif()
+
 if(AV_EM)
     set(AUDIO_SDL2 1)
     set(WINDOW_SDL2 1)
@@ -242,7 +244,19 @@ if(AV_EM)
 endif()
 
 if(AUDIO_SDL2 OR WINDOW_SDL2 OR RENDERER_SDL2)
-    set(SDL2 ON)
+    set(SDL2 1)
+endif()
+
+if(NOT AUDIO_SDL2)
+    set(AUDIO_NULL 1)
+endif()
+
+if(NOT WINDOW_SDL2)
+    set(WINDOW_NULL 1)
+endif()
+
+if(NOT RENDERER_SDL2 AND NOT RENDERER_GL AND NOT RENDERER_METAL)
+    set(RENDERER_NULL 1)
 endif()
 
 # Build type
@@ -323,6 +337,12 @@ endif()
 if(RENDERER_GL)
     set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/gl/images.cpp
+    )
+endif()
+
+if(RENDERER_METAL)
+    set(CAROB_SOURCES ${CAROB_SOURCES}
+        ${HERE}/src/av/metal/images.mm
     )
 endif()
 
@@ -626,6 +646,9 @@ if(RENDERER_SDL2)
 endif()
 if(RENDERER_GL)
     add_cxx_flag("-DRENDERER_GL")
+endif()
+if(RENDERER_METAL)
+    add_cxx_flag("-DRENDERER_METAL")
 endif()
 
 
