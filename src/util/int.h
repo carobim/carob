@@ -57,7 +57,7 @@ typedef I32 SSize;
 //       - Who has I64?
 //       - Try other 32-bit platforms
 #if defined(__APPLE__) || defined(__EMSCRIPTEN__) || defined(GCC) || \
-        defined(CLANG)
+    defined(CLANG)
 typedef long Time;
 #else
 typedef I64 Time;

@@ -94,8 +94,8 @@ makeSound(StringView path) noexcept {
     }
 
     SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
-                          static_cast<int>(r.size));
+        SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                      static_cast<int>(r.size));
 
     Mix_Chunk* chunk;
 

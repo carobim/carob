@@ -124,8 +124,8 @@ timerTick(DataArea* area, void* data_, Time dt) noexcept {
 
     data->passed += dt;
 
-    float progress = static_cast<float>(data->passed) /
-                     static_cast<float>(data->duration);
+    float progress =
+        static_cast<float>(data->passed) / static_cast<float>(data->duration);
     if (progress > 1.0f) {
         progress = 1.0f;
     }

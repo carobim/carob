@@ -10,8 +10,8 @@
 
 struct PackReader {
     PackReader(File file) noexcept
-            : file(static_cast<File&&>(file)),
-              lookupsConstructed(false) { }
+        : file(static_cast<File&&>(file)),
+          lookupsConstructed(false) { }
 
     File file;
 

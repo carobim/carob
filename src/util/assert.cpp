@@ -70,7 +70,7 @@ isDebuggerPresent(void) {
 
     exception_mask_t mask = EXC_BREAKPOINT;
     kern_return_t result = task_get_exception_ports(
-            mach_task_self(), mask, masks, &count, ports, behaviors, flavors);
+        mach_task_self(), mask, masks, &count, ports, behaviors, flavors);
     if (result == KERN_SUCCESS) {
         for (mach_msg_type_number_t portIndex = 0; portIndex < count;
              portIndex++) {

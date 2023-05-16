@@ -233,7 +233,7 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
         U8 a, r, g, b;
         CHECK(parseARGB(coloroverlayValue.toString(), a, r, g, b));
         colorOverlayARGB =
-                (U32)(a << 24) + (U32)(r << 16) + (U32)(g << 8) + (U32)b;
+            (U32)(a << 24) + (U32)(r << 16) + (U32)(g << 8) + (U32)b;
     }
 
     return true;
@@ -357,7 +357,7 @@ AreaJSON::processTileSetFile(JsonValue obj, StringView source,
 
     // Load tileset image.
     TiledImage images =
-            tilesLoad(imgSource, tileWidth, tileHeight, numAcross, numHigh);
+        tilesLoad(imgSource, tileWidth, tileHeight, numAcross, numHigh);
     if (!TILES_VALID(images)) {
         logErr(descriptor, "Tileset image not found");
         return false;
@@ -810,20 +810,20 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     if (onenterValue.isString()) {
         StringView scriptName = onenterValue.toString();
         enterScript =
-                reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
-                        *dataArea->scripts.find(hash_(scriptName)));
+            reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
+                *dataArea->scripts.find(hash_(scriptName)));
     }
     if (onleaveValue.isString()) {
         StringView scriptName = onleaveValue.toString();
         leaveScript =
-                reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
-                        *dataArea->scripts.find(hash_(scriptName)));
+            reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
+                *dataArea->scripts.find(hash_(scriptName)));
     }
     if (onuseValue.isString()) {
         StringView scriptName = onuseValue.toString();
         useScript =
-                reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
-                        *dataArea->scripts.find(hash_(scriptName)));
+            reinterpret_cast<void (*)(DataArea*, Entity*, ivec3) noexcept>(
+                *dataArea->scripts.find(hash_(scriptName)));
     }
 
     if (exitValue.isString()) {
@@ -836,8 +836,8 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     if (exitupValue.isString()) {
         haveExit[EXIT_UP] = true;
         StringView value = exitupValue.toString();
-        CHECK(parseExit(value, exit[EXIT_UP], &wwide[EXIT_UP],
-                        &hwide[EXIT_UP]));
+        CHECK(
+            parseExit(value, exit[EXIT_UP], &wwide[EXIT_UP], &hwide[EXIT_UP]));
     }
     if (exitdownValue.isString()) {
         haveExit[EXIT_DOWN] = true;

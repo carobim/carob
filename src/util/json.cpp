@@ -42,7 +42,7 @@
 
 JsonAllocator::JsonAllocator() noexcept : head(0) { }
 JsonAllocator::JsonAllocator(JsonAllocator&& other) noexcept
-        : head(other.head) {
+    : head(other.head) {
     other.head = 0;
 }
 JsonAllocator::~JsonAllocator() noexcept {
@@ -61,7 +61,7 @@ JsonAllocator::allocate(Size size) noexcept {
 
     Size allocSize = sizeof(Zone) + size;
     Zone* zone = static_cast<Zone*>(
-            malloc(allocSize <= JSON_ZONE_SIZE ? JSON_ZONE_SIZE : allocSize));
+        malloc(allocSize <= JSON_ZONE_SIZE ? JSON_ZONE_SIZE : allocSize));
     if (zone == 0) {
         return 0;
     }
@@ -379,7 +379,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
                 continue;
             }
             if ((node = reinterpret_cast<JsonNode*>(
-                         allocator.allocate(sizeof(JsonNode)))) == 0) {
+                     allocator.allocate(sizeof(JsonNode)))) == 0) {
                 return false;
             }
             tails[pos] = insertAfter(tails[pos], node);
@@ -388,7 +388,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
         }
         else {
             if ((node = reinterpret_cast<JsonNode*>(allocator.allocate(
-                         sizeof(JsonNode) - sizeof(char*)))) == 0) {
+                     sizeof(JsonNode) - sizeof(char*)))) == 0) {
                 return false;
             }
             tails[pos] = insertAfter(tails[pos], node);
@@ -418,7 +418,7 @@ JsonAllocator::operator=(JsonAllocator&& other) noexcept {
 JsonDocument::JsonDocument() noexcept : ok(false) { }
 
 JsonDocument::JsonDocument(String text) noexcept
-        : text(static_cast<String&&>(text)) {
+    : text(static_cast<String&&>(text)) {
     this->text << '\0';
     ok = parse(this->text.data, &root, allocator);
 }

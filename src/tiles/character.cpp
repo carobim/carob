@@ -7,9 +7,9 @@
 #include "util/compiler.h"
 
 Character::Character() noexcept
-        : nowalkFlags(TILE_NOWALK | TILE_NOWALK_NPC),
-          nowalkExempt(0),
-          destExit(0) {
+    : nowalkFlags(TILE_NOWALK | TILE_NOWALK_NPC),
+      nowalkExempt(0),
+      destExit(0) {
     fromCoord.x = 0.0;
     fromCoord.y = 0.0;
     fromCoord.z = 0.0;

@@ -261,7 +261,7 @@ int
 clock_gettime(clockid_t, struct timespec*) noexcept __asm("__clock_gettime50");
 int
 nanosleep(const struct timespec*, struct timespec*) noexcept
-        __asm("__nanosleep50");
+    __asm("__nanosleep50");
 #define CLOCK_MONOTONIC 3
 
 // sys/unistd.h

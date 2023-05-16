@@ -320,8 +320,8 @@ linkProgram(Program program) noexcept {
         GLchar* log = static_cast<GLchar*>(malloc(32768));
         glGetProgramInfoLog_(program, 32768, 0, log);
 
-        customError("glLinkProgram",
-                    String() << "Could not link program: " << log);
+        customError("glLinkProgram", String()
+                                         << "Could not link program: " << log);
     }
 }
 
@@ -368,32 +368,32 @@ Texture tAtlas;
 #define Z_FAR_MAX  "-1024.0"
 
 static const char* imageVertexSource =
-        "#version 110\n"
-        "\n"
-        "uniform mat4 uProjection;\n"
-        "attribute vec3 aPosition;\n"
-        "attribute vec2 aTexCoord;\n"
-        "varying vec2 vTexCoord;\n"
-        "\n"
-        "void main() {\n"
-        "    float near = " Z_NEAR_MAX
-        ";\n"
-        "    float far = " Z_FAR_MAX
-        ";\n"
-        "    float z = (aPosition.z - near) / (far - near);\n"
-        "    vTexCoord = aTexCoord;\n"
-        "    gl_Position = uProjection * vec4(aPosition.xy, z, 1.0);\n"
-        "}\n";
+    "#version 110\n"
+    "\n"
+    "uniform mat4 uProjection;\n"
+    "attribute vec3 aPosition;\n"
+    "attribute vec2 aTexCoord;\n"
+    "varying vec2 vTexCoord;\n"
+    "\n"
+    "void main() {\n"
+    "    float near = " Z_NEAR_MAX
+    ";\n"
+    "    float far = " Z_FAR_MAX
+    ";\n"
+    "    float z = (aPosition.z - near) / (far - near);\n"
+    "    vTexCoord = aTexCoord;\n"
+    "    gl_Position = uProjection * vec4(aPosition.xy, z, 1.0);\n"
+    "}\n";
 
 static const char* imageFragmentSource =
-        "#version 110\n"
-        "\n"
-        "uniform sampler2D uAtlas;\n"
-        "varying vec2 vTexCoord;\n"
-        "\n"
-        "void main() {\n"
-        "    gl_FragColor = texture2D(uAtlas, vTexCoord);\n"
-        "}\n";
+    "#version 110\n"
+    "\n"
+    "uniform sampler2D uAtlas;\n"
+    "varying vec2 vTexCoord;\n"
+    "\n"
+    "void main() {\n"
+    "    gl_FragColor = texture2D(uAtlas, vTexCoord);\n"
+    "}\n";
 
 struct ImageVertex {
     fvec3 position;
@@ -411,31 +411,31 @@ struct ImageProgram {
 };
 
 static const char* rectVertexSource =
-        "#version 110\n"
-        "\n"
-        "uniform mat4 uProjection;\n"
-        "attribute vec3 aPosition;\n"
-        "attribute vec4 aColor;\n"
-        "varying vec4 vColor;\n"
-        "\n"
-        "void main() {\n"
-        "    float near = " Z_NEAR_MAX
-        ";\n"
-        "    float far = " Z_FAR_MAX
-        ";\n"
-        "    float z = (aPosition.z - near) / (far - near);\n"
-        "    vColor = aColor;\n"
-        "    gl_Position = uProjection * vec4(aPosition.xy, z, 1.0);\n"
-        "}\n";
+    "#version 110\n"
+    "\n"
+    "uniform mat4 uProjection;\n"
+    "attribute vec3 aPosition;\n"
+    "attribute vec4 aColor;\n"
+    "varying vec4 vColor;\n"
+    "\n"
+    "void main() {\n"
+    "    float near = " Z_NEAR_MAX
+    ";\n"
+    "    float far = " Z_FAR_MAX
+    ";\n"
+    "    float z = (aPosition.z - near) / (far - near);\n"
+    "    vColor = aColor;\n"
+    "    gl_Position = uProjection * vec4(aPosition.xy, z, 1.0);\n"
+    "}\n";
 
 static const char* rectFragmentSource =
-        "#version 110\n"
-        "\n"
-        "varying vec4 vColor;\n"
-        "\n"
-        "void main() {\n"
-        "    gl_FragColor = vColor;\n"
-        "}\n";
+    "#version 110\n"
+    "\n"
+    "varying vec4 vColor;\n"
+    "\n"
+    "void main() {\n"
+    "    gl_FragColor = vColor;\n"
+    "}\n";
 
 struct RectVertex {
     fvec3 position;
@@ -569,8 +569,8 @@ load(StringView path) noexcept {
     }
 
     SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
-                          static_cast<int>(r.size));
+        SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                      static_cast<int>(r.size));
 
     int x = atlasUsed;
     int y = 0;
@@ -622,11 +622,11 @@ load(StringView path) noexcept {
     }
 
     tiles.image = {
-            reinterpret_cast<void*>(tAtlas),
-            static_cast<U32>(x),
-            static_cast<U32>(y),
-            static_cast<U32>(width),
-            static_cast<U32>(height),
+        reinterpret_cast<void*>(tAtlas),
+        static_cast<U32>(x),
+        static_cast<U32>(y),
+        static_cast<U32>(width),
+        static_cast<U32>(height),
     };
 
     atlasUsed += static_cast<U32>(width);
@@ -681,29 +681,29 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     float uRight = (image.x + image.width) / tWidth;
 
     ip.attributes[offset + 0] = {
-            {xLeft, yBottom, z},
-            {uLeft, vBottom}
+        {xLeft, yBottom, z},
+        {uLeft, vBottom}
     };
     ip.attributes[offset + 1] = {
-            {xRight, yBottom, z},
-            {uRight, vBottom}
+        {xRight, yBottom, z},
+        {uRight, vBottom}
     };
     ip.attributes[offset + 2] = {
-            {xLeft, yTop, z},
-            {uLeft, vTop}
+        {xLeft, yTop, z},
+        {uLeft, vTop}
     };
 
     ip.attributes[offset + 3] = {
-            {xRight, yBottom, z},
-            {uRight, vBottom}
+        {xRight, yBottom, z},
+        {uRight, vBottom}
     };
     ip.attributes[offset + 4] = {
-            {xLeft, yTop, z},
-            {uLeft, vTop}
+        {xLeft, yTop, z},
+        {uLeft, vTop}
     };
     ip.attributes[offset + 5] = {
-            {xRight, yTop, z},
-            {uRight, vTop}
+        {xRight, yTop, z},
+        {uRight, vTop}
     };
 }
 
@@ -736,11 +736,11 @@ tileAt(TiledImage tiles, U32 index) noexcept {
     Image image = tiles.image;
 
     return {
-            image.texture,
-            image.x + tiles.tileWidth * index % image.width,
-            image.y + tiles.tileWidth * index / image.width * tiles.tileHeight,
-            tiles.tileWidth,
-            tiles.tileHeight,
+        image.texture,
+        image.x + tiles.tileWidth * index % image.width,
+        image.y + tiles.tileWidth * index / image.width * tiles.tileHeight,
+        tiles.tileWidth,
+        tiles.tileHeight,
     };
 }
 
@@ -776,47 +776,47 @@ imageDrawRect(float left, float right, float top, float bottom, float z,
     U8 b = (argb >> 0) & 0xFF;
 
     rp.attributes[offset + 0] = {
-            {xLeft, yBottom, z},
-            r,
-            g,
-            b,
-            a
+        {xLeft, yBottom, z},
+        r,
+        g,
+        b,
+        a
     };
     rp.attributes[offset + 1] = {
-            {xRight, yBottom, z},
-            r,
-            g,
-            b,
-            a
+        {xRight, yBottom, z},
+        r,
+        g,
+        b,
+        a
     };
     rp.attributes[offset + 2] = {
-            {xLeft, yTop, z},
-            r,
-            g,
-            b,
-            a
+        {xLeft, yTop, z},
+        r,
+        g,
+        b,
+        a
     };
 
     rp.attributes[offset + 3] = {
-            {xRight, yBottom, z},
-            r,
-            g,
-            b,
-            a
+        {xRight, yBottom, z},
+        r,
+        g,
+        b,
+        a
     };
     rp.attributes[offset + 4] = {
-            {xLeft, yTop, z},
-            r,
-            g,
-            b,
-            a
+        {xLeft, yTop, z},
+        r,
+        g,
+        b,
+        a
     };
     rp.attributes[offset + 5] = {
-            {xRight, yTop, z},
-            r,
-            g,
-            b,
-            a
+        {xRight, yTop, z},
+        r,
+        g,
+        b,
+        a
     };
 }
 

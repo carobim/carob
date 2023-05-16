@@ -260,8 +260,8 @@ main(I32 argc, char* argv[]) noexcept {
 
         return createArchive(archivePath,
                              static_cast<Vector<StringView>&&>(args))
-                       ? 0
-                       : 1;
+                   ? 0
+                   : 1;
     }
     else if (command == "list") {
         verbose = true;

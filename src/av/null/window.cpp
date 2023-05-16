@@ -40,7 +40,7 @@ windowMainLoop(void) noexcept {
 
     Nanoseconds frameStart = chronoNow();
     Nanoseconds previousFrameStart =
-            frameStart - idealFrameTime;  // Bogus initial value.
+        frameStart - idealFrameTime;  // Bogus initial value.
 
     // FIXME: Should be set to right after a frame is uploaded and we can begin
     //        drawing the next frame.

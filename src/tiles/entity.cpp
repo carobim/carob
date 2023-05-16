@@ -19,9 +19,9 @@
     }
 
 static StringView directions[][3] = {
-        {"up-left",   "up",     "up-right"  },
-        {"left",      "stance", "right"     },
-        {"down-left", "down",   "down-right"},
+    {"up-left",   "up",     "up-right"  },
+    {"left",      "stance", "right"     },
+    {"down-left", "down",   "down-right"},
 };
 
 
@@ -119,7 +119,7 @@ parseSprite(Entity* e, JsonValue sprite) noexcept {
     StringView path = pathValue.toString();
 
     TiledImage tiles =
-            tilesLoad(path, tileWidth, tileHeight, numAcross, numHigh);
+        tilesLoad(path, tileWidth, tileHeight, numAcross, numHigh);
     CHECK(TILES_VALID(tiles));
 
     return parsePhases(e, phasesValue, tiles);
@@ -328,12 +328,12 @@ setScript(Entity* e, StringView trigger, ScriptRef& script) noexcept {
  */
 
 Entity::Entity() noexcept
-        : dead(false),
-          redraw(true),
-          area(0),
-          frozen(false),
-          moving(false),
-          phase(0) {
+    : dead(false),
+      redraw(true),
+      area(0),
+      frozen(false),
+      moving(false),
+      phase(0) {
     r.x = 0.0;
     r.y = 0.0;
     r.z = 0.0;

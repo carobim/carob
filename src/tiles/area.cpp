@@ -20,12 +20,12 @@
 #include "util/math2.h"
 
 Area::Area() noexcept
-        : ok(true),
-          beenFocused(false),
-          redraw(true),
-          colorOverlayARGB(0),
-          dataArea(0),
-          player(0) { }
+    : ok(true),
+      beenFocused(false),
+      redraw(true),
+      colorOverlayARGB(0),
+      dataArea(0),
+      player(0) { }
 
 void
 Area::focus() noexcept {
@@ -128,8 +128,8 @@ Area::needsRedraw() noexcept {
 
     icube tiles = visibleTiles();
     icube pixels = {
-            tiles.x1 * grid.tileDim.x, tiles.y1 * grid.tileDim.y, tiles.z1,
-            tiles.x2 * grid.tileDim.x, tiles.y2 * grid.tileDim.y, tiles.z2,
+        tiles.x1 * grid.tileDim.x, tiles.y1 * grid.tileDim.y, tiles.z1,
+        tiles.x2 * grid.tileDim.x, tiles.y2 * grid.tileDim.y, tiles.z2,
     };
 
     if (player->needsRedraw(pixels)) {
@@ -254,7 +254,7 @@ Area::getColorOverlay() const noexcept {
 void
 Area::setColorOverlay(U8 a, U8 r, U8 g, U8 b) noexcept {
     colorOverlayARGB =
-            (U32)(a << 24u) + (U32)(r << 16u) + (U32)(g << 8u) + (U32)b;
+        (U32)(a << 24u) + (U32)(r << 16u) + (U32)(g << 8u) + (U32)b;
     redraw = true;
 }
 

@@ -8,9 +8,11 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-#pragma comment(linker, "\"/manifestdependency:type='win32' "                         \
-                        "name='Microsoft.Windows.Common-Controls' version='6.0.0.0' " \
-                        "processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(                                                          \
+        linker,                                                           \
+            "\"/manifestdependency:type='win32' "                         \
+            "name='Microsoft.Windows.Common-Controls' version='6.0.0.0' " \
+            "processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #pragma pack(push, 8)
 extern "C" {
@@ -303,8 +305,8 @@ printWin32Error(void) noexcept {
     char buf[512];
 
     DWORD size = FormatMessage(
-            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, 0,
-            error, 0, buf, sizeof(buf) / sizeof(TCHAR), 0);
+        FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, 0, error, 0,
+        buf, sizeof(buf) / sizeof(TCHAR), 0);
     if (size == 0) {
         // Error.
         return;

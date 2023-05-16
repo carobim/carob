@@ -7,14 +7,14 @@
 
 StringView::StringView() noexcept : data(0), size(0) { }
 StringView::StringView(const char* data) noexcept
-        : data(data),
-          size(strlen(data)) { }
+    : data(data),
+      size(strlen(data)) { }
 StringView::StringView(const char* data, Size size) noexcept
-        : data(data),
-          size(size) { }
+    : data(data),
+      size(size) { }
 StringView::StringView(const StringView& s) noexcept
-        : data(s.data),
-          size(s.size) { }
+    : data(s.data),
+      size(s.size) { }
 
 void
 StringView::operator=(const StringView& s) noexcept {
@@ -62,7 +62,7 @@ StringView::find(char needle, Size start) const noexcept {
     }
 
     char* result =
-            static_cast<char*>(memchr(data + start, needle, size - start));
+        static_cast<char*>(memchr(data + start, needle, size - start));
     if (result == 0) {
         return SV_NOT_FOUND;
     }
@@ -76,7 +76,7 @@ StringView::find(StringView needle) const noexcept {
     }
 
     char* result =
-            static_cast<char*>(memmem(data, size, needle.data, needle.size));
+        static_cast<char*>(memmem(data, size, needle.data, needle.size));
     if (result == 0) {
         return SV_NOT_FOUND;
     }
@@ -92,7 +92,7 @@ StringView::find(StringView needle, Size start) const noexcept {
     }
 
     char* result = static_cast<char*>(
-            memmem(data + start, size - start, needle.data, needle.size));
+        memmem(data + start, size - start, needle.data, needle.size));
     if (result == 0) {
         return SV_NOT_FOUND;
     }

@@ -17,22 +17,22 @@ class Markable {
  public:
     explicit constexpr11
     Markable() noexcept
-            : x(MarkedValue) { }
+        : x(MarkedValue) { }
     explicit constexpr11
     Markable(T&& x) noexcept
-            : x(static_cast<T&&>(x)) { }
+        : x(static_cast<T&&>(x)) { }
     explicit constexpr11
     Markable(const T& x) noexcept
-            : x(x) { }
+        : x(x) { }
     constexpr11
     Markable(M) noexcept
-            : x(MarkedValue) { }
+        : x(MarkedValue) { }
     constexpr11
     Markable(Markable&& other) noexcept
-            : x(static_cast<T&&>(other.x)) { }
+        : x(static_cast<T&&>(other.x)) { }
     constexpr11
     Markable(const Markable& other) noexcept
-            : x(other.x) { }
+        : x(other.x) { }
 
     inline void
     operator=(T&& x_) noexcept {

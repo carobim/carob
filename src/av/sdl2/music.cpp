@@ -34,8 +34,8 @@ load(StringView path) noexcept {
     }
 
     SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
-                          static_cast<int>(r.size));
+        SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                      static_cast<int>(r.size));
 
     TimeMeasure m(String() << "Constructed " << path << " as music");
     Mix_Music* mix = Mix_LoadMUS_RW(ops, 1);

@@ -127,17 +127,17 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     U32 dataSize = nextDataOffset;
 
     HeaderSection headerSection = {
-            {PACK_MAGIC[0], PACK_MAGIC[1], PACK_MAGIC[2], PACK_MAGIC[3],
-             PACK_MAGIC[4], PACK_MAGIC[5], PACK_MAGIC[6], PACK_MAGIC[7]},
+        {PACK_MAGIC[0], PACK_MAGIC[1], PACK_MAGIC[2], PACK_MAGIC[3],
+         PACK_MAGIC[4], PACK_MAGIC[5], PACK_MAGIC[6], PACK_MAGIC[7]},
 
-            PACK_VERSION,
-            {0, 0, 0, 0, 0, 0, 0},
+        PACK_VERSION,
+        {0, 0, 0, 0, 0, 0, 0},
 
-            blobCount,
+        blobCount,
 
-            pathsOffset,
-            metadataOffset,
-            dataOffset,
+        pathsOffset,
+        metadataOffset,
+        dataOffset,
     };
 
     //

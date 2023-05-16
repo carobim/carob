@@ -180,7 +180,7 @@ class TileGrid {
     Hashmap<ivec3,
             void (*)(DataArea*, Entity* triggeredBy, ivec3 tile) noexcept,
             EmptyIcoord>
-            scripts[SCRIPT_TYPE_LAST];
+        scripts[SCRIPT_TYPE_LAST];
 
     Hashmap<ivec3, U32, EmptyIcoord> flags;
 

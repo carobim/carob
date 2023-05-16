@@ -135,8 +135,8 @@ windowCreate(void) noexcept {
 #endif
 
         sdl2Window =
-                SDL_CreateWindow("Carob", SDL_WINDOWPOS_UNDEFINED,
-                                 SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+            SDL_CreateWindow("Carob", SDL_WINDOWPOS_UNDEFINED,
+                             SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
         if (sdl2Window == 0) {
             sdlDie("SDL2", "SDL_CreateWindow");
@@ -176,7 +176,7 @@ windowMainLoop(void) noexcept {
 
     Nanoseconds frameStart = chronoNow();
     Nanoseconds previousFrameStart =
-            frameStart - idealFrameTime;  // Bogus initial value.
+        frameStart - idealFrameTime;  // Bogus initial value.
 
     Nanoseconds nextFrameStart = frameStart + idealFrameTime;
 
@@ -252,8 +252,8 @@ windowMainLoop(void) noexcept {
                 nextFrameStart += idealFrameTime;
                 framesDropped += 1;
             }
-            logInfo("SDL2",
-                    String() << "Dropped " << framesDropped << " frames");
+            logInfo("SDL2", String()
+                                << "Dropped " << framesDropped << " frames");
         }
     }
 }
@@ -266,7 +266,7 @@ windowPushScale(float x, float y) noexcept {
     struct Transform transform = transformStack[transformTop];
 
     transformStack[++transformTop] =
-            transformMultiply(transformScale(factor, factor), transform);
+        transformMultiply(transformScale(factor, factor), transform);
     updateTransform();
 }
 
@@ -280,8 +280,8 @@ void
 windowPushTranslate(float x, float y) noexcept {
     struct Transform transform = transformStack[transformTop];
     transformStack[++transformTop] = transformMultiply(
-            transformTranslate(static_cast<float>(x), static_cast<float>(y)),
-            transform);
+        transformTranslate(static_cast<float>(x), static_cast<float>(y)),
+        transform);
     updateTransform();
 }
 

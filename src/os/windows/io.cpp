@@ -36,9 +36,9 @@ WriteFile(HANDLE, LPCVOID, DWORD, LPDWORD, void*) noexcept;
 }  // extern "C"
 
 File::File(StringView path) noexcept {
-    handle = CreateFileA(String(path).null(),
-                         FILE_READ_ATTRIBUTES | FILE_READ_DATA, 0, 0,
-                         OPEN_EXISTING, 0, 0);
+    handle =
+        CreateFileA(String(path).null(), FILE_READ_ATTRIBUTES | FILE_READ_DATA,
+                    0, 0, OPEN_EXISTING, 0, 0);
     if (handle == INVALID_HANDLE_VALUE) {
         // GetLastError(); for more specific information if we want
         return;

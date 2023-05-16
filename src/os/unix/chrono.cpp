@@ -12,7 +12,7 @@ chronoNow() noexcept {
     assert_(err == 0);
 
     return static_cast<Nanoseconds>(
-            s_to_ns(static_cast<Nanoseconds>(tp.tv_sec)) + tp.tv_nsec);
+        s_to_ns(static_cast<Nanoseconds>(tp.tv_sec)) + tp.tv_nsec);
 }
 
 void

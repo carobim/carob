@@ -25,8 +25,8 @@ openPackFile() noexcept {
 
     pack = makePackReader(path);
     if (!pack) {
-        logFatal("PackResources",
-                 String() << path << ": could not open archive");
+        logFatal("PackResources", String()
+                                      << path << ": could not open archive");
         return false;
     }
 
@@ -49,8 +49,8 @@ resourceLoad(StringView path, String& data) noexcept {
     U32 index = readerIndex(pack, path);
 
     if (index == BLOB_NOT_FOUND) {
-        logErr("PackResources",
-               String() << getFullPath(path) << ": file missing");
+        logErr("PackResources", String()
+                                    << getFullPath(path) << ": file missing");
         return false;
     }
 
@@ -59,8 +59,8 @@ resourceLoad(StringView path, String& data) noexcept {
 
     // Will it fit in memory?
     if (size > static_cast<U32>(INT32_MAX)) {
-        logErr("PackResources",
-               String() << getFullPath(path) << ": file too large");
+        logErr("PackResources", String()
+                                    << getFullPath(path) << ": file too large");
         return false;
     }
 

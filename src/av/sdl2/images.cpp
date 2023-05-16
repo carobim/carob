@@ -28,8 +28,8 @@ imageInit() noexcept {
 
     renderer = SDL_CreateRenderer(sdl2Window, -1,
                                   SDL_RENDERER_ACCELERATED |
-                                          SDL_RENDERER_PRESENTVSYNC |
-                                          SDL_RENDERER_TARGETTEXTURE);
+                                      SDL_RENDERER_PRESENTVSYNC |
+                                      SDL_RENDERER_TARGETTEXTURE);
 
     if (renderer == 0) {
         sdlDie("SDL2", "SDL_CreateRenderer");
@@ -45,8 +45,7 @@ imageInit() noexcept {
     bool vsync = (info.flags & SDL_RENDERER_PRESENTVSYNC) != 0;
 
     logInfo("SDL2", String("Rendering will be done with ")
-                            << name
-                            << (vsync ? " with vsync" : " without vsync"));
+                        << name << (vsync ? " with vsync" : " without vsync"));
 
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
 
@@ -115,8 +114,8 @@ load(StringView path) noexcept {
     }
 
     SDL_RWops* ops =
-            SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
-                          static_cast<int>(r.size));
+        SDL_RWFromMem(static_cast<void*>(const_cast<char*>(r.data)),
+                      static_cast<int>(r.size));
 
     int x = atlasUsed;
     int y = 0;
@@ -165,11 +164,11 @@ load(StringView path) noexcept {
     }
 
     tiles.image = {
-            atlas,
-            static_cast<U32>(x),
-            static_cast<U32>(y),
-            static_cast<U32>(width),
-            static_cast<U32>(height),
+        atlas,
+        static_cast<U32>(x),
+        static_cast<U32>(y),
+        static_cast<U32>(width),
+        static_cast<U32>(height),
     };
 
     atlasUsed += static_cast<U32>(width);
@@ -238,11 +237,11 @@ tileAt(TiledImage tiles, U32 index) noexcept {
     Image image = tiles.image;
 
     return {
-            image.texture,
-            image.x + tiles.tileWidth * index % image.width,
-            image.y + tiles.tileWidth * index / image.width * tiles.tileHeight,
-            tiles.tileWidth,
-            tiles.tileHeight,
+        image.texture,
+        image.x + tiles.tileWidth * index % image.width,
+        image.y + tiles.tileWidth * index / image.width * tiles.tileHeight,
+        tiles.tileWidth,
+        tiles.tileHeight,
     };
 }
 

@@ -44,7 +44,7 @@ class DataArea {
     turn() noexcept;
 
     HashVector<void (*)(DataArea*, Entity* triggeredBy, ivec3 tile) noexcept>
-            scripts;
+        scripts;
 
  private:
     DataArea(const DataArea&);

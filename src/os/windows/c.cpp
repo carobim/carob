@@ -29,11 +29,11 @@ void
 __va_start(va_list*, ...);
 #        define __crt_va_start_a(ap, v) \
             ((void)(__va_start(&ap, &v, _SLOTSIZEOF(v), __alignof(v), &v)))
-#        define __crt_va_arg(ap, t)                                       \
-            ((sizeof(t) > (2 * sizeof(__int64)))                          \
-                     ? **(t**)((ap += sizeof(__int64)) - sizeof(__int64)) \
-                     : *(t*)((ap += _SLOTSIZEOF(t) + _APALIGN(t, ap)) -   \
-                             _SLOTSIZEOF(t)))
+#        define __crt_va_arg(ap, t)                                   \
+            ((sizeof(t) > (2 * sizeof(__int64)))                      \
+                 ? **(t**)((ap += sizeof(__int64)) - sizeof(__int64)) \
+                 : *(t*)((ap += _SLOTSIZEOF(t) + _APALIGN(t, ap)) -   \
+                         _SLOTSIZEOF(t)))
 #        define __crt_va_end(ap) ((void)(ap = (va_list)0))
 #    else
 #        define _INTSIZEOF(n) \
@@ -51,7 +51,7 @@ __pragma(pack(pop));
 #    define _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION (1ULL << 0)
 
 __declspec(noinline) __inline unsigned __int64* __local_stdio_printf_options(
-        void) noexcept {
+    void) noexcept {
     static unsigned __int64 _OptionsStorage;
     return &_OptionsStorage;
 }
@@ -68,9 +68,9 @@ _vsnprintf_l(char* const _Buffer, Size const _BufferCount,
              char const* const _Format, _locale_t const _Locale,
              va_list _ArgList) noexcept {
     int const _Result = __stdio_common_vsprintf(
-            *__local_stdio_printf_options() |
-                    _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
-            _Buffer, _BufferCount, _Format, _Locale, _ArgList);
+        *__local_stdio_printf_options() |
+            _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION,
+        _Buffer, _BufferCount, _Format, _Locale, _ArgList);
 
     return _Result < 0 ? -1 : _Result;
 }

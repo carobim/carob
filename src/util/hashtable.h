@@ -285,7 +285,7 @@ class Hashmap {
 
             if (key != E::value()) {
                 operator[](static_cast<Key&&>(key)) =
-                        static_cast<Value&&>(value);
+                    static_cast<Value&&>(value);
             }
 
             oldData[i].~Entry();
