@@ -42,15 +42,15 @@ typedef unsigned long ULONG_PTR, *PULONG_PTR;
 // Defined as __declspec(dllimport) when building a DLL.
 #if MSVC == 2010
 // 2010 crtdefs.h
-#define CRTIMP
+#    define CRTIMP
 #else
 // 2019 corecrt.h
-#define CRTIMP
+#    define CRTIMP
 #endif
 
-#define WINAPI       __stdcall
-#define WINBASEAPI   __declspec(dllimport)
-#define WINUSERAPI   __declspec(dllimport)
+#define WINAPI     __stdcall
+#define WINBASEAPI __declspec(dllimport)
+#define WINUSERAPI __declspec(dllimport)
 
 // 2010 stdlib.h
 // 2012 stdlib.h

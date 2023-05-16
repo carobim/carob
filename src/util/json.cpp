@@ -237,24 +237,12 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
                     switch (c) {
                     case '\\':
                     case '"':
-                    case '/':
-                        *it = c;
-                        break;
-                    case 'b':
-                        *it = '\b';
-                        break;
-                    case 'f':
-                        *it = '\f';
-                        break;
-                    case 'n':
-                        *it = '\n';
-                        break;
-                    case 'r':
-                        *it = '\r';
-                        break;
-                    case 't':
-                        *it = '\t';
-                        break;
+                    case '/': *it = c; break;
+                    case 'b': *it = '\b'; break;
+                    case 'f': *it = '\f'; break;
+                    case 'n': *it = '\n'; break;
+                    case 'r': *it = '\r'; break;
+                    case 't': *it = '\t'; break;
                     case 'u':
                         c = 0;
                         for (I32 i = 0; i < 4; ++i) {
@@ -279,9 +267,7 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
                             *it = 0x80 | (c & 0x3F);
                         }
                         break;
-                    default:
-                        endptr = s;
-                        return false;
+                    default: endptr = s; return false;
                     }
                 }
                 else if (static_cast<U32>(c) < ' ' || c == '\x7F') {
@@ -372,10 +358,8 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
             }
             separator = true;
             continue;
-        case '\0':
-            continue;
-        default:
-            return false;
+        case '\0': continue;
+        default: return false;
         }
 
         separator = false;

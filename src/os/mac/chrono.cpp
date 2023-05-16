@@ -27,17 +27,15 @@ static struct mach_timebase_info timebase = {0, 0};
 
 static Nanoseconds
 fromAbsolute(U64 machTime) noexcept {
-    U64 ns = machTime *
-        static_cast<U64>(timebase.numer) /
-        static_cast<U64>(timebase.denom);
+    U64 ns = machTime * static_cast<U64>(timebase.numer) /
+             static_cast<U64>(timebase.denom);
     return static_cast<Nanoseconds>(ns);
 }
 
 static U64
 toAbsolute(Nanoseconds ns) noexcept {
-    return static_cast<U64>(ns) *
-        static_cast<U64>(timebase.denom) /
-        static_cast<U64>(timebase.numer);
+    return static_cast<U64>(ns) * static_cast<U64>(timebase.denom) /
+           static_cast<U64>(timebase.numer);
 }
 
 static void

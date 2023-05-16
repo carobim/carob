@@ -69,11 +69,8 @@ Area::buttonDown(Key key) noexcept {
         delta.y = 1;
         player->startMovement(delta);
         break;
-    case KEY_SPACE:
-        player->useTile();
-        break;
-    default:
-        break;
+    case KEY_SPACE: player->useTile(); break;
+    default: break;
     }
 }
 
@@ -101,8 +98,7 @@ Area::buttonUp(Key key) noexcept {
         delta.y = 1;
         player->stopMovement(delta);
         break;
-    default:
-        break;
+    default: break;
     }
 }
 
@@ -116,12 +112,8 @@ Area::draw(DisplayList* display) noexcept {
 
     for (I32 z = 0; z < maxZ; z++) {
         switch (grid.layerTypes[z]) {
-        case TileGrid::TILE_LAYER:
-            drawTiles(display, tiles, z);
-            break;
-        case TileGrid::OBJECT_LAYER:
-            drawEntities(display, tiles, z);
-            break;
+        case TileGrid::TILE_LAYER: drawTiles(display, tiles, z); break;
+        case TileGrid::OBJECT_LAYER: drawEntities(display, tiles, z); break;
         }
     }
 

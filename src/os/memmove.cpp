@@ -61,7 +61,7 @@ fourByteMemmem(const U8* h, Size k, const U8* n) noexcept {
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-#define BIT_OP(a, b, op) \
+#define BIT_OP(a, b, op)                           \
     ((a)[(Size)(b) / (8 * sizeof *(a))] op(Size) 1 \
      << ((Size)(b) % (8 * sizeof *(a))))
 
@@ -210,5 +210,4 @@ memmem(const void* h0, Size k, const void* n0, Size l) noexcept {
 
     return twoWayMemmem(h, h + k, n, l);
 }
-
 }

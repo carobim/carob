@@ -168,8 +168,7 @@ Animation::setFrame(Time now) noexcept {
 
     if (!isSingleFrame(id)) {
         Time pos = now - data.offset;
-        U32 index =
-                static_cast<U32>((pos % data.cycleTime) / data.frameTime);
+        U32 index = static_cast<U32>((pos % data.cycleTime) / data.frameTime);
         Image image = data.frames[index];
 
         data.currentIndex = index;

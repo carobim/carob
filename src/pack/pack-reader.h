@@ -1,8 +1,8 @@
 #ifndef SRC_PACK_PACK_READER_H_
 #define SRC_PACK_PACK_READER_H_
 
-#include "util/int.h"
 #include "util/compiler.h"
+#include "util/int.h"
 #include "util/string-view.h"
 
 #define BLOB_NOT_FOUND UINT32_MAX

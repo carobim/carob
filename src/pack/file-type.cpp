@@ -16,7 +16,7 @@ determineFileType(StringView path) noexcept {
     StringView extension = path.substr(dot);
     for (const StringView* text = &textExtensions[0];
          text !=
-            &textExtensions[sizeof(textExtensions)/sizeof(textExtensions[0])];
+         &textExtensions[sizeof(textExtensions) / sizeof(textExtensions[0])];
          text++) {
         if (extension == *text) {
             return FT_TEXT;
@@ -24,7 +24,7 @@ determineFileType(StringView path) noexcept {
     }
     for (const StringView* text = &mediaExtensions[0];
          text !=
-            &mediaExtensions[sizeof(mediaExtensions)/sizeof(mediaExtensions[0])];
+         &mediaExtensions[sizeof(mediaExtensions) / sizeof(mediaExtensions[0])];
          text++) {
         if (extension == *text) {
             return FT_MEDIA;

@@ -7,10 +7,7 @@
 #include "util/compiler.h"
 #include "util/math2.h"
 
-enum TrackingMode {
-    TM_MANUAL,
-    TM_FOLLOW_ENTITY
-};
+enum TrackingMode { TM_MANUAL, TM_FOLLOW_ENTITY };
 
 static float aspectRatio;
 static fvec2 off = {0, 0};
@@ -103,9 +100,7 @@ update() noexcept {
     case TM_MANUAL:
         // Do nothing.
         break;
-    case TM_FOLLOW_ENTITY:
-        _jumpToEntity(targete);
-        break;
+    case TM_FOLLOW_ENTITY: _jumpToEntity(targete); break;
     };
 }
 
@@ -157,10 +152,8 @@ viewportGetScale() noexcept {
 
 fvec2
 viewportGetPhysRes() noexcept {
-    fvec2 resolution = {
-            static_cast<float>(windowWidth()),
-            static_cast<float>(windowHeight())
-    };
+    fvec2 resolution = {static_cast<float>(windowWidth()),
+                        static_cast<float>(windowHeight())};
     return resolution;
 }
 

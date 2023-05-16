@@ -1,5 +1,5 @@
-#include "os/c.h"
 #include "os/chrono.h"
+#include "os/c.h"
 #include "util/assert.h"
 #include "util/compiler.h"
 #include "util/int.h"

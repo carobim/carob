@@ -103,8 +103,7 @@ union JsonValue {
 
     inline bool
     isDouble() noexcept {
-        return static_cast<I64>(ival) <=
-               static_cast<I64>(JSON_VALUE_NAN_MASK);
+        return static_cast<I64>(ival) <= static_cast<I64>(JSON_VALUE_NAN_MASK);
     }
 
     inline JsonTag

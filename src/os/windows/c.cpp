@@ -10,27 +10,30 @@ extern "C" {
 typedef struct {
     struct __crt_locale_data* locinfo;
     struct __crt_multibyte_data* mbcinfo;
-} * _locale_t;
+}* _locale_t;
 typedef char* va_list;
 
-CRTIMP int __stdio_common_vfprintf(unsigned __int64,
-                                   FILE*,
-                                   char const*,
-                                   _locale_t,
-                                   va_list) noexcept;
-CRTIMP int __stdio_common_vsprintf(unsigned __int64,
-                                   char*,
-                                   Size,
-                                   char const*,
-                                   _locale_t,
-                                   va_list) noexcept;
+CRTIMP int
+__stdio_common_vfprintf(unsigned __int64,
+                        FILE*,
+                        char const*,
+                        _locale_t,
+                        va_list) noexcept;
+CRTIMP int
+__stdio_common_vsprintf(unsigned __int64,
+                        char*,
+                        Size,
+                        char const*,
+                        _locale_t,
+                        va_list) noexcept;
 
 #    if SIZE == 64
 #        define _VA_ALIGN       8
 #        define _SLOTSIZEOF(t)  ((sizeof(t) + _VA_ALIGN - 1) & ~(_VA_ALIGN - 1))
 #        define _APALIGN(t, ap) (((va_list)0 - (ap)) & (__alignof(t) - 1))
 
-void __va_start(va_list*, ...);
+void
+__va_start(va_list*, ...);
 #        define __crt_va_start_a(ap, v) \
             ((void)(__va_start(&ap, &v, _SLOTSIZEOF(v), __alignof(v), &v)))
 #        define __crt_va_arg(ap, t)                                       \
@@ -54,8 +57,8 @@ __pragma(pack(pop));
 #    define __crt_va_start(ap, x)                                 __crt_va_start_a(ap, x)
 #    define _CRT_INTERNAL_PRINTF_LEGACY_VSPRINTF_NULL_TERMINATION (1ULL << 0)
 
-__declspec(noinline) __inline unsigned __int64*
-        __local_stdio_printf_options(void) noexcept {
+__declspec(noinline) __inline unsigned __int64* __local_stdio_printf_options(
+        void) noexcept {
     static unsigned __int64 _OptionsStorage;
     return &_OptionsStorage;
 }

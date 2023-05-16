@@ -115,11 +115,11 @@ readdir(DIR*) noexcept __asm("__readdir30");
 
 // math.h
 #define atan2f __builtin_atan2f
-#define ceilf __builtin_ceilf
-#define cosf __builtin_cosf
+#define ceilf  __builtin_ceilf
+#define cosf   __builtin_cosf
 #define floorf __builtin_floorf
-#define sinf __builtin_sinf
-#define sqrtf __builtin_sqrtf
+#define sinf   __builtin_sinf
+#define sqrtf  __builtin_sqrtf
 
 // amd64/types.h
 // pthread_types.h

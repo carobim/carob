@@ -19,9 +19,9 @@
     }
 
 static StringView directions[][3] = {
-        {"up-left", "up", "up-right"},
-        {"left", "stance", "right"},
-        {"down-left", "down", "down-right"},
+        {"up-left",   "up",     "up-right"  },
+        {"left",      "stance", "right"     },
+        {"down-left", "down",   "down-right"},
 };
 
 

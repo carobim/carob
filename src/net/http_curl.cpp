@@ -10,9 +10,9 @@
 
 // curl/curl.h
 #if MSVC
-#define CURL_EXTERN __declspec(dllimport)
+#    define CURL_EXTERN __declspec(dllimport)
 #else
-#define CURL_EXTERN
+#    define CURL_EXTERN
 #endif
 #define CURLOPTTYPE_LONG          0
 #define CURLOPTTYPE_OBJECTPOINT   10000
@@ -140,13 +140,11 @@ httpSetCookie(Http* self, String cookie) noexcept {
 }
 
 StringView
-httpGet(
-        Http* self,
+httpGet(Http* self,
         String* response,
         StringView url,
         Header* headers,
-        Size headersSize
-) noexcept {
+        Size headersSize) noexcept {
     self->buf.clear();
     if (self->buf.capacity < 1024) {
         self->buf.reserve(1024);
@@ -167,9 +165,7 @@ httpGet(
         item.data = reinterpret_cast<char*>(self->buf.size);
         item.next = 0;
         self->list.push(item);
-        self->buf << header->name
-                  << ": "
-                  << header->value
+        self->buf << header->name << ": " << header->value
                   << static_cast<char>(0);
     }
 
@@ -181,8 +177,7 @@ httpGet(
 
     // Now that buf has a stable base pointer, use it.
     char* url_ = self->buf.data;
-    for (CURLlist* item = self->list.begin();
-         item != self->list.end();
+    for (CURLlist* item = self->list.begin(); item != self->list.end();
          ++item) {
         // It's actually the other way around... item has an offset and buf has
         // the base pointer.
@@ -217,15 +212,13 @@ httpGet(
 }
 
 StringView
-httpForm(
-        Http* self,
-        String* response,
-        StringView url,
-        Header* headers,
-        Size headersSize,
-        FormData* data,
-        Size dataSize
-) noexcept {
+httpForm(Http* self,
+         String* response,
+         StringView url,
+         Header* headers,
+         Size headersSize,
+         FormData* data,
+         Size dataSize) noexcept {
     self->buf.clear();
     if (self->buf.capacity < 1024) {
         self->buf.reserve(1024);
@@ -254,14 +247,11 @@ httpForm(
         item.data = reinterpret_cast<char*>(self->buf.size);
         item.next = 0;
         self->list.push(item);
-        self->buf << header->name
-                  << ": "
-                  << header->value
+        self->buf << header->name << ": " << header->value
                   << static_cast<char>(0);
     }
 
-    for (CURLlist* item = self->list.begin();
-         item + 1 != self->list.end();
+    for (CURLlist* item = self->list.begin(); item + 1 != self->list.end();
          ++item) {
         item[0].next = &item[1];
     }
@@ -271,17 +261,14 @@ httpForm(
         FormData* entity = data + i;
 
         self->buf << "--BOUNDARY\r\nContent-Disposition: form-data; name=\""
-                  << entity->name
-                  << "\"\r\n\r\n"
-                  << entity->value
-                  << "\r\n";
+                  << entity->name << "\"\r\n\r\n"
+                  << entity->value << "\r\n";
     }
     self->buf << "--BOUNDARY--\r\n";
 
     // Now that buf has a stable base pointer, use it.
     char* url_ = self->buf.data;
-    for (CURLlist* item = self->list.begin();
-         item != self->list.end();
+    for (CURLlist* item = self->list.begin(); item != self->list.end();
          ++item) {
         // It's actually the other way around... item has an offset and buf has
         // the base pointer.

@@ -59,7 +59,8 @@ class List {
 
      private:
         constexpr11
-        Iterator(Links* links) noexcept : links(links) { }
+        Iterator(Links* links) noexcept
+                : links(links) { }
         Links* links;
     };
 

@@ -150,16 +150,18 @@ readdir(DIR*) noexcept;
 
 // math.h
 #define atan2f __builtin_atan2f
-#define ceilf __builtin_ceilf
-#define cosf __builtin_cosf
+#define ceilf  __builtin_ceilf
+#define cosf   __builtin_cosf
 #define floorf __builtin_floorf
-#define sinf __builtin_sinf
-#define sqrtf __builtin_sqrtf
+#define sinf   __builtin_sinf
+#define sqrtf  __builtin_sqrtf
 
 // pthread.h
 extern "C" {
-#define PTHREAD_MUTEX_INITIALIZER { 0 }
-#define PTHREAD_COND_INITIALIZER  { 0 }
+#define PTHREAD_MUTEX_INITIALIZER \
+    { 0 }
+#define PTHREAD_COND_INITIALIZER \
+    { 0 }
 int
 pthread_mutex_destroy(pthread_mutex_t*) noexcept;
 int

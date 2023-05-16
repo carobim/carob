@@ -31,9 +31,7 @@ Player::destroy() noexcept {
 void
 Player::startMovement(ivec2 delta) noexcept {
     switch (confMoveMode) {
-    case TURN:
-        moveByTile(delta);
-        break;
+    case TURN: moveByTile(delta); break;
     case TILE:
         movements[numMovements++] = delta;
         velocity = delta;
@@ -48,8 +46,7 @@ Player::startMovement(ivec2 delta) noexcept {
 void
 Player::stopMovement(ivec2 delta) noexcept {
     switch (confMoveMode) {
-    case TURN:
-        break;
+    case TURN: break;
     case TILE:
         for (Size i = 0; i < numMovements; i++) {
             if (movements[i] == delta) {

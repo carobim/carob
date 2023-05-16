@@ -45,38 +45,17 @@ handleEvent(const SDL_Event& event) noexcept {
     case SDL_KEYUP:
     case SDL_KEYDOWN:
         switch (event.key.keysym.sym) {
-        case SDLK_ESCAPE:
-            key = KEY_ESCAPE;
-            break;
-        case SDLK_LCTRL:
-            key = KEY_LEFT_CONTROL;
-            break;
-        case SDLK_RCTRL:
-            key = KEY_RIGHT_CONTROL;
-            break;
-        case SDLK_LSHIFT:
-            key = KEY_LEFT_SHIFT;
-            break;
-        case SDLK_RSHIFT:
-            key = KEY_RIGHT_SHIFT;
-            break;
-        case SDLK_SPACE:
-            key = KEY_SPACE;
-            break;
-        case SDLK_LEFT:
-            key = KEY_LEFT_ARROW;
-            break;
-        case SDLK_RIGHT:
-            key = KEY_RIGHT_ARROW;
-            break;
-        case SDLK_UP:
-            key = KEY_UP_ARROW;
-            break;
-        case SDLK_DOWN:
-            key = KEY_DOWN_ARROW;
-            break;
-        default:
-            return;
+        case SDLK_ESCAPE: key = KEY_ESCAPE; break;
+        case SDLK_LCTRL: key = KEY_LEFT_CONTROL; break;
+        case SDLK_RCTRL: key = KEY_RIGHT_CONTROL; break;
+        case SDLK_LSHIFT: key = KEY_LEFT_SHIFT; break;
+        case SDLK_RSHIFT: key = KEY_RIGHT_SHIFT; break;
+        case SDLK_SPACE: key = KEY_SPACE; break;
+        case SDLK_LEFT: key = KEY_LEFT_ARROW; break;
+        case SDLK_RIGHT: key = KEY_RIGHT_ARROW; break;
+        case SDLK_UP: key = KEY_UP_ARROW; break;
+        case SDLK_DOWN: key = KEY_DOWN_ARROW; break;
+        default: return;
         }
         if (event.type == SDL_KEYUP) {
             windowEmitKeyUp(key);
@@ -91,8 +70,7 @@ handleEvent(const SDL_Event& event) noexcept {
         exitProcess(0);
         return;
 
-    default:
-        return;
+    default: return;
     }
 }
 

@@ -126,10 +126,10 @@ mkdir(const char*, mode_t) noexcept;
 int
 stat(const char*, struct stat*) noexcept __DARWIN_INODE64(stat);
 // In sys/_types/_s_ifmt.h on Xcode 12.5/macOS 11
-#define S_IFMT     0170000
+#define S_IFMT 0170000
 // In sys/_types/_s_ifmt.h on Xcode 12.5/macOS 11
 #define S_IFDIR    0040000
-#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#define S_ISDIR(m) (((m)&S_IFMT) == S_IFDIR)
 
 // sys/sysctl.h
 int
@@ -181,14 +181,18 @@ sqrtf(float) noexcept;
 // pthread/pthread.h
 // pthread/pthread_impl.h
 #define _PTHREAD_MUTEX_SIG_init 0x32AAABA7
-#define PTHREAD_MUTEX_INITIALIZER      \
-    {                                  \
-        _PTHREAD_MUTEX_SIG_init, { 0 } \
+#define PTHREAD_MUTEX_INITIALIZER  \
+    {                              \
+        _PTHREAD_MUTEX_SIG_init, { \
+            0                      \
+        }                          \
     }
 #define _PTHREAD_COND_SIG_init 0x3CB0B1BB
-#define PTHREAD_COND_INITIALIZER      \
-    {                                 \
-        _PTHREAD_COND_SIG_init, { 0 } \
+#define PTHREAD_COND_INITIALIZER  \
+    {                             \
+        _PTHREAD_COND_SIG_init, { \
+            0                     \
+        }                         \
     }
 int
 pthread_mutex_destroy(pthread_mutex_t*) noexcept;

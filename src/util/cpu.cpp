@@ -17,7 +17,7 @@ struct Leaf {
     U32 eax, ebx, ecx, edx;
 };
 
-#if defined(CLANG) || defined(GCC)
+#    if defined(CLANG) || defined(GCC)
 static struct Leaf
 getCpuidLeaf(U32 leafId, int subleaf) noexcept {
     struct Leaf leaf;
@@ -27,7 +27,7 @@ getCpuidLeaf(U32 leafId, int subleaf) noexcept {
             : "a"(leafId), "b"(0), "c"(subleaf), "d"(0));
     return leaf;
 }
-#elif defined(MSVC)
+#    elif defined(MSVC)
 static struct Leaf
 getCpuidLeaf(U32 leafId, int subleaf) noexcept {
     struct Leaf leaf;
@@ -39,9 +39,9 @@ getCpuidLeaf(U32 leafId, int subleaf) noexcept {
     leaf.edx = data[3];
     return leaf;
 }
-#else
-#    error unimplemented
-#endif
+#    else
+#        error unimplemented
+#    endif
 
 static const struct Leaf EMPTY_LEAF = {};
 
@@ -58,9 +58,9 @@ safeCpuIdEx(U32 maxLeaf, U32 leafId, int subleaf) noexcept {
 struct Leaves {
     U32 maxLeaf;
     //struct Leaf leaf0;   // Root
-    struct Leaf leaf1;   // Family, Model, Stepping
+    struct Leaf leaf1;  // Family, Model, Stepping
     //struct Leaf leaf2;   // Intel cache info + features
-    struct Leaf leaf7;   // Features
+    struct Leaf leaf7;  // Features
     //struct Leaf leaf71;  // Features
     //U32 maxLeafExt;
     //struct Leaf leaf80000000;  // Root for extended leaves
@@ -92,8 +92,8 @@ readLeaves(void) noexcept {
     return leaves;
 }
 
-#define MASK_XMM 0x2
-#define MASK_YMM 0x4
+#    define MASK_XMM 0x2
+#    define MASK_YMM 0x4
 
 static bool
 hasMask(U32 value, U32 mask) noexcept {
@@ -114,7 +114,7 @@ hasYmmOsXSave(U32 xcr0Eax) noexcept {
     return hasMask(xcr0Eax, MASK_XMM | MASK_YMM);
 }
 
-#if defined(CLANG) || defined(GCC)
+#    if defined(CLANG) || defined(GCC)
 static U32
 getXCR0Eax(void) noexcept {
     U32 eax, edx;
@@ -124,14 +124,14 @@ getXCR0Eax(void) noexcept {
     __asm(".byte 0x0F, 0x01, 0xd0" : "=a"(eax), "=d"(edx) : "c"(0));
     return eax;
 }
-#elif defined(MSVC)
+#    elif defined(MSVC)
 static U32
 getXCR0Eax(void) noexcept {
     return (U32)_xgetbv(0);
 }
-#else
-#    error unimplemented
-#endif
+#    else
+#        error unimplemented
+#    endif
 
 struct X86Features
 getCpu() noexcept {

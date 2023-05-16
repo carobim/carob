@@ -147,7 +147,7 @@ Output::operator<<(Flush) noexcept {
     return *this;
 }
 
-Flusher::Flusher(Output& stream) noexcept : stream(stream) {}
+Flusher::Flusher(Output& stream) noexcept : stream(stream) { }
 
 Flusher::~Flusher() noexcept {
     stream << Flush();

@@ -24,12 +24,8 @@ Character::tick(Time dt) noexcept {
     case TURN:
         // Characters don't do anything on tick() for TURN mode.
         break;
-    case TILE:
-        moveTowardDestination(dt);
-        break;
-    case NOTILE:
-        assert_(false && "not implemented");
-        break;
+    case TILE: moveTowardDestination(dt); break;
+    case NOTILE: assert_(false && "not implemented"); break;
     }
 }
 

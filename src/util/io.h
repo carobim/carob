@@ -5,7 +5,7 @@
 #include "util/int.h"
 #include "util/string-view.h"
 
-struct Flush {};
+struct Flush { };
 
 class Output {
  public:
@@ -35,8 +35,7 @@ class Output {
     Output&
     operator<<(float f) noexcept;
 
-    Output&
-    operator<<(Flush) noexcept;
+    Output& operator<<(Flush) noexcept;
 
  public:
     // Platform dependent.

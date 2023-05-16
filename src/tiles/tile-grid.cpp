@@ -7,24 +7,17 @@
 static I32
 ivec2_to_dir(ivec2 v) noexcept {
     switch (v.x) {
-    case -1:
-        return v.y == 0 ? EXIT_LEFT : -1;
+    case -1: return v.y == 0 ? EXIT_LEFT : -1;
     case 0:
         switch (v.y) {
-        case -1:
-            return EXIT_UP;
-        case 0:
-            return EXIT_NORMAL;
-        case 1:
-            return EXIT_DOWN;
-        default:
-            return -1;
+        case -1: return EXIT_UP;
+        case 0: return EXIT_NORMAL;
+        case 1: return EXIT_DOWN;
+        default: return -1;
         }
         break;
-    case 1:
-        return v.y == 0 ? EXIT_RIGHT : -1;
-    default:
-        return -1;
+    case 1: return v.y == 0 ? EXIT_RIGHT : -1;
+    default: return -1;
     }
 }
 
@@ -111,8 +104,8 @@ TileGrid::virt2virt(vicoord virt) noexcept {
 vicoord
 TileGrid::virt2virt(fvec3 virt) noexcept {
     vicoord v = {static_cast<I32>(virt.x) / tileDim.x,
-                  static_cast<I32>(virt.y) / tileDim.y,
-                  virt.z};
+                 static_cast<I32>(virt.y) / tileDim.y,
+                 virt.z};
     return v;
 }
 

@@ -36,12 +36,13 @@ WaitForSingleObjectEx(HANDLE hHandle,
                       DWORD dwMilliseconds,
                       BOOL bAlertable) noexcept;
 CRTIMP
-Size _beginthreadex(void* security,
-                    unsigned stack_size,
-                    unsigned(WINAPI* start_address)(void*),
-                    void* arglist,
-                    unsigned initflag,
-                    unsigned* thrdaddr) noexcept;
+Size
+_beginthreadex(void* security,
+               unsigned stack_size,
+               unsigned(WINAPI* start_address)(void*),
+               void* arglist,
+               unsigned initflag,
+               unsigned* thrdaddr) noexcept;
 
 #define INFINITE    0xFFFFFFFF  // Infinite timeout.
 #define WAIT_FAILED 0xFFFFFFFF

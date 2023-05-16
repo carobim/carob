@@ -8,11 +8,10 @@
 #include "util/string.h"
 #include "util/vector.h"
 
-#pragma comment(                                                      \
-        linker,                                                       \
-        "\"/manifestdependency:type='win32' "                         \
-        "name='Microsoft.Windows.Common-Controls' version='6.0.0.0' " \
-        "processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(linker,                                                               \
+                        "\"/manifestdependency:type='win32' "                         \
+                        "name='Microsoft.Windows.Common-Controls' version='6.0.0.0' " \
+                        "processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 #pragma pack(push, 8)
 extern "C" {
@@ -157,10 +156,7 @@ writeFile(StringView path, U32 length, void* data) noexcept {
 }
 
 bool
-writeFileVec(StringView path,
-             U32 count,
-             U32* lengths,
-             void** datas) noexcept {
+writeFileVec(StringView path, U32 count, U32* lengths, void** datas) noexcept {
     HANDLE file = CreateFile(String(path).null(),
                              FILE_WRITE_DATA,
                              0,
@@ -295,15 +291,9 @@ setTermColor(TermColor color, Output& /*out*/) noexcept {
     case TC_RESET:
         attribute = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
         break;
-    case TC_GREEN:
-        attribute = FOREGROUND_GREEN;
-        break;
-    case TC_YELLOW:
-        attribute = FOREGROUND_RED | FOREGROUND_GREEN;
-        break;
-    case TC_RED:
-        attribute = FOREGROUND_RED;
-        break;
+    case TC_GREEN: attribute = FOREGROUND_GREEN; break;
+    case TC_YELLOW: attribute = FOREGROUND_RED | FOREGROUND_GREEN; break;
+    case TC_RED: attribute = FOREGROUND_RED; break;
     }
 
     BOOL ok = SetConsoleTextAttribute(out, attribute);

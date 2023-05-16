@@ -26,7 +26,7 @@ struct Transform
 transformMultiply(struct Transform a, struct Transform b) noexcept;
 
 #if CXX
-}  /* extern "C" */
+} /* extern "C" */
 #endif
 
-#endif  /* SRC_UTIL_TRANSFORM_H_ */
+#endif /* SRC_UTIL_TRANSFORM_H_ */

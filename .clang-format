@@ -1,9 +1,10 @@
-# Requires clang-format 12
+# Requires clang-format 15
 # https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 ---
 Language: Cpp
 AccessModifierOffset: -3
 AlignAfterOpenBracket: Align
+AlignArrayOfStructures: Left
 AlignConsecutiveAssignments: None
 AlignConsecutiveBitFields: AcrossEmptyLinesAndComments
 AlignConsecutiveDeclarations: None
@@ -15,7 +16,7 @@ AllowAllArgumentsOnNextLine: false
 AllowAllConstructorInitializersOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: Never
-AllowShortCaseLabelsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: Never
@@ -23,7 +24,7 @@ AllowShortLambdasOnASingleLine: Inline
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: All  # Deprecated in Clang 12
 AlwaysBreakAfterReturnType: All  # FIXME: Doesn't work with __cdecl in same line
-AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: Yes
 AttributeMacros: []
 BinPackArguments: false
@@ -79,14 +80,13 @@ IncludeCategories:
     Priority:        3
   - Regex:           '.'
     Priority:        4
-IncludeIsMainRegex: '(-freebsd|-mac|-netbsd|-unix|-windows)?$'
+IncludeIsMainRegex: '(-freebsd|-mac|-netbsd|-openbsd|-unix|-windows)?$'
 #IncludeIsMainSourceRegex: '...'
 IndentCaseBlocks: false
 IndentCaseLabels: false
 IndentExternBlock: NoIndent
 IndentGotoLabels: true
 IndentPPDirectives: AfterHash
-IndentRequires: false
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false

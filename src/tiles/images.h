@@ -66,7 +66,11 @@ imagesPrune(Time latestPermissibleUse) noexcept;
  * are in virtual pixels.
  */
 void
-imageDrawRect(float left, float right, float top, float bottom, float z,
+imageDrawRect(float left,
+              float right,
+              float top,
+              float bottom,
+              float z,
               U32 argb) noexcept;
 
 void

@@ -1,7 +1,7 @@
 #include "tiles/window.h"
 
-#include "tiles/world.h"
 #include "os/os.h"
+#include "tiles/world.h"
 #include "util/compiler.h"
 
 Keys windowKeysDown = 0;

@@ -55,42 +55,42 @@
 /* Partition [q_l,q_r] around a pivot.  After partitioning,
  * [q_l,q_j] are the elements that are less than or equal to the pivot,
  * while [q_i,q_r] are the elements greater than or equal to the pivot. */
-#define Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP)                     \
-    do {                                                                    \
-        /* The middle element, not to be confused with the median. */       \
-        Size q_m = q_l + ((q_r - q_l) >> 1);                                \
+#define Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP)                       \
+    do {                                                                      \
+        /* The middle element, not to be confused with the median. */         \
+        Size q_m = q_l + ((q_r - q_l) >> 1);                                  \
         /* Reorder the second, the middle, and the last items.              \
          * As [Edelkamp Weiss 2016] explain, using the second element       \
          * instead of the first one helps avoid bad behaviour for           \
          * decreasingly sorted arrays.  This method is used in recent       \
          * versions of gcc's std::sort, see gcc bug 58437#c13, although     \
-         * the details are somewhat different (cf. #c14). */                \
-        Q_SORT3(q_l + 1, q_m, q_r, Q_LESS, Q_SWAP);                         \
-        /* Place the median at the beginning. */                            \
-        Q_SWAP(q_l, q_m);                                                   \
+         * the details are somewhat different (cf. #c14). */ \
+        Q_SORT3(q_l + 1, q_m, q_r, Q_LESS, Q_SWAP);                           \
+        /* Place the median at the beginning. */                              \
+        Q_SWAP(q_l, q_m);                                                     \
         /* Partition [q_l+2, q_r-1] around the median which is in q_l.      \
          * q_i and q_j are initially off by one, they get decremented       \
-         * in the do-while loops. */                                        \
-        q_i = q_l + 1;                                                      \
-        q_j = q_r;                                                          \
-        while (1) {                                                         \
-            do {                                                            \
-                q_i++;                                                      \
-            } while (Q_LESS(q_i, q_l));                                     \
-            do {                                                            \
-                q_j--;                                                      \
-            } while (Q_LESS(q_l, q_j));                                     \
-            if (q_i >= q_j) { /* Sedgewick says "until j < i" */            \
-                break;                                                      \
-            }                                                               \
-            Q_SWAP(q_i, q_j);                                               \
-        }                                                                   \
-        /* Compensate for the i==j case. */                                 \
-        q_i = q_j + 1;                                                      \
-        /* Put the median to its final place. */                            \
-        Q_SWAP(q_l, q_j);                                                   \
-        /* The median is not part of the left subfile. */                   \
-        q_j--;                                                              \
+         * in the do-while loops. */ \
+        q_i = q_l + 1;                                                        \
+        q_j = q_r;                                                            \
+        while (1) {                                                           \
+            do {                                                              \
+                q_i++;                                                        \
+            } while (Q_LESS(q_i, q_l));                                       \
+            do {                                                              \
+                q_j--;                                                        \
+            } while (Q_LESS(q_l, q_j));                                       \
+            if (q_i >= q_j) { /* Sedgewick says "until j < i" */              \
+                break;                                                        \
+            }                                                                 \
+            Q_SWAP(q_i, q_j);                                                 \
+        }                                                                     \
+        /* Compensate for the i==j case. */                                   \
+        q_i = q_j + 1;                                                        \
+        /* Put the median to its final place. */                              \
+        Q_SWAP(q_l, q_j);                                                     \
+        /* The median is not part of the left subfile. */                     \
+        q_j--;                                                                \
     } while (0)
 
 /* Insertion sort is applied to small subfiles - this is contrary to
@@ -118,67 +118,66 @@
 #define Q_THRESH 16
 
 /* The main loop. */
-#define Q_LOOP(Q_N, Q_LESS, Q_SWAP)                                            \
-    do {                                                                       \
-        Size q_l = 0;                                                          \
-        Size q_r = (Q_N)-1;                                                    \
-        Size q_sp = 0; /* the number of frames pushed to the stack */          \
-        struct {                                                               \
-            Size q_l, q_r;                                                     \
-        }                                                                      \
-        /* On 32-bit platforms, to sort a "char[3GB+]" array,                  \
+#define Q_LOOP(Q_N, Q_LESS, Q_SWAP)                                                \
+    do {                                                                           \
+        Size q_l = 0;                                                              \
+        Size q_r = (Q_N)-1;                                                        \
+        Size q_sp = 0; /* the number of frames pushed to the stack */              \
+        struct {                                                                   \
+            Size q_l, q_r;                                                         \
+        } /* On 32-bit platforms, to sort a "char[3GB+]" array,                  \
          * it may take full 32 stack frames.  On 64-bit CPUs,                  \
          * though, the address space is limited to 48 bits.                    \
-         * The usage is further reduced if Q_N has a 32-bit type. */           \
-        q_st[sizeof(Size) > 4 && sizeof(Q_N) > 4 ? 48 : 32];                   \
-        while (1) {                                                            \
-            if (q_r - q_l + 1 >= Q_THRESH) {                                   \
-                Size q_i, q_j;                                                 \
-                Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP);               \
+         * The usage is further reduced if Q_N has a 32-bit type. */ \
+        q_st[sizeof(Size) > 4 && sizeof(Q_N) > 4 ? 48 : 32];                       \
+        while (1) {                                                                \
+            if (q_r - q_l + 1 >= Q_THRESH) {                                       \
+                Size q_i, q_j;                                                     \
+                Q_PARTITION(q_l, q_r, q_i, q_j, Q_LESS, Q_SWAP);                   \
                 /* Now have two subfiles: [q_l,q_j] and [q_i,q_r].             \
-                 * Dealing with them depends on which one is bigger. */        \
-                if (q_j - q_l >= q_r - q_i) {                                  \
-                    Q_SUBFILES(q_l, q_j, q_i, q_r);                            \
-                }                                                              \
-                else {                                                         \
-                    Q_SUBFILES(q_i, q_r, q_l, q_j);                            \
-                }                                                              \
-            }                                                                  \
-            else {                                                             \
-                Q_INSERTION_SORT(q_l, q_r, Q_LESS, Q_SWAP);                    \
-                /* Pop subfiles from the stack, until it gets empty. */        \
-                if (q_sp == 0) {                                               \
-                    break;                                                     \
-                }                                                              \
-                q_sp--;                                                        \
-                q_l = q_st[q_sp].q_l;                                          \
-                q_r = q_st[q_sp].q_r;                                          \
-            }                                                                  \
-        }                                                                      \
+                 * Dealing with them depends on which one is bigger. */   \
+                if (q_j - q_l >= q_r - q_i) {                                      \
+                    Q_SUBFILES(q_l, q_j, q_i, q_r);                                \
+                }                                                                  \
+                else {                                                             \
+                    Q_SUBFILES(q_i, q_r, q_l, q_j);                                \
+                }                                                                  \
+            }                                                                      \
+            else {                                                                 \
+                Q_INSERTION_SORT(q_l, q_r, Q_LESS, Q_SWAP);                        \
+                /* Pop subfiles from the stack, until it gets empty. */            \
+                if (q_sp == 0) {                                                   \
+                    break;                                                         \
+                }                                                                  \
+                q_sp--;                                                            \
+                q_l = q_st[q_sp].q_l;                                              \
+                q_r = q_st[q_sp].q_r;                                              \
+            }                                                                      \
+        }                                                                          \
     } while (0)
 
 /* The missing part: dealing with subfiles.
  * Assumes that the first subfile is not smaller than the second. */
-#define Q_SUBFILES(q_l1, q_r1, q_l2, q_r2)                                  \
-    do {                                                                    \
+#define Q_SUBFILES(q_l1, q_r1, q_l2, q_r2)                                 \
+    do {                                                                   \
         /* If the second subfile is only a single element, it needs      \
      * no further processing.  The first subfile will be processed   \
      * on the next iteration (both subfiles cannot be only a single  \
      * element, due to Q_THRESH). */ \
-        if (q_l2 == q_r2) {                                                 \
-            q_l = q_l1;                                                     \
-            q_r = q_r1;                                                     \
-        }                                                                   \
-        else {                                                              \
+        if (q_l2 == q_r2) {                                                \
+            q_l = q_l1;                                                    \
+            q_r = q_r1;                                                    \
+        }                                                                  \
+        else {                                                             \
             /* Otherwise, both subfiles need processing.                 \
          * Push the larger subfile onto the stack. */ \
-            q_st[q_sp].q_l = q_l1;                                          \
-            q_st[q_sp].q_r = q_r1;                                          \
-            q_sp++;                                                         \
-            /* Process the smaller subfile on the next iteration. */        \
-            q_l = q_l2;                                                     \
-            q_r = q_r2;                                                     \
-        }                                                                   \
+            q_st[q_sp].q_l = q_l1;                                         \
+            q_st[q_sp].q_r = q_r1;                                         \
+            q_sp++;                                                        \
+            /* Process the smaller subfile on the next iteration. */       \
+            q_l = q_l2;                                                    \
+            q_r = q_r2;                                                    \
+        }                                                                  \
     } while (0)
 
 /* And now, ladies and gentlemen, may I proudly present to you... */

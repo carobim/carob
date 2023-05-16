@@ -19,7 +19,8 @@ confParse(StringView filename) noexcept {
 
     bool ok = readFile(filename, file);
     if (!ok) {
-        logInfo("ClientConf", String() << "Missing " << filename << ", using defaults");
+        logInfo("ClientConf",
+                String() << "Missing " << filename << ", using defaults");
         confWindowSize.x = static_cast<I32>(dataWorldViewportResolution.x);
         confWindowSize.y = static_cast<I32>(dataWorldViewportResolution.y);
         confFullscreen = false;

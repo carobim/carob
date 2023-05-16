@@ -33,7 +33,7 @@ class Player;
 */
 class Area {
  public:
-     Area() noexcept;
+    Area() noexcept;
 
     //! Prepare game state for this Area to be in focus.
     void
@@ -94,7 +94,9 @@ class Area {
     spawnNPC(StringView descriptor_, vicoord coord, StringView phase) noexcept;
     // Create an Overlay and insert it into the Area. Returns a borrowed ref.
     Overlay*
-    spawnOverlay(StringView descriptor_, vicoord coord, StringView phase) noexcept;
+    spawnOverlay(StringView descriptor_,
+                 vicoord coord,
+                 StringView phase) noexcept;
 
     DataArea*
     getDataArea() noexcept;

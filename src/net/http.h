@@ -26,23 +26,19 @@ void
 httpSetCookie(Http* self, String cookie) noexcept;
 
 StringView
-httpGet(
-        Http* self,
+httpGet(Http* self,
         String* response,
         StringView url,
         Header* headers,
-        Size headersSize
-) noexcept;
+        Size headersSize) noexcept;
 
 StringView
-httpForm(
-        Http* self,
-        String* response,
-        StringView url,
-        Header* headers,
-        Size headersSize,
-        FormData* data,
-        Size dataSize
-) noexcept;
+httpForm(Http* self,
+         String* response,
+         StringView url,
+         Header* headers,
+         Size headersSize,
+         FormData* data,
+         Size dataSize) noexcept;
 
 #endif

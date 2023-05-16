@@ -11,11 +11,11 @@ typedef unsigned char U8;
 typedef unsigned short U16;
 typedef unsigned int U32;
 typedef unsigned long long U64;
-#define INT32_MIN ((I32)-1)
-#define INT32_MAX ((I32)0x7fffffff)
+#define INT32_MIN  ((I32)-1)
+#define INT32_MAX  ((I32)0x7fffffff)
 #define UINT32_MAX ((U32)0xffffffff)
-#define INT64_MAX ((I64)0x7fffffffffffffffLL)
-#define INT64_MIN ((I64)-1)
+#define INT64_MAX  ((I64)0x7fffffffffffffffLL)
+#define INT64_MIN  ((I64)-1)
 #define UINT64_MAX ((U64)0xffffffffffffffffULL)
 
 #if SIZE == 64
@@ -56,7 +56,8 @@ typedef I32 SSize;
 //       - Check Apple again
 //       - Who has I64?
 //       - Try other 32-bit platforms
-#if defined(__APPLE__) || defined(__EMSCRIPTEN__) || defined(GCC) || defined(CLANG)
+#if defined(__APPLE__) || defined(__EMSCRIPTEN__) || defined(GCC) || \
+        defined(CLANG)
 typedef long Time;
 #else
 typedef I64 Time;

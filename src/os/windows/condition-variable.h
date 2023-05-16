@@ -31,9 +31,7 @@ SleepConditionVariableSRW(PCONDITION_VARIABLE ConditionVariable,
 
 class ConditionVariable {
  public:
-    inline ConditionVariable() noexcept {
-        cv.Ptr = 0;
-    }
+    inline ConditionVariable() noexcept { cv.Ptr = 0; }
 
     inline void
     notifyOne() noexcept {

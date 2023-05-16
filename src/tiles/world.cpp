@@ -77,8 +77,7 @@ worldButtonDown(Key key) noexcept {
 void
 worldButtonUp(Key key) noexcept {
     switch (key) {
-    case KEY_ESCAPE:
-        break;
+    case KEY_ESCAPE: break;
     default:
         if (!paused && numKeyStates == 0) {
             worldArea->buttonUp(key);

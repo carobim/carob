@@ -14,7 +14,8 @@ Vector<String>
 listDir(StringView path) noexcept {
     Vector<String> names;
 
-    int fd = open(String(path).null(), O_CLOEXEC | O_DIRECTORY | O_NONBLOCK | O_RDONLY);
+    int fd = open(String(path).null(),
+                  O_CLOEXEC | O_DIRECTORY | O_NONBLOCK | O_RDONLY);
     if (fd == -1) {
         return names;
     }
@@ -41,7 +42,7 @@ listDir(StringView path) noexcept {
         struct dirent* d = reinterpret_cast<struct dirent*>(buf + loc);
         assert_((reinterpret_cast<SSize>(d) & 3) == 0);
         assert_(d->d_reclen > 0 && d->d_reclen <= len + 1 - loc);
-        assert_(d->d_ino != 0); // Maybe deleted but not yet removed from dir?
+        assert_(d->d_ino != 0);  // Maybe deleted but not yet removed from dir?
         assert_(d->d_type != DT_WHT);
 
         loc += d->d_reclen;
@@ -54,10 +55,10 @@ listDir(StringView path) noexcept {
             // Ignore odd files.
             continue;
         }
-        
+
         names.push(d->d_name);
     }
-        
+
     free(buf);
     close(fd);
 
