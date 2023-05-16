@@ -9,23 +9,17 @@ void
 htmlEscape(String& out, StringView in) noexcept {
     for (Size i = 0; i < in.size; i++) {
         char c = in[i];
-        if (c == '&') {
+        if (c == '&')
             out << "&amp;";
-        }
-        else if (c == '<') {
+        else if (c == '<')
             out << "&lt;";
-        }
-        else if (c == '>') {
+        else if (c == '>')
             out << "&gt;";
-        }
-        else if (c == '"') {
+        else if (c == '"')
             out << "&quot;";
-        }
-        else if (c == '\'') {
+        else if (c == '\'')
             out << "&#x27;";
-        }
-        else {
+        else
             out << c;
-        }
     }
 }

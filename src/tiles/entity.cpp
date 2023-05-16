@@ -52,9 +52,8 @@ parseScript(Entity* e, StringView name, StringView path) noexcept;
 static bool
 parseDescriptor(Entity* e) noexcept {
     JsonDocument document = loadJson(e->descriptor);
-    if (!document.ok) {
+    if (!document.ok)
         return false;
-    }
 
     JsonValue root = document.root;
     CHECK(root.isObject());
@@ -77,15 +76,12 @@ parseDescriptor(Entity* e) noexcept {
             e->pixelsPerSecond = e->tilesPerSecond * e->area->grid.tileDim.x;
         }
     }
-    if (spriteValue.isObject()) {
+    if (spriteValue.isObject())
         CHECK(parseSprite(e, spriteValue));
-    }
-    if (soundsValue.isObject()) {
+    if (soundsValue.isObject())
         CHECK(parseSounds(e, soundsValue));
-    }
-    if (scriptsValue.isObject()) {
+    if (scriptsValue.isObject())
         CHECK(parseScripts(e, scriptsValue));
-    }
     return true;
 }
 
@@ -205,36 +201,26 @@ parsePhase(Entity* e, StringView name, JsonValue phase,
         assert_(false);
     }
 
-    if (name == "stance") {
+    if (name == "stance")
         e->phaseStance = animation;
-    }
-    else if (name == "down") {
+    else if (name == "down")
         e->phaseDown = animation;
-    }
-    else if (name == "left") {
+    else if (name == "left")
         e->phaseLeft = animation;
-    }
-    else if (name == "up") {
+    else if (name == "up")
         e->phaseUp = animation;
-    }
-    else if (name == "right") {
+    else if (name == "right")
         e->phaseRight = animation;
-    }
-    else if (name == "moving up") {
+    else if (name == "moving up")
         e->phaseMovingUp = animation;
-    }
-    else if (name == "moving right") {
+    else if (name == "moving right")
         e->phaseMovingRight = animation;
-    }
-    else if (name == "moving down") {
+    else if (name == "moving down")
         e->phaseMovingDown = animation;
-    }
-    else if (name == "moving left") {
+    else if (name == "moving left")
         e->phaseMovingLeft = animation;
-    }
-    else {
+    else
         logErr(e->descriptor, "unknown phase");
-    }
 
     return true;
 }
@@ -354,17 +340,15 @@ Entity::init(StringView descriptor, StringView initialPhase) noexcept {
 void
 Entity::destroy() noexcept {
     dead = true;
-    if (area) {
+    if (area)
         area->requestRedraw();
-    }
 }
 
 void
 Entity::draw(DisplayList* display) noexcept {
     redraw = false;
-    if (!phase) {
+    if (!phase)
         return;
-    }
 
     Time now = worldTime();
 
@@ -410,12 +394,10 @@ Entity::needsRedraw(icube& visiblePixels) noexcept {
     I32 maxY = area->grid.tileDim.y + static_cast<I32>(r.y);
     I32 minY = maxY - imgsz.y;
 
-    if (visiblePixels.x2 < minX || maxX < visiblePixels.x1) {
+    if (visiblePixels.x2 < minX || maxX < visiblePixels.x1)
         return false;
-    }
-    if (visiblePixels.y2 < minY || maxY < visiblePixels.y1) {
+    if (visiblePixels.y2 < minY || maxY < visiblePixels.y1)
         return false;
-    }
 
     return true;
 }
@@ -428,16 +410,14 @@ Entity::isDead() noexcept {
 
 void
 Entity::tick(Time dt) noexcept {
-    for (OnTickFn* fn = onTickFns.begin(); fn != onTickFns.end(); fn++) {
+    for (OnTickFn* fn = onTickFns.begin(); fn != onTickFns.end(); fn++)
         fn->fn(fn->data, dt);
-    }
 }
 
 void
 Entity::turn() noexcept {
-    for (OnTurnFn* fn = onTurnFns.begin(); fn != onTurnFns.end(); fn++) {
+    for (OnTurnFn* fn = onTurnFns.begin(); fn != onTurnFns.end(); fn++)
         fn->fn(fn->data);
-    }
 }
 
 StringView
@@ -451,9 +431,8 @@ Entity::setPhase(StringView name) noexcept {
     res = _setPhase(name);
     if (res == PHASE_NOTFOUND) {
         res = _setPhase("stance");
-        if (res == PHASE_NOTFOUND) {
+        if (res == PHASE_NOTFOUND)
             logErr(descriptor, String() << "phase '" << name << "' not found");
-        }
     }
     return res == PHASE_CHANGED;
 }
@@ -489,9 +468,8 @@ Entity::setArea(Area* area) noexcept {
     this->area = area;
     calcDraw();
 
-    if (confMoveMode != MoveMode::TURN) {
+    if (confMoveMode != MoveMode::TURN)
         assert_(area->grid.tileDim.x == area->grid.tileDim.y);
-    }
     pixelsPerSecond = tilesPerSecond * area->grid.tileDim.x;
 }
 
@@ -548,36 +526,26 @@ Entity::directionStr(ivec2 facing) noexcept {
 enum SetPhaseResult
 Entity::_setPhase(StringView name) noexcept {
     Animation* newPhase;
-    if (name == "stance") {
+    if (name == "stance")
         newPhase = &phaseStance;
-    }
-    else if (name == "down") {
+    else if (name == "down")
         newPhase = &phaseDown;
-    }
-    else if (name == "left") {
+    else if (name == "left")
         newPhase = &phaseLeft;
-    }
-    else if (name == "up") {
+    else if (name == "up")
         newPhase = &phaseUp;
-    }
-    else if (name == "right") {
+    else if (name == "right")
         newPhase = &phaseRight;
-    }
-    else if (name == "moving up") {
+    else if (name == "moving up")
         newPhase = &phaseMovingUp;
-    }
-    else if (name == "moving right") {
+    else if (name == "moving right")
         newPhase = &phaseMovingRight;
-    }
-    else if (name == "moving down") {
+    else if (name == "moving down")
         newPhase = &phaseMovingDown;
-    }
-    else if (name == "moving left") {
+    else if (name == "moving left")
         newPhase = &phaseMovingLeft;
-    }
-    else {
+    else
         return PHASE_NOTFOUND;
-    }
 
     if (phase != newPhase) {
         Time now = worldTime();
@@ -602,9 +570,8 @@ Entity::setDestinationCoordinate(fvec3 destCoord) noexcept {
 
 void
 Entity::moveTowardDestination(Time dt) noexcept {
-    if (!moving) {
+    if (!moving)
         return;
-    }
 
     redraw = true;
 

@@ -15,9 +15,8 @@ static PackReader* pack = 0;
 
 static bool
 openPackFile() noexcept {
-    if (pack) {
+    if (pack)
         return true;
-    }
 
     StringView path = dataWorldDatafile;
 
@@ -42,9 +41,8 @@ bool
 resourceLoad(StringView path, String& data) noexcept {
     LockGuard lock(mutex);
 
-    if (!openPackFile()) {
+    if (!openPackFile())
         return false;
-    }
 
     U32 index = readerIndex(pack, path);
 
@@ -64,9 +62,8 @@ resourceLoad(StringView path, String& data) noexcept {
         return false;
     }
 
-    if (data.capacity < static_cast<Size>(size) + 1) {
+    if (data.capacity < static_cast<Size>(size) + 1)
         data.reserve(static_cast<Size>(size) + 1);
-    }
 
     bool ok = readerRead(pack, data.data, index);
     assert_(ok);

@@ -7,14 +7,11 @@ template<class Container, class Predicate>
 void
 erase_if(Container& container, Predicate pred) noexcept {
     Size i = 0;
-    while (i < container.size) {
-        if (pred(container[i])) {
+    while (i < container.size)
+        if (pred(container[i]))
             container.erase(i);
-        }
-        else {
+        else
             i++;
-        }
-    }
 }
 
 #endif

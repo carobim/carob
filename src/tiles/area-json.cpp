@@ -160,9 +160,8 @@ AreaJSON::processDescriptor() noexcept {
         CHECK(typeValue.isString());
 
         StringView type = typeValue.toString();
-        if (type == "tilelayer" || type == "objectgroup") {
+        if (type == "tilelayer" || type == "objectgroup")
             numLayers++;
-        }
     }
 
     preallocateMapLayers(grid, numLayers);
@@ -212,17 +211,15 @@ AreaJSON::processMapProperties(JsonValue obj) noexcept {
     CHECK(loopValue.isString() || loopValue.isNull());
     CHECK(coloroverlayValue.isString() || coloroverlayValue.isNull());
 
-    if (!nameValue.isString()) {
+    if (!nameValue.isString())
         logErr(descriptor, "Area must have \"name\" property");
-    }
 
     name = nameValue.toString();
 
     if (musicValue.isString()) {
         musicPath = musicValue.toString();
-        if (musicPath == "") {
+        if (musicPath == "")
             musicPath << StringView("\0", 1);
-        }
     }
     if (loopValue.isString()) {
         StringView directions = loopValue.toString();
@@ -372,9 +369,8 @@ AreaJSON::processTileSetFile(JsonValue obj, StringView source,
         tileGraphics.push(Animation(image));
     }
 
-    if (!tilespropertiesNode.isObject()) {
+    if (!tilespropertiesNode.isObject())
         return true;
-    }
 
     // Handle explicitly declared "non-vanilla" types.
 
@@ -405,9 +401,8 @@ AreaJSON::processTileSetFile(JsonValue obj, StringView source,
         U32 gid = id + firstGid;
 
         Animation& graphic = tileGraphics[gid];
-        if (!processTileType(tilepropertiesNode->value, graphic, images, id)) {
+        if (!processTileType(tilepropertiesNode->value, graphic, images, id))
             return false;
-        }
     }
 
     return true;
@@ -526,9 +521,8 @@ AreaJSON::processLayer(JsonValue obj) noexcept {
 
     allocateMapLayer(TileGrid::TILE_LAYER);
 
-    if (propertiesValue.isObject()) {
+    if (propertiesValue.isObject())
         CHECK(processLayerProperties(propertiesValue));
-    }
     CHECK(processLayerData(dataValue));
 
     return true;
@@ -623,9 +617,8 @@ AreaJSON::processObjectGroup(JsonValue obj) noexcept {
     CHECK(propertiesValue.isObject() || propertiesValue.isNull());
     CHECK(objectsValue.isArray());
 
-    if (propertiesValue.isObject()) {
+    if (propertiesValue.isObject())
         CHECK(processObjectGroupProperties(propertiesValue));
-    }
 
     for (JsonIterator objectNode = begin(objectsValue);
          objectNode != end(objectsValue); ++objectNode) {
@@ -797,9 +790,8 @@ AreaJSON::processObject(JsonValue obj) noexcept {
     float layermod[5];
     U32 flags = 0x0;
 
-    if (flagsValue.isString()) {
+    if (flagsValue.isString())
         CHECK(splitTileFlags(flagsValue.toString(), &flags));
-    }
 
     // For some reason, Visual Studio 2015 and up widen a void (*) noexcept to
     // a void (*). This latter type does not have a noexcept qualifier. Wonder
@@ -912,30 +904,23 @@ AreaJSON::processObject(JsonValue obj) noexcept {
                 if (haveExit[i]) {
                     I32 dx = X - x;
                     I32 dy = Y - y;
-                    if (wwide[i]) {
+                    if (wwide[i])
                         exit[i].coords.x += dx;
-                    }
-                    if (hwide[i]) {
+                    if (hwide[i])
                         exit[i].coords.y += dy;
-                    }
                     grid.exits[i][tile] = static_cast<Exit&&>(exit[i]);
                 }
             }
-            for (Size i = 0; i < EXITS_LENGTH; i++) {
-                if (haveLayermod[i]) {
+            for (Size i = 0; i < EXITS_LENGTH; i++)
+                if (haveLayermod[i])
                     grid.layermods[i][tile] = layermod[i];
-                }
-            }
 
-            if (enterScript) {
+            if (enterScript)
                 grid.scripts[TileGrid::SCRIPT_TYPE_ENTER][tile] = enterScript;
-            }
-            if (leaveScript) {
+            if (leaveScript)
                 grid.scripts[TileGrid::SCRIPT_TYPE_LEAVE][tile] = leaveScript;
-            }
-            if (useScript) {
+            if (useScript)
                 grid.scripts[TileGrid::SCRIPT_TYPE_USE][tile] = useScript;
-            }
         }
     }
 
@@ -980,24 +965,19 @@ isIntegerOrPlus(StringView s) noexcept {
 
     for (const char* c = s.begin(); c != s.end(); c++) {
         if (state == space) {
-            if (*c == ' ') {
+            if (*c == ' ')
                 continue;
-            }
-            else {
+            else
                 state++;
-            }
         }
         if (state == digit) {
-            if ('0' <= *c && *c <= '9') {
+            if ('0' <= *c && *c <= '9')
                 continue;
-            }
-            else {
+            else
                 state++;
-            }
         }
-        if (state == sign) {
+        if (state == sign)
             return *c == '+';
-        }
     }
     return true;
 }
@@ -1028,12 +1008,10 @@ AreaJSON::parseExit(StringView dest, Exit& exit, bool* wwide,
         return false;
     }
 
-    if (x.find('+') != SV_NOT_FOUND) {
+    if (x.find('+') != SV_NOT_FOUND)
         x = x.substr(0, x.size - 1);
-    }
-    if (y.find('+') != SV_NOT_FOUND) {
+    if (y.find('+') != SV_NOT_FOUND)
         y = y.substr(0, y.size - 1);
-    }
 
     String buf;
 

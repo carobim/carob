@@ -64,9 +64,8 @@ static Size
 writeBody(char* output, Size size, Size nitems, StringView* body) noexcept {
     const void* data = body->data;
     Size written = body->size;
-    if (written > size * nitems) {
+    if (written > size * nitems)
         written = size * nitems;
-    }
 
     body->data += written;
     body->size -= written;
@@ -143,16 +142,14 @@ StringView
 httpGet(Http* self, String* response, StringView url, Header* headers,
         Size headersSize) noexcept {
     self->buf.clear();
-    if (self->buf.capacity < 1024) {
+    if (self->buf.capacity < 1024)
         self->buf.reserve(1024);
-    }
 
     self->buf << url << static_cast<char>(0);
 
     self->list.clear();
-    if (self->list.capacity < headersSize) {
+    if (self->list.capacity < headersSize)
         self->list.reserve(headersSize);
-    }
 
     for (Size i = 0; i < headersSize; i++) {
         Header* header = headers + i;
@@ -200,9 +197,8 @@ httpGet(Http* self, String* response, StringView url, Header* headers,
     assert_(err == CURLE_OK);
 
     err = curl_easy_perform(self->curl);
-    if (err) {
+    if (err)
         return StringView(self->errmsg, strlen(self->errmsg));
-    }
 
     return StringView();
 }
@@ -211,16 +207,14 @@ StringView
 httpForm(Http* self, String* response, StringView url, Header* headers,
          Size headersSize, FormData* data, Size dataSize) noexcept {
     self->buf.clear();
-    if (self->buf.capacity < 1024) {
+    if (self->buf.capacity < 1024)
         self->buf.reserve(1024);
-    }
 
     self->buf << url << static_cast<char>(0);
 
     self->list.clear();
-    if (self->list.capacity < 1 + headersSize) {
+    if (self->list.capacity < 1 + headersSize)
         self->list.reserve(1 + headersSize);
-    }
 
     CURLlist contentType;
     // Pun and store offset.
@@ -287,9 +281,8 @@ httpForm(Http* self, String* response, StringView url, Header* headers,
     assert_(err == CURLE_OK);
 
     err = curl_easy_perform(self->curl);
-    if (err) {
+    if (err)
         return StringView(self->errmsg, strlen(self->errmsg));
-    }
 
     return StringView();
 }

@@ -31,15 +31,13 @@ imageInit() noexcept {
                                       SDL_RENDERER_PRESENTVSYNC |
                                       SDL_RENDERER_TARGETTEXTURE);
 
-    if (renderer == 0) {
+    if (renderer == 0)
         sdlDie("SDL2", "SDL_CreateRenderer");
-    }
 
     SDL_RendererInfo info;
 
-    if (SDL_GetRendererInfo(renderer, &info) < 0) {
+    if (SDL_GetRendererInfo(renderer, &info) < 0)
         sdlDie("SDL2", "SDL_GetRendererInfo");
-    }
 
     StringView name = info.name;
     bool vsync = (info.flags & SDL_RENDERER_PRESENTVSYNC) != 0;
@@ -89,9 +87,8 @@ initAtlas() noexcept {
         atlas = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32,
                                   SDL_TEXTUREACCESS_TARGET, ATLAS_WIDTH,
                                   ATLAS_HEIGHT);
-        if (atlas == 0) {
+        if (atlas == 0)
             logFatal("SDL2", "Failed to create texture");
-        }
 
         SDL_SetTextureBlendMode(atlas, SDL_BLENDMODE_BLEND);
 
@@ -180,9 +177,8 @@ Image
 imageLoad(StringView path) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
-    if (!tiles) {
+    if (!tiles)
         tiles = load(path);
-    }
 
     return tiles->image;
 }

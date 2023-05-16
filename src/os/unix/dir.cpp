@@ -10,9 +10,8 @@ listDir(StringView path) noexcept {
     struct dirent* entry;
     Vector<String> names;
 
-    if ((dir = opendir(String(path).null())) == 0) {
+    if ((dir = opendir(String(path).null())) == 0)
         return names;
-    }
 
     // FIXME: Replace with reentrant function calls.
     while ((entry = readdir(dir)) != 0) {

@@ -54,9 +54,8 @@ chronoNow(void) noexcept {
 
 void
 chronoSleep(Nanoseconds ns) noexcept {
-    if (ns <= 0) {
+    if (ns <= 0)
         return;
-    }
 
     initTimebase();
     U64 deadline = mach_absolute_time() + toAbsolute(ns);

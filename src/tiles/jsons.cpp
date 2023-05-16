@@ -9,9 +9,8 @@
 JsonDocument
 loadJson(StringView path) noexcept {
     String data;
-    if (!resourceLoad(path, data)) {
+    if (!resourceLoad(path, data))
         return JsonDocument();
-    }
 
     TimeMeasure m(String() << "Constructed " << path << " as json");
 

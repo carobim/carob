@@ -9,18 +9,16 @@
 Filesize
 getFileSize(StringView path) noexcept {
     struct stat status;
-    if (stat(String(path).null(), &status)) {
+    if (stat(String(path).null(), &status))
         return FS_ERROR;
-    }
     return static_cast<Filesize>(status.st_size);
 }
 
 bool
 isDir(StringView path) noexcept {
     struct stat status;
-    if (stat(String(path).null(), &status)) {
+    if (stat(String(path).null(), &status))
         return false;
-    }
     return S_ISDIR(status.st_mode);
 }
 
@@ -32,9 +30,8 @@ makeDirectory(StringView path) noexcept {
 bool
 writeFile(StringView path, U32 length, void* data) noexcept {
     int fd = open(String(path).null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
-    if (fd == -1) {
+    if (fd == -1)
         return false;
-    }
     SSize written = write(fd, data, length);
     if (written != length) {
         close(fd);
@@ -47,9 +44,8 @@ writeFile(StringView path, U32 length, void* data) noexcept {
 bool
 writeFileVec(StringView path, U32 count, U32* lengths, void** datas) noexcept {
     int fd = open(String(path).null(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
-    if (fd == -1) {
+    if (fd == -1)
         return false;
-    }
 
     SSize total = 0;
     Vector<iovec> ios;
@@ -125,9 +121,8 @@ isaTTY() noexcept {
 
 void
 setTermColor(TermColor color, Output& out) noexcept {
-    if (!isaTTY()) {
+    if (!isaTTY())
         return;
-    }
 
     // VT100 terminal control codes from:
     //   http://www.termsys.demon.co.uk/vtansi.htm

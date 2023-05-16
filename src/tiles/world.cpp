@@ -115,9 +115,8 @@ worldNeedsRedraw() noexcept {
 
 void
 worldTick(Time dt) noexcept {
-    if (paused) {
+    if (paused)
         return;
-    }
 
     total += dt;
 
@@ -126,9 +125,8 @@ worldTick(Time dt) noexcept {
 
 void
 worldTurn() noexcept {
-    if (confMoveMode == TURN) {
+    if (confMoveMode == TURN)
         worldArea->turn();
-    }
 }
 
 void
@@ -166,9 +164,8 @@ worldFocusArea(Area* area_, vicoord playerPos) noexcept {
 
 void
 worldSetPaused(bool b) noexcept {
-    if (!alive) {
+    if (!alive)
         return;
-    }
 
     if (!paused && !b) {
         logErr("World", "trying to unpause, but not paused");
@@ -176,23 +173,19 @@ worldSetPaused(bool b) noexcept {
     }
 
     // If just pausing.
-    if (!paused) {
+    if (!paused)
         worldStoreKeys();
-    }
 
     paused += b ? 1 : -1;
 
-    if (paused) {
+    if (paused)
         musicPause();
-    }
-    else {
+    else
         musicResume();
-    }
 
     // If finally unpausing.
-    if (!paused) {
+    if (!paused)
         worldRestoreKeys();
-    }
 }
 
 void
@@ -208,12 +201,10 @@ worldRestoreKeys() noexcept {
     for (Size i = 0; i < sizeof(Keys) * 8; i++) {
         Key key = (now ^ then) & (1 << i);
         if (key) {
-            if (now & key) {
+            if (now & key)
                 worldButtonDown(key);
-            }
-            else {
+            else
                 worldButtonUp(key);
-            }
         }
     }
 }

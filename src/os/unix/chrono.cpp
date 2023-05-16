@@ -17,9 +17,8 @@ chronoNow() noexcept {
 
 void
 chronoSleep(Nanoseconds ns) noexcept {
-    if (ns <= 0) {
+    if (ns <= 0)
         return;
-    }
     Seconds s = ns_to_s(ns);
     timespec ts;
     ts.tv_sec = static_cast<Time>(s);

@@ -35,32 +35,26 @@ constructLookups(PackReader* r) noexcept {
 PackReader*
 makePackReader(StringView path) noexcept {
     File file(path);
-    if (!file) {
+    if (!file)
         return 0;
-    }
-    if (file.rem < sizeof(HeaderSection)) {
+    if (file.rem < sizeof(HeaderSection))
         return 0;
-    }
 
     HeaderSection header;
     file.read(&header, sizeof(HeaderSection));
-    if (memcmp(header.magic, PACK_MAGIC, sizeof(header.magic)) != 0) {
+    if (memcmp(header.magic, PACK_MAGIC, sizeof(header.magic)) != 0)
         return 0;
-    }
-    if (header.version != PACK_VERSION) {
+    if (header.version != PACK_VERSION)
         return 0;
-    }
 
-    if (file.rem < sizeof(BlobMetadata) * header.blobCount) {
+    if (file.rem < sizeof(BlobMetadata) * header.blobCount)
         return 0;
-    }
     BlobMetadata* metadata = xmalloc(BlobMetadata, header.blobCount);
     file.read(metadata, sizeof(BlobMetadata) * header.blobCount);
 
     U32 pathsSize = 0;
-    for (Size i = 0; i < header.blobCount; i++) {
+    for (Size i = 0; i < header.blobCount; i++)
         pathsSize += metadata[i].pathSize;
-    }
 
     if (file.rem < pathsSize) {
         free(metadata);
@@ -96,12 +90,10 @@ readerIndex(PackReader* r, StringView path) noexcept {
     }
 
     Hashmap<StringView, U32>::iterator it = r->lookups.find(path);
-    if (it == r->lookups.end()) {
+    if (it == r->lookups.end())
         return BLOB_NOT_FOUND;
-    }
-    else {
+    else
         return it->value;
-    }
 }
 
 BlobDetails

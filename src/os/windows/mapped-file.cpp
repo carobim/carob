@@ -46,9 +46,8 @@ bool
 makeMappedFile(MappedFile& file, StringView path) noexcept {
     HANDLE hFile = CreateFile(String(path).null(), GENERIC_READ, 0, 0,
                               OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-    if (hFile == INVALID_HANDLE_VALUE) {
+    if (hFile == INVALID_HANDLE_VALUE)
         return false;
-    }
 
     HANDLE mapping = CreateFileMapping(hFile, 0, PAGE_READONLY, 0, 0, 0);
     if (mapping == 0) {
@@ -71,13 +70,10 @@ makeMappedFile(MappedFile& file, StringView path) noexcept {
 
 void
 destroyMappedFile(MappedFile file) noexcept {
-    if (file.data) {
+    if (file.data)
         UnmapViewOfFile(static_cast<void*>(file.data));
-    }
-    if (file.mapping) {
+    if (file.mapping)
         CloseHandle(file.mapping);
-    }
-    if (file.file != INVALID_HANDLE_VALUE) {
+    if (file.file != INVALID_HANDLE_VALUE)
         CloseHandle(file.file);
-    }
 }

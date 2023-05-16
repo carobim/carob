@@ -103,9 +103,8 @@ class List {
         head = {&head, &head};
         n = 0;
 
-        for (ConstIterator it = other.begin(); it != other.end(); ++it) {
+        for (ConstIterator it = other.begin(); it != other.end(); ++it)
             emplace_back(*it);
-        }
     }
     inline List(List&& other) noexcept {
         if (other.empty()) {
@@ -129,17 +128,15 @@ class List {
     operator=(const List& other) noexcept {
         clear();
 
-        for (ConstIterator it = other.begin(); it != other.end(); ++it) {
+        for (ConstIterator it = other.begin(); it != other.end(); ++it)
             emplace_back(*it);
-        }
     }
     List&
     operator=(List&& other) noexcept {
         clear();
 
-        if (other.empty()) {
+        if (other.empty())
             return *this;
-        }
 
         head = other.head;
         head.next->prev = &head;

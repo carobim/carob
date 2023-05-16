@@ -19,17 +19,15 @@ class HashVector {
  public:
     HashVector() noexcept : storage(0), allocated(0), used(0) { }
     ~HashVector() noexcept {
-        for (Entry* e = storage; e < storage + used; e++) {
+        for (Entry* e = storage; e < storage + used; e++)
             e->value.~Value();
-        }
         free(storage);
     }
 
     Value&
     allocate(U32 hash) noexcept {
-        if (used == allocated) {
+        if (used == allocated)
             grow();
-        }
 
         Entry* e = &storage[used++];
         new (&e->value) Value();
@@ -40,11 +38,9 @@ class HashVector {
 
     Value*
     find(U32 hash) noexcept {
-        for (Entry* e = storage; e < storage + used; e++) {
-            if (e->hash == hash) {
+        for (Entry* e = storage; e < storage + used; e++)
+            if (e->hash == hash)
                 return &e->value;
-            }
-        }
 
         return 0;
     }

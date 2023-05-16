@@ -25,9 +25,8 @@ centerOn(fvec2 pt) noexcept {
 static float
 boundDimension(float screen, float area, float pt, bool loop) noexcept {
     // Since looping areas continue without bound, this is a no-op.
-    if (loop) {
+    if (loop)
         return pt;
-    }
 
     // If the Area is smaller than the screen, center the Area. Otherwise,
     // allow the screen to move to the edge of the Area, but not past.

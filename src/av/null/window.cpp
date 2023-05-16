@@ -85,13 +85,11 @@ windowMainLoop(void) noexcept {
         exitProcess(0);
 
         Nanoseconds sleepDuration = nextFrameStart - frameEnd;
-        if (sleepDuration < 0) {
+        if (sleepDuration < 0)
             sleepDuration = 0;
-        }
 
-        if (sleepDuration) {
+        if (sleepDuration)
             chronoSleep(sleepDuration);
-        }
 
         previousFrameStart = frameStart;
         frameStart = chronoNow();

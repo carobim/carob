@@ -53,9 +53,8 @@ class Thread {
 static inline U32
 threadHardwareConcurrency() noexcept {
     long result = sysconf(_SC_NPROCESSORS_ONLN);
-    if (result < 0) {
+    if (result < 0)
         return 0;
-    }
     return static_cast<U32>(result);
 }
 

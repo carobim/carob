@@ -36,31 +36,27 @@ isSingleFrame(AnimationID self) noexcept {
 
 static void
 destroy(AnimationID self) noexcept {
-    if (self == NO_ANIMATION) {
+    if (self == NO_ANIMATION)
         return;
-    }
 
     AnimationData& data = pool[self];
 
-    if (!isSingleFrame(self)) {
+    if (!isSingleFrame(self))
         data.frames.~Vector<Image>();
-    }
 
     pool.release(self);
 }
 
 static void
 incRef(AnimationID self) noexcept {
-    if (self != NO_ANIMATION) {
+    if (self != NO_ANIMATION)
         ++pool[self].refCnt;
-    }
 }
 
 static void
 decRef(AnimationID self) noexcept {
-    if (self != NO_ANIMATION && --pool[self].refCnt == 0) {
+    if (self != NO_ANIMATION && --pool[self].refCnt == 0)
         destroy(self);
-    }
 }
 
 static void
@@ -88,9 +84,8 @@ Animation::Animation(Image frame) noexcept {
 Animation::Animation(Vector<Image> frames, Time frameTime) noexcept {
     assert_(frames.size > 0);
     assert_(frameTime > 0);
-    for (Image* frame = frames.begin(); frame != frames.end(); frame++) {
+    for (Image* frame = frames.begin(); frame != frames.end(); frame++)
         assert_(IMAGE_VALID(*frame));
-    }
 
     id = pool.allocate();
     AnimationData& data = pool[id];
@@ -133,9 +128,8 @@ void
 Animation::restart(Time now) noexcept {
     assert_(id != NO_ANIMATION);
 
-    if (isSingleFrame(id)) {
+    if (isSingleFrame(id))
         return;
-    }
 
     AnimationData& data = pool[id];
 
@@ -148,9 +142,8 @@ bool
 Animation::needsRedraw(Time now) noexcept {
     assert_(id != NO_ANIMATION);
 
-    if (isSingleFrame(id)) {
+    if (isSingleFrame(id))
         return false;
-    }
 
     AnimationData& data = pool[id];
 

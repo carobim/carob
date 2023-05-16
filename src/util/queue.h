@@ -12,9 +12,8 @@ class Queue {
     Queue() noexcept : data(0), offset(0), size(0), capacity(0) { }
     ~Queue() noexcept {
         // Items at head of ring buffer.
-        for (Size i = offset; i < offset + size && i < capacity; i++) {
+        for (Size i = offset; i < offset + size && i < capacity; i++)
             data[i].~T();
-        }
         // Items at tail of ring buffer.
         for (Size i = 0;
              offset + size > capacity && i < offset + size - capacity; i++) {
@@ -27,9 +26,8 @@ class Queue {
     // Write
     void
     push(T t) noexcept {
-        if (size == capacity) {
+        if (size == capacity)
             resize();
-        }
         new (&data[(offset + size) % capacity]) T(static_cast<T&&>(t));
         size += 1;
     }

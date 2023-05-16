@@ -51,9 +51,8 @@ Player::stopMovement(ivec2 delta) noexcept {
         for (Size i = 0; i < numMovements; i++) {
             if (movements[i] == delta) {
                 // Erase movement.
-                for (Size j = i; j < numMovements - 1; j++) {
+                for (Size j = i; j < numMovements - 1; j++)
                     movements[j] = movements[j + 1];
-                }
                 numMovements--;
             }
         }
@@ -74,12 +73,10 @@ Player::stopMovement(ivec2 delta) noexcept {
 
 void
 Player::moveByTile(ivec2 delta) noexcept {
-    if (frozen) {
+    if (frozen)
         return;
-    }
-    if (moving) {
+    if (moving)
         return;
-    }
 
     setFacing(delta);
 
@@ -99,35 +96,30 @@ void
 Player::useTile() noexcept {
     ivec3 destCoord = moveDest(facing);
     bool inBounds = area->grid.inBounds(destCoord);
-    if (inBounds) {
+    if (inBounds)
         area->runScript(TileGrid::SCRIPT_TYPE_USE, destCoord, this);
-    }
 }
 
 void
 Player::setFrozen(bool b) noexcept {
     Entity::setFrozen(b);
 
-    if (b) {
+    if (b)
         worldStoreKeys();
-    }
-    else {
+    else
         worldRestoreKeys();
-    }
 }
 
 void
 Player::arrived() noexcept {
     Character::arrived();
 
-    if (destExit) {
+    if (destExit)
         takeExit(*destExit);
-    }
 
     // If we have a velocity, keep moving.
-    if (confMoveMode == TILE && (velocity.x || velocity.y)) {
+    if (confMoveMode == TILE && (velocity.x || velocity.y))
         moveByTile(velocity);
-    }
 }
 
 void

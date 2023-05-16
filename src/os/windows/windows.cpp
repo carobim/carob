@@ -99,9 +99,8 @@ Filesize
 getFileSize(StringView path) noexcept {
     HANDLE file = CreateFile(String(path).null(), FILE_READ_ATTRIBUTES, 0, 0,
                              OPEN_EXISTING, 0, 0);
-    if (file == INVALID_HANDLE_VALUE) {
+    if (file == INVALID_HANDLE_VALUE)
         return FS_ERROR;
-    }
 
     LARGE_INTEGER size;
     BOOL ok = GetFileSizeEx(file, &size);
@@ -120,9 +119,8 @@ bool
 writeFile(StringView path, U32 length, void* data) noexcept {
     HANDLE file = CreateFile(String(path).null(), FILE_WRITE_DATA, 0, 0,
                              CREATE_ALWAYS, 0, 0);
-    if (file == INVALID_HANDLE_VALUE) {
+    if (file == INVALID_HANDLE_VALUE)
         return false;
-    }
 
     DWORD written;
     BOOL ok = WriteFile(file, data, length, &written, 0);
@@ -146,9 +144,8 @@ bool
 writeFileVec(StringView path, U32 count, U32* lengths, void** datas) noexcept {
     HANDLE file = CreateFile(String(path).null(), FILE_WRITE_DATA, 0, 0,
                              CREATE_ALWAYS, 0, 0);
-    if (file == INVALID_HANDLE_VALUE) {
+    if (file == INVALID_HANDLE_VALUE)
         return false;
-    }
 
     for (U32 i = 0; i < count; i++) {
         DWORD written;
@@ -193,9 +190,8 @@ listDir(StringView path) noexcept {
     WIN32_FIND_DATA data;
     HANDLE find = FindFirstFile(query.null(), &data);
 
-    if (find == INVALID_HANDLE_VALUE) {
+    if (find == INVALID_HANDLE_VALUE)
         return Vector<String>();
-    }
 
     do {
         if (data.cFileName[0] == '.' && data.cFileName[1] == '\0' ||
@@ -214,21 +210,18 @@ listDir(StringView path) noexcept {
 bool
 readFile(StringView path, String& data) noexcept {
     Filesize size_ = getFileSize(path);
-    if (size_ == FS_ERROR) {
+    if (size_ == FS_ERROR)
         return false;
-    }
 
-    if (size_ > UINT32_MAX) {
+    if (size_ > UINT32_MAX)
         return false;
-    }
 
     DWORD size = static_cast<DWORD>(size_);
 
     HANDLE file = CreateFile(String(path).null(), FILE_READ_DATA, 0, 0,
                              OPEN_EXISTING, 0, 0);
-    if (file == INVALID_HANDLE_VALUE) {
+    if (file == INVALID_HANDLE_VALUE)
         return false;
-    }
 
     data.reserve(size + 1);
     data.resize(size);
@@ -257,9 +250,8 @@ readFile(StringView path, String& data) noexcept {
 void
 setTermColor(TermColor color, Output& /*out*/) noexcept {
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-    if (out == INVALID_HANDLE_VALUE) {
+    if (out == INVALID_HANDLE_VALUE)
         return;
-    }
 
     WORD attribute;
 

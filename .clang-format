@@ -103,13 +103,12 @@ PenaltyBreakFirstLessLess: 120
 PenaltyBreakString: 1000
 #PenaltyBreakTemplateDeclaration: 10
 PenaltyExcessCharacter: 1000000
-#PenaltyIndentedWhitespace: ...
 PenaltyReturnTypeOnItsOwnLine: 0
 PointerAlignment: Left
 QualifierAlignment: Custom
 QualifierOrder: ['static', 'inline', 'volatile', 'const', 'constexpr', 'type']
-#RawStringFormats: []
 ReflowComments: false
+RemoveBracesLLVM: true
 SortIncludes: CaseInsensitive
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false

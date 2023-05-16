@@ -11,9 +11,8 @@ walk(Vector<StringView> paths, void* userData,
      void (*op)(void* userData, StringView path)) noexcept {
     Queue<String> files;
 
-    for (StringView* path = paths.begin(); path != paths.end(); path++) {
+    for (StringView* path = paths.begin(); path != paths.end(); path++)
         files.push(*path);
-    }
 
     while (files.size) {
         String path = static_cast<String&&>(files.front());

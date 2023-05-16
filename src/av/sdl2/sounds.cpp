@@ -50,33 +50,29 @@ channelFinished(int channel) noexcept {
     int psid = playingChannels[channel];
     SDL2PlayingSound& ps = playingSoundPool[psid];
     ps.playing = false;
-    if (!ps.inUse) {
+    if (!ps.inUse)
         playingSoundPool.release(psid);
-    }
 }
 
 static void
 init() noexcept {
     static bool initialized = false;
 
-    if (initialized) {
+    if (initialized)
         return;
-    }
     initialized = true;
 
     if (SDL_WasInit(SDL_INIT_AUDIO) == 0) {
         {
             TimeMeasure m("Initialized the SDL2 audio subsystem");
-            if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+            if (SDL_Init(SDL_INIT_AUDIO) < 0)
                 sdlDie("Sounds", "SDL_Init(SDL_INIT_AUDIO)");
-            }
         }
 
         {
             TimeMeasure m("Opened an audio device");
-            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
+            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
                 sdlDie("Sounds", "Mix_OpenAudio");
-            }
         }
     }
 
@@ -146,9 +142,8 @@ soundsPrune(Time latestPermissibleUse) noexcept {
 
 PlayingSoundID
 soundPlay(SoundID sid) noexcept {
-    if (!sid) {
+    if (!sid)
         return mark;
-    }
 
     SDL2Sound sound = soundPool[*sid];
 
@@ -170,25 +165,22 @@ soundPlay(SoundID sid) noexcept {
 
 void
 soundRelease(SoundID sid) noexcept {
-    if (!sid) {
+    if (!sid)
         return;
-    }
 
     SDL2Sound& sound = soundPool[*sid];
 
     sound.numUsers -= 1;
     assert_(sound.numUsers >= 0);
 
-    if (sound.numUsers == 0) {
+    if (sound.numUsers == 0)
         sound.lastUse = worldTime();
-    }
 }
 
 bool
 playingSoundIsPlaying(PlayingSoundID psid) noexcept {
-    if (!psid) {
+    if (!psid)
         return false;
-    }
 
     LockGuard guard(channelMutex);
 
@@ -198,9 +190,8 @@ playingSoundIsPlaying(PlayingSoundID psid) noexcept {
 
 void
 playingSoundStop(PlayingSoundID psid) noexcept {
-    if (!psid) {
+    if (!psid)
         return;
-    }
 
     SDL2PlayingSound& ps = playingSoundPool[*psid];
 
@@ -214,9 +205,8 @@ playingSoundStop(PlayingSoundID psid) noexcept {
 
 void
 playingSoundVolume(PlayingSoundID psid, float volume) noexcept {
-    if (!psid) {
+    if (!psid)
         return;
-    }
 
     LockGuard guard(channelMutex);
 
@@ -232,9 +222,8 @@ playingSoundSpeed(PlayingSoundID psid, float speed) noexcept {
 
 void
 playingSoundRelease(PlayingSoundID psid) noexcept {
-    if (!psid) {
+    if (!psid)
         return;
-    }
 
     LockGuard guard(channelMutex);
 
@@ -243,7 +232,6 @@ playingSoundRelease(PlayingSoundID psid) noexcept {
     assert_(ps.inUse);
     ps.inUse = false;
 
-    if (!ps.playing) {
+    if (!ps.playing)
         playingSoundPool.release(*psid);
-    }
 }

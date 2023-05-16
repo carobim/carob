@@ -29,9 +29,8 @@ class Vector {
             data = xmalloc(X, other.capacity);
             size = other.size;
             capacity = other.capacity;
-            for (Size i = 0; i < size; i++) {
+            for (Size i = 0; i < size; i++)
                 new (data + i) X(other.data[i]);
-            }
         }
     }
     Vector(Vector&& other) noexcept {
@@ -42,18 +41,16 @@ class Vector {
         other.size = other.capacity = 0;
     }
     ~Vector() noexcept {
-        for (Size i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++)
             data[i].~X();
-        }
         free(data);
     }
 
     void
     operator=(const Vector& other) noexcept {
         assert_(this != &other);
-        for (Size i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++)
             data[i].~X();
-        }
         free(data);
         if (other.capacity == 0) {
             data = 0;
@@ -63,17 +60,15 @@ class Vector {
             data = xmalloc(X, other.capacity);
             size = other.size;
             capacity = other.capacity;
-            for (Size i = 0; i < size; i++) {
+            for (Size i = 0; i < size; i++)
                 new (data + i) X(other[i]);
-            }
         }
     }
     void
     operator=(Vector&& other) noexcept {
         assert_(this != &other);
-        for (Size i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++)
             data[i].~X();
-        }
         free(data);
         data = other.data;
         size = other.size;
@@ -130,9 +125,8 @@ class Vector {
     append(Size n, const X* xs) noexcept {
         assert_(n <= size);
         reserve(size + n);  // FIXME: Choose better size.
-        for (Size i = 0; i < n; i++) {
+        for (Size i = 0; i < n; i++)
             new (data + size + i) X(xs[i]);
-        }
         size += n;
     }
 
@@ -145,9 +139,8 @@ class Vector {
     void
     erase(Size i) noexcept {
         assert_(i < size);
-        for (Size j = i; j < size - 1; j++) {
+        for (Size j = i; j < size - 1; j++)
             data[j] = static_cast<X&&>(data[j + 1]);
-        }
         pop();
     }
     void
@@ -166,41 +159,33 @@ class Vector {
     reserve(Size n) noexcept {
         assert_(n > capacity);
         X* newData = xmalloc(X, n);
-        for (Size i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++)
             new (newData + i) X(static_cast<X&&>(data[i]));
-        }
         free(data);
         data = newData;
         capacity = n;
     }
     void
     resize(Size n) noexcept {
-        if (n > capacity) {
+        if (n > capacity)
             reserve(n);
-        }
-        if (n > size) {
-            for (Size i = size; i < n; i++) {
+        if (n > size)
+            for (Size i = size; i < n; i++)
                 new (data + i) X;
-            }
-        }
-        else if (n < size) {
-            for (Size i = n; i < size; i++) {
+        else if (n < size)
+            for (Size i = n; i < size; i++)
                 data[i].~X();
-            }
-        }
         size = n;
     }
     void
     grow() noexcept {
-        if (size == capacity) {
+        if (size == capacity)
             reserve(size == 0 ? 4 : size * 2);  // FIXME: Choose better size.
-        }
     }
     void
     clear() noexcept {
-        for (Size i = 0; i < size; i++) {
+        for (Size i = 0; i < size; i++)
             data[i].~X();
-        }
         size = 0;
     }
     void

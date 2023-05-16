@@ -36,9 +36,8 @@ work() noexcept {
         {
             LockGuard lock(jobsMutex);
 
-            while (jobs.size == 0) {
+            while (jobs.size == 0)
                 jobAvailable.wait(lock);
-            }
 
             fn = jobs.front();
             jobs.pop();
@@ -46,18 +45,16 @@ work() noexcept {
             jobsRunning += 1;
         }
 
-        if (fn.fn) {
+        if (fn.fn)
             fn.fn(fn.data);
-        }
 
         {
             LockGuard lock(jobsMutex);
 
             jobsRunning -= 1;
 
-            if (jobsRunning == 0 && jobs.size == 0) {
+            if (jobsRunning == 0 && jobs.size == 0)
                 jobsDone.notifyOne();
-            }
         }
     } while (fn.fn);
 }
@@ -70,13 +67,11 @@ JobsEnqueue(Function fn) noexcept {
 
     jobs.push(fn);
 
-    if (workerLimit == 0) {
+    if (workerLimit == 0)
         workerLimit = threadHardwareConcurrency();
-    }
 
-    if (workers.size < workerLimit) {
+    if (workers.size < workerLimit)
         workers.push(Thread(fn));
-    }
 
     jobAvailable.notifyOne();
 }
@@ -90,9 +85,8 @@ JobsFlush() noexcept {
         Mutex m;
         LockGuard lock(m);
 
-        while (jobsRunning > 0 || jobs.size > 0) {
+        while (jobsRunning > 0 || jobs.size > 0)
             jobsDone.wait(lock);
-        }
     }
 
     // Tell workers they can quit.
@@ -113,9 +107,8 @@ JobsFlush() noexcept {
     jobAvailable.notifyAll();
 
     // Wait for workers to quit.
-    for (Thread* worker = workers.begin(); worker != workers.end(); worker++) {
+    for (Thread* worker = workers.begin(); worker != workers.end(); worker++)
         worker->join();
-    }
 
     // Reset.
     workers.clear();

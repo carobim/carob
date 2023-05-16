@@ -126,9 +126,8 @@ timerTick(DataArea* area, void* data_, Time dt) noexcept {
 
     float progress =
         static_cast<float>(data->passed) / static_cast<float>(data->duration);
-    if (progress > 1.0f) {
+    if (progress > 1.0f)
         progress = 1.0f;
-    }
 
     data->tick(area, data->userData, progress);
 
@@ -138,9 +137,8 @@ timerTick(DataArea* area, void* data_, Time dt) noexcept {
 static void
 timerFree(void* data_) noexcept {
     fromCast(struct TimerData, data, data_);
-    if (data->free) {
+    if (data->free)
         data->free(data->userData);
-    }
     free(data);
 }
 

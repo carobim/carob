@@ -54,25 +54,22 @@ load(StringView path) noexcept {
 
 static void
 init() noexcept {
-    if (initalized) {
+    if (initalized)
         return;
-    }
 
     initalized = true;
 
     if (SDL_WasInit(SDL_INIT_AUDIO) == 0) {
         {
             TimeMeasure m("Initialized the SDL2 audio subsystem");
-            if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+            if (SDL_Init(SDL_INIT_AUDIO) < 0)
                 sdlDie("SDL2Music", "SDL_Init(SDL_INIT_AUDIO)");
-            }
         }
 
         {
             TimeMeasure m("Opened an audio device");
-            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0) {
+            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) < 0)
                 sdlDie("SDL2Music", "Mix_OpenAudio");
-            }
         }
     }
 }
@@ -88,15 +85,13 @@ musicWorkerPlay(StringView path) noexcept {
 
     U32 pathHash = hash_(path);
 
-    if (songHash == pathHash) {
+    if (songHash == pathHash)
         return;
-    }
 
     paused = 0;
 
-    if (song && !Mix_PausedMusic()) {
+    if (song && !Mix_PausedMusic())
         Mix_HaltMusic();
-    }
 
     if (path.size == 0) {
         songHash = 0;
@@ -105,9 +100,8 @@ musicWorkerPlay(StringView path) noexcept {
     }
 
     song = songs.find(hash_(path));
-    if (!song) {
+    if (!song)
         song = load(path);
-    }
     if (!song || !song->mix) {
         songHash = 0;
         song = 0;
@@ -138,9 +132,8 @@ void
 musicWorkerPause() noexcept {
     init();
 
-    if (paused == 0 && song) {
+    if (paused == 0 && song)
         Mix_PauseMusic();
-    }
 
     paused++;
 }
@@ -149,13 +142,11 @@ void
 musicWorkerResume() noexcept {
     init();
 
-    if (!paused) {
+    if (!paused)
         return;
-    }
 
     paused--;
 
-    if (paused == 0 && song) {
+    if (paused == 0 && song)
         Mix_ResumeMusic();
-    }
 }

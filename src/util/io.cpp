@@ -28,15 +28,12 @@ flush(State& state) noexcept {
     char* data = buf.data;
     Size size = buf.size;
 
-    if (size == 0) {
+    if (size == 0)
         return;
-    }
-    if (state.err) {
+    if (state.err)
         writeStderr(data, size);
-    }
-    else {
+    else
         writeStdout(data, size);
-    }
     buf.size -= size;
 
     // The below is the old code, and it does not handle flushing without a newline.
@@ -90,12 +87,10 @@ Output::operator<<(StringView x) noexcept {
 
 Output&
 Output::operator<<(bool x) noexcept {
-    if (x) {
+    if (x)
         STATE.buf << StringView("true", 4);
-    }
-    else {
+    else
         STATE.buf << StringView("false", 5);
-    }
     return *this;
 }
 

@@ -33,23 +33,19 @@ min(T a, T b) noexcept {
 template<typename T>
 static T
 bound(T value, T min, T max) noexcept {
-    if (value < min) {
+    if (value < min)
         return min;
-    }
-    else if (value > max) {
+    else if (value > max)
         return max;
-    }
-    else {
+    else
         return value;
-    }
 }
 
 template<typename T>
 static T
 wrap(T min, T value, T max) noexcept {
-    while (value < min) {
+    while (value < min)
         value += max;
-    }
     return value % max;
 }
 

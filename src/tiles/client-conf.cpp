@@ -38,16 +38,13 @@ confParse(StringView filename) noexcept {
     JsonValue windowValue = root["window"];
     if (windowValue.isObject()) {
         JsonValue widthValue = windowValue["width"];
-        if (widthValue.isNumber()) {
+        if (widthValue.isNumber())
             confWindowSize.x = widthValue.toInt();
-        }
         JsonValue heightValue = windowValue["height"];
-        if (heightValue.isNumber()) {
+        if (heightValue.isNumber())
             confWindowSize.y = heightValue.toInt();
-        }
         JsonValue fullscreenValue = windowValue["fullscreen"];
-        if (fullscreenValue.isBool()) {
+        if (fullscreenValue.isBool())
             confFullscreen = fullscreenValue.toBool();
-        }
     }
 }

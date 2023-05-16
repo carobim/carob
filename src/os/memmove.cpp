@@ -185,14 +185,12 @@ memmem(const void* h0, Size k, const void* n0, Size l) noexcept {
     const U8* n = reinterpret_cast<const U8*>(n0);
 
     /* Return immediately on empty needle */
-    if (!l) {
+    if (!l)
         return (void*)h;
-    }
 
     /* Return immediately when needle is longer than haystack */
-    if (k < l) {
+    if (k < l)
         return 0;
-    }
 
     /* Use faster algorithms for short needles */
     h = reinterpret_cast<const U8*>(memchr(h0, *n, k));

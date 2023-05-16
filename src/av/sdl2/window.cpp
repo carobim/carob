@@ -57,12 +57,10 @@ handleEvent(const SDL_Event& event) noexcept {
         case SDLK_DOWN: key = KEY_DOWN_ARROW; break;
         default: return;
         }
-        if (event.type == SDL_KEYUP) {
+        if (event.type == SDL_KEYUP)
             windowEmitKeyUp(key);
-        }
-        else if (event.type == SDL_KEYDOWN) {
+        else if (event.type == SDL_KEYDOWN)
             windowEmitKeyDown(key);
-        }
         break;
 
     case SDL_QUIT:
@@ -78,9 +76,8 @@ static void
 handleEvents(void) noexcept {
     SDL_Event event;
 
-    while (SDL_PollEvent(&event)) {
+    while (SDL_PollEvent(&event))
         handleEvent(event);
-    }
 }
 
 static void
@@ -102,9 +99,8 @@ updateTransform(void) noexcept {
 
 Time
 windowTime(void) noexcept {
-    if (start == 0) {
+    if (start == 0)
         start = chronoNow();
-    }
     return ns_to_ms(chronoNow() - start);
 }
 
@@ -114,9 +110,8 @@ windowCreate(void) noexcept {
 
     {
         TimeMeasure m("Initialized SDL2 video subsystem");
-        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        if (SDL_Init(SDL_INIT_VIDEO) < 0)
             sdlDie("SDL2", "SDL_Init(SDL_INIT_VIDEO)");
-        }
     }
 
     {
@@ -126,9 +121,8 @@ windowCreate(void) noexcept {
         int height = confWindowSize.y;
 
         U32 flags = 0;
-        if (confFullscreen) {
+        if (confFullscreen)
             flags |= SDL_WINDOW_FULLSCREEN;
-        }
 
 #ifdef RENDERER_GL
         flags |= SDL_WINDOW_OPENGL;
@@ -138,9 +132,8 @@ windowCreate(void) noexcept {
             SDL_CreateWindow("Carob", SDL_WINDOWPOS_UNDEFINED,
                              SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-        if (sdl2Window == 0) {
+        if (sdl2Window == 0)
             sdlDie("SDL2", "SDL_CreateWindow");
-        }
 
         SDL_EnableScreenSaver();
     }
@@ -219,9 +212,8 @@ windowMainLoop(void) noexcept {
         // Sleep until next frame.
         //
         Nanoseconds sleepDuration = nextFrameStart - frameEnd;
-        if (sleepDuration < 0) {
+        if (sleepDuration < 0)
             sleepDuration = 0;
-        }
 
         /*
         logInfo(
@@ -238,9 +230,8 @@ windowMainLoop(void) noexcept {
         // Must sleep even if we drew a frame to handle the case where we don't
         // have vsync, but we are trying to limit frame rate.
         // if (!drew && sleepDuration) {
-        if (sleepDuration) {
+        if (sleepDuration)
             chronoSleep(sleepDuration);
-        }
 
         previousFrameStart = frameStart;
         frameStart = chronoNow();

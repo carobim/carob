@@ -18,9 +18,8 @@ windowEmitKeyDown(Key key) noexcept {
         exitProcess(0);
     }
 
-    if (!wasDown) {
+    if (!wasDown)
         worldButtonDown(key);
-    }
 }
 
 void
@@ -29,7 +28,6 @@ windowEmitKeyUp(Key key) noexcept {
 
     windowKeysDown &= ~key;
 
-    if (wasDown) {
+    if (wasDown)
         worldButtonUp(key);
-    }
 }

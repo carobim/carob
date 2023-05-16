@@ -35,9 +35,8 @@ chronoNow() noexcept {
 
 void
 chronoSleep(Nanoseconds ns) noexcept {
-    if (ns <= 0) {
+    if (ns <= 0)
         return;
-    }
 
     DWORD ms = static_cast<DWORD>((ns + 999999) / 1000000);
     Sleep(ms);

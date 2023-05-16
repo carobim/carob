@@ -92,9 +92,8 @@ Character::setArea(Area* area, vicoord position) noexcept {
 
 void
 Character::moveByTile(ivec2 delta) noexcept {
-    if (moving) {
+    if (moving)
         return;
-    }
 
     setFacing(delta);
 
@@ -104,12 +103,10 @@ Character::moveByTile(ivec2 delta) noexcept {
     setDestinationCoordinate(area->grid.phys2virt_r(dest));
 
     destExit = 0;
-    if (area->grid.inBounds(from)) {
+    if (area->grid.inBounds(from))
         destExit = area->grid.exitAt(from, delta);
-    }
-    if (!destExit && area->grid.inBounds(dest)) {
+    if (!destExit && area->grid.inBounds(dest))
         destExit = area->grid.exits[EXIT_NORMAL].tryAt(dest);
-    }
 
     if (!canMove(dest)) {
         setAnimationStanding();
@@ -122,9 +119,8 @@ Character::moveByTile(ivec2 delta) noexcept {
     // Process triggers.
     runTileExitScript();
 
-    if (area->grid.inBounds(from)) {
+    if (area->grid.inBounds(from))
         area->runScript(TileGrid::SCRIPT_TYPE_LEAVE, from, this);
-    }
 
     // Modify tile's entity count.
     leaveTile(from);
@@ -173,17 +169,15 @@ Character::canMove(ivec3 dest) noexcept {
     if (destExit) {
         // We can always take exits as long as we can take exits.
         // (Even if they would cause us to be out of bounds.)
-        if (nowalkExempt & TILE_NOWALK_EXIT) {
+        if (nowalkExempt & TILE_NOWALK_EXIT)
             return true;
-        }
     }
 
     bool inBounds = area->grid.inBounds(dest);
     if (inBounds) {
         // Tile is inside map. Can we move?
-        if (nowalked(dest)) {
+        if (nowalked(dest))
             return false;
-        }
         if (area->grid.occupied.contains(dest)) {
             // Space is occupied by another Entity.
             return false;
@@ -212,9 +206,8 @@ Character::arrived() noexcept {
 
     if (inBounds) {
         float* layermod = area->grid.layermods[EXIT_NORMAL].tryAt(dest);
-        if (layermod) {
+        if (layermod)
             r.z = *layermod;
-        }
 
         // Process triggers.
         area->runScript(TileGrid::SCRIPT_TYPE_ENTER, dest, this);
@@ -235,9 +228,8 @@ Character::arrived() noexcept {
 
 void
 Character::leaveTile() noexcept {
-    if (area) {
+    if (area)
         leaveTile(getTileCoords_i());
-    }
 }
 
 void
@@ -247,9 +239,8 @@ Character::leaveTile(ivec3 phys) noexcept {
 
 void
 Character::enterTile() noexcept {
-    if (area) {
+    if (area)
         enterTile(getTileCoords_i());
-    }
 }
 
 void

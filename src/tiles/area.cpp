@@ -31,18 +31,15 @@ void
 Area::focus() noexcept {
     if (!beenFocused) {
         beenFocused = true;
-        if (dataArea) {
+        if (dataArea)
             dataArea->onLoad();
-        }
     }
 
-    if (musicPath.size) {
+    if (musicPath.size)
         musicPlay(musicPath);
-    }
 
-    if (dataArea) {
+    if (dataArea)
         dataArea->onFocus();
-    }
 }
 
 void
@@ -122,9 +119,8 @@ Area::draw(DisplayList* display) noexcept {
 
 bool
 Area::needsRedraw() noexcept {
-    if (redraw) {
+    if (redraw)
         return true;
-    }
 
     icube tiles = visibleTiles();
     icube pixels = {
@@ -132,51 +128,43 @@ Area::needsRedraw() noexcept {
         tiles.x2 * grid.tileDim.x, tiles.y2 * grid.tileDim.y, tiles.z2,
     };
 
-    if (player->needsRedraw(pixels)) {
+    if (player->needsRedraw(pixels))
         return true;
-    }
     for (Character** character = characters.begin();
          character != characters.end(); character++) {
-        if ((*character)->needsRedraw(pixels)) {
+        if ((*character)->needsRedraw(pixels))
             return true;
-        }
     }
     for (Overlay** overlay = overlays.begin(); overlay != overlays.end();
          overlay++) {
-        if ((*overlay)->needsRedraw(pixels)) {
+        if ((*overlay)->needsRedraw(pixels))
             return true;
-        }
     }
 
     // Do any on-screen tile types need to update their animations?
-    if (tileGraphics.size > checkedForAnimation.size) {
+    if (tileGraphics.size > checkedForAnimation.size)
         checkedForAnimation.resize(tileGraphics.size);
-    }
     memset(checkedForAnimation.data, 0, checkedForAnimation.size);
 
     Time now = worldTime();
 
     for (I32 z = tiles.z1; z < tiles.z2; z++) {
-        if (grid.layerTypes[z] != TileGrid::TILE_LAYER) {
+        if (grid.layerTypes[z] != TileGrid::TILE_LAYER)
             continue;
-        }
         for (I32 y = tiles.y1; y < tiles.y2; y++) {
             for (I32 x = tiles.x1; x < tiles.x2; x++) {
                 ivec3 coord = {x, y, z};
                 I32 type = grid.getTileType(coord);
 
-                if (type == 0) {
+                if (type == 0)
                     continue;
-                }
 
-                if (checkedForAnimation[type]) {
+                if (checkedForAnimation[type])
                     continue;
-                }
                 checkedForAnimation[type] = true;
 
-                if (tileGraphics[type].needsRedraw(now)) {
+                if (tileGraphics[type].needsRedraw(now))
                     return true;
-                }
             }
         }
     }
@@ -205,9 +193,8 @@ isOverlayDead(Overlay* o) noexcept {
 
 void
 Area::tick(Time dt) noexcept {
-    if (dataArea) {
+    if (dataArea)
         dataArea->tick(dt);
-    }
 
     for (Overlay** overlay = overlays.begin(); overlay != overlays.end();
          overlay++) {
@@ -230,9 +217,8 @@ Area::tick(Time dt) noexcept {
 
 void
 Area::turn() noexcept {
-    if (dataArea) {
+    if (dataArea)
         dataArea->turn();
-    }
 
     player->turn();
 
@@ -337,9 +323,8 @@ void
 Area::runScript(TileGrid::ScriptType type, ivec3 tile,
                 Entity* triggeredBy) noexcept {
     void (**script)(DataArea*, Entity*, ivec3) = grid.scripts[type].tryAt(tile);
-    if (script) {
+    if (script)
         (*script)(dataArea, triggeredBy, tile);
-    }
 }
 
 
@@ -350,9 +335,8 @@ Area::drawTiles(DisplayList* display, icube& tiles, I32 z) noexcept {
     Time now = worldTime();
 
     // FIXME: Same.
-    if (tileGraphics.size > tilesAnimated.size) {
+    if (tileGraphics.size > tilesAnimated.size)
         tilesAnimated.resize(tileGraphics.size);
-    }
 
     // FIXME: Only do this once per draw() call. Don't do it per drawTiles.
     memset(tilesAnimated.data, 0, tilesAnimated.size);
@@ -375,13 +359,11 @@ Area::drawTiles(DisplayList* display, icube& tiles, I32 z) noexcept {
             ivec3 coord = {x, y, z};
             U32 type = grid.getTileType(coord);
 
-            if (type == 0) {
+            if (type == 0)
                 continue;
-            }
 
-            if (tileGraphics[type].id == NO_ANIMATION) {
+            if (tileGraphics[type].id == NO_ANIMATION)
                 continue;
-            }
 
             if (!tilesAnimated[type]) {
                 tilesAnimated[type] = true;
@@ -409,19 +391,16 @@ Area::drawEntities(DisplayList* display, icube& tiles, I32 z) noexcept {
 
     for (Character** character = characters.begin();
          character != characters.end(); character++) {
-        if ((*character)->getTileCoords_i().z == z) {
+        if ((*character)->getTileCoords_i().z == z)
             (*character)->draw(display);
-        }
     }
 
     for (Overlay** overlay = overlays.begin(); overlay != overlays.end();
          overlay++) {
-        if ((*overlay)->getPixelCoord().z == depth) {
+        if ((*overlay)->getPixelCoord().z == depth)
             (*overlay)->draw(display);
-        }
     }
 
-    if (player->getTileCoords_i().z == z) {
+    if (player->getTileCoords_i().z == z)
         player->draw(display);
-    }
 }

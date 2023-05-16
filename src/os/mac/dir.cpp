@@ -16,9 +16,8 @@ listDir(StringView path) noexcept {
 
     int fd = open(String(path).null(),
                   O_CLOEXEC | O_DIRECTORY | O_NONBLOCK | O_RDONLY);
-    if (fd == -1) {
+    if (fd == -1)
         return names;
-    }
 
     Size len = 8192;
     char* buf = static_cast<char*>(malloc(8192));
@@ -26,17 +25,15 @@ listDir(StringView path) noexcept {
     SSize size = 0;
 
     while (true) {
-        if (loc >= size) {
+        if (loc >= size)
             loc = 0;
-        }
 
         if (loc == 0) {
             off_t position = 0;
             // TODO: Read last 4 bytes to get advance notice on EOF on 10.15.0+
             size = __getdirentries64(fd, buf, len, &position);
-            if (size <= 0) {
+            if (size <= 0)
                 break;
-            }
         }
 
         struct dirent* d = reinterpret_cast<struct dirent*>(buf + loc);

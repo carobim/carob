@@ -23,15 +23,12 @@ static bool
 operator<(const Blob& a, const Blob& b) noexcept {
     FileType typeA = determineFileType(a.path);
     FileType typeB = determineFileType(b.path);
-    if (typeA < typeB) {
+    if (typeA < typeB)
         return true;
-    }
-    else if (typeA > typeB) {
+    else if (typeA > typeB)
         return false;
-    }
-    else {
+    else
         return a.path < b.path;
-    }
 }
 
 
@@ -100,9 +97,8 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     String pathsSection;
     pathsSection.reserve(nextPathOffset);
 
-    for (Blob* blob = blobs.begin(); blob != blobs.end(); blob++) {
+    for (Blob* blob = blobs.begin(); blob != blobs.end(); blob++)
         pathsSection << blob->path;
-    }
 
     //
     // Compute header.
@@ -145,9 +141,8 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     //
 
     FileWriter f(path);
-    if (!f) {
+    if (!f)
         goto err;
-    }
 
     f.resize(dataOffset + dataSize);
 

@@ -8,9 +8,8 @@
 bool
 makeMappedFile(MappedFile& file, StringView path) noexcept {
     I32 fd = open(String(path).null(), O_RDONLY);
-    if (fd == -1) {
+    if (fd == -1)
         return false;
-    }
 
     struct stat st;
     if (fstat(fd, &st)) {

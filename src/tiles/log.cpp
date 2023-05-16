@@ -43,9 +43,8 @@ makeTimestamp() noexcept {
     StringView v = s.view();
 
     StringPosition dot = v.find('.');
-    if (dot != SV_NOT_FOUND) {
+    if (dot != SV_NOT_FOUND)
         v = v.substr(0, min(v.size, dot + 4));
-    }
 
     String s2;
     s2 << "[" << v << "]";

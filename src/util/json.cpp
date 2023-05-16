@@ -62,9 +62,8 @@ JsonAllocator::allocate(Size size) noexcept {
     Size allocSize = sizeof(Zone) + size;
     Zone* zone = static_cast<Zone*>(
         malloc(allocSize <= JSON_ZONE_SIZE ? JSON_ZONE_SIZE : allocSize));
-    if (zone == 0) {
+    if (zone == 0)
         return 0;
-    }
     zone->used = allocSize;
     if (allocSize <= JSON_ZONE_SIZE || head == 0) {
         zone->next = head;
@@ -108,23 +107,20 @@ isxdigit(char c) noexcept {
 
 static inline I32
 char2int(char c) noexcept {
-    if (c <= '9') {
+    if (c <= '9')
         return c - '0';
-    }
     return (c & ~' ') - 'A' + 10;
 }
 
 static double
 string2double(char* s, char** endptr) noexcept {
     char ch = *s;
-    if (ch == '-') {
+    if (ch == '-')
         ++s;
-    }
 
     double result = 0;
-    while (isdigit(*s)) {
+    while (isdigit(*s))
         result = (result * 10) + (*s++ - '0');
-    }
 
     if (*s == '.') {
         ++s;
@@ -149,16 +145,13 @@ string2double(char* s, char** endptr) noexcept {
         }
 
         U32 exponent = 0;
-        while (isdigit(*s)) {
+        while (isdigit(*s))
             exponent = (exponent * 10) + (*s++ - '0');
-        }
 
         double power = 1;
-        for (; exponent; exponent >>= 1, base *= base) {
-            if (exponent & 1) {
+        for (; exponent; exponent >>= 1, base *= base)
+            if (exponent & 1)
                 power *= base;
-            }
-        }
 
         result *= power;
     }
@@ -169,9 +162,8 @@ string2double(char* s, char** endptr) noexcept {
 
 static inline JsonNode*
 insertAfter(JsonNode* tail, JsonNode* node) noexcept {
-    if (!tail) {
+    if (!tail)
         return node->next = node;
-    }
     node->next = tail->next;
     tail->next = node;
     return node;
@@ -201,9 +193,8 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
     while (*s) {
         while (isspace(*s)) {
             ++s;
-            if (!*s) {
+            if (!*s)
                 break;
-            }
         }
         endptr = s++;
         switch (*endptr) {
@@ -286,9 +277,8 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
             }
             break;
         case 't':
-            if (!(s[0] == 'r' && s[1] == 'u' && s[2] == 'e' && isdelim(s[3]))) {
+            if (!(s[0] == 'r' && s[1] == 'u' && s[2] == 'e' && isdelim(s[3])))
                 return false;
-            }
             o = JsonValue(JSON_TRUE);
             s += 3;
             break;
@@ -301,61 +291,51 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
             s += 4;
             break;
         case 'n':
-            if (!(s[0] == 'u' && s[1] == 'l' && s[2] == 'l' && isdelim(s[3]))) {
+            if (!(s[0] == 'u' && s[1] == 'l' && s[2] == 'l' && isdelim(s[3])))
                 return false;
-            }
             o = JsonValue(JSON_NULL);
             s += 3;
             break;
         case ']':
-            if (pos == -1) {
+            if (pos == -1)
                 return false;
-            }
-            if (tags[pos] != JSON_ARRAY) {
+            if (tags[pos] != JSON_ARRAY)
                 return false;
-            }
             o = listToValue(JSON_ARRAY, tails[pos--]);
             break;
         case '}':
-            if (pos == -1) {
+            if (pos == -1)
                 return false;
-            }
-            if (tags[pos] != JSON_OBJECT) {
+            if (tags[pos] != JSON_OBJECT)
                 return false;
-            }
-            if (keys[pos] != 0) {
+            if (keys[pos] != 0)
                 return false;
-            }
             o = listToValue(JSON_OBJECT, tails[pos--]);
             break;
         case '[':
-            if (++pos == JSON_STACK_SIZE) {
+            if (++pos == JSON_STACK_SIZE)
                 return false;
-            }
             tails[pos] = 0;
             tags[pos] = JSON_ARRAY;
             keys[pos] = 0;
             separator = true;
             continue;
         case '{':
-            if (++pos == JSON_STACK_SIZE) {
+            if (++pos == JSON_STACK_SIZE)
                 return false;
-            }
             tails[pos] = 0;
             tags[pos] = JSON_OBJECT;
             keys[pos] = 0;
             separator = true;
             continue;
         case ':':
-            if (separator || keys[pos] == 0) {
+            if (separator || keys[pos] == 0)
                 return false;
-            }
             separator = true;
             continue;
         case ',':
-            if (separator || keys[pos] != 0) {
+            if (separator || keys[pos] != 0)
                 return false;
-            }
             separator = true;
             continue;
         case '\0': continue;
@@ -372,9 +352,8 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
 
         if (tags[pos] == JSON_OBJECT) {
             if (!keys[pos]) {
-                if (o.getTag() != JSON_STRING) {
+                if (o.getTag() != JSON_STRING)
                     return false;
-                }
                 keys[pos] = o.toCString();
                 continue;
             }
@@ -400,11 +379,9 @@ parse(char* s, JsonValue* value, JsonAllocator& allocator) noexcept {
 
 JsonValue
 JsonValue::operator[](StringView key) noexcept {
-    for (JsonNode* node = toNode(); node != 0; node = node->next) {
-        if (key == node->key) {
+    for (JsonNode* node = toNode(); node != 0; node = node->next)
+        if (key == node->key)
             return node->value;
-        }
-    }
 
     return JsonValue();
 }

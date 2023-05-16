@@ -66,9 +66,8 @@ class Splits {
  public:
     Splits(StringView b) noexcept {
         buf = b;
-        if (buf.size == 0) {
+        if (buf.size == 0)
             buf.data = 0;
-        }
     }
 
     // StringView is overwritten with each call.

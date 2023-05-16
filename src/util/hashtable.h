@@ -107,9 +107,8 @@ class Hashmap {
 
         void
         skipEmpties() noexcept {
-            while (i < h->capacity && h->data[i].key == E::value()) {
+            while (i < h->capacity && h->data[i].key == E::value())
                 i++;
-            }
         }
 
         Hashmap* h;
@@ -126,16 +125,14 @@ class Hashmap {
         if (bucketCount) {
             capacity = pow2(bucketCount);
             data = static_cast<Entry*>(malloc(sizeof(Entry) * capacity));
-            for (Size i = 0; i < capacity; i++) {
+            for (Size i = 0; i < capacity; i++)
                 new (data + i) Entry;
-            }
         }
     }
 
     ~Hashmap() noexcept {
-        for (Size i = 0; i < capacity; i++) {
+        for (Size i = 0; i < capacity; i++)
             data[i].~Entry();
-        }
         free(data);
     }
 
@@ -209,9 +206,8 @@ class Hashmap {
     }
     void
     clear() noexcept {
-        for (Size i = 0; i < capacity; i++) {
+        for (Size i = 0; i < capacity; i++)
             data[i] = Entry();
-        }
         size = 0;
     }
 
@@ -220,28 +216,23 @@ class Hashmap {
     iterator
     find(const K& k) noexcept {
         assert_(k != E::value());  // Empty key shouldn't be used.
-        if (size == 0) {
+        if (size == 0)
             return end();
-        }
         for (U32 idx = keyToIdx(k);; idx = probe(idx)) {
-            if (data[idx].key == E::value()) {
+            if (data[idx].key == E::value())
                 return end();
-            }
-            if (data[idx].key == k) {
+            if (data[idx].key == k)
                 return iterator(this, idx);
-            }
         }
     }
     template<typename K>
     Value*
     tryAt(const K& key) noexcept {
         iterator it = find(key);
-        if (it == end()) {
+        if (it == end())
             return 0;
-        }
-        else {
+        else
             return &it->value;
-        }
     }
     template<typename K>
     bool
@@ -275,9 +266,8 @@ class Hashmap {
         capacity = newCapacity;
         data = static_cast<Entry*>(malloc(sizeof(Entry) * capacity));
 
-        for (U32 i = 0; i < capacity; i++) {
+        for (U32 i = 0; i < capacity; i++)
             new (data + i) Entry;
-        }
 
         for (U32 i = 0; i < oldCapacity; i++) {
             Key& key = oldData[i].key;

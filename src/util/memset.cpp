@@ -119,13 +119,11 @@ memset(char* s, int c, Size n) noexcept {
     char* p = s;
     char X = c;
 
-    if (n < 32) {
+    if (n < 32)
         return smallMemset(s, c, n);
-    }
 
-    if (n > 160) {
+    if (n > 160)
         return hugeMemset(s, c, n);
-    }
 
     char32 val32 = {X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X,
                     X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X};

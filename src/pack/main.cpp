@@ -34,15 +34,13 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
     bool ok = readFile(path, data);
 
     if (!ok) {
-        if (verbose) {
+        if (verbose)
             sout << "Skipped " << path << ": file not found\n";
-        }
         return;
     }
 
-    if (verbose) {
+    if (verbose)
         sout << "Added " << path << ": " << data.size << " bytes\n";
-    }
 
     // Write the file path to the pack file with '/' instead of '\\' on Windows.
     String standardizedPath;
@@ -50,11 +48,9 @@ addFile(CreateArchiveContext* ctx, StringView path) noexcept {
 #if DIR_SEPARATOR != '/'
     standardizedPath = path;
 
-    for (Size i = 0; i < path.size; i++) {
-        if (standardizedPath[i] == DIR_SEPARATOR) {
+    for (Size i = 0; i < path.size; i++)
+        if (standardizedPath[i] == DIR_SEPARATOR)
             standardizedPath[i] = '/';
-        }
-    }
 
     path = standardizedPath;
 #endif
@@ -79,9 +75,8 @@ createArchive(StringView archivePath, Vector<StringView> paths) noexcept {
 
     bool ok = packWriterWriteToFile(ctx.pack, archivePath);
 
-    if (verbose) {
+    if (verbose)
         sout << "Wrote to " << archivePath << '\n';
-    }
 
     destroyPackWriter(ctx.pack);
     return ok;
@@ -111,11 +106,9 @@ listArchive(StringView archivePath) noexcept {
 #if DIR_SEPARATOR != '/'
         standardizedPath = path;
 
-        for (Size j = 0; j < path.size; j++) {
-            if (standardizedPath[j] == '/') {
+        for (Size j = 0; j < path.size; j++)
+            if (standardizedPath[j] == '/')
                 standardizedPath[j] = DIR_SEPARATOR;
-            }
-        }
 
         path = standardizedPath;
 #endif
@@ -191,18 +184,15 @@ extractArchive(StringView archivePath) noexcept {
 #if DIR_SEPARATOR != '/'
         standardizedPath = path;
 
-        for (Size j = 0; j < path.size; j++) {
-            if (standardizedPath[j] == '/') {
+        for (Size j = 0; j < path.size; j++)
+            if (standardizedPath[j] == '/')
                 standardizedPath[j] = DIR_SEPARATOR;
-            }
-        }
 
         path = standardizedPath;
 #endif
 
-        if (verbose) {
+        if (verbose)
             sout << "Extracting " << path << ": " << size << " bytes\n";
-        }
 
         readerRead(pack, buf, i);
 
@@ -221,9 +211,8 @@ main(I32 argc, char* argv[]) noexcept {
 
     exe = argv[0];
     StringPosition dir = exe.view().rfind(DIR_SEPARATOR);
-    if (dir == SV_NOT_FOUND) {
+    if (dir == SV_NOT_FOUND)
         exe = exe.view().substr(dir + 1);
-    }
 
     if (argc == 1) {
         usage();
@@ -237,9 +226,8 @@ main(I32 argc, char* argv[]) noexcept {
     StringView command = argv[1];
     Vector<StringView> args;
 
-    for (I32 i = 2; i < argc; i++) {
+    for (I32 i = 2; i < argc; i++)
         args.push(argv[i]);
-    }
 
     I32 exitCode;
 

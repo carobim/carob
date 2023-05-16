@@ -48,9 +48,8 @@ File::read(void* buf, Size len) noexcept {
         // errno set
         return false;
     }
-    if (static_cast<Size>(nbytes) != len) {
+    if (static_cast<Size>(nbytes) != len)
         return false;
-    }
     rem -= nbytes;
     return true;
 }
@@ -62,9 +61,8 @@ File::readOffset(void* buf, Size len, Size offset) noexcept {
         // errno set
         return false;
     }
-    if (static_cast<Size>(nbytes) != len) {
+    if (static_cast<Size>(nbytes) != len)
         return false;
-    }
     return true;
 }
 
@@ -73,9 +71,8 @@ FileWriter::FileWriter(StringView path) noexcept {
 }
 
 FileWriter::~FileWriter() noexcept {
-    if (fd >= 0) {
+    if (fd >= 0)
         close(fd);
-    }
 }
 
 // Whether the file was opened successfully.

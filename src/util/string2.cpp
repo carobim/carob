@@ -152,24 +152,19 @@ isRanges(StringView s) noexcept {
 
 static char
 tolower(char c) noexcept {
-    if ('A' <= c && c <= 'Z') {
+    if ('A' <= c && c <= 'Z')
         return c + 'a' - 'A';
-    }
-    else {
+    else
         return c;
-    }
 }
 
 bool
 iequals(StringView a, StringView b) noexcept {
-    if (a.size != b.size) {
+    if (a.size != b.size)
         return false;
-    }
-    for (Size i = 0; i < a.size; i++) {
-        if (tolower(a.data[i]) != tolower(b.data[i])) {
+    for (Size i = 0; i < a.size; i++)
+        if (tolower(a.data[i]) != tolower(b.data[i]))
             return false;
-        }
-    }
     return true;
 }
 
@@ -203,9 +198,8 @@ parseUInt(U32& out, String& s) noexcept {
     char* end;
     U32 ul = strtoul(s.null(), &end, 10);
 
-    if (end != s.data + s.size) {
+    if (end != s.data + s.size)
         return false;
-    }
 
     if (errno != 0) {
         // Overflow.
@@ -227,9 +221,8 @@ parseInt(I32& out, String& s) noexcept {
     char* end;
     long l = strtol(s.null(), &end, 10);
 
-    if (end != s.data + s.size) {
+    if (end != s.data + s.size)
         return false;
-    }
 
     if (errno != 0) {
         // Overflow.
@@ -251,9 +244,8 @@ parseInt0(I32* out, StringView s) noexcept {
     char* end;
     long l = strtol(s.data, &end, 10);
 
-    if (end != s.data + s.size) {
+    if (end != s.data + s.size)
         return false;
-    }
 
     if (errno != 0) {
         // Overflow.
@@ -275,9 +267,8 @@ parseFloat(float& out, String& s) noexcept {
     char* end;
     out = static_cast<float>(strtod(s.null(), &end));
 
-    if (end != s.data + s.size) {
+    if (end != s.data + s.size)
         return false;
-    }
 
     if (errno != 0) {
         // Overflow.
@@ -298,9 +289,8 @@ splitStr(Vector<StringView>& out, StringView input,
         i = pos + delimiter.size;
     }
 
-    if (input.size != i) {
+    if (input.size != i)
         out.push(input.substr(i));
-    }
 }
 
 /**
@@ -311,28 +301,24 @@ bool
 parseRange(I32& lo, I32& hi, StringView range, String& buf) noexcept {
     StringPosition dash = range.find('-');
 
-    if (dash == SV_NOT_FOUND) {
+    if (dash == SV_NOT_FOUND)
         return false;
-    }
 
     StringView rngstart = range.substr(0, dash);
     StringView rngend = range.substr(dash + 1);
 
     buf.clear();
     buf = rngstart;
-    if (!parseInt(lo, buf)) {
+    if (!parseInt(lo, buf))
         return false;
-    }
 
     buf.clear();
     buf = rngend;
-    if (!parseInt(hi, buf)) {
+    if (!parseInt(hi, buf))
         return false;
-    }
 
-    if (lo > hi) {
+    if (lo > hi)
         return false;
-    }
 
     return true;
 }
@@ -351,9 +337,8 @@ parseRanges(Vector<I32>& out, StringView format) noexcept {
             buf = *range;
 
             I32 i;
-            if (!parseInt(i, buf)) {
+            if (!parseInt(i, buf))
                 return false;
-            }
 
             out.push(i);
         }
@@ -364,24 +349,20 @@ parseRanges(Vector<I32>& out, StringView format) noexcept {
             buf.clear();
             buf = rngstart;
             I32 start;
-            if (!parseInt(start, buf)) {
+            if (!parseInt(start, buf))
                 return false;
-            }
 
             buf.clear();
             buf = rngend;
             I32 end;
-            if (!parseInt(end, buf)) {
+            if (!parseInt(end, buf))
                 return false;
-            }
 
-            if (start > end) {
+            if (start > end)
                 return false;
-            }
 
-            for (I32 i = start; i <= end; i++) {
+            for (I32 i = start; i <= end; i++)
                 out.push(i);
-            }
         }
     }
 

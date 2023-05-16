@@ -47,12 +47,10 @@ static const struct Leaf EMPTY_LEAF = {};
 
 static struct Leaf
 safeCpuIdEx(U32 maxLeaf, U32 leafId, int subleaf) noexcept {
-    if (leafId <= maxLeaf) {
+    if (leafId <= maxLeaf)
         return getCpuidLeaf(leafId, subleaf);
-    }
-    else {
+    else
         return EMPTY_LEAF;
-    }
 }
 
 struct Leaves {

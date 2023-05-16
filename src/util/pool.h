@@ -27,9 +27,8 @@ class Pool {
     // Returns an unconstructed piece of memory.
     U32
     allocate() noexcept {
-        if (nextFree == POOL_END) {
+        if (nextFree == POOL_END)
             grow();
-        }
         U32 id = nextFree;
         nextFree = asLink(nextFree);
         return id;
@@ -68,9 +67,8 @@ class Pool {
         nextFree = allocated;
         storage = newStorage;
 
-        for (U32 i = allocated; i < newAllocated - 1; i++) {
+        for (U32 i = allocated; i < newAllocated - 1; i++)
             asLink(i) = i + 1;
-        }
         asLink(newAllocated - 1) = POOL_END;
 
         allocated = newAllocated;

@@ -107,9 +107,8 @@ FileWriter::FileWriter(StringView path) noexcept {
 }
 
 FileWriter::~FileWriter() noexcept {
-    if (handle != INVALID_HANDLE_VALUE) {
+    if (handle != INVALID_HANDLE_VALUE)
         CloseHandle(handle);
-    }
 }
 
 // Whether the file was opened successfully.
@@ -178,12 +177,10 @@ openConsole() noexcept {
 
 bool
 writeStdout(const char* buf, Size len) noexcept {
-    if (con == UNINITIALIZED) {
+    if (con == UNINITIALIZED)
         openConsole();
-    }
-    if (con == INVALID_HANDLE_VALUE) {
+    if (con == INVALID_HANDLE_VALUE)
         return false;
-    }
 
     assert_(len <= static_cast<Size>(INT32_MAX));
 

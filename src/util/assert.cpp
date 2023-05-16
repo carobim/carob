@@ -74,9 +74,8 @@ isDebuggerPresent(void) {
     if (result == KERN_SUCCESS) {
         for (mach_msg_type_number_t portIndex = 0; portIndex < count;
              portIndex++) {
-            if (MACH_PORT_VALID(ports[portIndex])) {
+            if (MACH_PORT_VALID(ports[portIndex]))
                 return true;
-            }
         }
     }
     return false;
@@ -160,9 +159,8 @@ assert__(const char* func, const char* file, int line,
 
 void
 debugger() noexcept {
-    if (haveDebugger()) {
+    if (haveDebugger())
         triggerDebugger();
-    }
 }
 
 #endif

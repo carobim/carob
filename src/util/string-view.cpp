@@ -44,42 +44,36 @@ StringView::find(char needle) const noexcept {
     // be nice to call this function with .data = 0 and .size = 0 and get a
     // SV_NOT_FOUND as a result and then later do a check against `.data == 0`,
     // but with GCC's assumption, that check will be optimized out.
-    if (data == 0) {
+    if (data == 0)
         return SV_NOT_FOUND;
-    }
 
     char* result = static_cast<char*>(memchr(data, needle, size));
-    if (result == 0) {
+    if (result == 0)
         return SV_NOT_FOUND;
-    }
     return StringPosition(result - data);
 }
 
 StringPosition
 StringView::find(char needle, Size start) const noexcept {
-    if (data == 0) {
+    if (data == 0)
         return SV_NOT_FOUND;
-    }
 
     char* result =
         static_cast<char*>(memchr(data + start, needle, size - start));
-    if (result == 0) {
+    if (result == 0)
         return SV_NOT_FOUND;
-    }
     return StringPosition(result - data);
 }
 
 StringPosition
 StringView::find(StringView needle) const noexcept {
-    if (data == 0) {
+    if (data == 0)
         return SV_NOT_FOUND;
-    }
 
     char* result =
         static_cast<char*>(memmem(data, size, needle.data, needle.size));
-    if (result == 0) {
+    if (result == 0)
         return SV_NOT_FOUND;
-    }
     return StringPosition(result - data);
 }
 
@@ -87,30 +81,26 @@ StringPosition
 StringView::find(StringView needle, Size start) const noexcept {
     assert_(size >= start);
 
-    if (data == 0) {
+    if (data == 0)
         return SV_NOT_FOUND;
-    }
 
     char* result = static_cast<char*>(
         memmem(data + start, size - start, needle.data, needle.size));
-    if (result == 0) {
+    if (result == 0)
         return SV_NOT_FOUND;
-    }
     return StringPosition(result - data);
 }
 
 StringPosition
 StringView::rfind(char needle) const noexcept {
-    if (size == 0) {
+    if (size == 0)
         return SV_NOT_FOUND;
-    }
 
     Size i = size;
     do {
         i--;
-        if (data[i] == needle) {
+        if (data[i] == needle)
             return StringPosition(i);
-        }
     } while (i > 0);
 
     return SV_NOT_FOUND;
@@ -118,19 +108,16 @@ StringView::rfind(char needle) const noexcept {
 
 StringPosition
 StringView::rfind(StringView needle) const noexcept {
-    if (data == 0 || needle.size > size) {
+    if (data == 0 || needle.size > size)
         return SV_NOT_FOUND;
-    }
-    if (needle.size == 0) {
+    if (needle.size == 0)
         return 0;
-    }
 
     Size i = size - needle.size;
     do {
         if (data[i] == needle[0]) {
-            if (substr(i, needle.size) == needle) {
+            if (substr(i, needle.size) == needle)
                 return StringPosition(i);
-            }
         }
     } while (i-- > 0);
 
@@ -139,9 +126,8 @@ StringView::rfind(StringView needle) const noexcept {
 
 bool
 StringView::startsWith(StringView needle) const noexcept {
-    if (size < needle.size) {
+    if (size < needle.size)
         return false;
-    }
     return memcmp(data, needle.data, needle.size) == 0;
 }
 
@@ -174,15 +160,13 @@ operator>(const StringView& a, const StringView& b) noexcept {
     const char* bd = b.data;
 
     while (s--) {
-        if (*ad != *bd) {
+        if (*ad != *bd)
             return *ad > *bd;
-        }
         ad++;
         bd++;
     }
-    if (a.size != b.size) {
+    if (a.size != b.size)
         return a.size > b.size;
-    }
     return false;
 }
 
@@ -193,15 +177,13 @@ operator<(const StringView& a, const StringView& b) noexcept {
     const char* bd = b.data;
 
     while (s--) {
-        if (*ad != *bd) {
+        if (*ad != *bd)
             return *ad < *bd;
-        }
         ad++;
         bd++;
     }
-    if (a.size != b.size) {
+    if (a.size != b.size)
         return a.size < b.size;
-    }
     return false;
 }
 

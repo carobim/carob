@@ -14,9 +14,8 @@ grow1(Size current) noexcept {
 static Size
 growN(Size current, Size addition) noexcept {
     Size newSize = current == 0 ? 4 : current * 2;
-    while (newSize < current + addition) {
+    while (newSize < current + addition)
         newSize *= 2;
-    }
     return newSize;
 }
 
@@ -115,9 +114,8 @@ String::operator[](Size i) noexcept {
 
 String&
 String::operator<<(char c) noexcept {
-    if (size == capacity) {
+    if (size == capacity)
         reserve(grow1(size));
-    }
     data[size++] = c;
     return *this;
 }
@@ -127,9 +125,8 @@ String::operator<<(const char* s) noexcept {
     // TODO: Use strncpy without knowing the size. If the string has more
     //       characters, then do a strlen & growN & memcpy like below.
     Size len = strlen(s);
-    if (capacity < size + len) {
+    if (capacity < size + len)
         reserve(growN(size, len));
-    }
     memcpy(data + size, s, len);
     size += len;
     return *this;
@@ -137,9 +134,8 @@ String::operator<<(const char* s) noexcept {
 
 String&
 String::operator<<(StringView s) noexcept {
-    if (capacity < size + s.size) {
+    if (capacity < size + s.size)
         reserve(growN(size, s.size));
-    }
     memcpy(data + size, s.data, s.size);
     size += s.size;
     return *this;
@@ -147,9 +143,8 @@ String::operator<<(StringView s) noexcept {
 
 String&
 String::operator<<(bool b) noexcept {
-    if (capacity < size + 5) {
+    if (capacity < size + 5)
         reserve(growN(size, 5));
-    }
     if (b) {
         memcpy(data + size, "true", 4);
         size += 4;
@@ -164,9 +159,8 @@ String::operator<<(bool b) noexcept {
 String&
 String::operator<<(int i) noexcept {
     // Minus sign & 10 digits.
-    if (capacity < size + 11) {
+    if (capacity < size + 11)
         reserve(growN(size, 11));
-    }
 
     if (i < 0) {
         if (i == INT32_MIN) {
@@ -196,9 +190,8 @@ String::operator<<(int i) noexcept {
 
 String&
 String::operator<<(unsigned int u) noexcept {
-    if (capacity < size + 10) {
+    if (capacity < size + 10)
         reserve(growN(size, 10));
-    }
 
     char buf[10];
     char* p = buf;
@@ -235,9 +228,8 @@ String::operator<<(unsigned long ul) noexcept {
 
 String&
 String::operator<<(long long ll) noexcept {
-    if (capacity < size + 20) {
+    if (capacity < size + 20)
         reserve(growN(size, 20));
-    }
 
     if (ll < 0) {
         if (ll == INT64_MIN) {
@@ -267,9 +259,8 @@ String::operator<<(long long ll) noexcept {
 
 String&
 String::operator<<(unsigned long long ull) noexcept {
-    if (capacity < size + 20) {
+    if (capacity < size + 20)
         reserve(growN(size, 20));
-    }
 
     char buf[20];
     char* p = buf;
@@ -304,9 +295,8 @@ String::reserve(Size n) noexcept {
 
 void
 String::resize(Size n) noexcept {
-    if (capacity < n) {
+    if (capacity < n)
         reserve(n);
-    }
     size = n;
 }
 
@@ -332,9 +322,8 @@ String::view() const noexcept {
 
 const char*
 String::null() noexcept {
-    if (size == capacity) {
+    if (size == capacity)
         reserve(grow1(size));
-    }
     data[size] = 0;
     return data;
 }

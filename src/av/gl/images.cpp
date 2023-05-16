@@ -269,18 +269,16 @@ enumError(StringView call, GLenum error) noexcept {
 static void
 checkError(StringView call) noexcept {
     GLenum error = glGetError();
-    if (error) {
+    if (error)
         enumError(call, error);
-    }
 }
 
 static void
 getProcAddress(void** fnAddr, const char* symbolName) noexcept {
     // TODO: Remove SDL usage.
     *fnAddr = SDL_GL_GetProcAddress(symbolName);
-    if (*fnAddr == 0) {
+    if (*fnAddr == 0)
         logFatal("GL", String() << "Couldn't load GL function: " << symbolName);
-    }
 }
 
 static void
@@ -302,9 +300,8 @@ compileShader(Shader shader) noexcept {
 static const char*
 getString(GLenum name) noexcept {
     const GLubyte* str = glGetString_(name);
-    if (str == 0) {
+    if (str == 0)
         customError("glGetString", "Returned NULL");
-    }
 
     return reinterpret_cast<const char*>(str);
 }
@@ -328,9 +325,8 @@ linkProgram(Program program) noexcept {
 static GLuint
 makeShader(GLenum type, const char* source) noexcept {
     Shader shader = glCreateShader_(type);
-    if (shader == 0) {
+    if (shader == 0)
         customError("glCreateShader", "Returned NULL");
-    }
 
     const GLchar* sources[] = {static_cast<const GLchar*>(source)};
     glShaderSource_(shader, 1, sources, 0);
@@ -462,9 +458,8 @@ static bool printed = false;
 
 static void
 printVersion() noexcept {
-    if (printed) {
+    if (printed)
         return;
-    }
     printed = true;
 
     logInfo("GL", String() << "Vendor: " << getString(GL_VENDOR));
@@ -481,9 +476,8 @@ void
 imageInit() noexcept {
     TimeMeasure m("Constructed OpenGL renderer");
 
-    if (SDL_GL_CreateContext(sdl2Window) == 0) {
+    if (SDL_GL_CreateContext(sdl2Window) == 0)
         sdlDie("SDL", "SDL_GL_CreateContext");
-    }
 
     loadFunction(glActiveTexture);
     loadFunction(glAlphaFunc);
@@ -638,9 +632,8 @@ Image
 imageLoad(StringView path) noexcept {
     TiledImage* tiles = images.find(hash_(path));
 
-    if (!tiles) {
+    if (!tiles)
         tiles = load(path);
-    }
 
     assert_(tiles);
 
@@ -664,12 +657,10 @@ imageDraw(Image image, float x, float y, float z) noexcept {
 
     const Size QUAD_COORDS = 6;
 
-    if (ip.attributes.capacity == 0) {
+    if (ip.attributes.capacity == 0)
         ip.attributes.reserve(QUAD_COORDS * 8);
-    }
-    else if (ip.attributes.size + QUAD_COORDS > ip.attributes.capacity) {
+    else if (ip.attributes.size + QUAD_COORDS > ip.attributes.capacity)
         ip.attributes.reserve(ip.attributes.capacity * 2);
-    }
     ip.attributes.size += QUAD_COORDS;
 
     float tWidth = ATLAS_WIDTH;
@@ -762,12 +753,10 @@ imageDrawRect(float left, float right, float top, float bottom, float z,
 
     const Size QUAD_COORDS = 6;
 
-    if (rp.attributes.capacity == 0) {
+    if (rp.attributes.capacity == 0)
         rp.attributes.reserve(QUAD_COORDS * 8);
-    }
-    else if (rp.attributes.size + QUAD_COORDS > rp.attributes.capacity) {
+    else if (rp.attributes.size + QUAD_COORDS > rp.attributes.capacity)
         rp.attributes.reserve(rp.attributes.capacity * 2);
-    }
     rp.attributes.size += QUAD_COORDS;
 
     U8 a = (argb >> 24) & 0xFF;
@@ -839,9 +828,8 @@ getOrtho() noexcept {
 
 void
 imageFlushImages() noexcept {
-    if (ip.attributes.size == 0) {
+    if (ip.attributes.size == 0)
         return;
-    }
 
     glUseProgram_(ip.program);
 
@@ -869,9 +857,8 @@ imageFlushImages() noexcept {
 
 void
 imageFlushRects() noexcept {
-    if (rp.attributes.size == 0) {
+    if (rp.attributes.size == 0)
         return;
-    }
 
     glUseProgram_(rp.program);
 
