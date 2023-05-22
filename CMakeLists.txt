@@ -995,7 +995,7 @@ if(APPLE AND NOT WINDOW_NULL)
     set(GUI_TYPE MACOSX_BUNDLE)
 endif()
 
-if(APPLE AND NOT WINDOW_NULL AND NOT AUDIO_NULL)
+if(APPLE AND (NOT WINDOW_NULL OR NOT AUDIO_NULL))
     target_link_libraries(carob
         /System/Library/Frameworks/Cocoa.framework
         /System/Library/Frameworks/Foundation.framework
