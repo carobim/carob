@@ -48,6 +48,8 @@ class StringView {
 
     bool
     startsWith(StringView needle) const noexcept;
+    bool
+    endsWith(StringView needle) const noexcept;
 
     StringView
     substr(Size from) const noexcept;

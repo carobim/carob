@@ -147,11 +147,18 @@ void
 assert__(const char* func, const char* file, int line,
          const char* expr) noexcept {
     if (haveDebugger()) {
+        serr << "Assertion failed: " << expr << ", function " << func
+             << ", file " << file << ", line " << line << "\n";
+        sout << Flush();
+        serr << Flush();
+
         triggerDebugger();
     }
     else {
-        sout << "Assertion failed: " << expr << ", function " << func
+        serr << "Assertion failed: " << expr << ", function " << func
              << ", file " << file << ", line " << line << "\n";
+        sout << Flush();
+        serr << Flush();
 
         exitProcess(127);
     }

@@ -130,6 +130,12 @@ StringView::startsWith(StringView needle) const noexcept {
         return false;
     return memcmp(data, needle.data, needle.size) == 0;
 }
+bool
+StringView::endsWith(StringView needle) const noexcept {
+    if (size < needle.size)
+        return false;
+    return memcmp(data + size - needle.size, needle.data, needle.size) == 0;
+}
 
 StringView
 StringView::substr(const Size from) const noexcept {
