@@ -75,26 +75,29 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     # Assume that CMake >= 2.8.8 when AppleClang is used.
     set(APPLE_CLANG ${CMAKE_CXX_COMPILER_VERSION})
     set(CLANG 1)
-    # Xcode  4.6, AppleClang  4.2   == Clang  3.2
-    # Xcode  5.0, AppleClang  5.0   == Clang  3.3
-    # Xcode  5.1, AppleClang  5.1   == Clang  3.4
-    # Xcode  6.0, AppleClang  6.0   == Clang  3.5
-    # Xcode  6.3, AppleClang  6.1   == Clang  3.6
-    # Xcode  7.0, AppleClang  7.0   == Clang  3.7
-    # Xcode  7.3, AppleClang  7.3   == Clang  3.8
-    # Xcode  8.0, AppleClang  8.0   == Clang  3.9
-    # Xcode  9.0, AppleClang  9.0   == Clang  4
-    # Xcode  9.3, AppleClang  9.1   == Clang  5
-    # Xcode 10.0, AppleClang 10.0.0 == Clang  6
-    # Xcode 10.2, AppleClang 10.0.1 == Clang  7
-    # Xcode 11.0, AppleClang 11.0.0 == Clang  8
-    # Xcode 11.4, AppleClang 11.0.3 == Clang  9
-    # Xcode 12.0, AppleClang 12.0.0 == Clang 10
-    # Xcode 12.5, AppleClang 12.0.5 == Clang 11
-    # Xcode 13.0, AppleClang 13.0.0 == Clang 12
-    # Xcode 13.3, AppleClang 13.1.6 == Clang 13
-    # Xcode 14.0, AppleClang 14.0.0 == Clang 14
-    # Xcode 14.3, AppleClang 14.0.3 == Clang 15
+    # Xcode  4.6 (130220), AppleClang  4.2   == Clang  3.2 (121220)
+    # Xcode  5.0 (130918), AppleClang  5.0   == Clang  3.3 (130617)
+    # Xcode  5.1 (140310), AppleClang  5.1   == Clang  3.4 (140102)
+    # Xcode  6.0 (140917), AppleClang  6.0   == Clang  3.5 (140903)
+    # Xcode  6.3 (150408), AppleClang  6.1   == Clang  3.6 (150227)
+    #   added feature objc_bridge_id in commit bb657de5a6865a18bb25b25eda4da2cb293f94c2
+    # Xcode  7.0 (150916), AppleClang  7.0   == Clang  3.7 (150901)
+    #   added feature objc_bridge_id_on_typedefs in commit 1931c2457a59f6f3aecbf2d178a7ba42e439f468
+    # Xcode  7.3 (160321), AppleClang  7.3   == Clang  3.8 (160308)
+    # Xcode  8.0 (160913), AppleClang  8.0   == Clang  3.9 (160902)
+    # Xcode  9.0 (170919), AppleClang  9.0   == Clang  4   (170313)
+    # Xcode  9.3 (180329), AppleClang  9.1   == Clang  5   (170907)
+    # Xcode 10.0 (180917), AppleClang 10.0.0 == Clang  6   (180308)
+    # Xcode 10.2 (190325), AppleClang 10.0.1 == Clang  7   (180919)
+    # Xcode 11.0 (190920), AppleClang 11.0.0 == Clang  8   (190320
+    # Xcode 11.4 (200424), AppleClang 11.0.3 == Clang  9   (190919)
+    # Xcode 12.0 (200916), AppleClang 12.0.0 == Clang 10   (200324)
+    # Xcode 12.5 (210426), AppleClang 12.0.5 == Clang 11   (201012)
+    # Xcode 13.0 (210920), AppleClang 13.0.0 == Clang 12   (210414)
+    # Xcode 13.3 (220314), AppleClang 13.1.6 == Clang 13   (211004)
+    # Xcode 14.0 (220912), AppleClang 14.0.0 == Clang 14   (220325)
+    # Xcode 14.3 (230330), AppleClang 14.0.3 == Clang 15   (220906)
+    #                                           Clang 16   (230317)
     if(NOT APPLE_CLANG VERSION_LESS 10.0)
         set(CLANG_GTE_6 1)
     endif()
@@ -251,7 +254,7 @@ if(NOT AUDIO_SDL2)
     set(AUDIO_NULL 1)
 endif()
 
-if(NOT WINDOW_SDL2)
+if( NOT WINDOW_COCOA AND NOT WINDOW_SDL2)
     set(WINDOW_NULL 1)
 endif()
 
@@ -322,6 +325,11 @@ if(AUDIO_SDL2)
         ${HERE}/src/av/sdl2/sounds.cpp
     )
 endif()
+if(WINDOW_COCOA)
+    set(CAROB_SOURCES ${CAROB_SOURCES}
+        ${HERE}/src/av/cocoa/window.mm
+    )
+endif()
 if(WINDOW_SDL2)
     set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/sdl2/window.cpp
@@ -333,13 +341,11 @@ if(RENDERER_SDL2)
         ${HERE}/src/av/sdl2/images.cpp
     )
 endif()
-
 if(RENDERER_GL)
     set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/gl/images.cpp
     )
 endif()
-
 if(RENDERER_METAL)
     set(CAROB_SOURCES ${CAROB_SOURCES}
         ${HERE}/src/av/metal/images.mm
@@ -996,16 +1002,26 @@ if(APPLE AND NOT WINDOW_NULL)
 endif()
 
 if(APPLE AND (NOT WINDOW_NULL OR NOT AUDIO_NULL))
-    target_link_libraries(carob
+    target_link_libraries(
+        carob
         /System/Library/Frameworks/Cocoa.framework
         /System/Library/Frameworks/Foundation.framework
     )
 endif()
 
+if(WINDOW_COCOA)
+    target_link_libraries(
+        carob
+        /System/Library/Frameworks/Quartz.framework
+    )
+endif()
+
 if(LINUX AND NOT AV_EM)
-    execute_process(COMMAND ldd --version
-                    OUTPUT_VARIABLE LDD_OUT
-                    ERROR_VARIABLE LDD_ERR)
+    execute_process(
+        COMMAND ldd --version
+        OUTPUT_VARIABLE LDD_OUT
+        ERROR_VARIABLE LDD_ERR
+    )
 
     set(LDD_VERSION "${LDD_OUT}${LDD_ERR}")
 

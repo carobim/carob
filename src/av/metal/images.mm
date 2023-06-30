@@ -131,7 +131,6 @@ imageInit() noexcept {
     void* view = SDL_Metal_CreateView(sdl2Window);
     layer = reinterpret_cast<CAMetalLayer*>(SDL_Metal_GetLayer(view));
 
-    // id<MTLDevice> device = layer.device;
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     layer.device = device;
 
