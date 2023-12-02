@@ -80,10 +80,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.18, GCC 10, Ninja 1.10
-  debian_11_bullseye:
+  # Has CMake 3.25, GCC 12, Ninja 1.11
+  debian_12_bookworm:
     docker:
-      - image: debian:bullseye-slim
+      - image: debian:bookworm-slim
     steps:
       - run: |
           apt-get update &&
@@ -240,7 +240,7 @@ workflows:
       - arch
       - centos_7
       - debian_7_wheezy
-      - debian_11_bullseye
+      - debian_12_bookworm
       - fedora_20
       - fedora_38
       - nix_2_12_0
