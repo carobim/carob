@@ -5,9 +5,9 @@ name: Build
 on: [push]
 
 jobs:
-  macos_12_monterey:
-    name: macOS 12 Monterey
-    runs-on: macos-12
+  macos_13_ventura:
+    name: macOS 13 Ventura
+    runs-on: macos-13
     steps:
       - name: Checkout
         uses: actions/checkout@v2
