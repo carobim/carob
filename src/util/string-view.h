@@ -55,6 +55,9 @@ class StringView {
     substr(Size from) const noexcept;
     StringView
     substr(Size from, Size span) const noexcept;
+
+    void
+    ltrim() noexcept;
 };
 
 bool

@@ -149,6 +149,15 @@ StringView::substr(const Size from, const Size span) const noexcept {
     return StringView(data + from, span);
 }
 
+void
+StringView::ltrim() noexcept {
+    assert_(data);
+    while (size && data[0] == ' ') {
+        data++;
+        size--;
+    }
+}
+
 bool
 operator==(const StringView& a, const StringView& b) noexcept {
     return (a.size == b.size) && memcmp(a.data, b.data, a.size) == 0;
