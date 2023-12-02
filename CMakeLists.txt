@@ -290,6 +290,7 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
 
 set(TEST_SOURCES ${TEST_SOURCES}
     ${HERE}/test/util/string-view.cpp
+    ${HERE}/test/util/string2.cpp
     ${HERE}/test/main.cpp
 )
 

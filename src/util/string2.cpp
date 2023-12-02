@@ -261,6 +261,47 @@ parseInt0(I32* out, StringView s) noexcept {
 }
 
 bool
+parseI32(I32* out, StringView* rest, StringView s) noexcept {
+    U32 x;
+    I32 neg;
+    Size origSize;
+
+    if (!s.size)
+        return false;
+
+    neg = 0;
+    if (s.data[0] == '-') {
+        neg = -1;
+        s.data++;
+        s.size--;
+    }
+
+    origSize = s.size;
+    x = 0;
+    for (; s.size; s.data++, s.size--) {
+        U32 c = s.data[0];
+        if (c - '0' < 10) {
+            if (x > UINT32_MAX / 10 - 1)
+                return false;
+            x = x * 10 + (c - '0');
+        }
+        else
+            break;
+    }
+
+    if (origSize == s.size)
+        return false;
+
+    *out = (x ^ neg) - neg;
+    if (rest) {
+        *rest = s;
+        return true;
+    }
+    else
+        return !s.size;
+}
+
+bool
 parseFloat(float& out, String& s) noexcept {
     errno = 0;
 

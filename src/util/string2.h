@@ -35,6 +35,8 @@ parseInt(I32& out, String& s) noexcept;
 bool
 parseInt0(I32* out, StringView s) noexcept;
 bool
+parseI32(I32* out, StringView* rest, StringView s) noexcept;
+bool
 parseUInt(U32& out, String& s) noexcept;
 bool
 parseFloat(float& out, String& s) noexcept;
