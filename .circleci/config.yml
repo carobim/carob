@@ -202,7 +202,7 @@ jobs:
   void:
     shell: /bin/sh
     docker:
-      - image: voidlinux/voidlinux:latest
+      - image: ghcr.io/void-linux/void-glibc
     steps:
       - run: |
           xbps-install -Suy xbps &&
@@ -218,7 +218,7 @@ jobs:
   void_musl:
     shell: /bin/sh
     docker:
-      - image: voidlinux/voidlinux-musl:latest
+      - image: ghcr.io/void-linux/void-musl
     steps:
       - run: |
           xbps-install -Suy xbps &&
