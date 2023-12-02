@@ -17,10 +17,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.24, GCC 12, Samurai 1.9
-  alpine_3_17:
+  # Has CMake 3.26, GCC 12, Samurai 1.2
+  alpine_3_18:
     docker:
-      - image: alpine:3.17
+      - image: alpine:3.18
     steps:
       - run: |
           apk update &&
@@ -111,10 +111,10 @@ jobs:
           ninja-build
       - run: build/units
 
-  # Has CMake 3.25, GCC 12, Samurai 1.9
-  fedora_38:
+  # Has CMake 3.27, GCC 13, Samurai 1.2
+  fedora_39:
     docker:
-      - image: fedora:38
+      - image: fedora:39
     steps:
       - run: |
           dnf install -y cmake gcc-c++ samurai
@@ -139,7 +139,7 @@ jobs:
   #        cd build &&
   #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja && ./units'
 
-  # Has CMake 3.22, GCC 11, Samurai 1.9
+  # Has CMake 3.22, GCC 11, Samurai 1.2
   nix_2_12_0:
     shell: /bin/sh
     docker:
@@ -236,13 +236,13 @@ workflows:
   build_all:
     jobs:
       - alpine_3_1
-      - alpine_3_17
+      - alpine_3_18
       - arch
       - centos_7
       - debian_7_wheezy
       - debian_12_bookworm
       - fedora_20
-      - fedora_38
+      - fedora_39
       - nix_2_12_0
       - rocky_9
       - ubuntu_12_04_precise
