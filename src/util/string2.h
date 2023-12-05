@@ -9,6 +9,8 @@
 
 class String;
 
+#define isDigit(c) ('0' <= (c) && (c) <= '9')
+
 //! Returns true if the string contains only digits, whitespace, and minus.
 bool
 isInteger(StringView s) noexcept;
