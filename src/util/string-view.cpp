@@ -125,11 +125,17 @@ StringView::rfind(StringView needle) const noexcept {
 }
 
 bool
+StringView::contains(StringView needle) const noexcept {
+    return memmem(data, size, needle.data, needle.size) != 0;
+}
+
+bool
 StringView::startsWith(StringView needle) const noexcept {
     if (size < needle.size)
         return false;
     return memcmp(data, needle.data, needle.size) == 0;
 }
+
 bool
 StringView::endsWith(StringView needle) const noexcept {
     if (size < needle.size)

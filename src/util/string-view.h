@@ -47,6 +47,8 @@ class StringView {
     rfind(StringView needle) const noexcept;
 
     bool
+    contains(StringView needle) const noexcept;
+    bool
     startsWith(StringView needle) const noexcept;
     bool
     endsWith(StringView needle) const noexcept;
