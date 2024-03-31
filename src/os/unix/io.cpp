@@ -25,7 +25,7 @@ File::File(StringView path) noexcept {
 }
 
 File::File(File&& other) noexcept : fd(other.fd), rem(other.rem) {
-    other.fd = 0;
+    other.fd = -1;
     other.rem = 0;
 }
 
