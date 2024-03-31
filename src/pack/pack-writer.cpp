@@ -131,8 +131,8 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
 
         blobCount,
 
-        pathsOffset,
         metadataOffset,
+        pathsOffset,
         dataOffset,
     };
 
