@@ -174,6 +174,8 @@ option(STATIC_SDL "Use a static SDL2 library at chosen location")
 option(USE_SDL2_PKGCONFIG "Use pkg-config to find SDL2" 1)
 option(CURL "Enable curl for HTTP")
 
+option(UNITS "Build unit tests")
+
 option(BUILD_SHARED_LIBS "Build Carob as a shared library")
 option(STATIC_LINK "Build statically linked binaries")
 if(APPLE)
@@ -288,7 +290,7 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
     ${HERE}/src/pack/main.cpp
 )
 
-set(TEST_SOURCES ${TEST_SOURCES}
+set(UNITS_SOURCES ${UNITS_SOURCES}
     ${HERE}/test/util/string-view.cpp
     ${HERE}/test/util/string2.cpp
     ${HERE}/test/main.cpp
@@ -578,12 +580,15 @@ else()
     add_library(carob ${CAROB_SOURCES})
     add_executable(null-world ${NULL_WORLD_SOURCES})
     add_executable(pack-tool ${PACK_TOOL_SOURCES})
-    add_executable(units ${TEST_SOURCES})
 
     target_link_libraries(carob)
     target_link_libraries(null-world carob cutil)
     target_link_libraries(pack-tool cutil)
-    target_link_libraries(units cutil)
+
+    if(UNITS)
+        add_executable(units ${UNITS_SOURCES})
+        target_link_libraries(units cutil)
+    endif()
 endif()
 
 include_directories(src)
@@ -600,8 +605,10 @@ if(CMAKE_GTE_38)
         set(ALL_SOURCES ${CAROB_SOURCES}
                         ${NULL_WORLD_SOURCES}
                         ${PACK_TOOL_SOURCES}
-                        ${TEST_SOURCES}
         )
+        if(UNITS)
+            set(ALL_SOURCES ${ALL_SOURCES} ${UNITS_SOURCES})
+        endif()
     endif()
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ALL_SOURCES})
 endif()

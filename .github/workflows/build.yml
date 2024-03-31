@@ -1,4 +1,4 @@
-# https://github.com/actions/virtual-environments
+# https://github.com/actions/runner-images
 
 name: Build
 
@@ -16,7 +16,7 @@ jobs:
           PATH=$PATH:$PWD
           mkdir build
           cd build
-          cmake .. -G Xcode
+          cmake .. -G Xcode -DUNITS=1
           cmake --build .
       - name: Test
         run: build/Debug/units
