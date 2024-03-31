@@ -9,6 +9,9 @@ Size
 hash_(const T&) noexcept;
 
 Size
+hash_(int d) noexcept;
+
+Size
 hash_(float d) noexcept;
 
 #endif  // SRC_UTIL_HASH_H_
