@@ -91,11 +91,18 @@ FileWriter::writeOffset(const void* buf, Size len, Size offset) noexcept {
 }
 
 bool
-writeStdout(const char* buf, Size len) noexcept {
+readStdin(void* buf, Size len, Size* nread) noexcept {
+    SSize numread = read(0, buf, len);
+    *nread = numread;
+    return numread >= 0;
+}
+
+bool
+writeStdout(const void* buf, Size len) noexcept {
     return write(1, buf, len) == static_cast<SSize>(len);
 }
 
 bool
-writeStderr(const char* buf, Size len) noexcept {
+writeStderr(const void* buf, Size len) noexcept {
     return write(2, buf, len) == static_cast<SSize>(len);
 }

@@ -47,9 +47,13 @@ class FileWriter {
     I32 fd;
 };
 
+// Returns false on error. nread == 0 on EOF.
 bool
-writeStdout(const char* buf, Size len) noexcept;
+readStdin(void* buf, Size len, Size* nread) noexcept;
+
 bool
-writeStderr(const char* buf, Size len) noexcept;
+writeStdout(const void* buf, Size len) noexcept;
+bool
+writeStderr(const void* buf, Size len) noexcept;
 
 #endif  // SRC_OS_UNIX_IO_H_
