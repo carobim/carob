@@ -23,8 +23,8 @@
 //   (1) Initial version.
 //   (2) Coalesce metadata into one section. Align data to boundary.
 
-//                                       "T   s    u    n    a   g    a   r"
-static constexpr U8 PACK_MAGIC[8] = {84, 115, 117, 110, 97, 103, 97, 114};
+//                                  "C   a   r    o    b    \r    \n   \0"
+static constexpr U8 PACK_MAGIC[8] = {67, 97, 114, 111, 98, '\r', '\n', 0};
 
 static constexpr U8 PACK_VERSION = 2;
 
