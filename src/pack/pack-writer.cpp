@@ -116,7 +116,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
 
     U32 pathsOffset = offset;
     U32 pathsSize = nextPathOffset;
-    offset += pathsOffset;
+    offset += pathsSize;
 
     offset = align64(offset);
     U32 dataOffset = offset;
