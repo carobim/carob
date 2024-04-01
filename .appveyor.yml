@@ -12,19 +12,19 @@ for:
   build_script:
   - mkdir build10
   - cd build10
-  - cmake .. -G "Visual Studio 10 2010"
+  - cmake .. -G "Visual Studio 10 2010" -DUNITS=1
   - cmake --build .
   - Debug\units.exe
   - cd ..
   - mkdir build12
   - cd build12
-  - cmake .. -G "Visual Studio 11 2012"
+  - cmake .. -G "Visual Studio 11 2012" -DUNITS=1
   - cmake --build .
   - Debug\units.exe
   - cd ..
   - mkdir build13
   - cd build13
-  - cmake .. -G "Visual Studio 12 2013"
+  - cmake .. -G "Visual Studio 12 2013" -DUNITS=1
   - cmake --build .
   - Debug\units.exe
 - matrix:
@@ -33,7 +33,7 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 14 2015"
+  - cmake .. -G "Visual Studio 14 2015" -DUNITS=1
   - cmake --build .
   - Debug\units.exe
 - matrix:
@@ -42,7 +42,7 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 15 2017"
+  - cmake .. -G "Visual Studio 15 2017" -DUNITS=1
   - cmake --build .
   - Debug\units.exe
 - matrix:
@@ -51,7 +51,7 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 16 2019"
+  - cmake .. -G "Visual Studio 16 2019" -DUNITS=1
   - cmake --build .
   - Debug\units.exe
 - matrix:
@@ -60,6 +60,6 @@ for:
   build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 17 2022"
+  - cmake .. -G "Visual Studio 17 2022" -DUNITS=1
   - cmake --build .
   - Debug\units.exe

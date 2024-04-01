@@ -13,7 +13,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           make -j 2
       - run: build/units
 
@@ -29,7 +29,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           samu
       - run: build/units
 
@@ -43,7 +43,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           samu
       - run: build/units
 
@@ -58,7 +58,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           make -j 2
       - run: build/units
 
@@ -76,7 +76,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           make -j 2
       - run: build/units
 
@@ -92,7 +92,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           ninja
       - run: build/units
 
@@ -107,7 +107,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           ninja-build
       - run: build/units
 
@@ -122,7 +122,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           samu
       - run: build/units
 
@@ -137,7 +137,7 @@ jobs:
   #        nix-env -i bash &&
   #        mkdir build &&
   #        cd build &&
-  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && ninja && ./units'
+  #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 && ninja && ./units'
 
   # Has CMake 3.22, GCC 11, Samurai 1.2
   nix_2_12_0:
@@ -149,7 +149,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug && samu && ./units'
+          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 && samu && ./units'
 
   # Has CMake 3.20, GCC 11
   rocky_9:
@@ -162,7 +162,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           make -j 2
       - run: build/units
 
@@ -179,7 +179,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           make -j 2
       - run: build/units
 
@@ -195,7 +195,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           ninja
       - run: build/units
 
@@ -211,7 +211,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           samu
       - run: build/units
 
@@ -227,7 +227,7 @@ jobs:
       - run: |
           mkdir build &&
           cd build &&
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug &&
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
           samu
       - run: build/units
 

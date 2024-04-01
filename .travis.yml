@@ -108,7 +108,7 @@ jobs:
     - |
       mkdir build
       builtin cd >/dev/null build
-      cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
+      cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 $CMAKE_OPTS
       make -j `sysctl -n hw.ncpu`
       ./units
 #    <<: *script
@@ -135,6 +135,6 @@ jobs:
     - |
       mkdir build
       builtin cd >/dev/null build
-      cmake .. -DCMAKE_BUILD_TYPE=Debug $CMAKE_OPTS
+      cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 $CMAKE_OPTS
       make -j `sysctl -n hw.ncpu`
       ./units
