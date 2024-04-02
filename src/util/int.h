@@ -11,6 +11,9 @@ typedef unsigned char U8;
 typedef unsigned short U16;
 typedef unsigned int U32;
 typedef unsigned long long U64;
+#define INT16_MIN  ((I16)0x8000)
+#define INT16_MAX  ((I16)0x7fff)
+#define UINT16_MAX ((U16)0xffff)
 #define INT32_MIN  ((I32)0x80000000)
 #define INT32_MAX  ((I32)0x7fffffff)
 #define UINT32_MAX ((U32)0xffffffff)
