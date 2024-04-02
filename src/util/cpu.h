@@ -3,6 +3,9 @@
 
 #include "util/compiler.h"
 
+#define BE 0
+#define LE 1
+
 // Original source downloaded from: https://github.com/google/cpu_features
 // Apache License 2.0
 
