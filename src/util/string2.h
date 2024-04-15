@@ -9,7 +9,9 @@
 
 class String;
 
+#define isAlpha(c) (('A' <= (c) && (c) <= 'Z') || ('a' <= (c) && (c) <= 'z'))
 #define isDigit(c) ('0' <= (c) && (c) <= '9')
+#define isAlNum(c) (isAlpha(c) || isDigit(c))
 
 //! Returns true if the string contains only digits, whitespace, and minus.
 bool

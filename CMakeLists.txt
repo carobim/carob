@@ -283,6 +283,9 @@ set(CAROB_SOURCES ${CAROB_SOURCES}
     ${HERE}/src/tiles/main.cpp
 )
 
+set(BIN2S_SOURCES ${BIN2S_SOURCES}
+    ${HERE}/src/tools/bin2s/main.cpp
+)
 set(NULL_WORLD_SOURCES ${NULL_WORLD_SOURCES}
     ${HERE}/src/tiles/null-world.cpp
 )
@@ -578,10 +581,12 @@ if(UTIL_ONLY)
 else()
     add_library(cutil ${UTIL_SOURCES})
     add_library(carob ${CAROB_SOURCES})
+    add_executable(bin2s ${BIN2S_SOURCES})
     add_executable(null-world ${NULL_WORLD_SOURCES})
     add_executable(pack-tool ${PACK_TOOL_SOURCES})
 
     target_link_libraries(carob)
+    target_link_libraries(bin2s cutil)
     target_link_libraries(null-world carob cutil)
     target_link_libraries(pack-tool cutil)
 
@@ -603,6 +608,7 @@ if(CMAKE_GTE_38)
         set(ALL_SOURCES ${UTIL_SOURCES})
     else()
         set(ALL_SOURCES ${CAROB_SOURCES}
+                        ${BIN2S_SOURCES}
                         ${NULL_WORLD_SOURCES}
                         ${PACK_TOOL_SOURCES}
         )
