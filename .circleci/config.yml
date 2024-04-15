@@ -17,10 +17,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.26, GCC 12, Samurai 1.2
-  alpine_3_18:
+  # Has CMake 3.27, GCC 13, Samurai 1.2
+  alpine_3_19:
     docker:
-      - image: alpine:3.18
+      - image: alpine:3.19
     steps:
       - run: |
           apk update &&
@@ -236,7 +236,7 @@ workflows:
   build_all:
     jobs:
       - alpine_3_1
-      - alpine_3_18
+      - alpine_3_19
       - arch
       - centos_7
       - debian_7_wheezy
