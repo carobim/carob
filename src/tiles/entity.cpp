@@ -468,7 +468,7 @@ Entity::setArea(Area* area) noexcept {
     this->area = area;
     calcDraw();
 
-    if (confMoveMode != MoveMode::TURN)
+    if (confMoveMode != TURN)
         assert_(area->grid.tileDim.x == area->grid.tileDim.y);
     pixelsPerSecond = tilesPerSecond * area->grid.tileDim.x;
 }
