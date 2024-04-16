@@ -111,10 +111,10 @@ jobs:
           ninja-build
       - run: build/units
 
-  # Has CMake 3.27, GCC 13, Samurai 1.2
-  fedora_39:
+  # Has CMake 3.28, GCC 14, Samurai 1.2
+  fedora_40:
     docker:
-      - image: fedora:39
+      - image: fedora:40
     steps:
       - run: |
           dnf install -y cmake gcc-c++ samurai
@@ -183,10 +183,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.27, GCC 13, Ninja 1.11
-  ubuntu_23_10_mantic:
+  # Has CMake 3.28, GCC 13, Ninja 1.11
+  ubuntu_24_04_mantic:
     docker:
-      - image: ubuntu:23.10
+      - image: ubuntu:24.04
     steps:
       - run: |
           apt-get update &&
@@ -242,7 +242,7 @@ workflows:
       - debian_7_wheezy
       - debian_12_bookworm
       - fedora_20
-      - fedora_39
+      - fedora_40
       - nix_2_12_0
       - rocky_9
       - ubuntu_12_04_precise
