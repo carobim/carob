@@ -29,7 +29,7 @@ class DataArea;
 
 enum ActionStatus {
     AS_CONTINUE,
-    AS_END,
+    AS_END
 };
 
 struct Action {
