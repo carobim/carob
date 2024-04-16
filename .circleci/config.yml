@@ -184,7 +184,7 @@ jobs:
       - run: build/units
 
   # Has CMake 3.28, GCC 13, Ninja 1.11
-  ubuntu_24_04_mantic:
+  ubuntu_24_04_noble:
     docker:
       - image: ubuntu:24.04
     steps:
@@ -246,6 +246,6 @@ workflows:
       - nix_2_12_0
       - rocky_9
       - ubuntu_12_04_precise
-      - ubuntu_23_10_mantic
+      - ubuntu_24_04_noble
       - void
       - void_musl
