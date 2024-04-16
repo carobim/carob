@@ -23,7 +23,8 @@ makeCIdent(StringView path) noexcept {
         path = path.substr(pos + 1);
 #endif
     String s;
-    for (char c : path) {
+    for (Size i = 0; i < path.size; i++) {
+        char c = path[i];
         if (c == '-' || c == '.')
             c = '_';
         if (c == '_' || isAlNum(c))
