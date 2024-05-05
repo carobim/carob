@@ -61,4 +61,4 @@ getCpu() noexcept;
 // Nothing. What is this?
 #endif
 
-#endif  // SRC_UTIL_FNV_H_
+#endif  // SRC_UTIL_CPU_H_
