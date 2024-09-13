@@ -287,7 +287,7 @@ String::operator<<(float f) noexcept {
 void
 String::reserve(Size n) noexcept {
     assert_(capacity < n);
-    char* newData = xmalloc(char, n);
+    char* newData = xmalloc(char, n);  // TODO: Use realloc
     memmove(newData, data, size);
     data = newData;
     capacity = n;
