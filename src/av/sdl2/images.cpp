@@ -102,7 +102,10 @@ initAtlas() noexcept {
 static TiledImage*
 load(StringView path) noexcept {
     TiledImage& tiles = images.allocate(hash_(path));
-    tiles = {};
+    Image& image = tiles.image;
+    image.texture = 0;
+    image.x = image.y = image.width = image.height = 0;
+    tiles.tileWidth = tiles.tileHeight = tiles.numTiles = 0;
 
     String r;
     if (!resourceLoad(path, r)) {
@@ -160,13 +163,11 @@ load(StringView path) noexcept {
         SDL_DestroyTexture(texture);
     }
 
-    tiles.image = {
-        atlas,
-        static_cast<U32>(x),
-        static_cast<U32>(y),
-        static_cast<U32>(width),
-        static_cast<U32>(height),
-    };
+    image.texture = atlas;
+    image.x = static_cast<U32>(x);
+    image.y = static_cast<U32>(y);
+    image.width = static_cast<U32>(width);
+    image.height = static_cast<U32>(height);
 
     atlasUsed += static_cast<U32>(width);
 
@@ -194,12 +195,16 @@ imageDraw(Image image, float x, float y, float z) noexcept {
     fvec2 scaling = sdl2Scaling;
 
     SDL_Texture* texture = static_cast<SDL_Texture*>(image.texture);
-    SDL_Rect src{static_cast<int>(image.x), static_cast<int>(image.y),
-                 static_cast<int>(image.width), static_cast<int>(image.height)};
-    SDL_Rect dst{static_cast<int>((x + translation.x) * scaling.x),
-                 static_cast<int>((y + translation.y) * scaling.y),
-                 static_cast<int>(image.width * scaling.x),
-                 static_cast<int>(image.height * scaling.y)};
+    SDL_Rect src;
+    src.x = static_cast<int>(image.x);
+    src.y = static_cast<int>(image.y);
+    src.w = static_cast<int>(image.width);
+    src.h = static_cast<int>(image.height);
+    SDL_Rect dst;
+    dst.x = static_cast<int>((x + translation.x) * scaling.x);
+    dst.y = static_cast<int>((y + translation.y) * scaling.y);
+    dst.w = static_cast<int>(image.width * scaling.x);
+    dst.h = static_cast<int>(image.height * scaling.y);
     SDL_SetRenderTarget(renderer, 0);
     SDL_RenderCopy(renderer, texture, &src, &dst);
 }
@@ -232,13 +237,13 @@ tileAt(TiledImage tiles, U32 index) noexcept {
 
     Image image = tiles.image;
 
-    return {
-        image.texture,
-        image.x + tiles.tileWidth * index % image.width,
-        image.y + tiles.tileWidth * index / image.width * tiles.tileHeight,
-        tiles.tileWidth,
-        tiles.tileHeight,
-    };
+    Image i;
+    i.texture = image.texture;
+    i.x = image.x + tiles.tileWidth * index % image.width;
+    i.y = image.y + tiles.tileWidth * index / image.width * tiles.tileHeight;
+    i.width = tiles.tileWidth;
+    i.height = tiles.tileHeight;
+    return i;
 }
 
 void

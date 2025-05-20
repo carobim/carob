@@ -93,8 +93,10 @@ updateTransform(void) noexcept {
     float x = transform.m[12];
     float y = transform.m[13];
 
-    sdl2Translation = {x / xScale, y / yScale};
-    sdl2Scaling = {xScale, yScale};
+    sdl2Translation.x = x / xScale;
+    sdl2Translation.y = y / yScale;
+    sdl2Scaling.x = xScale;
+    sdl2Scaling.y = yScale;
 }
 
 Time

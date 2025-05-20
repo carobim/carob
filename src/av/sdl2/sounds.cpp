@@ -105,7 +105,12 @@ makeSound(StringView path) noexcept {
         return SDL2Sound();
     }
 
-    return SDL2Sound{1, 0, static_cast<String&&>(r), chunk};
+    SDL2Sound s;
+    s.numUsers = 1;
+    s.lastUse = 0;
+    s.frames = static_cast<String&&>(r);
+    s.chunk = chunk;
+    return s;
 }
 
 SoundID
@@ -158,7 +163,11 @@ soundPlay(SoundID sid) noexcept {
     LockGuard guard(channelMutex);
 
     int psid = playingSoundPool.allocate();
-    playingSoundPool[psid] = SDL2PlayingSound{true, true, channel};
+    SDL2PlayingSound ps;
+    ps.playing = true;
+    ps.inUse = true;
+    ps.channel = channel;
+    playingSoundPool[psid] = ps;
     playingChannels[channel] = psid;
     return PlayingSoundID(psid);
 }
