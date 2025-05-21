@@ -61,6 +61,8 @@ class String {
     void
     reserve(Size n) noexcept;
     void
+    ensure(Size n) noexcept;
+    void
     clear() noexcept;
     void
     reset() noexcept;

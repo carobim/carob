@@ -294,6 +294,12 @@ String::reserve(Size n) noexcept {
 }
 
 void
+String::ensure(Size n) noexcept {
+    if (capacity < size + n)
+        reserve(growN(size, n));
+}
+
+void
 String::resize(Size n) noexcept {
     if (capacity < n)
         reserve(n);
