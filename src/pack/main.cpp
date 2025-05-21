@@ -277,7 +277,7 @@ main(I32 argc, char* argv[]) noexcept {
 #if DEBUG
     else if (command == "test") {
         bool ok;
-        ok = writeFile("test.txt", 2, "hi");
+        ok = writeFile("test.txt", 2, (void*)"hi");
         assert_(ok);
         Vector<StringView> paths;
         paths.push("test.txt");
@@ -286,7 +286,7 @@ main(I32 argc, char* argv[]) noexcept {
             static_cast<Vector<StringView>&&>(paths)
         );
         assert_(ok);
-        ok = writeFile("test.txt", 3, "bye");
+        ok = writeFile("test.txt", 3, (void*)"bye");
         assert_(ok);
         ok = extractArchive("test.pack");
         assert_(ok);
