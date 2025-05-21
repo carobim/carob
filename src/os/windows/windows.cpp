@@ -16,13 +16,11 @@
 
 #pragma pack(push, 8)
 extern "C" {
-#define FORMAT_MESSAGE_FROM_SYSTEM    0x1000
-#define FORMAT_MESSAGE_IGNORE_INSERTS 0x200
-#define FormatMessage                 FormatMessageA
 #define ATTACH_PARENT_PROCESS         ((DWORD)-1)
 #define CREATE_ALWAYS                 2
 #define CreateDirectory               CreateDirectoryA
 #define CreateFile                    CreateFileA
+#define ERROR_ALREADY_EXISTS          183
 #define FILE_ATTRIBUTE_DIRECTORY      0x10
 #define FILE_READ_ATTRIBUTES          0x80
 #define FILE_READ_DATA                0x1
@@ -33,6 +31,9 @@ extern "C" {
 #define FOREGROUND_GREEN              0x2
 #define FOREGROUND_INTENSITY          0x8
 #define FOREGROUND_RED                0x4
+#define FORMAT_MESSAGE_FROM_SYSTEM    0x1000
+#define FORMAT_MESSAGE_IGNORE_INSERTS 0x200
+#define FormatMessage                 FormatMessageA
 #define GetFileAttributes             GetFileAttributesA
 #define INVALID_FILE_ATTRIBUTES       ((DWORD)-1)
 #define INVALID_HANDLE_VALUE          ((HANDLE)(LONG_PTR)-1)
@@ -177,7 +178,8 @@ isDir(StringView path) noexcept {
 void
 makeDirectory(StringView path) noexcept {
     BOOL ok = CreateDirectory(String(path).null(), 0);
-    assert_(ok);
+    DWORD error = GetLastError();
+    assert_(ok || error == ERROR_ALREADY_EXISTS);
 }
 
 Vector<String>
