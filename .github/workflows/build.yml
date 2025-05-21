@@ -5,9 +5,9 @@ name: Build
 on: [push]
 
 jobs:
-  macos_14_sonoma:
-    name: macOS 14 Sonoma
-    runs-on: macos-14
+  macos_15_sequoia:
+    name: macOS 15 Sequoia
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v2
