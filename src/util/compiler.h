@@ -20,7 +20,7 @@
 #        define MSVC 2017
 #    elif 1920 <= _MSC_VER && _MSC_VER < 1930
 #        define MSVC 2019
-#    elif 1930 <= _MSC_VER && _MSC_VER < 1940
+#    elif 1930 <= _MSC_VER && _MSC_VER < 1950
 #        define MSVC 2022
 #    endif
 #    define CLANG 0
