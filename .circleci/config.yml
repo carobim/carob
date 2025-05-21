@@ -47,21 +47,6 @@ jobs:
           samu
       - run: build/units
 
-  # Has CMake 2.8.12, GCC 4.8
-  centos_7:
-    docker:
-      - image: centos:7
-    steps:
-      - run: |
-          yum install -y cmake gcc-c++ make
-      - checkout
-      - run: |
-          mkdir build &&
-          cd build &&
-          cmake .. -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
-          make -j 2
-      - run: build/units
-
   # Has CMake 2.8.9, GCC 4.7
   debian_7_wheezy:
     docker:
