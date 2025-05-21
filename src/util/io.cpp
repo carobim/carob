@@ -136,6 +136,37 @@ Output::operator<<(float x) noexcept {
     return *this;
 }
 
+static char* hex = "0123456789abcdef";
+
+Output&
+Output::operator<<(void* ptr) noexcept {
+    STATE.buf.ensure(2 + SIZE / 4);
+    char* buf = STATE.buf.data;
+    Size& size = STATE.buf.size;
+    buf[size++] = '0';
+    buf[size++] = 'x';
+    Size i = reinterpret_cast<Size>(ptr);
+#if SIZE == 64
+    buf[size++] = hex[(i >> 60) & 0xf];
+    buf[size++] = hex[(i >> 56) & 0xf];
+    buf[size++] = hex[(i >> 52) & 0xf];
+    buf[size++] = hex[(i >> 48) & 0xf];
+    buf[size++] = hex[(i >> 44) & 0xf];
+    buf[size++] = hex[(i >> 40) & 0xf];
+    buf[size++] = hex[(i >> 36) & 0xf];
+    buf[size++] = hex[(i >> 32) & 0xf];
+#endif
+    buf[size++] = hex[(i >> 28) & 0xf];
+    buf[size++] = hex[(i >> 24) & 0xf];
+    buf[size++] = hex[(i >> 20) & 0xf];
+    buf[size++] = hex[(i >> 16) & 0xf];
+    buf[size++] = hex[(i >> 12) & 0xf];
+    buf[size++] = hex[(i >> 8) & 0xf];
+    buf[size++] = hex[(i >> 4) & 0xf];
+    buf[size++] = hex[(i >> 0) & 0xf];
+    return *this;
+}
+
 Output&
 Output::operator<<(Flush) noexcept {
     flush(STATE);

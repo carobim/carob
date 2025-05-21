@@ -34,6 +34,8 @@ class Output {
     operator<<(unsigned long long ull) noexcept;
     Output&
     operator<<(float f) noexcept;
+    Output&
+    operator<<(void* ptr) noexcept;
 
     Output& operator<<(Flush) noexcept;
 
