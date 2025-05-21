@@ -274,6 +274,30 @@ main(I32 argc, char* argv[]) noexcept {
 
         exitCode = extractArchive(args[0]) ? 0 : 1;
     }
+#if DEBUG
+    else if (command == "test") {
+        bool ok;
+        ok = writeFile("test.txt", 2, "hi");
+        assert_(ok);
+        Vector<StringView> paths;
+        paths.push("test.txt");
+        ok = createArchive(
+            "test.pack",
+            static_cast<Vector<StringView>&&>(paths)
+        );
+        assert_(ok);
+        ok = writeFile("test.txt", 3, "bye");
+        assert_(ok);
+        ok = extractArchive("test.pack");
+        assert_(ok);
+        String data;
+        ok = readFile("test.txt", data);
+        assert_(ok);
+        assert_(data == "hi");
+        // TODO: Consider deleting test.txt and test.pack.
+        exitCode = 0;
+    }
+#endif
     else {
         usage();
         return 1;
