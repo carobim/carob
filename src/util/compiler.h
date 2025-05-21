@@ -1,6 +1,12 @@
 #ifndef SRC_UTIL_COMPILER_H_
 #define SRC_UTIL_COMPILER_H_
 
+#ifdef NDEBUG
+#    define DEBUG 0
+#else
+#    define DEBUG 1
+#endif
+
 #if defined(_MSC_VER)
 #    if _MSC_VER == 1600
 #        define MSVC 2010

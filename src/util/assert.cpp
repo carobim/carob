@@ -1,10 +1,10 @@
-#ifndef NDEBUG
-
 #    include "util/assert.h"
 
 #    include "os/os.h"
 #    include "util/compiler.h"
 #    include "util/io.h"
+
+#if DEBUG
 
 #    if MSVC
 extern "C" __declspec(dllimport) I32 __stdcall IsDebuggerPresent() noexcept;

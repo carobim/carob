@@ -16,11 +16,11 @@ wFixConsole(void) noexcept;
 void
 wMessageBox(StringView title, StringView text) noexcept;
 
-#ifdef NDEBUG
-#    define printWin32Error()
-#else
+#if DEBUG
 void
 printWin32Error(void) noexcept;
+#else
+#    define printWin32Error()
 #endif
 
 #endif  // SRC_OS_WINDOWS_WINDOWS_H_

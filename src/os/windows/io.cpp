@@ -53,7 +53,7 @@ WriteConsoleA(HANDLE, const VOID*, DWORD, LPDWORD, LPVOID) noexcept;
 
 static void
 printWin32Error(DWORD error = 0) noexcept {
-#ifndef NDEBUG
+#if DEBUG
     if (error == 0)
         error = GetLastError();
     char buf[1024];

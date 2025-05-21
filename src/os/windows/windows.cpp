@@ -291,7 +291,7 @@ exitProcess(int code) noexcept {
     unreachable;
 }
 
-#ifndef NDEBUG
+#if DEBUG
 void
 printWin32Error(void) noexcept {
     DWORD error = GetLastError();

@@ -29,7 +29,7 @@ main() noexcept {
     Flusher f1(sout);
     Flusher f2(serr);
 
-#if MSVC && !defined(NDEBUG)
+#if MSVC && DEBUG
     wFixConsole();
 #endif
 

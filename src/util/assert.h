@@ -5,7 +5,7 @@
 #include "util/int.h"
 #include "util/likely.h"
 
-#ifndef NDEBUG
+#if DEBUG
 #    if CLANG || GCC
 #        define assert_(expr)       \
             (likely(expr) ? (void)0 \
