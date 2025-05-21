@@ -1,3 +1,5 @@
+# Available images: https://www.appveyor.com/docs/windows-images-software/
+
 image:
 - Visual Studio 2013
 - Visual Studio 2015
