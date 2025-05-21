@@ -1,5 +1,6 @@
 #include "pack/pack-writer.h"
 
+#include "os/c.h"
 #include "os/io.h"
 #include "pack/file-type.h"
 #include "pack/layout.h"
@@ -83,11 +84,12 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
         meta.uncompressedSize = blob.size;
         meta.compressedSize = blob.size;
         meta.compressionType = BLOB_COMPRESSION_NONE;
+        memset(meta.unused, 0, sizeof(meta.unused));
 
         metadataSection[i] = meta;
 
         nextPathOffset += static_cast<U32>(blob.path.size);
-        nextDataOffset += align64(blob.size);
+        nextDataOffset += align8(blob.size);
     }
 
     //
@@ -118,7 +120,7 @@ packWriterWriteToFile(PackWriter* writer, StringView path) noexcept {
     U32 pathsSize = nextPathOffset;
     offset += pathsSize;
 
-    offset = align64(offset);
+    offset = align8(offset);
     U32 dataOffset = offset;
     U32 dataSize = nextDataOffset;
 

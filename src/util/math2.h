@@ -84,6 +84,12 @@ pow2(Size i) noexcept {
 
 template<typename T>
 static T
+align8(T x) {
+    return (x + 7) & 0xfffffff8;
+}
+
+template<typename T>
+static T
 align32(T x) {
     return (x + 31) & 0xffffffe0;
 }

@@ -127,7 +127,7 @@ File::read(void* buf, Size len) noexcept {
 bool
 File::readOffset(void* buf, Size len, Size offset) noexcept {
     assert_(len <= static_cast<Size>(INT32_MAX));
-    DWORD position = SetFilePointer(handle, static_cast<LONG>(len), 0, 0);
+    DWORD position = SetFilePointer(handle, static_cast<LONG>(offset), 0, 0);
     if (position == INVALID_SET_FILE_POINTER) {
         printWin32Error();
         assert_(false);
