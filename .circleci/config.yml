@@ -223,7 +223,6 @@ workflows:
       - alpine_3_1
       - alpine_3_21
       - arch
-      - centos_7
       - debian_7_wheezy
       - debian_12_bookworm
       - fedora_20
