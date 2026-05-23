@@ -1,7 +1,7 @@
 #include "transform.h"
 
 struct Transform
-transformIdentity() {
+transformIdentity(void) {
     struct Transform result;
 
     result.m[0] = 1;

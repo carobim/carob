@@ -61,7 +61,7 @@ class Pool {
         U32 newAllocated = allocated == 0 ? 4 : allocated * 2;
 
         T* newStorage = xmalloc(T, newAllocated);
-        memcpy(newStorage, storage, sizeof(T) * allocated);
+        memcpy(static_cast<void*>(newStorage), storage, sizeof(T) * allocated);
         free(reinterpret_cast<char*>(storage));
 
         nextFree = allocated;

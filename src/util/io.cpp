@@ -136,7 +136,7 @@ Output::operator<<(float x) noexcept {
     return *this;
 }
 
-static char* hex = "0123456789abcdef";
+static const char* hex = "0123456789abcdef";
 
 Output&
 Output::operator<<(void* ptr) noexcept {
