@@ -58,6 +58,9 @@ endif()
 if(NOT ${CMAKE_VERSION} VERSION_LESS 3.8)
     set(CMAKE_GTE_38 1)
 endif()
+if(NOT ${CMAKE_VERSION} VERSION_LESS 4.0)
+    set(CMAKE_GTE_40 1)
+endif()
 
 
 #
@@ -948,7 +951,9 @@ if(CMAKE_OSX_SYSROOT)
     add_link_flag("-L${CMAKE_OSX_SYSROOT}/usr/lib")
 endif()
 
-if(APPLE_CLANG_GTE_12)
+if(APPLE_CLANG_GTE_12 AND CMAKE_OSX_SYSROOT)
+    #if(CMAKE_GTE_40)
+    #endif()
     add_link_flag("-isysroot ${CMAKE_OSX_SYSROOT}")
 endif()
 
