@@ -12,7 +12,7 @@ case $1 in
     "") up=1; build=1 down=1;;
 esac
 
-cd "${0%/*}"
+cd "${0%/*}"/..
 repo=$PWD
 
 vm_dir=~/.local/share/ci/freebsd-$version-$arch
