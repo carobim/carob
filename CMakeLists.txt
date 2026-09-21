@@ -299,6 +299,7 @@ set(PACK_TOOL_SOURCES ${PACK_TOOL_SOURCES}
 set(UNITS_SOURCES ${UNITS_SOURCES}
     ${HERE}/test/util/string-view.cpp
     ${HERE}/test/util/string2.cpp
+    ${HERE}/test/util/vector.cpp
     ${HERE}/test/main.cpp
 )
 

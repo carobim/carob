@@ -146,11 +146,11 @@ class Vector {
     void
     eraseUnordered(Size i) noexcept {
         assert_(i < size);
-        data[i].~X();
         if (i < size - 1) {
+            data[i].~X();
             data[i] = static_cast<X&&>(data[size - 1]);
-            pop();
         }
+        pop();
     }
 
     // Calls move constructors (which empties the old objects), but not call

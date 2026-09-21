@@ -5,6 +5,8 @@ void
 testUtilString2() noexcept;
 void
 testUtilStringView() noexcept;
+void
+testUtilVector() noexcept;
 
 I32
 main() noexcept {
@@ -13,6 +15,7 @@ main() noexcept {
 
     testUtilString2();
     testUtilStringView();
+    testUtilVector();
 
     return 0;
 }
