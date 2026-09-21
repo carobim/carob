@@ -43,7 +43,8 @@ DataArea::tick(Time dt) noexcept {
         }
         else if (status == AS_END) {
             struct Action* next = action->next;
-            action->free(action->data);
+            if (action->free)
+                action->free(action->data);
             if (next) {
                 *action = *next;
             }
