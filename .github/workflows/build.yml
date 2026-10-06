@@ -5,9 +5,9 @@ name: Build
 on: [push]
 
 jobs:
-  macos_15_sequoia:
-    name: macOS 15 Sequoia
-    runs-on: macos-15
+  macos_26_tahoe:
+    name: macOS 26 Tahoe
+    runs-on: macos-26
     steps:
       - name: Checkout
         uses: actions/checkout@v4
