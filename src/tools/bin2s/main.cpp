@@ -76,7 +76,8 @@ main(int argc, char** argv) noexcept {
         od << '\n';
     }
 
-    ok = writeFile(ofn, od.size, od.data);
+    assert_(od.size < UINT32_MAX);
+    ok = writeFile(ofn, static_cast<U32>(od.size), od.data);
     assert_(ok);
 
     sout << "extern I8 " << ident << "[];\n";
