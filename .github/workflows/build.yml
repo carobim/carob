@@ -5,6 +5,21 @@ name: Build
 on: [push]
 
 jobs:
+  windows_vs2026:
+    name: Windows 2025, VS 2026
+    runs-on: windows-2025-vs2026
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "Visual Studio 18 2026" -DUNITS=1
+          cmake --build .
+      - name: Test
+        run: build\Debug\units.exe
+
   macos_26_tahoe:
     name: macOS 26 Tahoe
     runs-on: macos-26
