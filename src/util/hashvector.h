@@ -25,7 +25,7 @@ class HashVector {
     }
 
     Value&
-    allocate(U32 hash) noexcept {
+    allocate(Size hash) noexcept {
         if (used == allocated)
             grow();
 
@@ -37,7 +37,7 @@ class HashVector {
     }
 
     Value*
-    find(U32 hash) noexcept {
+    find(Size hash) noexcept {
         for (Entry* e = storage; e < storage + used; e++)
             if (e->hash == hash)
                 return &e->value;
@@ -59,7 +59,7 @@ class HashVector {
     }
 
     struct Entry {
-        U32 hash;
+        Size hash;
         Value value;
     };
 
