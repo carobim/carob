@@ -1,7 +1,7 @@
 #ifndef SRC_TILES_SOUNDS_H_
 #define SRC_TILES_SOUNDS_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/markable.h"
 #include "util/string-view.h"

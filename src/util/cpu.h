@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_CPU_H_
 #define SRC_UTIL_CPU_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 #define BE 0
 #define LE 1

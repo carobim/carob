@@ -1,6 +1,6 @@
 #include "util/fnv.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 #if SIZE == 64

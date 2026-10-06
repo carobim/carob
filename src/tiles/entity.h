@@ -4,7 +4,7 @@
 #include "tiles/animation.h"
 #include "tiles/images.h"
 #include "tiles/vec.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/function.h"
 #include "util/string-view.h"
 #include "util/string.h"

@@ -1,7 +1,7 @@
 #ifndef SRC_TILES_LOG_H_
 #define SRC_TILES_LOG_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 
 // Initialize the clock for log timestamps.

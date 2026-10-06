@@ -1,7 +1,7 @@
 #ifndef SRC_OS_WINDOWS_C_H_
 #define SRC_OS_WINDOWS_C_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 #define VOID void

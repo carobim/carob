@@ -2,7 +2,7 @@
 #define SRC_TILES_ANIMATION_H_
 
 #include "tiles/images.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/vector.h"
 

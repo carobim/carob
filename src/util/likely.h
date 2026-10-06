@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_LIKELY_H_
 #define SRC_UTIL_LIKELY_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 #if CLANG || GCC
 #    define likely(x)   __builtin_expect(!!(x), true)

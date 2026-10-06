@@ -1,5 +1,5 @@
 #include "tiles/npc.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 void
 NPC::arrived() noexcept {

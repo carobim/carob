@@ -6,7 +6,7 @@
 
 // Note: Prefer sourcing types from musl.
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 // arch/x86_64/bits/stat.h

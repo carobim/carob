@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_FUNCTION_H_
 #define SRC_UTIL_FUNCTION_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 struct Function {
     void (*fn)(void*) noexcept;

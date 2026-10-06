@@ -4,7 +4,7 @@
 #include "tiles/client-conf.h"
 #include "tiles/sounds.h"
 #include "tiles/tile.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 Character::Character() noexcept
     : nowalkFlags(TILE_NOWALK | TILE_NOWALK_NPC),

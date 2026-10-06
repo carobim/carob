@@ -1,7 +1,7 @@
 #ifndef SRC_TILES_TILE_H_
 #define SRC_TILES_TILE_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 struct TileSet {

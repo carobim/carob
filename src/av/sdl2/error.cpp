@@ -2,7 +2,7 @@
 
 #include "av/sdl2/sdl2.h"
 #include "tiles/log.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string.h"
 
 void

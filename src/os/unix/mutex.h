@@ -3,7 +3,7 @@
 
 #include "os/c.h"
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 class Mutex {
  public:

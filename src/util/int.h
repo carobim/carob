@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_INT_H_
 #define SRC_UTIL_INT_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 typedef signed char I8;
 typedef signed short I16;

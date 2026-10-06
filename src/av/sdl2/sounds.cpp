@@ -5,7 +5,7 @@
 #include "os/mutex.h"
 #include "tiles/resources.h"
 #include "tiles/world.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/hashtable.h"
 #include "util/int.h"
 #include "util/markable.h"

@@ -1,7 +1,7 @@
 #include "tiles/vec.h"
 
 #include "os/c.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/fnv.h"
 #include "util/int.h"
 

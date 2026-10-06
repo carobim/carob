@@ -1,7 +1,7 @@
 #ifndef SRC_OS_WINDOWS_WINDOWS_H_
 #define SRC_OS_WINDOWS_WINDOWS_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 
 /* Visual C++ ignorantly assumes that all programs will use either a console OR

@@ -3,7 +3,7 @@
 
 #include "tiles/vec.h"
 #include "tiles/window.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/string-view.h"
 

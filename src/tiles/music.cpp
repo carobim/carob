@@ -1,7 +1,7 @@
 #include "tiles/music.h"
 
 #include "tiles/music-worker.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 //#include "util/jobs.h"
 
 void

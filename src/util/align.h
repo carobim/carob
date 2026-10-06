@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_ALIGN_H_
 #define SRC_UTIL_ALIGN_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 template<typename T>
 struct Align {

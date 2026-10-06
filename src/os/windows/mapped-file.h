@@ -2,7 +2,7 @@
 #define SRC_OS_WINDOWS_MAPPED_FILE_H_
 
 #include "os/c.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 
 struct MappedFile {

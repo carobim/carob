@@ -1,7 +1,7 @@
 #include "os/windows/mapped-file.h"
 
 #include "os/c.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 #include "util/string.h"
 

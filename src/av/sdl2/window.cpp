@@ -9,7 +9,7 @@
 #include "tiles/log.h"
 #include "tiles/window.h"
 #include "tiles/world.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/measure.h"
 #include "util/transform.h"
 

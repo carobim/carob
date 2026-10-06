@@ -12,7 +12,7 @@
 #include "tiles/resources.h"
 #include "tiles/viewport.h"
 #include "tiles/window.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/hashtable.h"
 //#include "util/measure.h"
 #include "util/vector.h"

@@ -4,7 +4,7 @@
 #include "os/os.h"
 #include "tiles/window.h"
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/io.h"
 #include "util/math2.h"
 

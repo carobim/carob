@@ -3,7 +3,7 @@
 
 #include "data/action.h"
 #include "tiles/vec.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/hashvector.h"
 #include "util/int.h"
 #include "util/string-view.h"

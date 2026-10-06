@@ -1,7 +1,7 @@
 #include "tiles/cooldown.h"
 
 #include "tiles/log.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 Cooldown::Cooldown() noexcept : duration(0), passed(0) { }
 

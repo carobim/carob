@@ -1,6 +1,6 @@
 #include "pack/file-type.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 
 static const StringView textExtensions[] = {".json"};

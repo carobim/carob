@@ -1,7 +1,7 @@
 #include "data/action.h"
 
 #include "tiles/sounds.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/new.h"
 

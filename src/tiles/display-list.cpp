@@ -1,7 +1,7 @@
 #include "tiles/display-list.h"
 
 #include "tiles/window.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/math2.h"
 
 static void

@@ -10,7 +10,7 @@
 #include "tiles/resources.h"
 #include "tiles/world.h"
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/math2.h"
 
 #define CHECK(x)      \

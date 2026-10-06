@@ -1,6 +1,6 @@
 #include "measure.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/io.h"
 
 #if defined(__APPLE__) && defined(MAKE_MACOS_SIGNPOSTS)

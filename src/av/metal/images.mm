@@ -2,7 +2,7 @@
 
 #include "av/sdl2/sdl2.h"
 #include "av/sdl2/window.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 extern "C" {

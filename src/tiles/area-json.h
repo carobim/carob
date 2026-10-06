@@ -1,7 +1,7 @@
 #ifndef SRC_TILES_AREA_JSON_H_
 #define SRC_TILES_AREA_JSON_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 
 class Area;

@@ -1,7 +1,7 @@
 #ifndef SRC_CORE_ALGORITHM_H_
 #define SRC_CORE_ALGORITHM_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 template<class Container, class Predicate>
 void

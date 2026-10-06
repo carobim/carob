@@ -1,7 +1,7 @@
 #include "tiles/tile.h"
 
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 /*
  * TILESET

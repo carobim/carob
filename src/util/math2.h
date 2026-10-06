@@ -15,7 +15,7 @@
  * merchantability or fitness for a particular purpose.
  */
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 template<typename T>

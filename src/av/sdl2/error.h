@@ -1,7 +1,7 @@
 #ifndef SRC_AV_SDL2_ERROR_H_
 #define SRC_AV_SDL2_ERROR_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 
 void

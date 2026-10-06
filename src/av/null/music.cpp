@@ -1,6 +1,6 @@
 #include "tiles/music-worker.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 void
 musicWorkerPlay(StringView path) noexcept { }

@@ -1,7 +1,7 @@
 #    include "util/assert.h"
 
 #    include "os/os.h"
-#    include "util/compiler.h"
+#    include "util/compiler.h"  // IWYU pragma: keep
 #    include "util/io.h"
 
 #if DEBUG

@@ -4,7 +4,7 @@
 #include "os/mutex.h"
 #include "os/thread.h"
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/queue.h"
 #include "util/vector.h"

@@ -2,7 +2,7 @@
 
 #include "tiles/area.h"
 #include "tiles/client-conf.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 void
 Overlay::tick(Time dt) noexcept {

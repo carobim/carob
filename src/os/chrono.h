@@ -1,7 +1,7 @@
 #ifndef SRC_OS_CHRONO_H_
 #define SRC_OS_CHRONO_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 typedef I64 Seconds;

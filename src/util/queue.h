@@ -2,7 +2,7 @@
 #define SRC_UTIL_QUEUE_H_
 
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/new.h"
 

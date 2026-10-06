@@ -2,7 +2,7 @@
 #include "av/sdl2/sdl2.h"
 #include "tiles/music-worker.h"
 #include "tiles/resources.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/hashvector.h"
 #include "util/int.h"
 #include "util/measure.h"

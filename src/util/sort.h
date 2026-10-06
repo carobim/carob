@@ -27,7 +27,7 @@
 // IN THE SOFTWARE.
 // **********
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 /* Sort 3 elements. */

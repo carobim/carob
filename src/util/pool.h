@@ -2,7 +2,7 @@
 #define SRC_UTIL_POOL_H_
 
 #include "os/c.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/new.h"
 

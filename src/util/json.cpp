@@ -31,7 +31,7 @@
 
 #include "util/json.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/new.h"
 #include "util/string-view.h"

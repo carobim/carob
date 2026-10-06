@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_JOBS_H_
 #define SRC_UTIL_JOBS_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/function.h"
 
 void

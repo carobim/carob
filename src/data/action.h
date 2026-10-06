@@ -1,7 +1,7 @@
 #ifndef SRC_DATA_ACTION_H_
 #define SRC_DATA_ACTION_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/string-view.h"
 

@@ -7,7 +7,7 @@
 #include "tiles/tile-grid.h"
 #include "tiles/window.h"
 #include "tiles/world.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 #define CHECK(x)      \
     if (!(x)) {       \

@@ -4,7 +4,7 @@
 #include "os/c.h"
 #include "os/mutex.h"
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 extern "C" {
 typedef struct {

@@ -2,7 +2,7 @@
 
 #include "os/os.h"
 #include "tiles/world.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 Keys windowKeysDown = 0;
 

@@ -4,7 +4,7 @@
 #include "tiles/entity.h"
 #include "tiles/vec.h"
 #include "tiles/window.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/math2.h"
 
 enum TrackingMode { TM_MANUAL, TM_FOLLOW_ENTITY };

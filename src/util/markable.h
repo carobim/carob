@@ -2,7 +2,7 @@
 #define SRC_UTIL_MARKABLE_H_
 
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 struct M { };
 

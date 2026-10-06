@@ -2,7 +2,7 @@
 #define SRC_TILES_OVERLAY_H_
 
 #include "tiles/entity.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 class Overlay : public Entity {
  public:

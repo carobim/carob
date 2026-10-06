@@ -1,6 +1,6 @@
 #include "os/windows/c.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 
 #if MSVC >= 2015

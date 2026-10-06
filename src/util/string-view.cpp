@@ -2,7 +2,7 @@
 
 #include "os/c.h"
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/fnv.h"
 
 StringView::StringView() noexcept : data(0), size(0) { }

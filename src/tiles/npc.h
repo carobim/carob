@@ -2,7 +2,7 @@
 #define SRC_TILES_NPC_H_
 
 #include "tiles/character.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 class NPC : public Character {
  protected:

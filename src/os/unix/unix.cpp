@@ -1,6 +1,6 @@
 #include "os/c.h"
 #include "os/os.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/io.h"
 #include "util/string-view.h"
 #include "util/string.h"

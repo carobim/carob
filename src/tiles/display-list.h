@@ -3,7 +3,7 @@
 
 #include "tiles/images.h"
 #include "tiles/vec.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/vector.h"
 
 struct DisplayItem {

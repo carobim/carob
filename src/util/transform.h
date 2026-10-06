@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_TRANSFORM_H_
 #define SRC_UTIL_TRANSFORM_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 #if CXX

@@ -3,7 +3,7 @@
 #include "os/c.h"
 #include "os/io.h"
 #include "pack/layout.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/hashtable.h"
 #include "util/int.h"
 #include "util/new.h"

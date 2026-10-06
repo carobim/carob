@@ -3,7 +3,7 @@
 
 #include "tiles/character.h"
 #include "tiles/vec.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 struct Exit;
 

@@ -1,7 +1,7 @@
 #include "tiles/tile-grid.h"
 
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/math2.h"
 
 static I32

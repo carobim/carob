@@ -2,7 +2,7 @@
 
 #include "os/c.h"
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/fnv.h"
 #include "util/new.h"
 

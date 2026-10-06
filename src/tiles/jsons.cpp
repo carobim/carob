@@ -1,7 +1,7 @@
 #include "tiles/jsons.h"
 
 #include "tiles/resources.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/measure.h"
 #include "util/string-view.h"
 #include "util/string.h"

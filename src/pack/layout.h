@@ -1,7 +1,7 @@
 #ifndef SRC_PACK_LAYOUT_H_
 #define SRC_PACK_LAYOUT_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 // Pack file layout:

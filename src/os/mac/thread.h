@@ -3,7 +3,7 @@
 
 #include "os/thread.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/function.h"
 #include "util/int.h"
 

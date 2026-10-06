@@ -1,7 +1,7 @@
 #ifndef SRC_UTIL_FNV_H_
 #define SRC_UTIL_FNV_H_
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 
 Size

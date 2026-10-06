@@ -5,7 +5,7 @@ class DataArea;
 
 #include "tiles/client-conf.h"
 #include "tiles/vec.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 
 //! After the engine has booted, initialize the world.

@@ -3,7 +3,7 @@
 
 #include "av/sdl2/sdl2.h"
 #include "tiles/vec.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 extern SDL_Window* sdl2Window;
 extern fvec2 sdl2Translation;

@@ -1,6 +1,6 @@
 #include "tiles/images.h"
 
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 #define NULL_TEXTURE reinterpret_cast<void*>(1)
 

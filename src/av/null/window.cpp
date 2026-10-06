@@ -7,7 +7,7 @@
 #include "tiles/display-list.h"
 #include "tiles/log.h"
 #include "tiles/world.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/string-view.h"
 #include "util/string.h"
 

@@ -2,7 +2,7 @@
 #define SRC_OS_WINDOWS_MUTEX_H_
 
 #include "os/c.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 
 extern "C" {
 typedef struct {

@@ -1,7 +1,7 @@
 #include "tiles/animation.h"
 
 #include "util/assert.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/pool.h"
 
 struct AnimationData {

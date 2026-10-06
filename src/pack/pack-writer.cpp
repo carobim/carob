@@ -4,7 +4,7 @@
 #include "os/io.h"
 #include "pack/file-type.h"
 #include "pack/layout.h"
-#include "util/compiler.h"
+#include "util/compiler.h"  // IWYU pragma: keep
 #include "util/int.h"
 #include "util/math2.h"
 #include "util/sort.h"
