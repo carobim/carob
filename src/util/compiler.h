@@ -8,20 +8,11 @@
 #endif
 
 #if defined(_MSC_VER)
-#    if _MSC_VER == 1600
-#        define MSVC 2010
-#    elif _MSC_VER == 1700
-#        define MSVC 2012
-#    elif _MSC_VER == 1800
-#        define MSVC 2013
-#    elif _MSC_VER == 1900
-#        define MSVC 2015
-#    elif 1910 <= _MSC_VER && _MSC_VER < 1920
-#        define MSVC 2017
-#    elif 1920 <= _MSC_VER && _MSC_VER < 1930
-#        define MSVC 2019
-#    elif 1930 <= _MSC_VER && _MSC_VER < 1950
-#        define MSVC 2022
+// Set MSVC to the MSVC Build Tools version.
+#    if _MSC_VER < 1900
+#        define MSVC (_MSC_VER - 600)
+#    else
+#        define MSVC (_MSC_VER - 500)
 #    endif
 #    define CLANG 0
 #    define GCC   0
@@ -42,6 +33,20 @@
 #    define SIZE  (__SIZEOF_SIZE_T__ * 8)
 #endif
 
+// Always use range queries, never equality, with these.
+#define VS2010 1000
+#define VS2012 1100
+#define VS2013 1200
+#define VS2015 1400
+#define VS2017 1410
+#define VS2019 1420
+#define VS2022 1430
+#define VS2026 1450
+// v1950 was released November 2025.
+// A new version (1951, 1952, ...) is released every 6 months.
+// https://learn.microsoft.com/en-us/cpp/overview/compiler-versions
+#define MSVC_MODERN(y, m) (1950 + ((y) - 2025) * 2 + ((m) >= 11) - ((m) < 5) - 1)
+
 /* https://clang.llvm.org/cxx_status.html */
 /* https://gcc.gnu.org/projects/cxx-status.html */
 
@@ -52,11 +57,11 @@
 #endif
 
 #if CXX
-#    if MSVC == 2015
+#    if MSVC >= VS2015 && MSVC < VS2017
 /* 'noexcept' used but no exception handling is enabled. */
 #        pragma warning(disable : 4577)
 #    endif
-#    if MSVC == 2010 || MSVC == 2012 || MSVC == 2013 || (0 < GCC && GCC < 46)
+#    if (MSVC >= VS2010 && MSVC < VS2015) || (0 < GCC && GCC < 46)
 #        define noexcept throw()
 #    endif
 #else
@@ -64,15 +69,15 @@
 #endif
 
 #if CXX
-#    if MSVC == 2010 || MSVC == 2012 || MSVC == 2013 || (0 < GCC && GCC < 46)
+#    if (MSVC >= VS2010 && MSVC < VS2015) || (0 < GCC && GCC < 46)
 #        define constexpr
 #    endif
-#    if __cplusplus >= 201103L || MSVC >= 2015
+#    if __cplusplus >= 201103L || MSVC >= VS2015
 #        define constexpr11 constexpr
 #    else
 #        define constexpr11
 #    endif
-#    if __cplusplus >= 201402L || MSVC >= 2017
+#    if __cplusplus >= 201402L || MSVC >= VS2017
 #        define constexpr14 constexpr
 #    else
 #        define constexpr14

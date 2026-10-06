@@ -3,7 +3,7 @@
 #include "util/compiler.h"  // IWYU pragma: keep
 
 
-#if MSVC >= 2015
+#if MSVC >= VS2015
 
 __pragma(pack(push, 8));
 extern "C" {

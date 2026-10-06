@@ -40,7 +40,7 @@ typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #endif
 
 // Defined as __declspec(dllimport) when building a DLL.
-#if MSVC == 2010
+#if MSVC >= VS2010 && MSVC < VS2012
 // 2010 crtdefs.h
 #    define CRTIMP
 #else
@@ -67,7 +67,7 @@ typedef I64 __time64_t;
 
 __pragma(pack(push, 8));
 extern "C" {
-#if MSVC == 2010 || MSVC == 2012 || MSVC == 2013
+#if MSVC >= VS2010 && MSVC < VS2015
 // 2010 stdio.h
 // 2012 stdio.h
 CRTIMP FILE*
@@ -75,7 +75,7 @@ __iob_func(void) noexcept;
 #    define stdin  (&__iob_func()[0])
 #    define stdout (&__iob_func()[1])
 #    define stderr (&__iob_func()[2])
-#elif MSVC >= 2015
+#elif MSVC >= VS2015
 CRTIMP FILE*
 __acrt_iob_func(unsigned) noexcept;
 #    define stdin  (__acrt_iob_func(0))
@@ -192,7 +192,7 @@ memmove(void*, const void*, Size) noexcept;
 
 // 2010 stdio.h
 // 2012 stdio.h
-#if MSVC == 2010 || MSVC == 2012 || MSVC == 2013
+#if MSVC >= VS2010 && MSVC < VS2015
 extern "C" {
 CRTIMP int
 printf(const char*, ...) noexcept;
@@ -201,7 +201,7 @@ fprintf(FILE*, const char*, ...) noexcept;
 CRTIMP int
 sprintf(char*, const char*, ...) noexcept;
 }  // extern "C"
-#elif MSVC >= 2015
+#elif MSVC >= VS2015
 int
 printf(const char* const, ...) noexcept;
 int
