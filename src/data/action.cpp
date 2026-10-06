@@ -99,7 +99,7 @@ makeSoundAction(StringView sound) noexcept {
 
     struct Action action;
     action.tick = soundTick;
-    action.data = reinterpret_cast<void*>(*psid);
+    action.data = reinterpret_cast<void*>(static_cast<Size>(*psid));
     action.free = 0;
     action.next = 0;
 
