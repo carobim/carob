@@ -17,10 +17,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.31, GCC 14, Samurai 1.2
-  alpine_3_21:
+  # Has CMake 4.2, GCC 15, Samurai 1.9
+  alpine_3_24:
     docker:
-      - image: alpine:3.21
+      - image: alpine:3.24
     steps:
       - run: |
           apk update &&
@@ -65,10 +65,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.25, GCC 12, Ninja 1.11
-  debian_12_bookworm:
+  # Has CMake 3.31, GCC 14, Ninja 1.12
+  debian_13_trixie:
     docker:
-      - image: debian:bookworm-slim
+      - image: debian:trixie-slim
     steps:
       - run: |
           apt-get update &&
@@ -96,10 +96,10 @@ jobs:
           ninja-build
       - run: build/units
 
-  # Has CMake 3.31, GCC 15, Samurai 1.2
-  fedora_43:
+  # Has CMake 4.3, GCC 16, Samurai 1.9
+  fedora_44:
     docker:
-      - image: fedora:43
+      - image: fedora:44
     steps:
       - run: |
           dnf install -y cmake gcc-c++ samurai
@@ -124,11 +124,11 @@ jobs:
   #        cd build &&
   #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 && ninja && ./units'
 
-  # Has CMake 3.22, GCC 11, Samurai 1.2
-  nix_2_12_0:
+  # Has CMake 4.1, GCC 15, Samurai 1.9
+  nix_2_35_2:
     shell: /bin/sh
     docker:
-      - image: nixos/nix:2.12.0
+      - image: nixos/nix:2.35.2
     steps:
       - checkout
       - run: |
@@ -136,10 +136,10 @@ jobs:
           cd build &&
           nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 && samu && ./units'
 
-  # Has CMake 3.20, GCC 11
-  rocky_9:
+  # Has CMake 3.31, GCC 14
+  rocky_10:
     docker:
-      - image: rockylinux:9
+      - image: rockylinux/rockylinux:10
     steps:
       - run: |
           dnf install -y cmake gcc-c++ make
@@ -168,10 +168,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 3.31, GCC 14, Ninja 1.12
-  ubuntu_25_04_plucky:
+  # Has CMake 4.2, GCC 15, Ninja 1.13
+  ubuntu_26_04_resolute:
     docker:
-      - image: ubuntu:25.04
+      - image: ubuntu:26.04
     steps:
       - run: |
           apt-get update &&
@@ -221,15 +221,15 @@ workflows:
   build_all:
     jobs:
       - alpine_3_1
-      - alpine_3_21
+      - alpine_3_24
       - arch
       - debian_7_wheezy
-      - debian_12_bookworm
+      - debian_13_trixie
       - fedora_20
-      - fedora_43
-      - nix_2_12_0
-      - rocky_9
+      - fedora_44
+      - nix_2_35_2
+      - rocky_10
       - ubuntu_12_04_precise
-      - ubuntu_25_04_plucky
+      - ubuntu_26_04_resolute
       - void
       - void_musl
