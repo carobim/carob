@@ -196,7 +196,7 @@ parseUInt(U32& out, String& s) noexcept {
     errno = 0;
 
     char* end;
-    U32 ul = strtoul(s.null(), &end, 10);
+    unsigned long ul = strtoul(s.null(), &end, 10);
 
     if (end != s.data + s.size)
         return false;
@@ -210,7 +210,7 @@ parseUInt(U32& out, String& s) noexcept {
         return false;
     }
 
-    out = ul;
+    out = static_cast<U32>(ul);
     return true;
 }
 
