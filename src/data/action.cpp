@@ -82,7 +82,7 @@ makeDelayAction(Time duration) noexcept {
 static enum ActionStatus
 soundTick(DataArea*, void* data, Time) noexcept {
     PlayingSoundID psid;
-    psid = reinterpret_cast<Size>(data);
+    psid = static_cast<I32>(reinterpret_cast<Size>(data));
 
     if (!playingSoundIsPlaying(psid)) {
         playingSoundRelease(psid);
