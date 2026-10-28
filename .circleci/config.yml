@@ -168,10 +168,10 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 4.2, GCC 15, Ninja 1.13
-  ubuntu_26_04_resolute:
+  # Has CMake 4.3, GCC 15, Ninja 1.13
+  ubuntu_26_10_stonking:
     docker:
-      - image: ubuntu:26.04
+      - image: ubuntu:26.10
     steps:
       - run: |
           apt-get update &&
@@ -230,6 +230,6 @@ workflows:
       - nix_2_35_2
       - rocky_10
       - ubuntu_12_04_precise
-      - ubuntu_26_04_resolute
+      - ubuntu_26_10_stonking
       - void
       - void_musl
