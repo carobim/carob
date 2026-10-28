@@ -124,11 +124,11 @@ jobs:
   #        cd build &&
   #        nix-shell -p cmake gcc ninja --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 && ninja && ./units'
 
-  # Has CMake 4.1, GCC 15, Samurai 1.9
-  nix_2_35_2:
+  # Has CMake 4.1, GCC 15, Samurai 1.2
+  nix_2_35_4:
     shell: /bin/sh
     docker:
-      - image: nixos/nix:2.35.2
+      - image: nixos/nix:2.35.4
     steps:
       - checkout
       - run: |
@@ -227,7 +227,7 @@ workflows:
       - debian_13_trixie
       - fedora_20
       - fedora_45
-      - nix_2_35_2
+      - nix_2_35_4
       - rocky_10
       - ubuntu_12_04_precise
       - ubuntu_26_10_stonking
