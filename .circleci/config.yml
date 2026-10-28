@@ -17,7 +17,7 @@ jobs:
           make -j 2
       - run: build/units
 
-  # Has CMake 4.2, GCC 15, Samurai 1.9
+  # Has CMake 4.2, GCC 15, Samurai 1.2
   alpine_3_24:
     docker:
       - image: alpine:3.24
