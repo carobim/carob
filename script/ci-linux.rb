@@ -23,6 +23,10 @@ class LinuxCI
     raise "Unknown jobs: #{unknown.join(', ')}" unless unknown.empty?
     jobs = selected unless selected.empty?
     jobs.each { |name| validate(name) }
+    references = jobs.map { |name| @config.fetch('jobs').fetch(name).fetch('docker').first.fetch('image') }.uniq
+    @images = {}
+    inspect_images(references + references.map { |reference| cache_name(reference) }) unless references.empty?
+    @host = nil
     prepared = jobs.map { |name| prepare_job(name) }.compact
     prepared.each { |job| run_job(job) }
   end
@@ -56,9 +60,41 @@ class LinuxCI
     raise "Docker command failed: #{['docker', *args].shelljoin}" unless system('docker', *args)
   end
 
+  def image_reference(reference)
+    return reference if reference.start_with?('sha256:')
+    reference = reference.sub(/\A(?:docker.io|index.docker.io|registry-1.docker.io)\//, '').sub(/\Alibrary\//, '')
+    reference += ':latest' unless reference.include?('@') || reference.split('/').last.include?(':')
+    reference
+  end
+
+  def inspect_images(references)
+    references = references.uniq
+    output, error, status = Open3.capture3('docker', 'image', 'inspect', *references)
+    unless status.success? || error.lines.all? { |line| line.match?(/no such (?:image|object)/i) }
+      raise "Cannot inspect Docker images: #{error}"
+    end
+    images = JSON.parse(output)
+    by_reference = {}
+    images.each do |image|
+      [image.fetch('Id'), *image['RepoTags'], *image['RepoDigests']].each do |reference|
+        by_reference[image_reference(reference)] = image
+      end
+    end
+    @images ||= {}
+    references.each { |reference| @images[reference] = by_reference[image_reference(reference)] }
+  end
+
   def inspect_image(reference)
-    output, _error, status = Open3.capture3('docker', 'image', 'inspect', reference)
-    status.success? ? JSON.parse(output).fetch(0) : nil
+    inspect_images([reference]) unless @images && @images.key?(reference)
+    @images[reference]
+  end
+
+  def docker_host
+    @host ||= begin
+      output, status = Open3.capture2('docker', 'info', '--format', '{{json .}}')
+      raise 'Cannot determine Docker host architecture' unless status.success?
+      JSON.parse(output)
+    end
   end
 
   def cache_name(reference)
@@ -110,6 +146,7 @@ class LinuxCI
         end
         wait.value
       end
+      @images&.delete(reference) if status.success?
       unavailable = !status.success? && output.match?(/no matching manifest for \S+|no match for platform in manifest/i)
       error = "Docker command failed: #{['docker', 'pull', reference].shelljoin}"
       state[reference] = {
@@ -141,9 +178,7 @@ class LinuxCI
     puts "==> #{name} (#{image.fetch('image')})"
     return unless pull_image(name, image.fetch('image'))
     base = inspect_image(image.fetch('image'))
-    host_json, status = Open3.capture2('docker', 'info', '--format', '{{json .}}')
-    raise 'Cannot determine Docker host architecture' unless status.success?
-    host = JSON.parse(host_json)
+    host = docker_host
     aliases = { 'aarch64' => 'arm64', 'x86_64' => 'amd64', 'armv7l' => 'arm', 'armv6l' => 'arm', 'i386' => '386', 'i686' => '386' }
     host_arch = aliases.fetch(host.fetch('Architecture'), host.fetch('Architecture'))
     unless base.fetch('Architecture') == host_arch && base.fetch('Os') == host.fetch('OSType')
@@ -168,6 +203,7 @@ class LinuxCI
     with_container(name, image.fetch('image'), workdir) do |container|
       run_steps(name, container, workdir, setup)
       docker('commit', '--change', "LABEL carob-ci.setup-key=#{cache_key}", container, cached_name)
+      inspect_images([cached_name])
       # Retain IDs: another job may overwrite the same stable cache tag.
       prepared.merge(image: inspect_image(cached_name).fetch('Id'))
     end
