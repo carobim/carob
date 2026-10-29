@@ -8,6 +8,7 @@ require 'open3'
 require 'securerandom'
 require 'shellwords'
 require 'tempfile'
+require 'time'
 require 'yaml'
 
 class LinuxCI
@@ -200,6 +201,12 @@ class LinuxCI
     end
   end
 
+  def fresh_setup_image?(image, now = Time.now)
+    now - Time.iso8601(image.fetch('Created')) <= 30 * 24 * 60 * 60
+  rescue KeyError, ArgumentError, TypeError
+    false
+  end
+
   def prepare_job(name)
     job = @config.fetch('jobs').fetch(name)
     image = job.fetch('docker').first
@@ -223,7 +230,7 @@ class LinuxCI
       job['shell'], workdir, image['environment'], job['environment']
     ]))
     cached = inspect_image(cached_name)
-    reuse = cached && cached.dig('Config', 'Labels', 'carob-ci.setup-key') == cache_key
+    reuse = cached && cached.dig('Config', 'Labels', 'carob-ci.setup-key') == cache_key && fresh_setup_image?(cached)
     prepared = { name: name, workdir: workdir, steps: checkout ? steps.drop(checkout) : steps }
     if reuse
       return prepared.merge(image: cached.fetch('Id'))
