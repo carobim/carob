@@ -163,10 +163,10 @@ class LinuxCI
         end
         raise entry.fetch('error') if entry.is_a?(Hash) && entry['result'] == 'error'
         if inspect_image(reference)
-          puts "--> Using local #{reference} (pulled within 12 hours)"
           return true
         end
       end
+      puts "==> Pulling #{reference}"
       output = +''
       status = Open3.popen2e('docker', 'pull', reference) do |stdin, stream, wait|
         stdin.close
@@ -205,7 +205,6 @@ class LinuxCI
     image = job.fetch('docker').first
     # Use an absolute path: Docker does not expand CircleCI's default ~/project.
     workdir = job.fetch('working_directory', '/root/project').sub(/\A~(?=\/|$)/, '/root')
-    puts "==> #{name} (#{image.fetch('image')})"
     return unless pull_image(name, image.fetch('image'))
     base = inspect_image(image.fetch('image'))
     host = docker_host
@@ -225,11 +224,11 @@ class LinuxCI
     ]))
     cached = inspect_image(cached_name)
     reuse = cached && cached.dig('Config', 'Labels', 'carob-ci.setup-key') == cache_key
-    puts "--> Reusing setup image #{cached_name}" if reuse
     prepared = { name: name, workdir: workdir, steps: checkout ? steps.drop(checkout) : steps }
     if reuse
       return prepared.merge(image: cached.fetch('Id'))
     end
+    puts "==> Building setup image #{cached_name} (#{name})"
     with_container(name, image.fetch('image'), workdir) do |container|
       run_steps(name, container, workdir, setup)
       docker('commit', '--change', "LABEL carob-ci.setup-key=#{cache_key}", container, cached_name)
