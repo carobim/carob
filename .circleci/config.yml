@@ -130,11 +130,14 @@ jobs:
     docker:
       - image: nixos/nix:2.35.4
     steps:
+      - run: nix-env -iA nixpkgs.cmake nixpkgs.gcc nixpkgs.samurai nixpkgs.glibc.bin
       - checkout
       - run: |
           mkdir build &&
           cd build &&
-          nix-shell -p cmake gcc samurai --run 'cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 && samu && ./units'
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Debug -DUNITS=1 &&
+          samu &&
+          ./units
 
   # Has CMake 3.31, GCC 14
   rocky_10:
