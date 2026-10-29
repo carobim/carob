@@ -7,6 +7,7 @@ require 'json'
 require 'open3'
 require 'securerandom'
 require 'shellwords'
+require 'tempfile'
 require 'yaml'
 
 class LinuxCI
@@ -57,7 +58,36 @@ class LinuxCI
   end
 
   def docker(*args)
-    raise "Docker command failed: #{['docker', *args].shelljoin}" unless system('docker', *args)
+    raise "Docker command failed: #{['docker', *args].shelljoin}" unless docker_command(*args)
+  end
+
+  def docker_command(*args)
+    return system('docker', *args) unless @build_log
+    Open3.popen2e('docker', *args) do |stdin, output, wait|
+      stdin.close
+      output.each_line do |line|
+        @build_log.write(line)
+        @build_diagnostic ||= line.match?(/\b(?:warn(?:ing|ings)?|errors?|fatal|deprecated|deprecation|failed|failure|segmentation fault|core dumped)\b/i)
+      end
+      wait.value.success?
+    end
+  end
+
+  def with_build_output
+    Tempfile.create('carob-ci-build') do |log|
+      @build_log = log
+      @build_diagnostic = false
+      completed = false
+      begin
+        yield
+        completed = true
+      ensure
+        @build_log = nil
+        log.flush
+        log.rewind
+        IO.copy_stream(log, $stdout) if @build_diagnostic || !completed
+      end
+    end
   end
 
   def image_reference(reference)
@@ -212,8 +242,10 @@ class LinuxCI
   def run_job(prepared)
     name = prepared.fetch(:name)
     puts "==> Running #{name}"
-    with_container(name, prepared.fetch(:image), prepared.fetch(:workdir)) do |container|
-      run_steps(name, container, prepared.fetch(:workdir), prepared.fetch(:steps))
+    with_build_output do
+      with_container(name, prepared.fetch(:image), prepared.fetch(:workdir)) do |container|
+        run_steps(name, container, prepared.fetch(:workdir), prepared.fetch(:steps))
+      end
     end
   end
 
@@ -226,7 +258,7 @@ class LinuxCI
       docker('create', '--name', container, '-i', '--entrypoint', '/bin/sh',
              *environment(image['environment']), *environment(job['environment']),
              reference, '-s')
-      started = system('docker', 'start', container)
+      started = docker_command('start', container)
       state_json, inspected = Open3.capture2('docker', 'inspect', '--format', '{{json .State}}', container)
       raise "Cannot inspect container #{container}" unless inspected.success?
       state = JSON.parse(state_json)
@@ -242,7 +274,7 @@ class LinuxCI
       docker('exec', container, '/bin/sh', '-ec', 'mkdir -p "$1"', 'sh', workdir)
       yield container
     ensure
-      system('docker', 'rm', '--force', container)
+      docker_command('rm', '--force', container)
     end
   end
 
@@ -256,7 +288,7 @@ class LinuxCI
       end
       run = step.fetch('run')
       run = { 'command' => run } if run.is_a?(String)
-      puts "--> #{run.fetch('name', run.fetch('command'))}"
+      (@build_log || $stdout).puts "--> #{run.fetch('name', run.fetch('command'))}"
       shell = run['shell'] || job['shell']
       command = if shell
                   [*Shellwords.split(shell), '-ec', run.fetch('command')]
