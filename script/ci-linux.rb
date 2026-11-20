@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Run from the checkout root: ruby script/ci-linux.rb [job ...]
+# Run from the checkout root: ruby script/ci-linux.rb [--strict] [job ...]
 # Requires Docker; supports this repository's checkout/run-only Linux workflow.
 require 'digest'
 require 'fileutils'
@@ -12,8 +12,11 @@ require 'time'
 require 'yaml'
 
 class LinuxCI
-  def initialize(root)
+  class JobSkipped < StandardError; end
+
+  def initialize(root, strict: false)
     @root = root
+    @strict = strict
     @config = YAML.safe_load(File.read(File.join(root, '.circleci/config.yml')))
   end
 
@@ -24,16 +27,36 @@ class LinuxCI
     unknown = selected - jobs
     raise "Unknown jobs: #{unknown.join(', ')}" unless unknown.empty?
     jobs = selected unless selected.empty?
-    jobs.each { |name| validate(name) }
-    references = jobs.map { |name| @config.fetch('jobs').fetch(name).fetch('docker').first.fetch('image') }.uniq
     @images = {}
-    inspect_images(references + references.map { |reference| cache_name(reference) }) unless references.empty?
     @host = nil
-    prepared = jobs.map { |name| prepare_job(name) }.compact
-    prepared.each { |job| run_job(job) }
+    results = jobs.map do |name|
+      validate(name)
+      run_job(prepare_job(name))
+      [name, :passed, nil]
+    rescue JobSkipped => e
+      [name, :skipped, e.message]
+    rescue StandardError => e
+      [name, :failed, e.message]
+    end
+    success = results.none? { |_, status| status == :failed || (@strict && status == :skipped) }
+    print_results(results) unless success
+    success
   end
 
   private
+
+  def print_results(results)
+    labels = { passed: '✓ PASS', failed: '× FAIL', skipped: '– SKIP' }
+    counts = Hash.new(0)
+    puts "\nLinux CI results"
+    results.each do |name, status, reason|
+      counts[status] += 1
+      puts "  #{labels.fetch(status)} #{name}"
+      reason&.each_line { |line| puts "    #{line}" }
+    end
+    puts "Jobs: #{counts[:passed]} passed, #{counts[:failed]} failed, #{counts[:skipped]} skipped"
+    puts 'Skipped jobs are errors in strict mode.' if @strict && counts[:skipped] > 0
+  end
 
   def validate(name)
     job = @config.fetch('jobs').fetch(name)
@@ -82,6 +105,9 @@ class LinuxCI
       begin
         yield
         completed = true
+      rescue JobSkipped
+        completed = true
+        raise
       ensure
         @build_log = nil
         log.flush
@@ -139,7 +165,7 @@ class LinuxCI
     (values || {}).flat_map { |key, value| ['--env', "#{key}=#{value}"] }
   end
 
-  def pull_image(name, reference)
+  def pull_image(reference)
     path = File.join(Dir.home, '.cache/carob-ci/state.json')
     FileUtils.mkdir_p(File.dirname(path))
     # Serialize the read/pull/write cycle so concurrent runners share the cooldown.
@@ -159,8 +185,7 @@ class LinuxCI
       age = last_pull.is_a?(Numeric) ? Time.now.to_f - last_pull : nil
       if age && age >= 0 && age <= 12 * 60 * 60
         if entry.is_a?(Hash) && entry['result'] == 'unavailable'
-          puts "Skipping #{name}: image unavailable for this platform (cached within 12 hours)"
-          return false
+          raise JobSkipped, 'image unavailable for this platform (cached within 12 hours)'
         end
         raise entry.fetch('error') if entry.is_a?(Hash) && entry['result'] == 'error'
         if inspect_image(reference)
@@ -192,10 +217,7 @@ class LinuxCI
       ensure
         FileUtils.rm_f(temporary)
       end
-      if unavailable
-        puts "Skipping #{name}: image unavailable for this platform"
-        return false
-      end
+      raise JobSkipped, 'image unavailable for this platform' if unavailable
       raise error unless status.success?
       true
     end
@@ -212,19 +234,21 @@ class LinuxCI
     image = job.fetch('docker').first
     # Use an absolute path: Docker does not expand CircleCI's default ~/project.
     workdir = job.fetch('working_directory', '/root/project').sub(/\A~(?=\/|$)/, '/root')
-    return unless pull_image(name, image.fetch('image'))
-    base = inspect_image(image.fetch('image'))
+    reference = image.fetch('image')
+    cached_name = cache_name(reference)
+    uninspected = [reference, cached_name].reject { |ref| @images.key?(ref) }
+    inspect_images(uninspected) unless uninspected.empty?
+    pull_image(reference)
+    base = inspect_image(reference)
     host = docker_host
     aliases = { 'aarch64' => 'arm64', 'x86_64' => 'amd64', 'armv7l' => 'arm', 'armv6l' => 'arm', 'i386' => '386', 'i686' => '386' }
     host_arch = aliases.fetch(host.fetch('Architecture'), host.fetch('Architecture'))
     unless base.fetch('Architecture') == host_arch && base.fetch('Os') == host.fetch('OSType')
-      puts "Skipping #{name}: image is #{base.fetch('Os')}/#{base.fetch('Architecture')}, Docker host is #{host.fetch('OSType')}/#{host_arch}"
-      return
+      raise JobSkipped, "image is #{base.fetch('Os')}/#{base.fetch('Architecture')}, Docker host is #{host.fetch('OSType')}/#{host_arch}"
     end
     steps = job.fetch('steps')
     checkout = steps.index('checkout')
     setup = checkout ? steps.take(checkout) : []
-    cached_name = cache_name(image.fetch('image'))
     cache_key = Digest::SHA256.hexdigest(JSON.generate([
       1, base.fetch('Id'), setup,
       job['shell'], workdir, image['environment'], job['environment']
@@ -236,7 +260,7 @@ class LinuxCI
       return prepared.merge(image: cached.fetch('Id'))
     end
     puts "==> Building setup image #{cached_name} (#{name})"
-    with_container(name, image.fetch('image'), workdir) do |container|
+    with_container(name, reference, workdir) do |container|
       run_steps(name, container, workdir, setup)
       docker('commit', '--change', "LABEL carob-ci.setup-key=#{cache_key}", container, cached_name)
       inspect_images([cached_name])
@@ -271,10 +295,7 @@ class LinuxCI
       unless started && state.fetch('Running')
         logs, = Open3.capture2e('docker', 'logs', container)
         details = [state['Error'], logs].compact.join("\n")
-        if details.match?(/exec format error/i)
-          puts "Skipping #{name}: image cannot execute on this platform"
-          return
-        end
+        raise JobSkipped, 'image cannot execute on this platform' if details.match?(/exec format error/i)
         raise "Container failed to start for #{name}: #{details}"
       end
       docker('exec', container, '/bin/sh', '-ec', 'mkdir -p "$1"', 'sh', workdir)
@@ -312,7 +333,8 @@ end
 if $PROGRAM_NAME == __FILE__
   $stdout.sync = true
   begin
-    LinuxCI.new(Dir.pwd).run(ARGV)
+    strict = !!ARGV.delete('--strict')
+    exit 1 unless LinuxCI.new(Dir.pwd, strict: strict).run(ARGV)
   rescue StandardError => e
     warn e.message
     exit 1

@@ -35,3 +35,16 @@ jobs:
           cmake --build .
       - name: Test
         run: build/Debug/units
+
+  linux:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Build and test
+        run: ruby script/ci-linux.rb --strict
